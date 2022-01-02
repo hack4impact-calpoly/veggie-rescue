@@ -16,7 +16,7 @@ git clone https://github.com/hack4impact-calpoly/veggie-rescue.git
 ### Running backend
 1. Make sure you're in the _backend_ directory using `cd backend`
 2. Make sure all packages are up to date with `npm i`
-3. `npm 
+3. `npm start`
 
 ### Making Changes
 1. Before you make changes to the code, run `git pull`
