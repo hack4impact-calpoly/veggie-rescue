@@ -21,7 +21,7 @@ git clone https://github.com/hack4impact-calpoly/veggie-rescue.git
 ### Making Changes
 1. Before you make changes to the code, run `git pull`
 2. Create a branch with `git checkout -b <branch-name>
-3. ***~code~***
+3. ***/~code/~***
 4. Stashing changes to commit: 
 ``` 
 git add * // add all changes
