@@ -1,0 +1,12 @@
+// from https://www.digitalocean.com/community/tutorials/setting-up-a-node-project-with-typescript
+{
+    "compilerOptions": {
+      "module": "commonjs",
+      "esModuleInterop": true,
+      "target": "es6",
+      "moduleResolution": "node",
+      "sourceMap": true,
+      "outDir": "dist"
+    },
+    "lib": ["es2015"]
+  }
