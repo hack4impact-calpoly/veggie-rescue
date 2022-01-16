@@ -39,4 +39,4 @@ git commit -m "<short-description-of-what-you-did>
 git push origin <branch-name>
 // if it's the first time a branch is being pushed, add -u after 'git push'
 ```
-7. Make a pull request (PR) to merge into main, request a reviewer to check your code and wait for your code to be approved! :)
+7. Make a pull request (PR) to merge into main, request a reviewer to check your code and wait for your code to be approved! :) (Don't forget to add issue number to PR, quick comment for description of what you did and to add @sophsuan as a reviewer.
