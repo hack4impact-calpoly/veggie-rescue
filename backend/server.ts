@@ -4,7 +4,7 @@ const app = express() // 2. initializes Express
 const mongoose = require('mongoose')
 const connection_url = "mongodb+srv://veggieRescueUser:RescueVeggie1771@veggierescue.55aun.mongodb.net/VeggieRescue?retryWrites=true&w=majority"
 
-mongoose.connection(connection_url)
+mongoose.connect(connection_url)
 .then(() => console.log(`Success`))
 .catch((error) => console.error(`Could not connect due to ${error}`))
 
