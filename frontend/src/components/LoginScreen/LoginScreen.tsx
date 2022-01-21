@@ -1,9 +1,9 @@
 
 import { useState } from 'react';
 import './LoginScreen.css';
-type Props = {};
 
-function LoginScreen({}: Props) {
+
+function LoginScreen() {
   const [asterix, setAsterix] = useState('');
   const [pin, setPin] = useState('');
 
