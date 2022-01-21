@@ -5,15 +5,33 @@ main {
     justify-content: space-around;
 }
 
+.leftButton {
+    margin-right: auto;
+    margin-left: 15px;
+    margin-top: 15px;
+}
+
+.rightButton {
+    margin-left: auto;
+    margin-right: 15px;
+    margin-top: 15px;
+}
+
 .topLayer {
     display: flex;
-    justify-content: space-evenly;
 }
 
 .text {
     color: #9BA3AC;
 }
 
-.progressBar{
-    /* background-color:blueviolet; */
+.progressBarWrapper {
+    background-color: #FFE2CC;
+    width: 70%;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.progressBarMain {
+    background-color: #FF9C55;
 }
