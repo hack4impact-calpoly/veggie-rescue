@@ -48,8 +48,7 @@ export default function NavBar() {
             </div>
             <div className='progressBarWrapper'>
                 <div className='progressBarMain' style={{width: `${progressBarPercent}%`}}>
-                    &shy; {/*Horrifically jank, but I kinda vibe with it. Can't get the div to render without some
-                                character here...*/}
+                    &shy; {/*Horrifically jank. Can't get the div to render without some character here...*/}
                 </div>
             </div>
         </main>
