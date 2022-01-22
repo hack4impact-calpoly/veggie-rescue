@@ -17,6 +17,10 @@ main {
     transform: rotate(0deg);
 }
 
+.test:hover{
+    fill: rebeccapurple;
+}
+
 .rightButton {
     border: none;
 
@@ -26,7 +30,6 @@ main {
     margin-right: 15px;
     margin-top: 15px;
 
-    transform: rotate(-180deg);
 }
 
 .topLayer {

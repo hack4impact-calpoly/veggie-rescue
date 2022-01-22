@@ -1,19 +1,16 @@
 import React, { useState } from 'react'
 
-import NavBarButton_DARK from './button_dark.svg';
-import NavBarButton_LIGHT from './button_light.svg';
+import NavBarButton_DARK from './button_dark_left.svg';
+import NavBarButton_right_LIGHT from './button_light_right.svg';
 import './NavBar.css'
 
-//notes: 3 stages: trip type, pickup location, and pounds picked up
-// Change button dudes to just a div with onclick={() => move Scroll}
-
-export default function NavBar(dataFilledOut: number ) {
+export default function NavBar() {
     
     const [progressBarPercent, setProgressBarPercent] = useState<number>(33.3);
     const [currentPosition, setCurrentPosition] = useState<number>(0);
+    const [maxPosition, setMaxPosition] = useState<number>(currentPosition);
 
-
-    const shiftLeftRight = (leftOrRight: number) => {
+    const shiftNavBarSection = (leftOrRight: number) => {
         //INPUT: -1 for shift left, else for shift right
         //OUTPUT: NULL
         if (leftOrRight === -1 && progressBarPercent > 33.3){
@@ -23,6 +20,8 @@ export default function NavBar(dataFilledOut: number ) {
         else if (leftOrRight === 1 && progressBarPercent < 99){
             setProgressBarPercent(progressBarPercent + 33.3)
             setCurrentPosition(currentPosition + 1);
+
+            setMaxPosition(Math.max(maxPosition, currentPosition + 1));
         }
     }
 
@@ -40,24 +39,35 @@ export default function NavBar(dataFilledOut: number ) {
         }
     }
 
-    const changeArrowColors = (dataFilledOut: number) => {
-        if (dataFilledOut === 1) {
+    const changeArrowColors = (buttonSide: number) => {
+        if (maxPosition > currentPosition)
             return NavBarButton_DARK;
+        else{
+            if (buttonSide === 0)
+                return NavBarButton_DARK;
+            else
+                return NavBarButton_right_LIGHT;
+        }
+    }
+
+    const rotateArrow = () => {
+        if (maxPosition > currentPosition){
+            return {transform: `rotate(180deg)`}
         }
         else{
-            return NavBarButton_LIGHT;
+            return {}
         }
     }
 
     return (
         <main>
             <div className="topLayer">
-                <button className='leftButton' onClick={() => shiftLeftRight(-1)}>
-                    <img src={NavBarButton_DARK} alt='leftButton'></img>
+                <button className='leftButton' onClick={() => shiftNavBarSection(-1)}>
+                    <img src={changeArrowColors(0)} alt='leftButton'></img>
                 </button>
                 <p className="text">{changeString(currentPosition)}</p>
-                <button className='rightButton' onClick={() => shiftLeftRight(1)}>
-                    <img src={NavBarButton_DARK} alt='rightButton'></img>
+                <button className='rightButton' onClick={() => shiftNavBarSection(1)} style={rotateArrow()}>
+                    <img src={changeArrowColors(1)} alt='rightButton'></img>
                 </button>
             </div>
             <div className='progressBarWrapper'>
