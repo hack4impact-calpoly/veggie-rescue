@@ -1,12 +1,13 @@
 import React, { useState } from 'react'
 
-// import NavBarButton from './NavBarButton.svg';
+import NavBarButton_DARK from './button_dark.svg';
+import NavBarButton_LIGHT from './button_light.svg';
 import './NavBar.css'
 
 //notes: 3 stages: trip type, pickup location, and pounds picked up
 // Change button dudes to just a div with onclick={() => move Scroll}
 
-export default function NavBar() {
+export default function NavBar(dataFilledOut: number ) {
     
     const [progressBarPercent, setProgressBarPercent] = useState<number>(33.3);
     const [currentPosition, setCurrentPosition] = useState<number>(0);
@@ -39,12 +40,25 @@ export default function NavBar() {
         }
     }
 
+    const changeArrowColors = (dataFilledOut: number) => {
+        if (dataFilledOut === 1) {
+            return NavBarButton_DARK;
+        }
+        else{
+            return NavBarButton_LIGHT;
+        }
+    }
+
     return (
         <main>
             <div className="topLayer">
-                <button className='leftButton' onClick={() => shiftLeftRight(-1)}>Left!</button>
+                <button className='leftButton' onClick={() => shiftLeftRight(-1)}>
+                    <img src={NavBarButton_DARK} alt='leftButton'></img>
+                </button>
                 <p className="text">{changeString(currentPosition)}</p>
-                <button className='rightButton' onClick={() => shiftLeftRight(1)}>Right</button>
+                <button className='rightButton' onClick={() => shiftLeftRight(1)}>
+                    <img src={NavBarButton_DARK} alt='rightButton'></img>
+                </button>
             </div>
             <div className='progressBarWrapper'>
                 <div className='progressBarMain' style={{width: `${progressBarPercent}%`}}>
