@@ -1,3 +1,4 @@
+import { RiDeleteBack2Line } from 'react-icons/ri';
 type Props = {
   buttonHandler: (butVal: string) => void;
   clearHandler: () => void;
@@ -60,7 +61,7 @@ function NumPad({ buttonHandler, clearHandler, submitHandler }: Props) {
           </button>
         </div>
         <div className="grid-item">
-          <button className="grid-btn" onClick={clearHandler} value="del">
+          <button className="grid-btn-submit delete"  onClick={clearHandler} value="del">
             :)
           </button>
         </div>
@@ -70,8 +71,8 @@ function NumPad({ buttonHandler, clearHandler, submitHandler }: Props) {
           </button>
         </div>
         <div className="grid-item">
-          <button className="grid-btn" onClick={submitHandler} value="submit">
-            X
+          <button className="grid-btn-submit icon" onClick={submitHandler} value="submit">
+          <RiDeleteBack2Line  />
           </button>
         </div>
       </div>
