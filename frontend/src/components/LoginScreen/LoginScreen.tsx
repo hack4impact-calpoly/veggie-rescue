@@ -1,38 +1,70 @@
-
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import Digits from './Digits';
 import './LoginScreen.css';
-
+import NumPad from './NumPad';
+import logo from './assets/veggie-rescue.png';
+import DriverData from './assets/DriverData';
 
 function LoginScreen() {
-  const [asterix, setAsterix] = useState('');
+  const [asterix, setAsterix] = useState<string[]>([]);
   const [pin, setPin] = useState('');
+  const [loading, setLoading] = useState(false);
+  const [driver, setDriver] = useState({
+    id: '',
+    name: '',
+    isLoggedIn: false,
+    clock_in: '',
+    clock_out: '',
+    pin: ''
+  });
 
-  const onClick = ({currentTarget}: React.MouseEvent<HTMLButtonElement>) =>{
-    setPin(pin + currentTarget.value)
-    setAsterix(asterix + '*')
+  useEffect(() => {
+    //on component load, set loading; fetch driver data and put into state
+    if (driver.name !== '') {
+      alert(`Found driver:${driver.name}`);
+    }
+  }, [driver]);
+
+  //on numpad submit check to see if driver exists; if so add to driver state
+  const submitHandler = () => {
+    if (pin.length === 4) {
+      const driverFilter = DriverData.filter((d) => d.pin === pin);
+      if (driverFilter.length !== 0) {
+        setDriver(driverFilter[0]);
+        // here we will navigate to next page
+      }
+    }
+    setPin('');
+    setAsterix([]);
+  };
+
+  const buttonHandler = (btnId: string) => {
+    if (pin.length <= 3) {
+      setPin(pin + btnId);
+      setAsterix([...asterix, '*']);
+    }
+  };
+
+  const clearHandler = () => {
+    setPin('');
+    setAsterix([]);
+  };
+
+  if (loading) {
+    return <h3>Loading...</h3>;
   }
   return (
     <div className="container">
-      <div className="logo"><img src="https://i.postimg.cc/wMV7LQPW/veggie-rescue.png" alt="veggie rescue logo" /></div>
-      <span style={{fontFamily:"Roboto"}}>Enter your 4 digit pin</span>
-      <div className="pinDisplay">
-      <span style={{display:"flex", padding:"0px"}}>{asterix}</span>
-      <span>_ _ _ _</span>
+      <div className="logo">
+        <img src={logo} alt="veggie rescue logo" />
       </div>
-    <div className="grid-container">
-      <div className="grid-item" ><button className="grid-btn" onClick={onClick} value='1'>1</button></div>
-      <div className="grid-item"><button className="grid-btn" onClick={onClick} value='2'>2</button></div>
-      <div className="grid-item"><button className="grid-btn" onClick={onClick} value='3'>3</button></div>
-      <div className="grid-item"><button className="grid-btn" onClick={onClick} value='4'>4</button></div>
-      <div className="grid-item"><button className="grid-btn" onClick={onClick} value='5'>5</button></div>
-      <div className="grid-item"><button className="grid-btn" onClick={onClick} value='6'>6</button></div>
-      <div className="grid-item"><button className="grid-btn" onClick={onClick} value='7'>7</button></div>
-      <div className="grid-item"><button className="grid-btn" onClick={onClick} value='8'>8</button></div>
-      <div className="grid-item"><button className="grid-btn" onClick={onClick} value='9'>9</button></div>
-      <div className="grid-item"><button className="grid-btn" onClick={onClick} value='del'>:)</button></div>
-      <div className="grid-item"><button className="grid-btn" onClick={onClick} value='0'>0</button></div>
-      <div className="grid-item"><button className="grid-btn" onClick={onClick} value='submit'>X</button></div>
-    </div>
+      <span style={{ fontFamily: 'Roboto' }}>Enter your 4 digit pin</span>
+      <Digits asterix={asterix} />
+      <NumPad
+        buttonHandler={buttonHandler}
+        submitHandler={submitHandler}
+        clearHandler={clearHandler}
+      />
     </div>
   );
 }
