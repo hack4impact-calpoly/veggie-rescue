@@ -1,8 +1,10 @@
 const { response } = require("express")
 const express = require("express") // 1. includes Express
 const app = express() // 2. initializes Express
-const mongoose = require('mongoose')
-const connection_url = "mongodb+srv://veggieRescueUser:RescueVeggie1771@veggierescue.55aun.mongodb.net/VeggieRescue?retryWrites=true&w=majority"
+const mongoose = require('mongoose') // Initializing Mongoose for DB
+require('dotenv').config(); // dotenv package to protect secrets
+
+const connection_url = "mongodb+srv://${process.env.DB_NAME}:${process.env.DB_PASS}@veggierescue.55aun.mongodb.net/VeggieRescue?retryWrites=true&w=majority"
 
 mongoose.connect(connection_url)
 .then(() => console.log(`Success`))
