@@ -1,25 +1,35 @@
-import React from 'react';
-import logo from './logo.svg';
+import React, { useEffect, useState } from 'react';
+import {
+  BrowserRouter as Router,
+  Routes,
+  Route
+} from "react-router-dom";
+import {  useNavigate } from 'react-router-dom'
+import Home from './Home';
+import Login from './Login';
 import './App.css';
+import ProtectedRoute from './ProtectedRoute';
+import Checkout from './Checkout';
 
-function App() {
+const App: React.FC = () =>{
+  //Variable which tells whether user is logged in or not 
+  const [loggedin, setLoggedin] = useState(false);
+  
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <Router>
+    <div >    
+      <Routes>
+          {/* depending on the redirectTo Variable value it redirects to the corresponding page if user is not logged in */}
+          <Route  path='/' element={<ProtectedRoute isAuth={loggedin}  redirectTo="/login"/>}>
+            <Route  path='/' element={<Home/>}/>
+          </Route>        
+          <Route path='/login' element={<Login/>}/> 
+          <Route path='/Checkout' element={<Checkout/>}/>           
+          
+      </Routes>
+      
     </div>
+    </Router>
   );
 }
 
