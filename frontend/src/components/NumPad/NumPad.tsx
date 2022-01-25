@@ -1,11 +1,13 @@
 import { RiDeleteBack2Line } from 'react-icons/ri';
+
 type Props = {
   buttonHandler: (butVal: string) => void;
   clearHandler: () => void;
   submitHandler: () => void;
+  backSpaceHandler: () => void;
 };
 
-function NumPad({ buttonHandler, clearHandler, submitHandler }: Props) {
+function NumPad({ buttonHandler, clearHandler, submitHandler, backSpaceHandler }: Props) {
   const clickHandler = (event: React.MouseEvent<HTMLButtonElement>) => {
     event.preventDefault();
     const targetValue = event.currentTarget.value;
@@ -61,7 +63,7 @@ function NumPad({ buttonHandler, clearHandler, submitHandler }: Props) {
           </button>
         </div>
         <div className="grid-item">
-          <button className="grid-btn-submit delete"  onClick={clearHandler} value="del">
+          <button className="grid-btn-submit delete"  onClick={submitHandler } value="del">
             :)
           </button>
         </div>
@@ -71,7 +73,7 @@ function NumPad({ buttonHandler, clearHandler, submitHandler }: Props) {
           </button>
         </div>
         <div className="grid-item">
-          <button className="grid-btn-submit icon" onClick={submitHandler} value="submit">
+          <button className="grid-btn-submit icon" onClick={backSpaceHandler} value="submit">
           <RiDeleteBack2Line  />
           </button>
         </div>

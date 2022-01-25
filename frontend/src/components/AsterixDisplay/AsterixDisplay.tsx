@@ -1,10 +1,8 @@
-import React from 'react';
-
 type Props = {
   asterix: string[];
 };
 
-function Digits({ asterix }: Props) {
+function AsterixDisplay({ asterix }: Props) {
   return (
     <>
       <div style={{ display: 'flex', paddingBottom: '15px' }}>
@@ -69,4 +67,4 @@ function Digits({ asterix }: Props) {
   );
 }
 
-export default Digits;
+export default AsterixDisplay;

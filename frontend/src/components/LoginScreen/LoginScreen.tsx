@@ -1,9 +1,8 @@
 import { useState, useEffect } from 'react';
-import Digits from './Digits';
+import AsterixDisplay from '../AsterixDisplay/AsterixDisplay';
 import './LoginScreen.css';
-import NumPad from './NumPad';
-import logo from './assets/veggie-rescue.png';
-import DriverData from './assets/DriverData';
+import NumPad from '../NumPad/NumPad';
+import logo from '../../imgs/veggie-rescue-logo.png';
 
 function LoginScreen() {
   const [asterix, setAsterix] = useState<string[]>([]);
@@ -34,8 +33,7 @@ function LoginScreen() {
         // here we will navigate to next page
       }
     }
-    setPin('');
-    setAsterix([]);
+    clearHandler();
   };
 
   const buttonHandler = (btnId: string) => {
@@ -50,23 +48,66 @@ function LoginScreen() {
     setAsterix([]);
   };
 
+  const backSpaceHandler = () =>{
+    setPin(pin.slice(0,-1));
+    setAsterix(a => a.filter((_, i) => i !== a.length -1));
+  }
+
   if (loading) {
     return <h3>Loading...</h3>;
   }
   return (
     <div className="container">
       <div className="logo">
-        <img src={logo} alt="veggie rescue logo" />
+        <img className='logo' src={logo} alt="veggie rescue logo" />
       </div>
       <span style={{ fontFamily: 'Roboto' }}>Enter your 4 digit pin</span>
-      <Digits asterix={asterix} />
+      <AsterixDisplay asterix={asterix} />
       <NumPad
         buttonHandler={buttonHandler}
         submitHandler={submitHandler}
         clearHandler={clearHandler}
+        backSpaceHandler={backSpaceHandler}
       />
     </div>
   );
 }
 
 export default LoginScreen;
+
+//below will be deleted once we implement API calls
+interface drivers {
+  id: string;
+  name: string;
+  isLoggedIn: boolean;
+  clock_in: string;
+  clock_out: string;
+  pin: string;
+}
+
+const DriverData: drivers[] = [
+  {
+    id: '1',
+    name: 'diana',
+    isLoggedIn: false,
+    clock_in: '',
+    clock_out: '',
+    pin: '1111'
+  },
+  {
+    id: '1',
+    name: 'carl',
+    isLoggedIn: false,
+    clock_in: '',
+    clock_out: '',
+    pin: '2222'
+  },
+  {
+    id: '1',
+    name: 'maggie',
+    isLoggedIn: false,
+    clock_in: '',
+    clock_out: '',
+    pin: '3333'
+  }
+];

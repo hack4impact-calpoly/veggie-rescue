@@ -6,6 +6,11 @@
   width: 500px;
   background-color: #f0f9f1;
 }
+.logo {
+  width: 400px;
+  padding-top: 10px;
+  padding-bottom: 15px;
+}
 .pin-display {
   font-family: 'Roboto';
 }
@@ -53,7 +58,6 @@
   font-size: 4.5rem;
 }
 .delete {
-  
   font-weight: bold;
   font-size: 2rem;
 }
