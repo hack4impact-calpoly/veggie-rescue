@@ -1,0 +1,65 @@
+body {
+  background-color: #f0f9f1;
+}
+.container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 30px 50px;
+}
+.logo {
+  width: 400px;
+  padding-top: 10px;
+  padding-bottom: 15px;
+}
+.pin-display {
+  font-family: 'Roboto';
+}
+.grid-container {
+  display: grid;
+  padding-top: 2rem;
+  padding-bottom: 2rem;
+  grid-template-columns: 5rem 5rem 5rem;
+  grid-gap: 1.5rem;
+}
+
+.grid-btn {
+  background-color: #7db596;
+  border-radius: 25px;
+  border: 0px;
+  box-shadow: 0px 5px 2px rgba(0, 0, 0, 0.4);
+  font-family: 'Roboto';
+  font-weight: 900;
+  font-size: 48px;
+  color: #ffffff;
+  width: 5rem;
+  height: 5rem;
+}
+.grid-btn:active {
+  box-shadow: 0px 3px 1px rgba(0, 0, 0, 0.4);
+  transform: translateY(2px);
+}
+
+.grid-btn-submit {
+  background-color: #f0f9f1;
+  border: 0px;
+  font-family: 'Roboto';
+  color: #176c3e;
+  width: 5rem;
+  height: 5rem;
+}
+.grid-btn-submit:active {
+  transform: translateY(2px);
+}
+.icon {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  font-size: 4.5rem;
+}
+.delete {
+  font-weight: bold;
+  font-size: 2rem;
+}
