@@ -31,6 +31,8 @@ function LoginScreen() {
       if (driverFilter.length !== 0) {
         setDriver(driverFilter[0]);
         // here we will navigate to next page
+      }else{
+        alert('No driver found... hint: try 1111 or 2222 or 3333!')
       }
     }
     clearHandler();

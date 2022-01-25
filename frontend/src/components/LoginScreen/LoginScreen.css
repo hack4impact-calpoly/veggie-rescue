@@ -1,10 +1,12 @@
+body {
+  background-color: #f0f9f1;
+}
 .container {
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  width: 500px;
-  background-color: #f0f9f1;
+  padding: 30px 50px;
 }
 .logo {
   width: 400px;
