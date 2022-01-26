@@ -3,12 +3,18 @@ import './Dashboard.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPencilAlt, faClipboardList, faHandPaper } from '@fortawesome/free-solid-svg-icons';
 
+const name = 'Diana';
+
 const Dashboard = () => {
+  function handleClick(){
+    console.log("button clicked!");
+  }
+
   return (
     <div className="container">
       <div className="greeting-box" >
         <div className="greeting">
-          <h2>Hi Diana!</h2>
+          <h2>Hi {name}!</h2>
         </div>
       </div>
 
@@ -22,20 +28,20 @@ const Dashboard = () => {
       </div>
 
       <div className="action">
-        <button>
+        <button onClick={handleClick}>
           <div className="action-item">
           <FontAwesomeIcon className="fa-icon" icon={faPencilAlt} />
           <div>Start a Log</div>
           </div>
         </button>
-        <button>
+        <button onClick={handleClick}>
           <div className="action-item">
           <FontAwesomeIcon className="fa-icon" icon={faClipboardList} />
           <div>View All Logs</div>
           </div>
         </button>
         <div id="bottom-button">
-          <button>
+          <button onClick={handleClick}>
             <div className="action-item">
             <FontAwesomeIcon className="fa-icon" icon={faHandPaper} />
             <div>Punch Out</div>
