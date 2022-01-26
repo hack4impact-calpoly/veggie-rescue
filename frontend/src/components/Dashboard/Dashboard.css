@@ -1,0 +1,112 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap');
+
+.fa-icon{
+  color: #FF9C55;
+}
+
+.container{
+  background-image: url('../../imgs/carrot-background.png');
+  width: 100%;
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  font-family: 'Poppins', sans serif;
+}
+
+.greeting-box{
+  background-color: #F0F9F1;
+  height: 175px;
+  border-radius: 0 0 2.5% 2.5% / 30px;
+  width: 500px;
+  border-radius: 0 0 15px 15px;
+  box-shadow: 0 2px 20px 2px rgba(0,0,0,0.2);
+}
+
+.greeting{
+  padding-top: 60px;
+  padding-bottom: 20px;
+  padding-left: 10%;
+  float: left;
+}
+
+.greeting h2{
+  color: #176C3E;
+  font-size: 34px;
+}
+
+.weight{
+  background-color: #FF9C55;
+  position: relative;
+  display: flex;
+  width: 450px;
+  border-radius: 15px;
+  height: 120px;
+  box-shadow: 0px 4px 10px rgba(0,0,0,.25);
+  top: -30px;
+}
+
+.current-weight{
+  margin-right: auto;
+  margin-left: 20px;
+}
+
+.lbs{
+  flex: 0 1 auto;
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  vertical-align: center;
+  margin-top: 10px;
+}
+
+.current-weight h3{
+  color: white;
+  font-size: 16px;
+  font-weight: 400;
+}
+
+.lbs h2{
+  color: white;
+  font-size: 32px;
+}
+
+.action{
+  margin-top: -20px;
+  display: flex;
+  flex-direction: column;
+  background-color: white;
+  width: 400px;
+  border: none;
+  filter: drop-shadow(0 4px 10px rgba(0,0,0,.25));
+  border-radius: 0 0 15px 15px;
+}
+
+.action-item{
+  vertical-align: middle;
+  display: flex;
+  align-items: center;
+  gap: 30px;
+  width: 250px;
+}
+
+.action button{
+  background-color: white;
+  font-weight: bold;
+  font-size: 26px;
+  height: 125px;
+  width: 100%;
+  box-shadow: inset 0px -4px 0 px rgba(0,0,0,.25);
+  opacity: .95;
+  border: none;
+  border-bottom: 3px solid rgba(0,0,0,.25);
+  font-family: 'Poppins', sans serif;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+#bottom-button button{
+  border-radius: 0 0 15px 15px;
+  border: none;
+}
