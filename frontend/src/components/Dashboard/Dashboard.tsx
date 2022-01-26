@@ -4,6 +4,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPencilAlt, faClipboardList, faHandPaper } from '@fortawesome/free-solid-svg-icons';
 
 const name = 'Diana';
+const weight = '1,234';
 
 const Dashboard = () => {
   function handleClick(){
@@ -23,7 +24,7 @@ const Dashboard = () => {
           <h3>Current Weight</h3>
         </div>
         <div className="lbs">
-          <h2>1,234 lbs</h2>
+          <h2>{weight} lbs</h2>
         </div>
       </div>
 
