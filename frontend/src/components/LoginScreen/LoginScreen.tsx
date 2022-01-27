@@ -31,7 +31,6 @@ function LoginScreen() {
       });
     }
     if (pin.length === 4) {
-      console.log("HI")
       const driverFilter = DriverData.filter((d) => d.pin === pin);
       if (driverFilter.length !== 0) {
         setDriver(driverFilter[0]);
