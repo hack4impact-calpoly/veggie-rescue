@@ -5,9 +5,10 @@ type Props = {
 function AsterixDisplay({ asterix }: Props) {
   return (
     <>
-      <div style={{ display: 'flex', paddingBottom: '15px' }}>
+      <div style={{ display: 'flex', paddingBottom: '10px', paddingTop: '10px', }}>
         <div
           style={{
+            display:"flex",
             justifyContent: 'center',
             alignItems: 'center',
             height: '56px',
@@ -15,13 +16,15 @@ function AsterixDisplay({ asterix }: Props) {
             width: '48px',
             fontWeight: '900',
             fontSize: '48px',
-            marginRight: '15px'
+            marginRight: '15px',
+        
           }}
         >
           {asterix[0]}
         </div>
         <div
           style={{
+            display:"flex",
             justifyContent: 'center',
             alignItems: 'center',
             height: '56px',
@@ -36,6 +39,7 @@ function AsterixDisplay({ asterix }: Props) {
         </div>
         <div
           style={{
+            display:"flex",
             justifyContent: 'center',
             alignItems: 'center',
             height: '56px',
@@ -50,6 +54,7 @@ function AsterixDisplay({ asterix }: Props) {
         </div>
         <div
           style={{
+            display:"flex",
             justifyContent: 'center',
             alignItems: 'center',
             height: '56px',
@@ -57,7 +62,8 @@ function AsterixDisplay({ asterix }: Props) {
             width: '48px',
             fontWeight: '900',
             fontSize: '48px',
-            marginRight: '15px'
+            marginRight: '15px',
+        
           }}
         >
           {asterix[3]}

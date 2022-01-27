@@ -21,12 +21,17 @@ function LoginScreen() {
     //on component load, set loading; fetch driver data and put into state
     if (driver.name !== '') {
       alert(`Found driver:${driver.name}`);
+      setDriver({
+        id: '',
+        name: '',
+        isLoggedIn: false,
+        clock_in: '',
+        clock_out: '',
+        pin: ''
+      });
     }
-  }, [driver]);
-
-  //on numpad submit check to see if driver exists; if so add to driver state
-  const submitHandler = () => {
     if (pin.length === 4) {
+      console.log("HI")
       const driverFilter = DriverData.filter((d) => d.pin === pin);
       if (driverFilter.length !== 0) {
         setDriver(driverFilter[0]);
@@ -34,15 +39,19 @@ function LoginScreen() {
       }else{
         alert('No driver found... hint: try 1111 or 2222 or 3333!')
       }
+      clearHandler();
+     
     }
-    clearHandler();
-  };
+  }, [driver,pin]);
+
 
   const buttonHandler = (btnId: string) => {
     if (pin.length <= 3) {
       setPin(pin + btnId);
       setAsterix([...asterix, '*']);
     }
+   
+   
   };
 
   const clearHandler = () => {
@@ -67,7 +76,6 @@ function LoginScreen() {
       <AsterixDisplay asterix={asterix} />
       <NumPad
         buttonHandler={buttonHandler}
-        submitHandler={submitHandler}
         clearHandler={clearHandler}
         backSpaceHandler={backSpaceHandler}
       />
