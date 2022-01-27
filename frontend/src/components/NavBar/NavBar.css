@@ -1,0 +1,62 @@
+main {
+    background-color: #F0F9F1;
+
+    display: flexbox;
+    justify-content: space-around;
+}
+
+.leftButton {
+    border: none;
+
+    background-color: #F0F9F1;
+
+    margin-right: auto;
+    margin-left: 15px;
+    margin-top: 15px;
+
+    transform: rotate(0deg);
+}
+
+.test:hover{
+    fill: rebeccapurple;
+}
+
+.rightButton {
+    border: none;
+
+    background-color: #F0F9F1;
+
+    margin-left: auto;
+    margin-right: 15px;
+    margin-top: 15px;
+
+}
+
+.topLayer {
+    display: flex;
+}
+
+.text {
+    color: #9BA3AC;
+    font-family: Poppins;
+    font-size: 32px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 48px;
+    letter-spacing: 0em;
+    text-align: center;
+}
+
+.progressBarWrapper {
+    background-color: #FFE2CC;
+    width: 70%;
+    margin-left: auto;
+    margin-right: auto;
+
+    border-radius: 30px;
+}
+
+.progressBarMain {
+    background-color: #FF9C55;
+    border-radius: 30px;
+}
