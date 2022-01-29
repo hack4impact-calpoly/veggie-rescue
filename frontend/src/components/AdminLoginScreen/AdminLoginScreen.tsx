@@ -8,18 +8,26 @@ const AdminLoginScreen = () => {
   const[password, setPassword] = useState("");
   const [submitted, setSubmitted] = useState(false);
 
- const handleEmailChange = (e: ChangeEvent<HTMLInputElement>) => {
-   setEmail(e.currentTarget.value);
- };
+  const handleEmailChange = (e: ChangeEvent<HTMLInputElement>) => {
+    setEmail(e.currentTarget.value);
+  };
 
- const handlePasswordChange = (e: ChangeEvent<HTMLInputElement>) => {
-   setPassword(e.currentTarget.value);
- };
+  const handlePasswordChange = (e: ChangeEvent<HTMLInputElement>) => {
+    setPassword(e.currentTarget.value);
+  };
+
+  const validateEmail = () => {
+    let res = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+    return res.test(email);
+  }
 
   const handleSubmit = () => {
     if (email === "" || password === "") {
-      alert("Incorrect email or password. Please try again.");
+      alert("Missing email or password. Please try again.");
     }
+   else if(!validateEmail()){
+       alert("Please enter a valid email address.");
+   }
     else {
       console.log({email});
       console.log({password});
