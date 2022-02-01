@@ -6,7 +6,6 @@ import logo from '../../imgs/veggie-rescue-logo.png';
 const AdminLoginScreen = () => {
   const [email, setEmail] = useState("");
   const[password, setPassword] = useState("");
-  const [submitted, setSubmitted] = useState(false);
 
   const handleEmailChange = (e: ChangeEvent<HTMLInputElement>) => {
     setEmail(e.currentTarget.value);
