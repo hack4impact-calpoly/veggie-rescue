@@ -12,7 +12,7 @@ app.use(express.urlencoded({extended: false}))
 app.use(errorHandler)
 
 //const connection_url = `mongodb+srv://${process.env.main_user}:${process.env.main_pass}@veggierescue.55aun.mongodb.net/VeggieRescue?retryWrites=true&w=majority`
-//const connection_url = "mongodb+srv://veggieRescueUser:RescueVeggie1771@veggierescue.55aun.mongodb.net/VeggieRescue?retryWrites=true&w=majority"
+
 
 const port = process.env.PORT || 3001
 connectDatabase()
