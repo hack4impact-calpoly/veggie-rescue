@@ -1,0 +1,70 @@
+body {
+  background-color: #f0f9f1;
+}
+
+.tPageString {
+  margin-top: 2%;
+  color: rgba(51, 106, 66, 1);
+  text-align: center;
+  font-size: 50px;
+  font-weight: bold;
+}
+
+.numPounds {
+  display: flex;
+  flex-direction: row;
+  padding: 0px 0px 20px 20px;
+  width: 15%;
+  height: 100px;
+  margin-left: 30%;
+  margin-top: 2.5%;
+  background: #ffffff;
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.25);
+  border-radius: 30px;
+  float: left;
+  padding-left: 2%;
+  padding-right: 2%;
+  padding-top: 1.5%;
+  height: 40%;
+  text-align: center;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 32px;
+  line-height: 44px;
+}
+
+.vehicleName {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  margin-left: 6%;
+  margin-top: 4%;
+  margin-bottom: 3%;
+  font-size: 34px;
+  font-weight: 700;
+  line-height: 36px;
+  letter-spacing: 0em;
+  text-align: left;
+  color: #555555;
+  float: left;
+}
+
+.submit {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  width: 15%;
+  height: 84px;
+  left: 40%;
+  bottom: 4%;
+  position: absolute;
+  background: #ff9c55;
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.25);
+  border-radius: 30px;
+  font-style: normal;
+  font-weight: bold;
+  font-size: 25px;
+  line-height: 54px;
+  color: #ffffff;
+}
