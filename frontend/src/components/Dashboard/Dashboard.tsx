@@ -3,12 +3,30 @@ import './Dashboard.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPencilAlt, faClipboardList, faHandPaper } from '@fortawesome/free-solid-svg-icons';
 
+import { useNavigate } from 'react-router-dom';
+
 const name = 'Diana';
 const weight = '1,234';
 
 const Dashboard = () => {
-  function handleClick(){
-    console.log("button clicked!");
+
+  const navigate = useNavigate();
+
+  function handleClick(button: Number){
+    switch (button) {
+      case 0:
+        navigate('/NewLog')
+        break;
+      case 1:
+        navigate('/UserLogs')
+        break;
+      case 2:
+        {/* Need to implement transfer logic as specified in PR*/}
+        break;
+    
+      default:
+        break;
+    }
   }
 
   return (
@@ -29,20 +47,20 @@ const Dashboard = () => {
       </div>
 
       <div className="action">
-        <button onClick={handleClick}>
+        <button onClick={() => handleClick(0)}>
           <div className="action-item">
           <FontAwesomeIcon className="fa-icon" icon={faPencilAlt} />
           <div>Start a Log</div>
           </div>
         </button>
-        <button onClick={handleClick}>
+        <button onClick={() => handleClick(1)}>
           <div className="action-item">
           <FontAwesomeIcon className="fa-icon" icon={faClipboardList} />
           <div>View All Logs</div>
           </div>
         </button>
         <div id="bottom-button">
-          <button onClick={handleClick}>
+          <button onClick={() => handleClick(2)}>
             <div className="action-item">
             <FontAwesomeIcon className="fa-icon" icon={faHandPaper} />
             <div>Punch Out</div>

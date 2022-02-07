@@ -1,10 +1,16 @@
-import { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import AsterixDisplay from '../AsterixDisplay/AsterixDisplay';
 import './LoginScreen.css';
 import NumPad from '../NumPad/NumPad';
 import logo from '../../imgs/veggie-rescue-logo.png';
 
-function LoginScreen() {
+import { useNavigate } from 'react-router-dom';
+
+type Props = {
+  setLogin: React.Dispatch<React.SetStateAction<boolean>>;
+}
+
+const LoginScreen: React.FC<Props> = ({setLogin}) =>{
   const [asterix, setAsterix] = useState<string[]>([]);
   const [pin, setPin] = useState('');
   const [loading, setLoading] = useState(false);
@@ -16,6 +22,8 @@ function LoginScreen() {
     clock_out: '',
     pin: ''
   });
+  const navigate = useNavigate();
+
 
   useEffect(() => {
     //on component load, set loading; fetch driver data and put into state
@@ -30,7 +38,8 @@ function LoginScreen() {
       const driverFilter = DriverData.filter((d) => d.pin === pin);
       if (driverFilter.length !== 0) {
         setDriver(driverFilter[0]);
-        // here we will navigate to next page
+        setLogin(true);
+        navigate('/VehicleSelection');
       }else{
         alert('No driver found... hint: try 1111 or 2222 or 3333!')
       }
