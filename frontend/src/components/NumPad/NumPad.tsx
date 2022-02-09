@@ -1,5 +1,5 @@
 import { RiDeleteBack2Line } from 'react-icons/ri';
-
+import './NumPad.css';
 type Props = {
   buttonHandler: (butVal: string) => void;
   clearHandler: () => void;
@@ -12,10 +12,9 @@ function NumPad({ buttonHandler, clearHandler, backSpaceHandler }: Props) {
     const targetValue = event.currentTarget.value;
     buttonHandler(targetValue);
   };
-
   return (
     <>
-      <div className="grid-container">
+      <div className="grid grid-cols-3 pt-8 pb-2 gap-5">
         <div className="grid-item">
           <button className="grid-btn" onClick={clickHandler} value="1">
             1

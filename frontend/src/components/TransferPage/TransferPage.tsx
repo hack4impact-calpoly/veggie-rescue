@@ -15,11 +15,11 @@ export default function TransferPage() {
 
 
   return (
-    <div>
+    <>
       <div className="tPageString">{vehicleType} currently has</div>
       <div className="tPagePounds">{numOfPounds} pounds</div>
-      <button onClick={transfer}> Transfer it </button>
-      <button onClick={leaveIt}> Leave it </button>
-    </div>
+      <button className="flex items-center justify-center" onClick={transfer}> Transfer it </button>
+      <button className="flex items-center justify-center" onClick={leaveIt}> Leave it </button>
+    </>
   );
 }
