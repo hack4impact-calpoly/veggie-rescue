@@ -1,6 +1,7 @@
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap');
 
 .container{
+  margin: 100px;
   width: 600px;
   height: 70px;
   font-family: 'Poppins', sans serif;
@@ -26,6 +27,6 @@
   width: 40px;
 }
 #pounds{
-  width: 80px;
+  width: 100px;
   padding-left: 20px;
 }

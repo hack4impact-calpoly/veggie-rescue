@@ -23,7 +23,9 @@ const ComponentName = (props: any) => {
     <div className="container">
       <div id="trip">{ props.trip }</div>
       <div id="name">{ props.name }</div>
-      <div id="pounds" style={{ color: fontColor }}>{ props.pounds }</div>
+      <div id="pounds" style={{ color: fontColor }}>
+        { props.pounds } lbs
+      </div>
       <div id="pencil">
         <button onClick={handleClick}>
           <FontAwesomeIcon className="fa-icon" icon={faPencilAlt} />
