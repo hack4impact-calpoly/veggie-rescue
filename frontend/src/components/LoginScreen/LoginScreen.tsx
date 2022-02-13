@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import AsterixDisplay from '../AsterixDisplay/AsterixDisplay';
-import './LoginScreen.css';
 import NumPad from '../NumPad/NumPad';
 import logo from '../../imgs/veggie-rescue-logo.png';
 
@@ -76,18 +75,20 @@ const LoginScreen: React.FC<Props> = ({setLogin}) =>{
     return <h3>Loading...</h3>;
   }
   return (
-    <div className="container">
-      <div className="logo">
-        <img className='logo' src={logo} alt="veggie rescue logo" />
-      </div>
-      <span style={{ fontFamily: 'Roboto' }}>Enter your 4 digit pin</span>
-      <AsterixDisplay asterix={asterix} />
-      <NumPad
-        buttonHandler={buttonHandler}
-        clearHandler={clearHandler}
-        backSpaceHandler={backSpaceHandler}
-      />
+    <>
+    <div className='flex flex-col items-center justify-center'>
+    <div className=" mt-5 mb-3 w-4/6 ">
+    <img src={logo} alt="veggie rescue logo" />
     </div>
+    <span>Enter your 4 digit pin</span>
+    <AsterixDisplay asterix={asterix} />
+    </div>
+    <NumPad 
+    buttonHandler={buttonHandler}
+    clearHandler={clearHandler}
+    backSpaceHandler={backSpaceHandler}
+  />
+  </>
   );
 }
 

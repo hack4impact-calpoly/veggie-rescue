@@ -5,7 +5,7 @@ type Props = {
 function AsterixDisplay({ asterix }: Props) {
   return (
     <> 
-      <div className="flex pb-5 pt-5">
+      <div className="flex  pb-5 pt-5 ">
         <div
           style={{
             display:"flex",
@@ -29,7 +29,7 @@ function AsterixDisplay({ asterix }: Props) {
             alignItems: 'center',
             height: '56px',
             borderBottom: '4px solid black',
-            width: '48px',
+            width: '56px',
             fontWeight: '900',
             fontSize: '48px',
             marginRight: '15px'
@@ -44,7 +44,7 @@ function AsterixDisplay({ asterix }: Props) {
             alignItems: 'center',
             height: '56px',
             borderBottom: '4px solid black',
-            width: '48px',
+            width: '56px',
             fontWeight: '900',
             fontSize: '48px',
             marginRight: '15px'
@@ -59,10 +59,10 @@ function AsterixDisplay({ asterix }: Props) {
             alignItems: 'center',
             height: '56px',
             borderBottom: '4px solid black',
-            width: '48px',
+            width: '56px',
             fontWeight: '900',
             fontSize: '48px',
-            marginRight: '15px',
+            
         
           }}
         >

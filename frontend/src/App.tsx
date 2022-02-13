@@ -23,7 +23,7 @@ const App: React.FC = () =>{
   
   return (
     <Router>
-    <div >    
+    <div className='container'>    
       <Routes>
           {/* depending on the redirectTo Variable value it redirects to the corresponding page if user is not logged in */}
           <Route  path='/' element={<ProtectedRoute isAuth={loggedin}  redirectTo='/Login'/>}>

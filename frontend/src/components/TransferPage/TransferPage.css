@@ -2,20 +2,19 @@
   background-color: #f2f9f2;
 } */
 
-button {
+.transferButton {
   background: white;
   border-radius: 25px;
   width: 60%;
   height: 175px;
-  box-shadow: 10px 10px 10px rgba(0,0,0, 0.15);
+  box-shadow: 10px 10px 10px rgba(0, 0, 0, 0.15);
 
   margin-top: 50px;
   font-size: 48px;
   font-weight: bold;
 }
 
-
-.tPageString{
+.tPageString {
   margin-top: 13%;
   color: rgba(51, 106, 66, 1);
   text-align: center;
@@ -23,7 +22,7 @@ button {
   font-weight: bold;
 }
 
-.tPagePounds{
+.tPagePounds {
   color: rgba(51, 106, 66, 1);
   text-align: center;
   font-size: 65px;
