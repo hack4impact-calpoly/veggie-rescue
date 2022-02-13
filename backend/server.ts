@@ -2,13 +2,24 @@ const { response } = require("express")
 const express = require("express") // 1. includes Express
 const app = express() // 2. initializes Express
 const mongoose = require('mongoose') // Initializing Mongoose for DB
-require('dotenv').config(); // dotenv package to protect secrets
+const {errorHandler} = require('./middleware/errorMiddleware')
+const connectDatabase = require('./config/db')
 
-const connection_url = "mongodb+srv://${process.env.DB_NAME}:${process.env.DB_PASS}@veggierescue.55aun.mongodb.net/VeggieRescue?retryWrites=true&w=majority"
 
-mongoose.connect(connection_url)
-.then(() => console.log(`Success`))
-.catch((error) => console.error(`Could not connect due to ${error}`))
+require('dotenv').config({ path: './env' }) // dotenv package to protect secrets
+app.use(express.json())
+app.use(express.urlencoded({extended: false}))
+
+app.use(errorHandler)
+
+
+const port = process.env.PORT || 3001
+connectDatabase()
+//mongoose.connect(connection_url)
+//.then(() => console.log(`Success`))
+//.catch((error) => console.error(`Could not connect due to ${error}`))
+
+app.use('/api/users', require('./routes/userRoutes'))
 
 /*
  * example handler from bootcamp
@@ -31,4 +42,4 @@ app.get('/', (req, res) => {
     res.send('Veggie Root')
 })
 
-app.listen(3001) // 3. runs Express
+app.listen(port, () => console.log(`Server started on port ${port}`)) // 3. runs Express
