@@ -1,9 +1,9 @@
 import React, { useLayoutEffect, useState } from 'react';
-import './ComponentName.css';
+import './TripLog.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPencilAlt } from '@fortawesome/free-solid-svg-icons';
 
-const ComponentName = (props: any) => {
+const TripLog = (props: any) => {
   const [fontColor, setFontColor] = useState("");
 
   useLayoutEffect(() => {
@@ -35,4 +35,4 @@ const ComponentName = (props: any) => {
   );
 }
 
-export default ComponentName;
+export default TripLog;
