@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { pickupSchema } from "./dbMock"; //import data from dbMock
-import LocationsFilter from "./LocationsFilter";
-import LocationsForm from "./LocationsForm";
+import LocationFilter from "./LocationFilter";
+import LocationForm from "./LocationForm";
 import Locations from "./Location";
 import { useEffect } from "react";
 
@@ -20,12 +20,12 @@ function Location() {
     setFiltered(null);
   };
   // Clears the current object called in:
-  const clearCurrent = (e) => {
+  const clearCurrent = (e : Event) => {
     setCurrent(null);
     setCreateNew(false);
   };
-  // Uses array of locations and filters based on input into LocationsFilter text area.
-  const filterLocations = (element) => {
+  // Uses array of locations and filters based on input into LocationFilter text area.
+  const filterLocations = (element : String) => {
     setFiltered(
       locations.filter((loc) => {
         const regex = new RegExp(`${element}`, "gi");
@@ -42,11 +42,11 @@ function Location() {
     }
   }, [savedLocation]);
 
-  // We display the location filter, followed by the locations returned from filter results.  If there is a current location in state, then we display LocationsForm component
+  // We display the location filter, followed by the locations returned from filter results.  If there is a current location in state, then we display LocationForm component
   // otherwise it will not be displayed
   return (
     <div className="flex flex-col">
-      <LocationsFilter
+      <LocationFilter
         filtered={filtered}
         clearFilter={clearFilter}
         filterLocations={filterLocations}
@@ -62,7 +62,7 @@ function Location() {
         setCreateNew={setCreateNew}
       />
       {current && (
-        <LocationsForm
+        <LocationForm
           current={current}
           clearCurrent={clearCurrent}
           createNew={createNew}
