@@ -1,5 +1,15 @@
 import {useEffect} from 'react'
-export const FilterItem = ({ location, setCurrent, clearFilter, setCreateNew, isNew }) => {
+
+type Props = {
+  location : any, 
+  setCurrent : any,
+  clearFilter : any,
+  setCreateNew : any,
+  isNew : any
+}
+
+const LocationItem: React.FC<Props> = ({location, setCurrent, clearFilter, setCreateNew, isNew}) =>{
+// export const FilterItem = ({ location, setCurrent, clearFilter, setCreateNew, isNew }) => {
   // Deconstruct location prop and get location name.
   const { name } = location;
   
@@ -27,4 +37,4 @@ export const FilterItem = ({ location, setCurrent, clearFilter, setCreateNew, is
   );
 };
 
-export default FilterItem;
+export default LocationItem;

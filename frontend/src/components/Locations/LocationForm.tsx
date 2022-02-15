@@ -1,12 +1,29 @@
 import React, { useState, useEffect } from "react";
 
-function LocationForm({
-  current,
-  clearCurrent,
-  createNew,
-  savedLocation,
-  setLocation,
-}) {
+/*
+type Props = {
+  setLogin: React.Dispatch<React.SetStateAction<boolean>>;
+}
+
+const LoginScreen: React.FC<Props> = ({setLogin}) =>{
+*/
+
+type Props = {
+  current : any,
+  clearCurrent : any,
+  createNew : any,
+  savedLocation : any,
+  setLocation : any
+}
+
+// function LocationForm({
+//   current,
+//   clearCurrent,
+//   createNew,
+//   savedLocation,
+//   setLocation,
+// }) {
+const LocationForm: React.FC<Props> = ({current, clearCurrent, createNew, savedLocation, setLocation}) =>{
   const [active, setActive] = useState(""); // State for radio buttons
   const [isClicked, setIsClicked] = useState(true); // State for radio buttons
 
@@ -19,10 +36,10 @@ function LocationForm({
 
   const { name } = current;
 
-  const onChange = (e) =>
+  const onChange = (e : any) =>
     setLocation({ ...savedLocation, [e.target.name]: e.target.value });
 
-  const onSubmit = (e) => {
+  const onSubmit = (e : any) => {
     e.preventDefault();
     if (createNew) {
       setLocation({
@@ -85,7 +102,7 @@ function LocationForm({
           <>
             <input type="text" placeholder={name} name="name" disabled={true} />
             {current &&
-              current.foodType.map((ft, index) => {
+              current.foodType.map((ft : any, index : any) => {
                 return (
                   <div className="flex flex-row items-center" key={index}>
                     <input

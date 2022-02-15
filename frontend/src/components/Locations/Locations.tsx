@@ -1,16 +1,40 @@
 import LocationItem from "./LocationItem";
 
+/*
+type Props = {
+  setLogin: React.Dispatch<React.SetStateAction<boolean>>;
+}
+
+const LoginScreen: React.FC<Props> = ({setLogin}) =>{
+*/
+
 // The goal of this component is to map through either the filtered array OR the location array and display the individual elements as LocationItems
 
-const Locations = ({
-  locations,
-  current,
-  filtered,
-  onClick,
-  setCurrent,
-  clearFilter,
-  setCreateNew,
-}) => {
+type Props = {
+  locations : any,
+  current : any,
+  filtered : any,
+  onClick : any,
+  setCurrent : any,
+  clearFilter : any,
+  setCreateNew : any
+}
+
+// const Locations = ({
+//   locations,
+//   current,
+//   filtered,
+//   onClick,
+//   setCurrent,
+//   clearFilter,
+//   setCreateNew,
+// }) => {
+const Locations: React.FC<Props> = ({
+  locations, current, 
+  filtered, onClick, 
+  setCurrent, clearFilter,
+  setCreateNew
+}) =>{
   // If locations array is empty... we have nothing in our database
   if (locations !== null && locations.length === 0) {
     return <h4>Please add a location</h4>;
@@ -40,7 +64,7 @@ const emptyLocation = {
                   {filtered.length > 0 ? (
                     filtered
                       .slice(0, 3)
-                      .map((location) => (
+                      .map((location : any) => (
                         <LocationItem
                           location={location}
                           key={location.id}
@@ -65,7 +89,7 @@ const emptyLocation = {
               ) : (
                 locations
                   .slice(0, 6)
-                  .map((location) => (
+                  .map((location : any) => (
                     <LocationItem
                       location={location}
                       key={location.id}
