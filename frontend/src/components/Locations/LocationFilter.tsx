@@ -22,13 +22,15 @@ const LocationFilter: React.FC<Props> = ({filterLocations, filtered, clearFilter
 	// On load set text to '' if filtered === null
 	useEffect(() => {
 		if (filtered === null) {
-			text.current.value. = '';
+			// text.current.value = '';
+			text.current = '';
 		}
 	});
 
 	// If text field is not empty, clear the current object and filter by the given text.  Otherwise, if text field is empty clear the filter array
 	const onChange = (e : any) => {
-		if (text.current.value !== '') {
+		// if (text.current.value !== '') {
+		if (text.current !== '') {
 			 clearCurrent();
 			filterLocations(e.target.value);
 		} else {
@@ -40,7 +42,7 @@ const LocationFilter: React.FC<Props> = ({filterLocations, filtered, clearFilter
 	return (
 		<form>
 			<input
-				ref={text}
+				// ref={text}
 				type="text"
 				placeholder={'Filter Locations...'}
 				onChange={onChange}

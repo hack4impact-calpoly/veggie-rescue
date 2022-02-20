@@ -2,7 +2,7 @@ import { useState } from "react";
 import { pickupSchema } from "./dbMock"; //import data from dbMock
 import LocationFilter from "./LocationFilter";
 import LocationForm from "./LocationForm";
-import Locations from "./Location";
+import Locations from "./Locations";
 import { useEffect } from "react";
 
 function Location() {
@@ -26,12 +26,12 @@ function Location() {
   };
   // Uses array of locations and filters based on input into LocationFilter text area.
   const filterLocations = (element : String) => {
-    setFiltered(
-      locations.filter((loc) => {
-        const regex = new RegExp(`${element}`, "gi");
-        return loc.name.match(regex);
-      })
-    );
+    // setFiltered(
+      // locations.filter((loc) => {
+      //   const regex = new RegExp(`${element}`, "gi");
+      //   return loc.name.match(regex);
+      // })
+    // );
   };
 
   //this is what we will use to send new object to API
@@ -60,6 +60,7 @@ function Location() {
         current={current}
         clearFilter={clearFilter}
         setCreateNew={setCreateNew}
+        // onClick={null}
       />
       {current && (
         <LocationForm

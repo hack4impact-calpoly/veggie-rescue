@@ -10,11 +10,11 @@ const LoginScreen: React.FC<Props> = ({setLogin}) =>{
 
 // The goal of this component is to map through either the filtered array OR the location array and display the individual elements as LocationItems
 
-type Props = {
+interface Props {
   locations : any,
   current : any,
   filtered : any,
-  onClick : any,
+  // onClick : any,
   setCurrent : any,
   clearFilter : any,
   setCreateNew : any
@@ -29,12 +29,8 @@ type Props = {
 //   clearFilter,
 //   setCreateNew,
 // }) => {
-const Locations: React.FC<Props> = ({
-  locations, current, 
-  filtered, onClick, 
-  setCurrent, clearFilter,
-  setCreateNew
-}) =>{
+// const Locations = ({locations, current, filtered, onClick, setCurrent, clearFilter, setCreateNew} : Props) =>{
+const Locations = ({locations, current, filtered, setCurrent, clearFilter, setCreateNew} : Props) =>{
   // If locations array is empty... we have nothing in our database
   if (locations !== null && locations.length === 0) {
     return <h4>Please add a location</h4>;
@@ -68,15 +64,17 @@ const emptyLocation = {
                         <LocationItem
                           location={location}
                           key={location.id}
-                          onClick={onClick}
+                          // onClick={onClick}
                           setCurrent={setCurrent}
                           clearFilter={clearFilter}
+                          // isNew={null}
+                          // setCreateNew={null}
                         />
                       ))
                   ) : (<>
                     <LocationItem
                     location={emptyLocation}
-                    onClick={onClick}
+                    // onClick={onClick}
                     setCurrent={setCurrent}
                     clearFilter={clearFilter}
                     isNew={true}
@@ -93,9 +91,11 @@ const emptyLocation = {
                     <LocationItem
                       location={location}
                       key={location.id}
-                      onClick={onClick}
+                      // onClick={onClick}
                       setCurrent={setCurrent}
                       clearFilter={clearFilter}
+                      // isNew={null}
+                      // setCreateNew={null}
                     />
                   ))
               )}

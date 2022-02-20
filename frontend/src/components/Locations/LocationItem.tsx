@@ -4,8 +4,9 @@ type Props = {
   location : any, 
   setCurrent : any,
   clearFilter : any,
-  setCreateNew : any,
-  isNew : any
+  setCreateNew? : any,
+  isNew? : any,
+  // onClick : any
 }
 
 const LocationItem: React.FC<Props> = ({location, setCurrent, clearFilter, setCreateNew, isNew}) =>{
