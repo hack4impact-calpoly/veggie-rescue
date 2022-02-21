@@ -9,6 +9,7 @@ function Location() {
   // Elements we will keep in local state and pass back and forth to components
   const [locations] = useState(pickupSchema);
   const [current, setCurrent] = useState(null);
+  // const [filtered, setFiltered] = useState({});
   const [filtered, setFiltered] = useState(null);
   const [createNew, setCreateNew] = useState(false);
 
@@ -20,18 +21,17 @@ function Location() {
     setFiltered(null);
   };
   // Clears the current object called in:
-  const clearCurrent = (e : Event) => {
+  const clearCurrent = (e : any) => {
     setCurrent(null);
     setCreateNew(false);
   };
   // Uses array of locations and filters based on input into LocationFilter text area.
-  const filterLocations = (element : String) => {
-    // setFiltered(
-      // locations.filter((loc) => {
-      //   const regex = new RegExp(`${element}`, "gi");
-      //   return loc.name.match(regex);
-      // })
-    // );
+  const filterLocations = (element : any) => {
+    const filtered : any = locations.filter((loc : any) => {
+                const regex = new RegExp(`${element}`, "gi");
+                return loc.name.match(regex);
+              });
+    setFiltered(filtered);
   };
 
   //this is what we will use to send new object to API
