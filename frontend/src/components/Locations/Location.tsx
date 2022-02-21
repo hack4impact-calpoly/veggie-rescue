@@ -5,28 +5,28 @@ import LocationForm from "./LocationForm";
 import Locations from "./Locations";
 import { useEffect } from "react";
 
-// type locale = {
-//   // name: "catlin ranch",
-//   // donorLocationType: "farmers market",
-//   // donorEntityType: "farm",
-//   // foodType: ["produce"],
-//   // area: "ventura county",
-//   // id: "elIDOJd",
+interface locale {
+  // name: "catlin ranch",
+  // donorLocationType: "farmers market",
+  // donorEntityType: "farm",
+  // foodType: ["produce"],
+  // area: "ventura county",
+  // id: "elIDOJd",
 
-//   name: string,
-//   donorLocationType: string,
-//   donorEntityType: string,
-//   foodType: string[],
-//   area: string,
-//   id: string,
-// }
+  name: string,
+  donorLocationType: string,
+  donorEntityType: string,
+  foodType: string[],
+  area: string,
+  id: string,
+}
 
 function Location() {
   // Elements we will keep in local state and pass back and forth to components
   const [locations] = useState(pickupSchema);
-  const [current, setCurrent] = useState(null);
+  const [current, setCurrent] = useState< undefined | locale>();
   const [filtered, setFiltered] = useState(null);
-  // const [filtered, setFiltered] = useState([]);
+  // const [filtered, setFiltered] = useState<undefined | locale[]>([]);
   const [createNew, setCreateNew] = useState(false);
 
   // This will create a temp copy of current location which will eventually be the item stored in vehicle database
@@ -35,17 +35,17 @@ function Location() {
   // Empties the filtered array called in:
   const clearFilter = () => {
     setFiltered(null);
-    // setFiltered([]);
+    // setFiltered(undefined);
   };
   // Clears the current object called in:
-  const clearCurrent = (e : any) => {
-    setCurrent(null);
+  const clearCurrent = (e : locale) => {
+    setCurrent(undefined);
     setCreateNew(false);
   };
 
   // Uses array of locations and filters based on input into LocationFilter text area.
   const filterLocations = (element : string) => {
-    const filtered : any = locations.filter((loc : any) => {
+    const filtered : any = locations.filter((loc : locale) => {
                 const regex = new RegExp(`${element}`, "gi");
                 return loc.name.match(regex);
               });

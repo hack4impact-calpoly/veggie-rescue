@@ -8,8 +8,24 @@ import {useEffect} from 'react'
 //   isNew? : Boolean,
 // }
 
+interface locale {
+	// name: "catlin ranch",
+	// donorLocationType: "farmers market",
+	// donorEntityType: "farm",
+	// foodType: ["produce"],
+	// area: "ventura county",
+	// id: "elIDOJd",
+  
+	name: string,
+	donorLocationType: string,
+	donorEntityType: string,
+	foodType: string[],
+	area: string,
+	id: string,
+  }
+
 type Props = {
-  location : any, 
+  location : locale, 
   setCurrent : Function,
   clearFilter : Function,
   setCreateNew? : Function,

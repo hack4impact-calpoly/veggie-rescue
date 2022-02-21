@@ -22,6 +22,8 @@ type Props = {
 	clearCurrent : Function 
 }
 
+type locationObject = React.ChangeEvent<HTMLInputElement>;
+
 // const LocationsFilter = ({filterLocations, filtered, clearFilter, clearCurrent}) => {
 const LocationFilter: React.FC<Props> = ({filterLocations, filtered, clearFilter, clearCurrent}) =>{
 	const text = useRef('');
@@ -34,7 +36,7 @@ const LocationFilter: React.FC<Props> = ({filterLocations, filtered, clearFilter
 	});
 
 	// If text field is not empty, clear the current object and filter by the given text.  Otherwise, if text field is empty clear the filter array
-	const onChange = (e : any) => {
+	const onChange = (e : locationObject) => {
 		let curretText = (document.getElementById("filter-text") as HTMLInputElement).value;
 		if (curretText !== '') {
 			clearCurrent();

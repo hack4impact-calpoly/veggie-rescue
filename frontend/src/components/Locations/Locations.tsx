@@ -10,9 +10,25 @@ const LoginScreen: React.FC<Props> = ({setLogin}) =>{
 
 // The goal of this component is to map through either the filtered array OR the location array and display the individual elements as LocationItems
 
+interface locale {
+	// name: "catlin ranch",
+	// donorLocationType: "farmers market",
+	// donorEntityType: "farm",
+	// foodType: ["produce"],
+	// area: "ventura county",
+	// id: "elIDOJd",
+  
+	name: string,
+	donorLocationType: string,
+	donorEntityType: string,
+	foodType: string[],
+	area: string,
+	id: string,
+  }
+
 interface Props {
-  locations : any,
-  current : any,
+  locations : locale[],
+  current? : locale,
   filtered : any,
   setCurrent : Function,
   clearFilter : Function,
@@ -54,9 +70,8 @@ const Locations = ({locations, current, filtered, setCurrent, clearFilter, setCr
   return (
     <>
     {/* <button onClick={() => {console.log(filtered); console.log(current)}}>click me</button> */}
-          {current === null && (
+          {current === undefined && (
             <>
-              {/* {filtered.length <= 0 ? ( */}
               {filtered !== null ? (
                 <>
                   {filtered.length > 0 ? (

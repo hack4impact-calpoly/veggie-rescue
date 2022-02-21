@@ -26,6 +26,22 @@ type Props = {
 
 type locationObject = React.ChangeEvent<HTMLInputElement>;
 
+interface locale {
+	// name: "catlin ranch",
+	// donorLocationType: "farmers market",
+	// donorEntityType: "farm",
+	// foodType: ["produce"],
+	// area: "ventura county",
+	// id: "elIDOJd",
+  
+	name: string,
+	donorLocationType: string,
+	donorEntityType: string,
+	foodType: string[],
+	area: string,
+	id: string,
+  }
+
 const LocationForm: React.FC<Props> = ({current, clearCurrent, createNew, savedLocation, setLocation}) =>{
   const [active, setActive] = useState(""); // State for radio buttons
   const [isClicked, setIsClicked] = useState(true); // State for radio buttons
@@ -42,7 +58,7 @@ const LocationForm: React.FC<Props> = ({current, clearCurrent, createNew, savedL
   const onChange = (e : locationObject) =>
     setLocation({ ...savedLocation, [e.target.name]: e.target.value });
 
-  const onSubmit = (e : any) => {
+  const onSubmit = (e : Event) => {
     e.preventDefault();
     if (createNew) {
       setLocation({
@@ -62,7 +78,7 @@ const LocationForm: React.FC<Props> = ({current, clearCurrent, createNew, savedL
 
   return (
     <>
-      <form onSubmit={onSubmit}>
+      <form onSubmit={(e) => onSubmit}>
         <h2 className="text-primary">
           {createNew ? "New Location" : "Donor Info"}{" "}
         </h2>
