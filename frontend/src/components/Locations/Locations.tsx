@@ -44,7 +44,6 @@ const Locations = ({locations, current, filtered, setCurrent, clearFilter, setCr
   // we setCreateNew(true) so that an option to input a new location is given in root
   return (
     <>
-    {/* <button onClick={() => {console.log(filtered); console.log(current)}}>click me</button> */}
           {current === undefined && (
             <>
               {filtered !== undefined ? (

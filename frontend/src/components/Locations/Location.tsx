@@ -5,6 +5,10 @@ import LocationForm from "./LocationForm";
 import Locations from "./Locations";
 import { useEffect } from "react";
 
+import NavBar from "../NavBar/NavBar";
+
+import './Location.css'
+
 interface locale {
   name: string,
   donorLocationType: string,
@@ -40,7 +44,6 @@ function Location() {
                 const regex = new RegExp(`${element}`, "gi");
                 return loc.name.match(regex);
               });
-    console.log(filtered);
     setFiltered(filtered);
   };
 
@@ -54,7 +57,14 @@ function Location() {
   // We display the location filter, followed by the locations returned from filter results.  If there is a current location in state, then we display LocationForm component
   // otherwise it will not be displayed
   return (
-    <div className="flex flex-col">
+    <div className="main">
+      {/*
+      !!IMPORTANT!!
+        This <NavBar /> needs to be tied to some logic so that the following page
+        Only renders when its at a certain spot in the navigateion!!!
+      */}
+      <NavBar /> 
+
       <LocationFilter
         filtered={filtered}
         clearFilter={clearFilter}
@@ -71,13 +81,13 @@ function Location() {
         setCreateNew={setCreateNew}
       />
       {current && (
-        <LocationForm
-          current={current}
-          clearCurrent={clearCurrent}
-          createNew={createNew}
-          setLocation={setLocation}
-          savedLocation={savedLocation}
-        />
+          <LocationForm
+            current={current}
+            clearCurrent={clearCurrent}
+            createNew={createNew}
+            setLocation={setLocation}
+            savedLocation={savedLocation}
+          />
       )}
     </div>
   );

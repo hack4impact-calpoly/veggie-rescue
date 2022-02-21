@@ -36,6 +36,7 @@ const LocationItem = ({location, setCurrent, clearFilter, setCreateNew, isNew} :
       <button
         className="w-full p-1"
         onClick={() => {
+          // console.log('hello?');
           setCurrent(location);
           clearFilter();
         }}
