@@ -11,6 +11,8 @@ import './App.css';
 import ProtectedRoute from './ProtectedRoute';
 import Checkout from './Checkout';
 
+import Location from './components/Locations/Location';
+
 const App: React.FC = () =>{
   //Variable which tells whether user is logged in or not 
   const [loggedin, setLoggedin] = useState(false);
@@ -25,6 +27,8 @@ const App: React.FC = () =>{
           </Route>        
           <Route path='/login' element={<Login/>}/> 
           <Route path='/Checkout' element={<Checkout/>}/>           
+
+          <Route path='/Location' element={<Location/>}/>           
           
       </Routes>
       
