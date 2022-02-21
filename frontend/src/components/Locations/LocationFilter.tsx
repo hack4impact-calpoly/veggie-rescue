@@ -1,31 +1,24 @@
 import React, { useEffect, useRef } from 'react';
 
-/*
-type Props = {
-  setLogin: React.Dispatch<React.SetStateAction<boolean>>;
-}
+interface locale {
+	name: string,
+	donorLocationType: string,
+	donorEntityType: string,
+	foodType: string[],
+	area: string,
+	id: string,
+  }
 
-const LoginScreen: React.FC<Props> = ({setLogin}) =>{
-*/
-
-// type Props = {
-// 	filterLocations : Function,
-// 	filtered : object[],
-// 	clearFilter : Function,
-// 	clearCurrent : Function 
-// }
-
-type Props = {
+interface Props {
 	filterLocations : Function,
-	filtered : any,
+	filtered? : locale[],
 	clearFilter : Function,
 	clearCurrent : Function 
 }
 
 type locationObject = React.ChangeEvent<HTMLInputElement>;
 
-// const LocationsFilter = ({filterLocations, filtered, clearFilter, clearCurrent}) => {
-const LocationFilter: React.FC<Props> = ({filterLocations, filtered, clearFilter, clearCurrent}) =>{
+const LocationFilter = ({filterLocations, filtered, clearFilter, clearCurrent} : Props) =>{
 	const text = useRef('');
 
 	// On load set text to '' if filtered === null

@@ -1,23 +1,8 @@
 import LocationItem from "./LocationItem";
 
-/*
-type Props = {
-  setLogin: React.Dispatch<React.SetStateAction<boolean>>;
-}
-
-const LoginScreen: React.FC<Props> = ({setLogin}) =>{
-*/
-
 // The goal of this component is to map through either the filtered array OR the location array and display the individual elements as LocationItems
 
 interface locale {
-	// name: "catlin ranch",
-	// donorLocationType: "farmers market",
-	// donorEntityType: "farm",
-	// foodType: ["produce"],
-	// area: "ventura county",
-	// id: "elIDOJd",
-  
 	name: string,
 	donorLocationType: string,
 	donorEntityType: string,
@@ -29,22 +14,12 @@ interface locale {
 interface Props {
   locations : locale[],
   current? : locale,
-  filtered : any,
+  filtered? : locale[],
   setCurrent : Function,
   clearFilter : Function,
   setCreateNew : Function
 }
 
-// const Locations = ({
-//   locations,
-//   current,
-//   filtered,
-//   onClick,
-//   setCurrent,
-//   clearFilter,
-//   setCreateNew,
-// }) => {
-// const Locations = ({locations, current, filtered, onClick, setCurrent, clearFilter, setCreateNew} : Props) =>{
 const Locations = ({locations, current, filtered, setCurrent, clearFilter, setCreateNew} : Props) =>{
   // If locations array is empty... we have nothing in our database
   if (locations !== null && locations.length === 0) {
@@ -72,12 +47,12 @@ const Locations = ({locations, current, filtered, setCurrent, clearFilter, setCr
     {/* <button onClick={() => {console.log(filtered); console.log(current)}}>click me</button> */}
           {current === undefined && (
             <>
-              {filtered !== null ? (
+              {filtered !== undefined ? (
                 <>
                   {filtered.length > 0 ? (
                     filtered
                       .slice(0, 3)
-                      .map((location : any) => (
+                      .map((location : locale) => (
                         <LocationItem
                           location={location}
                           key={location.id}
@@ -99,7 +74,7 @@ const Locations = ({locations, current, filtered, setCurrent, clearFilter, setCr
               ) : (
                 locations
                   .slice(0, 6)
-                  .map((location : any) => (
+                  .map((location : locale) => (
                     <LocationItem
                       location={location}
                       key={location.id}

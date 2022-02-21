@@ -1,39 +1,6 @@
 import React, { useState } from "react";
 
-/*
-type Props = {
-  setLogin: React.Dispatch<React.SetStateAction<boolean>>;
-}
-
-const LoginScreen: React.FC<Props> = ({setLogin}) =>{
-*/
-
-// type Props = {
-//   current : any,
-//   clearCurrent : Function,
-//   createNew : boolean,
-//   savedLocation : object,
-//   setLocation : React.Dispatch<React.SetStateAction<object>>;
-// }
-
-type Props = {
-  current : any,
-  clearCurrent : Function,
-  createNew : boolean,
-  savedLocation : any,
-  setLocation : Function;
-}
-
-type locationObject = React.ChangeEvent<HTMLInputElement>;
-
 interface locale {
-	// name: "catlin ranch",
-	// donorLocationType: "farmers market",
-	// donorEntityType: "farm",
-	// foodType: ["produce"],
-	// area: "ventura county",
-	// id: "elIDOJd",
-  
 	name: string,
 	donorLocationType: string,
 	donorEntityType: string,
@@ -42,7 +9,17 @@ interface locale {
 	id: string,
   }
 
-const LocationForm: React.FC<Props> = ({current, clearCurrent, createNew, savedLocation, setLocation}) =>{
+interface Props{
+  current : locale,
+  clearCurrent : Function,
+  createNew : boolean,
+  savedLocation? : locale,
+  setLocation : Function;
+}
+
+type locationObject = React.ChangeEvent<HTMLInputElement>;
+
+const LocationForm = ({current, clearCurrent, createNew, savedLocation, setLocation} : Props) =>{
   const [active, setActive] = useState(""); // State for radio buttons
   const [isClicked, setIsClicked] = useState(true); // State for radio buttons
 
@@ -121,7 +98,7 @@ const LocationForm: React.FC<Props> = ({current, clearCurrent, createNew, savedL
           <>
             <input type="text" placeholder={name} name="name" disabled={true} />
             {current &&
-              current.foodType.map((ft : any, index : any) => {
+              current.foodType.map((ft : string, index : number) => {
                 return (
                   <div className="flex flex-row items-center" key={index}>
                     <input

@@ -1,21 +1,7 @@
 import {useEffect} from 'react'
 
-// type Props = {
-//   location : any, 
-//   setCurrent : React.Dispatch<React.SetStateAction<object>>,
-//   clearFilter : Function,
-//   setCreateNew? : React.Dispatch<React.SetStateAction<boolean>>,
-//   isNew? : Boolean,
-// }
 
 interface locale {
-	// name: "catlin ranch",
-	// donorLocationType: "farmers market",
-	// donorEntityType: "farm",
-	// foodType: ["produce"],
-	// area: "ventura county",
-	// id: "elIDOJd",
-  
 	name: string,
 	donorLocationType: string,
 	donorEntityType: string,
@@ -24,7 +10,7 @@ interface locale {
 	id: string,
   }
 
-type Props = {
+interface Props {
   location : locale, 
   setCurrent : Function,
   clearFilter : Function,
@@ -32,8 +18,7 @@ type Props = {
   isNew? : boolean,
 }
 
-const LocationItem: React.FC<Props> = ({location, setCurrent, clearFilter, setCreateNew, isNew}) =>{
-// export const FilterItem = ({ location, setCurrent, clearFilter, setCreateNew, isNew }) => {
+const LocationItem = ({location, setCurrent, clearFilter, setCreateNew, isNew} : Props) =>{
   // Deconstruct location prop and get location name.
   const { name } = location;
   
