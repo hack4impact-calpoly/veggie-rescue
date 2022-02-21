@@ -21,8 +21,10 @@ type Props = {
   clearCurrent : Function,
   createNew : boolean,
   savedLocation : any,
-  setLocation : any;
+  setLocation : Function;
 }
+
+type locationObject = React.ChangeEvent<HTMLInputElement>;
 
 const LocationForm: React.FC<Props> = ({current, clearCurrent, createNew, savedLocation, setLocation}) =>{
   const [active, setActive] = useState(""); // State for radio buttons
@@ -37,7 +39,7 @@ const LocationForm: React.FC<Props> = ({current, clearCurrent, createNew, savedL
 
   const { name } = current;
 
-  const onChange = (e : any) =>
+  const onChange = (e : locationObject) =>
     setLocation({ ...savedLocation, [e.target.name]: e.target.value });
 
   const onSubmit = (e : any) => {

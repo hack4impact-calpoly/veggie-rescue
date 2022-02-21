@@ -14,9 +14,9 @@ interface Props {
   locations : any,
   current : any,
   filtered : any,
-  setCurrent : any,
+  setCurrent : Function,
   clearFilter : Function,
-  setCreateNew : any
+  setCreateNew : Function
 }
 
 // const Locations = ({

@@ -10,9 +10,9 @@ import {useEffect} from 'react'
 
 type Props = {
   location : any, 
-  setCurrent : any,
+  setCurrent : Function,
   clearFilter : Function,
-  setCreateNew? : any,
+  setCreateNew? : Function,
   isNew? : boolean,
 }
 

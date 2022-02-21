@@ -5,21 +5,21 @@ import LocationForm from "./LocationForm";
 import Locations from "./Locations";
 import { useEffect } from "react";
 
-type locale = {
-  // name: "catlin ranch",
-  // donorLocationType: "farmers market",
-  // donorEntityType: "farm",
-  // foodType: ["produce"],
-  // area: "ventura county",
-  // id: "elIDOJd",
+// type locale = {
+//   // name: "catlin ranch",
+//   // donorLocationType: "farmers market",
+//   // donorEntityType: "farm",
+//   // foodType: ["produce"],
+//   // area: "ventura county",
+//   // id: "elIDOJd",
 
-  name: string,
-  donorLocationType: string,
-  donorEntityType: string,
-  foodType: string[],
-  area: string,
-  id: string,
-}
+//   name: string,
+//   donorLocationType: string,
+//   donorEntityType: string,
+//   foodType: string[],
+//   area: string,
+//   id: string,
+// }
 
 function Location() {
   // Elements we will keep in local state and pass back and forth to components
@@ -44,7 +44,7 @@ function Location() {
   };
 
   // Uses array of locations and filters based on input into LocationFilter text area.
-  const filterLocations = (element : any) => {
+  const filterLocations = (element : string) => {
     const filtered : any = locations.filter((loc : any) => {
                 const regex = new RegExp(`${element}`, "gi");
                 return loc.name.match(regex);
