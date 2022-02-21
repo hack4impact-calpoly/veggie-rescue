@@ -9,10 +9,10 @@ const LoginScreen: React.FC<Props> = ({setLogin}) =>{
 */
 
 type Props = {
-	filterLocations : any,
+	filterLocations : Function,
 	filtered : any,
-	clearFilter : any,
-	clearCurrent : any 
+	clearFilter : Function,
+	clearCurrent : Function 
 }
 
 // const LocationsFilter = ({filterLocations, filtered, clearFilter, clearCurrent}) => {

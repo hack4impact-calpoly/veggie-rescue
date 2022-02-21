@@ -19,6 +19,7 @@ function Location() {
   // Empties the filtered array called in:
   const clearFilter = () => {
     setFiltered(null);
+    // setFiltered({});
   };
   // Clears the current object called in:
   const clearCurrent = (e : any) => {

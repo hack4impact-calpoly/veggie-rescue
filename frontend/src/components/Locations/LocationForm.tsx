@@ -16,13 +16,6 @@ type Props = {
   setLocation : any
 }
 
-// function LocationForm({
-//   current,
-//   clearCurrent,
-//   createNew,
-//   savedLocation,
-//   setLocation,
-// }) {
 const LocationForm: React.FC<Props> = ({current, clearCurrent, createNew, savedLocation, setLocation}) =>{
   const [active, setActive] = useState(""); // State for radio buttons
   const [isClicked, setIsClicked] = useState(true); // State for radio buttons

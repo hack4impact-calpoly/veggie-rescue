@@ -14,9 +14,8 @@ interface Props {
   locations : any,
   current : any,
   filtered : any,
-  // onClick : any,
   setCurrent : any,
-  clearFilter : any,
+  clearFilter : Function,
   setCreateNew : any
 }
 

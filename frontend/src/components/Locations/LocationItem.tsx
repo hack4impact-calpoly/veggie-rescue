@@ -3,10 +3,9 @@ import {useEffect} from 'react'
 type Props = {
   location : any, 
   setCurrent : any,
-  clearFilter : any,
+  clearFilter : Function,
   setCreateNew? : any,
-  isNew? : any,
-  // onClick : any
+  isNew? : Boolean,
 }
 
 const LocationItem: React.FC<Props> = ({location, setCurrent, clearFilter, setCreateNew, isNew}) =>{
