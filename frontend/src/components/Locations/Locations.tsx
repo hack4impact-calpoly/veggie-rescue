@@ -34,15 +34,16 @@ const Locations = ({locations, current, filtered, setCurrent, clearFilter, setCr
   if (locations !== null && locations.length === 0) {
     return <h4>Please add a location</h4>;
   }
+
   //this is emptyLocation object which is passed into LocationItem if user wants to add a new location
-const emptyLocation = {
-  id: "",
-  name: "Add New Location",
-  donorLocationType: "",
-  donorEntityType: "",
-  foodType: [],
-  area: "",
-}
+  const emptyLocation = {
+    id: "",
+    name: "Add New Location",
+    donorLocationType: "",
+    donorEntityType: "",
+    foodType: [],
+    area: "",
+  }
   // 1. First we check if current object is null... if so then we will be displaying elements in either filtered or locations array.
   // if not, it means that we have already selected a location as current location and it is being displayed.
   // 2. If filtered isn't null, that means we have a filtered array and will display that, otherwise we will display a few elements from the locations array
@@ -52,8 +53,10 @@ const emptyLocation = {
   // we setCreateNew(true) so that an option to input a new location is given in root
   return (
     <>
+    {/* <button onClick={() => {console.log(filtered); console.log(current)}}>click me</button> */}
           {current === null && (
             <>
+              {/* {filtered.length <= 0 ? ( */}
               {filtered !== null ? (
                 <>
                   {filtered.length > 0 ? (
@@ -63,23 +66,18 @@ const emptyLocation = {
                         <LocationItem
                           location={location}
                           key={location.id}
-                          // onClick={onClick}
                           setCurrent={setCurrent}
                           clearFilter={clearFilter}
-                          // isNew={null}
-                          // setCreateNew={null}
                         />
                       ))
                   ) : (<>
                     <LocationItem
                     location={emptyLocation}
-                    // onClick={onClick}
                     setCurrent={setCurrent}
                     clearFilter={clearFilter}
                     isNew={true}
                     setCreateNew={setCreateNew}
                   />
-                  
                     </>
                   )}
                 </>
@@ -90,11 +88,8 @@ const emptyLocation = {
                     <LocationItem
                       location={location}
                       key={location.id}
-                      // onClick={onClick}
                       setCurrent={setCurrent}
                       clearFilter={clearFilter}
-                      // isNew={null}
-                      // setCreateNew={null}
                     />
                   ))
               )}

@@ -8,6 +8,13 @@ type Props = {
 const LoginScreen: React.FC<Props> = ({setLogin}) =>{
 */
 
+// type Props = {
+// 	filterLocations : Function,
+// 	filtered : object[],
+// 	clearFilter : Function,
+// 	clearCurrent : Function 
+// }
+
 type Props = {
 	filterLocations : Function,
 	filtered : any,
@@ -41,7 +48,6 @@ const LocationFilter: React.FC<Props> = ({filterLocations, filtered, clearFilter
 	return (
 		<form>
 			<input
-				// ref={text}
 				id="filter-text"
 				type="text"
 				placeholder={'Filter Locations...'}

@@ -1,11 +1,19 @@
 import {useEffect} from 'react'
 
+// type Props = {
+//   location : any, 
+//   setCurrent : React.Dispatch<React.SetStateAction<object>>,
+//   clearFilter : Function,
+//   setCreateNew? : React.Dispatch<React.SetStateAction<boolean>>,
+//   isNew? : Boolean,
+// }
+
 type Props = {
   location : any, 
   setCurrent : any,
   clearFilter : Function,
   setCreateNew? : any,
-  isNew? : Boolean,
+  isNew? : boolean,
 }
 
 const LocationItem: React.FC<Props> = ({location, setCurrent, clearFilter, setCreateNew, isNew}) =>{
@@ -14,7 +22,7 @@ const LocationItem: React.FC<Props> = ({location, setCurrent, clearFilter, setCr
   const { name } = location;
   
   useEffect(()=>{
-    if(isNew){
+    if(isNew && setCreateNew !== undefined){
       setCreateNew(true)
     }
   })

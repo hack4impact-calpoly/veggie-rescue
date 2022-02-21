@@ -8,12 +8,20 @@ type Props = {
 const LoginScreen: React.FC<Props> = ({setLogin}) =>{
 */
 
+// type Props = {
+//   current : any,
+//   clearCurrent : Function,
+//   createNew : boolean,
+//   savedLocation : object,
+//   setLocation : React.Dispatch<React.SetStateAction<object>>;
+// }
+
 type Props = {
   current : any,
-  clearCurrent : any,
-  createNew : any,
+  clearCurrent : Function,
+  createNew : boolean,
   savedLocation : any,
-  setLocation : any
+  setLocation : any;
 }
 
 const LocationForm: React.FC<Props> = ({current, clearCurrent, createNew, savedLocation, setLocation}) =>{
@@ -140,7 +148,7 @@ const LocationForm: React.FC<Props> = ({current, clearCurrent, createNew, savedL
         </div>
         {current && (
           <div>
-            <button className="btn btn-light btn-block" onClick={clearCurrent}>
+            <button className="btn btn-light btn-block" onClick={() => {clearCurrent()}}>
               Clear
             </button>
           </div>
