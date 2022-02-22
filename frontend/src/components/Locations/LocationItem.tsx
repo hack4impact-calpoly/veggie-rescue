@@ -32,17 +32,13 @@ const LocationItem = ({location, setCurrent, clearFilter, setCreateNew, isNew} :
   //  isn't displayed below the text field.
 
   return (
-    <div className="card bg-light w-full">
-      <button
-        className="w-full p-1"
+    <div className="locationItem" 
         onClick={() => {
-          // console.log('hello?');
           setCurrent(location);
           clearFilter();
         }}
-      >
-        <h3 className="text-primary text-left w-full">{name}</h3>
-      </button>
+    >
+      <h3 className="text-primary text-left w-full">{name}</h3>
     </div>
   );
 };

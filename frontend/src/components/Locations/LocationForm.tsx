@@ -17,8 +17,6 @@ interface Props{
   setLocation : Function;
 }
 
-type locationObject = React.ChangeEvent<HTMLInputElement>;
-
 const LocationForm = ({current, clearCurrent, createNew, savedLocation, setLocation} : Props) =>{
   const [active, setActive] = useState(""); // State for radio buttons
   const [isClicked, setIsClicked] = useState(true); // State for radio buttons
@@ -32,8 +30,8 @@ const LocationForm = ({current, clearCurrent, createNew, savedLocation, setLocat
 
   const { name } = current;
 
-  const onChange = (e : locationObject) =>
-    setLocation({ ...savedLocation, [e.target.name]: e.target.value });
+  // const onChange = (e : locationObject) =>
+  //   setLocation({ ...savedLocation, [e.target.name]: e.target.value });
 
   const onSubmit = (e : Event) => {
     e.preventDefault();
@@ -55,9 +53,9 @@ const LocationForm = ({current, clearCurrent, createNew, savedLocation, setLocat
 
   return (
     <>
-      <form onSubmit={(e) => onSubmit}>
-        <h2 className="text-primary">
-          {createNew ? "New Location" : "Donor Info"}{" "}
+      <form onSubmit={() => onSubmit}>
+        <h2 className="text-primary-locationForm">
+          {createNew ? "New Location" : "Donor Name"}{" "}
         </h2>
 
         {createNew ? (
@@ -96,58 +94,50 @@ const LocationForm = ({current, clearCurrent, createNew, savedLocation, setLocat
           </>
         ) : (
           <>
-            <input type="text" placeholder={name} name="name" disabled={true} />
-            {current &&
-              current.foodType.map((ft : string, index : number) => {
-                return (
-                  <div className="flex flex-row items-center" key={index}>
-                    <input
-                      className="w-4 h-4 inline-block mr-1 rounded-full border border-grey"
-                      type="radio"
-                      name="foodType"
-                      value={ft}
-                      onClick={() => {
-                        setActive(ft);
-                        setIsClicked(true);
-                      }}
-                    />
-                    {ft}
-                  </div>
-                );
-              })}
-            {current && (
-              <div className="flex flex-row items-center">
-                <input
-                  type="radio"
-                  className="w-4 h-4 inline-block mr-1 rounded-full border border-grey"
-                  name="foodType"
-                  onClick={() => setIsClicked(false)}
-                />{" "}
-                <input
-                  type="text"
-                  disabled={isClicked}
-                  onChange={(e) => setActive(e.target.value)}
-                />{" "}
-              </div>
-            )}
+            <input className="location-name-form" type="text" placeholder={name} name="name" disabled={true} />
+            <div className="food-type">Food type</div>
+            <div className="select-parent">
+              {current &&
+                current.foodType.map((ft : string, index : number) => {
+                  return (
+                    <div className="flex flex-row items-center" key={index}>
+                      <input
+                        className="w-4 h-4 inline-block mr-1 rounded-full border border-grey"
+                        type="radio"
+                        name="foodType"
+                        value={ft}
+                        onClick={() => {
+                          setActive(ft);
+                          setIsClicked(true);
+                        }}
+                      />
+                      <b>{ft}</b>
+                    </div>
+                  );
+                })}
+              {current && (
+                <div className="flex flex-row items-center">
+                  <input
+                    type="radio"
+                    className="w-4 h-4 inline-block mr-1 rounded-full border border-grey"
+                    name="foodType"
+                    onClick={() => setIsClicked(false)}
+                  />{" "}
+                  <input className="specify-item"
+                    type="text"
+                    disabled={isClicked}
+                    onChange={(e) => setActive(e.target.value)}
+                    placeholder='Please Specify'
+                  />{" "}
+                </div>
+              )}
+            </div>
           </>
         )}
 
         <div>
-          <input
-            type="submit"
-            value={createNew ? "Add New" : "Submit"}
-            className="btn btn-primary btn-block"
-            onChange={onChange}
-          />
+          <button className="continue_button" onClick={() => console.log("cliked!")}>Continue</button>
         </div>
-        {current && (
-          <div>
-            <button className="btn btn-light btn-block" onClick={() => {clearCurrent()}}>
-              Clear
-            </button>
-          </div>
-        )}
       </form>
     </>
   );

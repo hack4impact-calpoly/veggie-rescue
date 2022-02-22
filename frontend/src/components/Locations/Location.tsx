@@ -7,7 +7,8 @@ import { useEffect } from "react";
 
 import NavBar from "../NavBar/NavBar";
 
-import './Location.css'
+// import './Location.css'
+import './Loc.css'
 
 interface locale {
   name: string,
@@ -61,16 +62,18 @@ function Location() {
       {/*
       !!IMPORTANT!!
         This <NavBar /> needs to be tied to some logic so that the following page
-        Only renders when its at a certain spot in the navigateion!!!
+        only renders when its at a certain spot in the navigateion!!!
       */}
       <NavBar /> 
 
-      <LocationFilter
+      {!current && (
+        <LocationFilter
         filtered={filtered}
         clearFilter={clearFilter}
         filterLocations={filterLocations}
         clearCurrent={clearCurrent}
       />
+      )}
 
       <Locations
         filtered={filtered}

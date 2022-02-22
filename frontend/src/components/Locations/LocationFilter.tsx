@@ -1,5 +1,7 @@
 import React, { useEffect, useRef } from 'react';
 
+import './Loc.css'
+
 interface locale {
 	name: string,
 	donorLocationType: string,
@@ -41,14 +43,16 @@ const LocationFilter = ({filterLocations, filtered, clearFilter, clearCurrent} :
 	
 	// Display the text field only
 	return (
-		<form>
-			<input
-				id="filter-text"
-				type="text"
-				placeholder={'Filter Locations...'}
-				onChange={onChange}
-			/>
-		</form>
+		<div className='filter-parent'>
+			<form className='filter-form'>
+				<input
+					id="filter-text"
+					type="text"
+					placeholder={'Filter Locations...'}
+					onChange={onChange}
+				/>
+			</form>
+		</div>
 	);
 };
 
