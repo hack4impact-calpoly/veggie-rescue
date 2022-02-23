@@ -1,7 +1,7 @@
 import React, { useLayoutEffect, useState } from 'react';
 import './TripLog.css';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faPencilAlt } from '@fortawesome/free-solid-svg-icons';
+
+import { FaPencilAlt } from 'react-icons/fa';
 
 const TripLog = (props: any) => {
   const [fontColor, setFontColor] = useState("");
@@ -28,7 +28,7 @@ const TripLog = (props: any) => {
       </div>
       <div id="pencil">
         <button onClick={handleClick}>
-          <FontAwesomeIcon className="fa-icon" icon={faPencilAlt} />
+          <FaPencilAlt />
         </button>
       </div>
     </div>

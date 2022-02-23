@@ -34,7 +34,7 @@ const AdminLoginScreen = () => {
   };
 
   return(
-    <div className="container">
+    <div className="container2">
       <div className="text-box">
         <div className="logo">
           <img className='logo' src={logo} alt="veggie rescue logo" />

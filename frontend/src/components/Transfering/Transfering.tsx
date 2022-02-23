@@ -26,7 +26,7 @@ function sumbitWeight() {
 
 export default function Transferring() {
   return (
-    <div>
+    <div >
       <div className="tPageString">
         How much weight do <br></br>you want to transfer?
       </div>
