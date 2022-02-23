@@ -52,14 +52,14 @@ const LocationForm = ({current, clearCurrent, createNew, savedLocation, setLocat
   };
 
   return (
-    <>
+    <div className="Form-main">
       <form onSubmit={() => onSubmit}>
         <h2 className="text-primary-locationForm">
           {createNew ? "New Location" : "Donor Name"}{" "}
         </h2>
 
         {createNew ? (
-          <>
+          <div className="newLocation">
             <input
               type="text"
               placeholder="Donor name"
@@ -91,9 +91,9 @@ const LocationForm = ({current, clearCurrent, createNew, savedLocation, setLocat
               name="type"
               onChange={(e) => setArea(e.target.value)}
             />
-          </>
+          </div>
         ) : (
-          <>
+          <div className="existingLocation">
             <input className="location-name-form" type="text" placeholder={name} name="name" disabled={true} />
             <div className="food-type">Food type</div>
             <div className="select-parent">
@@ -132,14 +132,14 @@ const LocationForm = ({current, clearCurrent, createNew, savedLocation, setLocat
                 </div>
               )}
             </div>
-          </>
+          </div>
         )}
 
         <div>
           <button className="continue_button" onClick={() => console.log("cliked!")}>Continue</button>
         </div>
       </form>
-    </>
+    </div>
   );
 }
 

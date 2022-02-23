@@ -7,8 +7,7 @@ import { useEffect } from "react";
 
 import NavBar from "../NavBar/NavBar";
 
-// import './Location.css'
-import './Loc.css'
+import './Location.css'
 
 interface locale {
   name: string,

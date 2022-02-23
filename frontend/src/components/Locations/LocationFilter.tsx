@@ -1,6 +1,6 @@
 import React, { useEffect, useRef } from 'react';
 
-import './Loc.css'
+import './Location.css'
 
 interface locale {
 	name: string,
