@@ -1,8 +1,7 @@
 import React from 'react'
 import AdminHeader from '../AdminHeader/AdminHeader'
-type Props = {}
 
-function Admin({}: Props) {
+function Admin() {
   return (
     <div><AdminHeader /></div>
   )

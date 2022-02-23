@@ -13,7 +13,7 @@ const TripLog = (props: any) => {
     else{
       setFontColor("#D23434");
     }
-  }, []);
+  }, [props.pounds]);
 
   function handleClick(){
     console.log("button clicked!");

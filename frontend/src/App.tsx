@@ -1,4 +1,3 @@
-import React, { useEffect, useState } from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { ToastContainer } from 'react-toastify';
   import 'react-toastify/dist/ReactToastify.css';
@@ -12,12 +11,8 @@ import TransferPage from './components/TransferPage/TransferPage';
 import UserLogs from './components/UserLogs/UserLogs';
 import Vehicles from './components/VehicleSelection/Vehicle';
 import AdminLoginScreen from './components/AdminLoginScreen/AdminLoginScreen';
-import TripLog from './components/TripLog/TripLog';
 import Admin from './components/Admin/Admin';
 const App: React.FC = () => {
-  //Variable which tells whether user is logged in or not
-  const [loggedin, setLoggedin] = useState(false);
-
   return (
     <>      
     <Router>
