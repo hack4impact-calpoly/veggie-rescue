@@ -27,7 +27,6 @@ const App: React.FC = () =>{
           </Route>        
           <Route path='/login' element={<Login/>}/> 
           <Route path='/Checkout' element={<Checkout/>}/>           
-
           <Route path='/Location' element={<Location/>}/>           
           
       </Routes>

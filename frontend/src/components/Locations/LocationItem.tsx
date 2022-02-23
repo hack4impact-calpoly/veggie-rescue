@@ -1,6 +1,5 @@
 import {useEffect} from 'react'
 
-
 interface locale {
 	name: string,
 	donorLocationType: string,
@@ -28,8 +27,8 @@ const LocationItem = ({location, setCurrent, clearFilter, setCreateNew, isNew} :
     }
   })
   
-  //  The button expands to fit the enter div... on click setCurrent function is called and passed up to Location state.  Filter is cleared so it
-  //  isn't displayed below the text field.
+  //  The button expands to fit the enter div... on click setCurrent function is called and passed up to Location state.  
+  //  Filter is cleared so it isn't displayed below the text field.
 
   return (
     <div className="locationItem" 
@@ -38,7 +37,7 @@ const LocationItem = ({location, setCurrent, clearFilter, setCreateNew, isNew} :
           clearFilter();
         }}
     >
-      <h3 className="text-primary text-left w-full">{name}</h3>
+      <h3>{name}</h3>
     </div>
   );
 };

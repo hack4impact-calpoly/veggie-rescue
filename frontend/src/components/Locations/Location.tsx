@@ -85,10 +85,8 @@ function Location() {
       {current && (
           <LocationForm
             current={current}
-            clearCurrent={clearCurrent}
             createNew={createNew}
             setLocation={setLocation}
-            savedLocation={savedLocation}
           />
       )}
     </div>

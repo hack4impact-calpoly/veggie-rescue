@@ -11,13 +11,11 @@ interface locale {
 
 interface Props{
   current : locale,
-  clearCurrent : Function,
   createNew : boolean,
-  savedLocation? : locale,
   setLocation : Function;
 }
 
-const LocationForm = ({current, clearCurrent, createNew, savedLocation, setLocation} : Props) =>{
+const LocationForm = ({current, createNew, setLocation} : Props) =>{
   const [active, setActive] = useState(""); // State for radio buttons
   const [isClicked, setIsClicked] = useState(true); // State for radio buttons
 
@@ -29,9 +27,6 @@ const LocationForm = ({current, clearCurrent, createNew, savedLocation, setLocat
   const [area, setArea] = useState("");
 
   const { name } = current;
-
-  // const onChange = (e : locationObject) =>
-  //   setLocation({ ...savedLocation, [e.target.name]: e.target.value });
 
   const onSubmit = (e : Event) => {
     e.preventDefault();
@@ -100,9 +95,8 @@ const LocationForm = ({current, clearCurrent, createNew, savedLocation, setLocat
               {current &&
                 current.foodType.map((ft : string, index : number) => {
                   return (
-                    <div className="flex flex-row items-center" key={index}>
+                    <div key={index}>
                       <input
-                        className="w-4 h-4 inline-block mr-1 rounded-full border border-grey"
                         type="radio"
                         name="foodType"
                         value={ft}
@@ -116,10 +110,9 @@ const LocationForm = ({current, clearCurrent, createNew, savedLocation, setLocat
                   );
                 })}
               {current && (
-                <div className="flex flex-row items-center">
+                <div>
                   <input
                     type="radio"
-                    className="w-4 h-4 inline-block mr-1 rounded-full border border-grey"
                     name="foodType"
                     onClick={() => setIsClicked(false)}
                   />{" "}
