@@ -1,0 +1,52 @@
+.donors-card{
+  border: 1px solid rgba(0,0,0,0.75);
+  height: 200px;
+  width: 440px;
+  border-radius: 20px;
+  box-shadow: 0px 4px 10px rgba(0,0,0,0.25);
+  background-color: white;
+
+}
+
+.entry-container{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: wrap;
+  height: 140px;
+  margin-left: 20px;
+}
+
+.donors-entry{
+  height: 60px;
+  width: 200px;
+  display: flex;
+  flex-direction: column;
+}
+
+.donor-name{
+  margin-top: 10px;
+  margin-bottom: 20px;
+  font-size: 20px;
+}
+
+.donors-entry-title{
+  text-decoration-line: underline;
+  color: #549672;
+  font-size: 13px;
+  align-self: flex-start;
+}
+
+.donors-entry-text{
+  align-self: flex-start;
+  max-width: 200px;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  font-size: 15px;
+}
+
+.donors-entry-text:hover{
+  overflow: visible;
+}
