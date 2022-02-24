@@ -18,16 +18,19 @@ const TripLog = (props:any) => {
   function handleTripChange(e:any){
     setTrip(e.value);
     ( trip === "Dropoff" ? setFontColor("#3FB551") :
-       trip === "Pickup" ? setFontColor("#D23434") : setFontColor("black") );
+     trip === "Pickup" ? setFontColor("#D23434") : setFontColor("black") );
   }
 
   useLayoutEffect(() => {
     setName(props.name);
     setTrip(props.trip);
     setPounds(props.pounds);
-    ( trip === "Pickup" ? setFontColor("#3FB551") :
-      trip === "Dropoff" ? setFontColor("#D23434") : setFontColor("black") );
   }, []);
+
+  useLayoutEffect(() => {
+   ( trip === "Pickup" ? setFontColor("#3FB551") :
+    trip === "Dropoff" ? setFontColor("#D23434") : setFontColor("black") );
+  }, [fontColor]);
 
   function handleClick(){
     console.log("button clicked!");
