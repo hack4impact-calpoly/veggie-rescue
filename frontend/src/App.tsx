@@ -12,6 +12,7 @@ import ProtectedRoute from './ProtectedRoute';
 import Checkout from './Checkout';
 
 import Location from './components/Locations/Location';
+import Weight from './components/Weight/Weight';
 
 const App: React.FC = () =>{
   //Variable which tells whether user is logged in or not 
@@ -28,6 +29,7 @@ const App: React.FC = () =>{
           <Route path='/login' element={<Login/>}/> 
           <Route path='/Checkout' element={<Checkout/>}/>           
           <Route path='/Location' element={<Location/>}/>           
+          <Route path='/Weight' element={<Weight/>}/>           
           
       </Routes>
       
