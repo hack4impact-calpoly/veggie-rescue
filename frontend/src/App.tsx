@@ -11,7 +11,6 @@ import './App.css';
 import ProtectedRoute from './ProtectedRoute';
 import Checkout from './Checkout';
 
-import Location from './components/Locations/Location';
 import Weight from './components/Weight/Weight';
 
 const App: React.FC = () =>{
@@ -28,7 +27,6 @@ const App: React.FC = () =>{
           </Route>        
           <Route path='/login' element={<Login/>}/> 
           <Route path='/Checkout' element={<Checkout/>}/>           
-          <Route path='/Location' element={<Location/>}/>           
           <Route path='/Weight' element={<Weight/>}/>           
           
       </Routes>
