@@ -3,11 +3,6 @@ main {
 
     display: flexbox;
     justify-content: space-around;
-    width: 100%;
-}
-
-main > * {
-    width: 100%;
 }
 
 .leftButton {
