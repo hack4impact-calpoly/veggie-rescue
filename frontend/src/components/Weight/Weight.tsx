@@ -1,11 +1,14 @@
 import React, { useState } from 'react'
 
 import NumPad from '../NumPad/NumPad'
+import NavBar from '../NavBar/NavBar';
+
 import './Weight.css'
 
 export default function Weight() {
 
     const [charNum, setCharNum] = useState('');
+    const [weightNum, setWeightNum] = useState(0);
 
     const charNumToInt = (charNum: string) => {
         if (charNum.length === 0){
@@ -28,18 +31,19 @@ export default function Weight() {
 
       const submitButton = () => {
           console.log("submitting with: " + charNum + ' lbs');
+          setWeightNum(charNumToInt(charNum));
       }
     
     return (
-        <main>
-            <div className='NumberForm'>{charNumToInt(charNum)} <span>lbs</span></div>
+        <main className="main">
+            <NavBar />
+            <div className='NumberForm'>{charNumToInt(charNum)} <span>&nbsp; lbs</span></div>
             <NumPad 
                 buttonHandler={buttonHandler}
                 clearHandler={clearHandler}
                 backSpaceHandler={backSpaceHandler}
             />
-            {/* {charNumToInt(charNum)} */}
-            <button onClick={submitButton}>Submit</button>
+            <button className="submit_button" onClick={submitButton}>Submit</button>
         </main>
     )
 }
