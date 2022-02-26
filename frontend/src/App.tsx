@@ -12,6 +12,8 @@ import LoginScreen from './components/LoginScreen/LoginScreen';
 import TransferPage from './components/TransferPage/TransferPage';
 import UserLogs from './components/UserLogs/UserLogs';
 import Vehicles from './components/VehicleSelection/Vehicle';
+import Transferring from './components/Transfering/Transfering';
+import AdminLoginScreen from './components/AdminLoginScreen/AdminLoginScreen';
 
 const App: React.FC = () => {
   //Variable which tells whether user is logged in or not
@@ -34,8 +36,10 @@ const App: React.FC = () => {
           />
           <Route path="/Dashboard" element={<Dashboard />} />
           <Route path="/Transfer" element={<TransferPage />} />
+          <Route path="/Transfering" element={<Transferring />} />
           <Route path="/UserLogs" element={<UserLogs />} />
           <Route path="/VehicleSelection" element={<Vehicles />} />
+          <Route path="/AdminLogin" element={<AdminLoginScreen />} />
         </Routes>
       </div>
     </Router>
