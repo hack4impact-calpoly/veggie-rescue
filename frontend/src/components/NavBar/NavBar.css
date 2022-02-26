@@ -6,6 +6,10 @@ main {
     justify-content: space-around;
 }
 
+main > * {
+    width: 100%;
+}
+
 .leftButton {
     border: none;
 
