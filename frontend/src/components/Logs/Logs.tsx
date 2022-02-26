@@ -11,7 +11,7 @@ const Logs = () => {
   }
 
   return(
-    <div className="logs-container">
+    <div className="container">
       <div className="text-container">
         <div className="your-logs">
           <button id="icon" onClick={() => {alert("hi")}}>

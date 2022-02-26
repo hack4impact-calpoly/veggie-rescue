@@ -14,8 +14,8 @@ import ProtectedRoute from './ProtectedRoute';
 import Dashboard from './components/Dashboard/Dashboard';
 import LoginScreen from './components/LoginScreen/LoginScreen';
 import TransferPage from './components/TransferPage/TransferPage';
-import UserLogs from './components/UserLogs/UserLogs';
 import VehicleSelection from './components/VehicleSelection/VehicleSelection';
+import Logs from './components/Logs/Logs';
 
 const App: React.FC = () =>{
   //Variable which tells whether user is logged in or not 
@@ -32,9 +32,8 @@ const App: React.FC = () =>{
           <Route path='/Login' element={<LoginScreen setLogin={setLoggedin}/>} />
             <Route path='/Dashboard' element={<Dashboard/>} />
             <Route path='/Transfer' element={<TransferPage/>} />
-            <Route path='/UserLogs' element={<UserLogs/>} />
             <Route path='/VehicleSelection' element={<VehicleSelection/>} />
-            {/* <Route path='/NewLog' element={<NewLog/>} /> */}
+            <Route path='/YourLogs' element={<Logs />} />
           
       </Routes>
       
