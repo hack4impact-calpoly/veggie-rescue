@@ -1,0 +1,58 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap');
+
+.triplog-container{
+  /*margin: 100px;*/
+  top: 0;
+  width: 550px;
+  height: 70px;
+  font-family: 'Poppins', sans serif;
+  border-radius: 30px;
+  box-shadow: 0px 4px 10px rgba(0,0,0,0.25);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-left: 20px;
+  padding-right: 20px;
+  margin-bottom: 20px;
+  z-index: 7;
+  background-color: white;
+}
+
+
+#trip{
+  color: #929292;
+  width: 150px;
+}
+.fa-icon{
+  font-size: 20px;
+}
+#name{
+  width: 150px;
+}
+
+.input{
+  box-shadow: 0px 4px 14px rgba(0,0,0,0.1);
+  border-radius: 10px;
+  height: 38px;
+  padding-left: 10px;
+  color: black;
+}
+
+#pounds .input{
+  width: 50px;
+}
+
+.pounds-container{
+  display: flex;
+  flex-direction: row;
+}
+
+#bipencil{
+  font-size: 25px;
+  margin-bottom: -5px;
+}
+
+#pounds{
+  width: 100px;
+  padding-left: 20px;
+}
