@@ -15,7 +15,7 @@ import Logs from './components/Logs/Logs';
 import Vehicles from './components/VehicleSelection/Vehicle';
 import Transferring from './components/Transfering/Transfering';
 
-import Location from './components/Locations/Location';
+import Weight from './components/Weight/Weight';
 
 const App: React.FC = () =>{
   //Variable which tells whether user is logged in or not 
@@ -40,8 +40,8 @@ const App: React.FC = () =>{
           <Route path="/Transfer" element={<TransferPage />} />
           <Route path="/Transfering" element={<Transferring />} />
           <Route path="/VehicleSelection" element={<Vehicles />} />
-          <Route path="/Location" element={<Location />} />
           <Route path='/YourLogs' element={<Logs />} />
+          <Route path='/Weight' element={<Weight/>}/>           
         </Routes>
       </div>
     </Router>
