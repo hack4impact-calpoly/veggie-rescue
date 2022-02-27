@@ -10,10 +10,10 @@ import ProtectedRoute from './ProtectedRoute';
 import Dashboard from './components/Dashboard/Dashboard';
 import LoginScreen from './components/LoginScreen/LoginScreen';
 import TransferPage from './components/TransferPage/TransferPage';
-import UserLogs from './components/UserLogs/UserLogs';
+import VehicleSelection from './components/VehicleSelection/VehicleSelection';
+import Logs from './components/Logs/Logs';
 import Vehicles from './components/VehicleSelection/Vehicle';
 import Transferring from './components/Transfering/Transfering';
-import AdminLoginScreen from './components/AdminLoginScreen/AdminLoginScreen';
 
 import Location from './components/Locations/Location';
 
@@ -39,9 +39,9 @@ const App: React.FC = () =>{
           <Route path="/Dashboard" element={<Dashboard />} />
           <Route path="/Transfer" element={<TransferPage />} />
           <Route path="/Transfering" element={<Transferring />} />
-          <Route path="/UserLogs" element={<UserLogs />} />
           <Route path="/VehicleSelection" element={<Vehicles />} />
           <Route path="/Location" element={<Location />} />
+          <Route path='/YourLogs' element={<Logs />} />
         </Routes>
       </div>
     </Router>
