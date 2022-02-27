@@ -5,13 +5,12 @@ const mongoose = require('mongoose') // Initializing Mongoose for DB
 const {errorHandler} = require('./middleware/errorMiddleware')
 const connectDatabase = require('./config/db')
 
-require('dotenv').config() // dotenv package to protect secrets
+
+require('dotenv').config({ path: './env' }) // dotenv package to protect secrets
 app.use(express.json())
 app.use(express.urlencoded({extended: false}))
 
 app.use(errorHandler)
-
-//const connection_url = `mongodb+srv://${process.env.main_user}:${process.env.main_pass}@veggierescue.55aun.mongodb.net/VeggieRescue?retryWrites=true&w=majority`
 
 
 const port = process.env.PORT || 3001
