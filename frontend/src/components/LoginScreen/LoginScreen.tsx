@@ -1,10 +1,15 @@
-import { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import AsterixDisplay from '../AsterixDisplay/AsterixDisplay';
-import './LoginScreen.css';
 import NumPad from '../NumPad/NumPad';
 import logo from '../../imgs/veggie-rescue-logo.png';
 
-function LoginScreen() {
+import { useNavigate } from 'react-router-dom';
+
+type Props = {
+  setLogin: React.Dispatch<React.SetStateAction<boolean>>;
+}
+
+const LoginScreen: React.FC<Props> = ({setLogin}) =>{
   const [asterix, setAsterix] = useState<string[]>([]);
   const [pin, setPin] = useState('');
   const [loading, setLoading] = useState(false);
@@ -16,33 +21,44 @@ function LoginScreen() {
     clock_out: '',
     pin: ''
   });
+  const navigate = useNavigate();
+
 
   useEffect(() => {
     //on component load, set loading; fetch driver data and put into state
     if (driver.name !== '') {
       alert(`Found driver:${driver.name}`);
+      setDriver({
+        id: '',
+        name: '',
+        isLoggedIn: false,
+        clock_in: '',
+        clock_out: '',
+        pin: ''
+      });
     }
-  }, [driver]);
-
-  //on numpad submit check to see if driver exists; if so add to driver state
-  const submitHandler = () => {
     if (pin.length === 4) {
       const driverFilter = DriverData.filter((d) => d.pin === pin);
       if (driverFilter.length !== 0) {
         setDriver(driverFilter[0]);
-        // here we will navigate to next page
+        setLogin(true);
+        navigate('/VehicleSelection');
       }else{
         alert('No driver found... hint: try 1111 or 2222 or 3333!')
       }
+      clearHandler();
+     
     }
-    clearHandler();
-  };
+  }, [driver,pin]);
+
 
   const buttonHandler = (btnId: string) => {
     if (pin.length <= 3) {
       setPin(pin + btnId);
       setAsterix([...asterix, '*']);
     }
+   
+   
   };
 
   const clearHandler = () => {
@@ -59,19 +75,20 @@ function LoginScreen() {
     return <h3>Loading...</h3>;
   }
   return (
-    <div className="container">
-      <div className="logo">
-        <img className='logo' src={logo} alt="veggie rescue logo" />
-      </div>
-      <span style={{ fontFamily: 'Roboto' }}>Enter your 4 digit pin</span>
-      <AsterixDisplay asterix={asterix} />
-      <NumPad
-        buttonHandler={buttonHandler}
-        submitHandler={submitHandler}
-        clearHandler={clearHandler}
-        backSpaceHandler={backSpaceHandler}
-      />
+    <>
+    <div className='flex flex-col items-center justify-center'>
+    <div className=" mt-5 mb-3 w-4/6 ">
+    <img src={logo} alt="veggie rescue logo" />
     </div>
+    <span>Enter your 4 digit pin</span>
+    <AsterixDisplay asterix={asterix} />
+    </div>
+    <NumPad 
+    buttonHandler={buttonHandler}
+    clearHandler={clearHandler}
+    backSpaceHandler={backSpaceHandler}
+  />
+  </>
   );
 }
 
