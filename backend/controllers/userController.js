@@ -4,21 +4,22 @@ const bcrypt = require('bcryptjs')
 const Driver = require('../models/driverSchema.js')
 const { userInfo } = require('os')
 const { JsonWebTokenError } = require('jsonwebtoken')
+const jwt = require("jsonwebtoken");
 
 // @desc Register a new user
 // @route /api/users
 // @access Public
 
 const registerUser = asyncHandler(async (req, res) => {
-    const { name, id, pin } = req.body
+    const { name, email, password } = req.body
 
-    if(!name || !id || !pin){
+    if(!name || !email || !password){
         res.status(400)
         throw new Error('Please include all fields')
     }
 
     // Find if driver does not already exist
-    const driverExists = await Driver.findOne({id})
+    const driverExists = await Driver.findOne({email})
 
     if(driverExists){
         res.status(400)
@@ -27,20 +28,20 @@ const registerUser = asyncHandler(async (req, res) => {
 
     // Hash password
     const salty = await bcrypt.genSalt(10)
-    const newHashPin = await bcrypt.hash(pin, salty)
+    const newHashPin = await bcrypt.hash(password, salty)
 
     // Create driver
     const driver = await Driver.create({
         name,
-        id,
-        pin: newHashPin
+        email,
+        password: newHashPin
     })
 
     if(driver){
         res.status(201).json({
             _id: driver._id,
             name: driver.name,
-            id: driver.id,
+            email: driver.email,
             token: generateToken(driver._id),
         })
     } else{
@@ -56,28 +57,27 @@ const registerUser = asyncHandler(async (req, res) => {
 // @access Public
 
 const loginUser = asyncHandler(async (req, res) => {
-    const {id, pin} = req.body
-    const foundDriver = await Driver.findOne({id})
+    const {email, password} = req.body
+    const foundDriver = await Driver.findOne({email})
 
     // Check if id and password matched
-    if(foundDriver && (await bcrypt.compare(pin, foundDriver.pin))) {
+    if(foundDriver && (await bcrypt.compare(password, foundDriver.password))) {
         res.status(200).json({
             _id: foundDriver._id,
             name: foundDriver.name,
-            id: foundDriver.id,
-            token: generateToken(user._id),
+            email: foundDriver.email,
+            token: generateToken(foundDriver._id),
         })
     } else {
         res.status(401)
         throw new Error('Invalid ID and Pin')
     }
-    res.send('Login Route')
 })
 
 // Generate Token
 const generateToken = (id) => {
     return jwt.sign({ id }, process.env.JWT_SECRET, {
-        expiresIn: '12h'
+        expiresIn: '24h'
     })
 }
 
