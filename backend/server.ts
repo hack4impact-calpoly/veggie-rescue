@@ -12,7 +12,7 @@ app.use(express.urlencoded({ extended: false }));
 
 app.use(errorHandler);
 
-const port = process.env.PORT || 5000;
+const port = process.env.PORT || 3001;
 connectDatabase();
 //mongoose.connect(connection_url)
 //.then(() => console.log(`Success`))
