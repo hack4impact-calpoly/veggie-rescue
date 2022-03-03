@@ -1,17 +1,26 @@
 const asyncHandler = require('express-async-handler')
 const bcrypt = require('bcryptjs')
+const { userInfo } = require('os')
+const { JsonWebTokenError } = require('jsonwebtoken')
+const jwt = require("jsonwebtoken")
 
 const Donor = require('../models/donorSchema.js')
 const Recipient = require('../models/recipientSchema.js')
-const { userInfo } = require('os')
-const { JsonWebTokenError } = require('jsonwebtoken')
-const jwt = require("jsonwebtoken");
+const Admin = require('../models/adminSchema.js')
+const Driver = require('../models/driverSchema.js')
 
 // @desc Finding a donor
 // @route /api/donor/find
 // @access Public
 
 const findDonor = asyncHandler(async (req, res) => {
+    const driverExists = await Driver.findOne({email})
+    const adminExists = await Admin.findOne({email})
+
+    if(!driverExists && !adminExists){
+        res.status(400)
+        throw new Error('This User does not have access')
+    }
     const donorId = req.params.id
     Donor.findById(donorId, function(err, resultDonor){
         if(err){
@@ -28,6 +37,13 @@ const findDonor = asyncHandler(async (req, res) => {
 // @access Public
 
 const findRecipient = asyncHandler(async (req, res) => {
+    const driverExists = await Driver.findOne({email})
+    const adminExists = await Admin.findOne({email})
+
+    if(!driverExists && !adminExists){
+        res.status(400)
+        throw new Error('This User does not have access')
+    }
     const recipientId = req.params.id
     Donor.findById(recipientId, function(err, resultRecipient){
         if(err){
@@ -42,14 +58,195 @@ const findRecipient = asyncHandler(async (req, res) => {
 // @route /api/donor/manage
 // @access Public
 
-// @desc Manage a Recipient
-// @route /api/recipient/manage
+const createDonor = asyncHandler(async (req, res) => {
+    const adminExists = await Admin.findOne({email})
+
+    if(!adminExists){
+        res.status(400)
+        throw new Error('This User does not have access')
+    }
+    const { id, EntityType, FoodType, DemographicName, CombinedAreaName } = req.body
+    
+    if(!id || !EntityType || !FoodType || !DemographicName || !CombinedAreaName){
+        res.status(400)
+        throw new Error('Please include all fields')
+    }
+
+    // Find if donor does not already exist
+    const donorExists = await Donor.findOne({id})
+
+    if(donorExists){
+        res.status(400)
+        throw new Error('Donor already exists')
+    }
+
+
+    // Create donor
+    const donor = await Donor.create({
+        id, 
+        EntityType, 
+        FoodType, 
+        DemographicName, 
+        CombinedAreaName
+    })
+
+    if(donor){
+        res.status(201).json({
+            _id: donor._id,
+            id: donor.id,
+            EntityType: donor.EntityType,
+            FoodType: donor.FoodType,
+            DemographicName: donor.DemographicName,
+            CombinedAreaName: donor.CombinedAreaName,
+            token: generateToken(donor._id),
+        })
+    } else{
+        res.status(400)
+        throw new Error('Invalid Donor Data')
+    }
+
+
+    //res.send('Register Route')
+})
+
+// @desc Create a Recipient
+// @route /api/recipient/create
 // @access Public
+
+const createRecipient = asyncHandler(async (req, res) => {
+    const adminExists = await Admin.findOne({email})
+
+    if(!adminExists){
+        res.status(400)
+        throw new Error('This User does not have access')
+    }
+    const { id, EntityType, LocationType, CombinedAreaName } = req.body
+    
+    if(!id || !EntityType || !LocationType || !CombinedAreaName){
+        res.status(400)
+        throw new Error('Please include all fields')
+    }
+
+    // Find if donor does not already exist
+    const recipientExists = await Recipient.findOne({id})
+
+    if(recipientExists){
+        res.status(400)
+        throw new Error('Donor already exists')
+    }
+
+
+    // Create donor
+    const recipient = await Recipient.create({
+        id, 
+        EntityType, 
+        LocationType,  
+        CombinedAreaName
+    })
+
+    if(recipient){
+        res.status(201).json({
+            _id: recipient._id,
+            id: recipient.id,
+            EntityType: recipient.EntityType,
+            LocationType: recipient.LocationType,
+            CombinedAreaName: recipient.CombinedAreaName,
+            token: generateToken(recipient._id),
+        })
+    } else{
+        res.status(400)
+        throw new Error('Invalid Recipient Data')
+    }
+
+
+    //res.send('Register Route')
+})
 
 // @desc Update a Donor
 // @route /api/donor/edit
 // @access Public
 
+const editDonor = asyncHandler(async (req, res) => {
+    const adminExists = await Admin.findOne({email})
+
+    if(!adminExists){
+        res.status(400)
+        throw new Error('This User does not have access')
+    }
+    const body = req.body
+    const donor_id = req.params.id
+    const donorInDB = db[donor_id]
+
+    if(!donorInDB){
+        return res
+        .status(404)
+        .json({ error: 'Donor not found'});
+    }
+
+    if(body.id || body.token){
+        return res.status(400).json({ error: 'Cannot edit id'})
+    }
+
+    if(body.EntityType){
+        donorInDB.EntityType = body.EntityType
+    }
+    if(body.FoodType){
+        donorInDB.FoodType = body.FoodType
+    }
+    if(body.DemographicName){
+        donorInDB.DemographicName = body.DemographicName
+    }
+    if(body.CombinedAreaName){
+        donorInDB.CombinedAreaName = body.CombinedAreaName
+    }
+
+    return res
+            .status(201)
+            .json(donorInDB);
+
+
+    //res.send('Register Route')
+})
+
 // @desc Update a Recipient
 // @route /api/recipient/edit
 // @access Public
+
+const editRecipient = asyncHandler(async (req, res) => {
+    const adminExists = await Admin.findOne({email})
+
+    if(!adminExists){
+        res.status(400)
+        throw new Error('This User does not have access')
+    }
+    const body = req.body
+    const recip_id = req.params.id
+    const recipientInDB = db[recip_id]
+
+    if(!recipientInDB){
+        return res
+        .status(404)
+        .json({ error: 'Recipient not found'});
+    }
+
+    if(body.id || body.token){
+        return res.status(400).json({ error: 'Cannot edit id'})
+    }
+
+    if(body.EntityType){
+        recipientInDB.EntityType = body.EntityType
+    }
+    if(body.LocationType){
+        recipientInDB.LocationType = body.LocationType
+    }
+    if(body.DemographicName){
+        recipientInDB.DemographicName = body.DemographicName
+    }
+
+    return res
+            .status(201)
+            .json(recipientInDB);
+
+
+    //res.send('Register Route')
+})

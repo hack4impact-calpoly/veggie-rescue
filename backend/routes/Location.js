@@ -9,8 +9,8 @@ router.get('/recipient/find', findRecipient)
 
 
 //Post
-router.post('/donor/manage', manageDonor)
-router.post('/recipient/manage', manageRecipient)
+router.post('/donor/create', createDonor)
+router.post('/recipient/create', createRecipient)
 
 //Edit
 router.put('/donor/edit', editDonor)
