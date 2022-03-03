@@ -20,6 +20,7 @@ connectDatabase()
 //.catch((error) => console.error(`Could not connect due to ${error}`))
 
 app.use('/api/users', require('./routes/userRoutes'))
+app.use('/api/location', require('./routes/Location'))
 
 /*
  * example handler from bootcamp
