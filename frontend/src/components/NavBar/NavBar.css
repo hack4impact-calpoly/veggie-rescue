@@ -1,8 +1,13 @@
 main {
     background-color: #F0F9F1;
-
+    padding-top:20px;
     display: flexbox;
+    width: 100%;
     justify-content: space-around;
+}
+
+main > * {
+    width: 100%;
 }
 
 .leftButton {
@@ -48,6 +53,7 @@ main {
 }
 
 .progressBarWrapper {
+    margin-top:20px;
     background-color: #FFE2CC;
     width: 70%;
     margin-left: auto;
