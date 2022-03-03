@@ -5,7 +5,7 @@ const mongoose = require("mongoose"); // Initializing Mongoose for DB
 const { errorHandler } = require("./middleware/errorMiddleware");
 const connectDatabase = require("./config/db");
 
-require("dotenv").config({ path: "./env" }); // dotenv package to protect secrets
+require("dotenv").config(); // dotenv package to protect secrets
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));

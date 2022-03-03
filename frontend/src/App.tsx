@@ -4,12 +4,10 @@ import { ToastContainer } from 'react-toastify';
 import './App.css';
 
 import ProtectedRoute from './ProtectedRoute';
-// import Checkout from './components/Checkout/Checkout';
 import Dashboard from './components/Dashboard/Dashboard';
 import LoginScreen from './components/LoginScreen/LoginScreen';
 import TransferPage from './components/TransferPage/TransferPage';
-import VehicleSelection from './components/VehicleSelection/VehicleSelection';
-import Logs from './components/Logs/Logs';
+import { Location } from 'react-router-dom';
 import Vehicles from './components/VehicleSelection/Vehicle';
 import AdminLoginScreen from './components/AdminLoginScreen/AdminLoginScreen';
 import Admin from './components/Admin/Admin';
@@ -18,11 +16,11 @@ const App: React.FC = () => {
     <>      
     <Router>
       <Routes>
-        {/* depending on the redirectTo Variable value it redirects to the corresponding page if user is not logged in */}
-            <Route path="/Login" element={<LoginScreen />} />
+{/* (Unprotected routes) depending on the redirectTo Variable value it redirects to the corresponding page if user is not logged in */}
+            <Route path="/Login" element={<LoginScreen />} /> 
             <Route path="/" element={<LoginScreen />} />
             <Route path="/AdminLogin" element={<AdminLoginScreen />} />
-{/* Below are protected routes which are only accessed after driver is logged in */}
+{/* (Protected Routes) Below are protected routes which are only accessed after driver is logged in */}
             <Route
               path="/Dashboard"
               element={<ProtectedRoute redirectTo="/Login" />}
