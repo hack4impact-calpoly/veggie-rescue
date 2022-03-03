@@ -18,7 +18,8 @@
     "express-async-handler": "^1.2.0",
     "jsonwebtoken": "^8.5.1",
     "mongoose": "^6.1.4",
-    "node": "^17.3.0"
+    "node": "^17.3.0",
+    "npm": "^8.5.2"
   },
   "devDependencies": {
     "@types/jest": "^27.4.0",
