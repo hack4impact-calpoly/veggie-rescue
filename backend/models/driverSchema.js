@@ -1,18 +1,22 @@
 const mongoose = require('mongoose')
 
 const DriverSchema = new mongoose.Schema({
-    id: {
-        type: String,
-        required: [true, 'Please add an id'],
-        unique: true
-    },
     name: {
         type: String,
         required: [true, 'Please add a name']
     },
+    email: {
+        type: String,
+        unique: true,
+    },
+    password: {
+        type: String,
+        required: [true, 'Please add a password'],
+        unique: true
+    },
     isLoggedIn: {
         type: Boolean,
-        required: true,
+        required: false,
         default: false
     },
     clock_in: {
@@ -25,12 +29,11 @@ const DriverSchema = new mongoose.Schema({
         required: false,
         default: '0:00'
     },
-    pin: {
+    id: {
         type: String,
-        required: [true, 'Please add a pin'],
-        unique: true
+        required: false
     }
-}, {collection: 'People'});
+});
 
 const Driver = mongoose.model('Driver', DriverSchema)
 
