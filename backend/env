@@ -1,0 +1,10 @@
+DB_USER = veggieRescueUser
+DB_PASS = RescueVeggie1771
+PORT = 3001
+main_user = veggieRescueUser
+main_pass = RescueVeggie1771
+
+#MONGO_URI = `mongodb+srv://veggieRescueUser:RescueVeggie1771@veggierescue.55aun.mongodb.net/VeggieRescue?retryWrites=true&w=majority`
+#MONGO_URI = 'mongodb+srv://veggieRescueUser:RescueVeggie1771@cluster0.jkquj.mongodb.net/Cluster0?retryWrites=true&w=majority'
+MONGO_URI = mongodb+srv://veggieRescueUser:RescueVeggie1771@cluster0.jkquj.mongodb.net/myFirstDatabase?retryWrites=true&w=majority
+JWT_SECRET = ILoveVeggies
