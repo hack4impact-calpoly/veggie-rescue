@@ -6,6 +6,6 @@ const DonorSchema = new mongoose.Schema({
     FoddType: String,
     DemographicName: String,
     CombinedAreaName: String
-});
+}, {collection: 'Donors'});
 
 module.exports = mongoose.model('DonorSchema', DonorSchema)

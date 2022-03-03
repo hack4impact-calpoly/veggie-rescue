@@ -5,6 +5,6 @@ const RecipientSchema = new mongoose.Schema({
     EntityType: String,
     LocationType: String,
     CombinedAreaName: String
-});
+},  {collection: 'Recipients'});
 
 module.exports = mongoose.model('RecipientSchema', RecipientSchema)
