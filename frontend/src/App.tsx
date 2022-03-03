@@ -14,6 +14,7 @@ import VehicleSelection from './components/VehicleSelection/VehicleSelection';
 import Logs from './components/Logs/Logs';
 import Vehicles from './components/VehicleSelection/Vehicle';
 import Transferring from './components/Transfering/Transfering';
+import AdminDataScreen from './components/AdminDataScreen/AdminDataScreen';
 
 import Weight from './components/Weight/Weight';
 
@@ -41,7 +42,8 @@ const App: React.FC = () =>{
           <Route path="/Transfering" element={<Transferring />} />
           <Route path="/VehicleSelection" element={<Vehicles />} />
           <Route path='/YourLogs' element={<Logs />} />
-          <Route path='/Weight' element={<Weight/>}/>           
+          <Route path='/Weight' element={<Weight/>}/>
+          <Route path='/YourData' element={<AdminDataScreen/>}/>
         </Routes>
       </div>
     </Router>
