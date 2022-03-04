@@ -38,7 +38,7 @@ export default function Weight() {
   };
 
   return (
-    <>
+    <div className='container'>
       <main className="main">
         <NavBar />
         <div className="NumberForm">
@@ -55,6 +55,6 @@ export default function Weight() {
           Submit
         </button>
       </main>
-    </>
+    </div>
   );
 }
