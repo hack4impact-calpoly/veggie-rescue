@@ -1,0 +1,33 @@
+const mongoose = require("mongoose");
+
+const driverModel = mongoose.Schema(
+  {
+    name: {
+      type: String,
+      required: [true, "Please add a name"],
+    },
+    isLoggedIn: {
+      type: Boolean,
+      required: false,
+      default: false,
+    },
+    clock_in: {
+      type: Date,
+      default: null,
+    },
+    clock_out: {
+      type: Date,
+      default: null,
+    },
+    pin: {
+      type: String,
+      required: [true, "Please add a 4 digit pin"],
+      unique: true,
+    },
+  },
+  {
+    timestamps: true,
+  }
+);
+
+module.exports = mongoose.model("Driver", driverModel);
