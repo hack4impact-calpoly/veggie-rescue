@@ -1,6 +1,5 @@
 const asyncHandler = require('express-async-handler')
-const bcrypt = require('bcryptjs')
-const { userInfo } = require('os')
+
 const { JsonWebTokenError } = require('jsonwebtoken')
 const jwt = require("jsonwebtoken")
 
@@ -21,13 +20,17 @@ const findDonor = asyncHandler(async (req, res) => {
         res.status(400)
         throw new Error('This User does not have access')
     }
-    const donorId = req.params.id
-    Donor.findById(donorId, function(err, resultDonor){
+    /*
+    const recipientId = req.params.id
+    Donor.findById(recipientId, function(err, resultRecipient){
         if(err){
-            res.status(422).send({ errors : [{title: 'Donor Error!', detail: 'Could not find donor!' }]})
+            res.status(422).send({ errors : [{title: 'Recipient Error!', detail: 'Could not find recipient!' }]})
         }
-        res.json(resultDonor);
-    })
+        res.json(resultRecipient);
+    })*/
+    //const admins = db.collection('Admin').find();
+    const donor = await Donor.find();
+    res.status(200).json(donor);
 })
 
 
@@ -44,13 +47,16 @@ const findRecipient = asyncHandler(async (req, res) => {
         res.status(400)
         throw new Error('This User does not have access')
     }
+    /*
     const recipientId = req.params.id
     Donor.findById(recipientId, function(err, resultRecipient){
         if(err){
             res.status(422).send({ errors : [{title: 'Recipient Error!', detail: 'Could not find recipient!' }]})
         }
         res.json(resultRecipient);
-    })
+    })*/
+    const recipient = await Recipient.find();
+    res.status(200).json(recipient);
 })
 
 
