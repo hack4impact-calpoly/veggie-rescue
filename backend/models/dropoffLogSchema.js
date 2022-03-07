@@ -11,7 +11,7 @@ const DropoffLogSchema = new mongoose.Schema({
     foodType: String,
     area: String,
     lbsDroppedOff: Number
-}, {collection: 'People'});
+}, {collection: 'DropoffLog'});
 
 const DropoffLog = mongoose.model('DropoffLog', DropoffLogSchema)
 
