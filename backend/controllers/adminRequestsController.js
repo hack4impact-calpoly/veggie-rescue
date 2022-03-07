@@ -41,9 +41,9 @@ const findDonor = asyncHandler(async (req, res) => {
 // @access Public
 
 const findRecipient = asyncHandler(async (req, res) => {
-    const{email} = req.body;
-    const driverExists = await Driver.findOne({email})
-    const adminExists = await Admin.findOne({email})
+    const userEmail = req.params.email
+    const driverExists = await Driver.findOne({userEmail})
+    const adminExists = await Admin.findOne({userEmail})
 
     if(!driverExists && !adminExists){
         res.status(400)
@@ -68,6 +68,9 @@ const findRecipient = asyncHandler(async (req, res) => {
 
 const createDonor = asyncHandler(async (req, res) => {
     const adminExists = await Admin.findOne({email})
+
+    const adminEmail = req.params.email
+    const adminExists = await Admin.findOne({adminEmail})
 
     if(!adminExists){
         res.status(400)
@@ -123,7 +126,8 @@ const createDonor = asyncHandler(async (req, res) => {
 // @access Public
 
 const createRecipient = asyncHandler(async (req, res) => {
-    const adminExists = await Admin.findOne({email})
+    const adminEmail = req.params.email
+    const adminExists = await Admin.findOne({adminEmail})
 
     if(!adminExists){
         res.status(400)
@@ -176,7 +180,8 @@ const createRecipient = asyncHandler(async (req, res) => {
 // @access Public
 
 const editDonor = asyncHandler(async (req, res) => {
-    const adminExists = await Admin.findOne({email})
+    const adminEmail = req.params.email
+    const adminExists = await Admin.findOne({adminEmail})
 
     if(!adminExists){
         res.status(400)

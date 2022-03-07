@@ -3,9 +3,9 @@ const asyncHandler = require('express-async-handler')
 const { JsonWebTokenError } = require('jsonwebtoken')
 const jwt = require("jsonwebtoken")
 
-const Vehicle = require('../models/vehicleSchema.js')
+const Vehicle = require('../models/vehiclesSchema.js')
 const Admin = require('../models/adminSchema.js')
-const Driver = require('../models/driverSchema.js')
+const Driver = require('../models/driverModel.js')
 
 
 // @desc Finding a Vehicle
@@ -13,8 +13,9 @@ const Driver = require('../models/driverSchema.js')
 // @access Public
 
 const findVehicle = asyncHandler(async (req, res) => {
-    const driverExists = await Driver.findOne({email})
-    const adminExists = await Admin.findOne({email})
+    const userEmail = req.params.email
+    const driverExists = await Driver.findOne({userEmail})
+    const adminExists = await Admin.findOne({userEmail})
 
     if(!driverExists && !adminExists){
         res.status(400)
@@ -37,7 +38,8 @@ const findVehicle = asyncHandler(async (req, res) => {
 // @access Public
 
 const createVehicle = asyncHandler(async (req, res) => {
-    const adminExists = await Admin.findOne({email})
+    const adminEmail = req.params.email
+    const adminExists = await Admin.findOne({adminEmail})
 
     if(!adminExists){
         res.status(400)
@@ -45,7 +47,7 @@ const createVehicle = asyncHandler(async (req, res) => {
     }
     const { id, name, img, currentPickups, currentDropoffs, totalWeight} = req.body
     
-    if(!id || !name || !img || !currentPickups || !currentDropoffs || totalWeight){
+    if(!id || !name || !img || !currentPickups || !currentDropoffs || !totalWeight){
         res.status(400)
         throw new Error('Please include all fields')
     }
@@ -104,7 +106,8 @@ const createVehicle = asyncHandler(async (req, res) => {
 */
 
 const editVehicle = asyncHandler(async (req, res) => {
-    const adminExists = await Admin.findOne({email})
+    const adminEmail = req.params.email
+    const adminExists = await Admin.findOne({adminEmail})
 
     if(!adminExists){
         res.status(400)
@@ -112,14 +115,14 @@ const editVehicle = asyncHandler(async (req, res) => {
     }
     const body = req.body
     const vehicle_id = req.params.id
-    const vehicleInDB = db[vehicle_id]
+    const vehicleInDB = await Vehicle.findOne({vehicle_id})
 
     if(!vehicleInDB){
-        return res.status(404).json({ error: 'Donor not found'});
+        return res.status(404).json({ error: 'Vehicle not found'});
     }
 
     if(body.id || body.token){
-        return res.status(400).json({ error: 'Cannot edit id'})
+        return res.status(400).json({ error: 'Cannot edit id or token'})
     }
 
     if(body.name){
@@ -143,3 +146,15 @@ const editVehicle = asyncHandler(async (req, res) => {
 
     //res.send('Register Route')
 })
+
+const generateToken = (id) => {
+    return jwt.sign({ id }, process.env.JWT_SECRET, {
+        expiresIn: '24h'
+    })
+}
+
+module.exports = {
+    findVehicle,
+    createVehicle,
+    editVehicle
+}
