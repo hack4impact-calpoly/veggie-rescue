@@ -5,7 +5,7 @@ const jwt = require("jsonwebtoken")
 
 const Donor = require('../models/donorSchema.js')
 const Recipient = require('../models/recipientSchema.js')
-const Admin = require('../models/adminSchema.js')
+const Admin = require('../models/adminModel.js')
 const Driver = require('../models/driverModel.js')
 
 // @desc Finding a donor
