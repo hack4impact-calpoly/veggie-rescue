@@ -1,7 +1,6 @@
 const mongoose = require('mongoose')
 
 const PickupLogSchema = new mongoose.Schema({
-    id: String,
     date: String,
     driver: String,
     vehicle: String,
