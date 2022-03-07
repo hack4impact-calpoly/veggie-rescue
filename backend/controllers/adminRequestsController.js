@@ -13,6 +13,7 @@ const Driver = require('../models/driverModel.js')
 // @access Public
 
 const findDonor = asyncHandler(async (req, res) => {
+    const{email} = req.body;
     const driverExists = await Driver.findOne({email})
     const adminExists = await Admin.findOne({email})
 
@@ -40,6 +41,7 @@ const findDonor = asyncHandler(async (req, res) => {
 // @access Public
 
 const findRecipient = asyncHandler(async (req, res) => {
+    const{email} = req.body;
     const driverExists = await Driver.findOne({email})
     const adminExists = await Admin.findOne({email})
 
@@ -85,6 +87,7 @@ const createDonor = asyncHandler(async (req, res) => {
         res.status(400)
         throw new Error('Donor already exists')
     }
+
 
 
     // Create donor
@@ -136,7 +139,7 @@ const createRecipient = asyncHandler(async (req, res) => {
     // Find if donor does not already exist
     const recipientExists = await Recipient.findOne({id})
 
-    if(recipientExists){
+    if(!recipientExists){
         res.status(400)
         throw new Error('Donor already exists')
     }
@@ -256,6 +259,12 @@ const editRecipient = asyncHandler(async (req, res) => {
 
     //res.send('Register Route')
 })
+
+const generateToken = (id) => {
+    return jwt.sign({ id }, process.env.JWT_SECRET, {
+        expiresIn: '24h'
+    })
+}
 
 module.exports = {
     findDonor,
