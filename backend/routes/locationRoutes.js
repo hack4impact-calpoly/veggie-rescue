@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router()
-const {findDonor, findRecipient, editDonor, editRecipient} = require('../controllers/adminRequestsController')
+const {findDonor, findRecipient, createDonor, createRecipient, editDonor, editRecipient} = require('../controllers/adminRequestsController')
 
 //Fetch
 router.get('/donor/find', findDonor)

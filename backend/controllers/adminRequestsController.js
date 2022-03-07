@@ -13,7 +13,7 @@ const Driver = require('../models/driverSchema.js')
 // @access Public
 
 const findDonor = asyncHandler(async (req, res) => {
-    const driverExists = await Driver.findOne({email})
+    const driverExists = await Driver.findOne({req.email})
     const adminExists = await Admin.findOne({email})
 
     if(!driverExists && !adminExists){
