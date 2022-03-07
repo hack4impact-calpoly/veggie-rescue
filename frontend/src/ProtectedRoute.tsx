@@ -1,13 +1,16 @@
-import React from 'react';
-import { Navigate,Outlet,Route,RouteProps } from 'react-router-dom';
+import { Navigate,Outlet, RouteProps } from 'react-router-dom';
+import  useAuthStatus  from './hooks/useAuthStatus'
 
+// import Spinner from './components/Spinner'
 interface Props extends RouteProps{
-    isAuth:boolean;
     redirectTo:string;
 }
-//This function helps to redirect to login page if auth is false 
-const ProtectedRoute = ({isAuth,redirectTo,...routeProps}: Props)=> {
-   return isAuth ? <Outlet /> : <Navigate to={redirectTo}/>
+const ProtectedRoute = ({redirectTo}: Props)=> {
+    const { loggedIn, checkingStatus } = useAuthStatus()
+    if(checkingStatus){
+        return <h1>LOADING.........</h1>
+    }
+   return loggedIn ? <Outlet /> : <Navigate to={redirectTo}/>
 }
 
 export default ProtectedRoute;

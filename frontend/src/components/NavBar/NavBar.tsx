@@ -60,6 +60,7 @@ export default function NavBar() {
     }
 
     return (
+        <>
         <main>
             <div className="topLayer">
                 <button className='leftButton' onClick={() => shiftNavBarSection(-1)}>
@@ -76,5 +77,6 @@ export default function NavBar() {
                 </div>
             </div>
         </main>
+        </>
     )
 }

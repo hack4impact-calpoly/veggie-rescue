@@ -18,10 +18,9 @@ connectDatabase();
 //.then(() => console.log(`Success`))
 //.catch((error) => console.error(`Could not connect due to ${error}`))
 
-//app.use("/api/drivers", require("./routes/driverRoutes"));
-//app.use("/api/admin", require("./routes/adminRoutes"));
-app.use("/api/location", require("./routes/Location"));
-
+app.use("/api/drivers", require("./routes/driverRoutes"));
+app.use("/api/admin", require("./routes/adminRoutes"));
+app.use("/api/location", require("./routes/locationRoutes"));
 
 app.get("/", (req, res) => {
   res.status(200).json({ message: "Welcome to Veggie Rescue API" });

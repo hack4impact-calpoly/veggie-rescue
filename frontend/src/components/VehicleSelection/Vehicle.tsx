@@ -22,7 +22,7 @@ function Vehicles() {
 
   // Implementation of mapping components.
   return (
-    <div>
+    <div className='container'>
       <p className="text-4xl text-[#176C3E] font-semibold pt-20 pb-10">
         Choose your vehicle
       </p>

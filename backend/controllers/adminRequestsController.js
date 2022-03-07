@@ -6,14 +6,14 @@ const jwt = require("jsonwebtoken")
 const Donor = require('../models/donorSchema.js')
 const Recipient = require('../models/recipientSchema.js')
 const Admin = require('../models/adminSchema.js')
-const Driver = require('../models/driverSchema.js')
+const Driver = require('../models/driverModel.js')
 
 // @desc Finding a donor
 // @route /api/donor/find
 // @access Public
 
 const findDonor = asyncHandler(async (req, res) => {
-    const driverExists = await Driver.findOne({req.email})
+    const driverExists = await Driver.findOne({email})
     const adminExists = await Admin.findOne({email})
 
     if(!driverExists && !adminExists){
@@ -256,3 +256,12 @@ const editRecipient = asyncHandler(async (req, res) => {
 
     //res.send('Register Route')
 })
+
+module.exports = {
+    findDonor,
+    findRecipient,
+    createDonor,
+    createRecipient,
+    editDonor,
+    editRecipient,
+}
