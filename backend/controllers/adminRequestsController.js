@@ -67,8 +67,6 @@ const findRecipient = asyncHandler(async (req, res) => {
 // @access Public
 
 const createDonor = asyncHandler(async (req, res) => {
-    const adminExists = await Admin.findOne({email})
-
     const adminEmail = req.params.email
     const adminExists = await Admin.findOne({adminEmail})
 
