@@ -6,8 +6,9 @@ import VehiclesCard from '../../components/VehiclesCard/VehiclesCard';
 import VolunteersCard from '../../components/VolunteersCard/VolunteersCard';
 import NewVolunteersCard from '../../components/VolunteersCard/NewVolunteersCard';
 import NewDonorsCard from '../../components/DonorsCard/NewDonorsCard';
-import VolunteersForm from '../../components/VolunteersCard/VolunteersForm';
-import DonorsForm from '../../components/DonorsCard/DonorsForm';
+import EntityForm from './EntityForm';
+import ShortEntityForm from './ShortEntityForm';
+
 import { vehicles } from '../../data/dbMock';
 import { AiOutlineSearch } from 'react-icons/ai';
 
@@ -16,7 +17,7 @@ const AdminDataScreen = () => {
   const [volunteers, setVolunteers] = useState(false);
   const [donors, setDonors] = useState(false);
   const [recipients, setRecipients] = useState(false);
-  const [newCard, setNewCard] = useState(false);
+  const [showModal, setShowModal] = useState(false);
 
   function handleClick(){
     console.log("button clicked");
@@ -46,14 +47,9 @@ const AdminDataScreen = () => {
     setDonors(false);
     setRecipients((prev) => !prev);
   }
-  function handleNew(){
-    console.log("add new");
-    setNewCard((prev) => !prev);
+  function handleShowModal(){
+    setShowModal((prev) => !prev);
   }
-
-  useLayoutEffect(() => {
-    ( <div><VolunteersForm /><h1>hi</h1></div> );
-  }, [newCard]);
 
   return(
     <div className="data-container" style={{background: 'white'}}>
@@ -91,10 +87,10 @@ const AdminDataScreen = () => {
 
   { volunteers && (
     <div className="logs">
-      <button onClick={handleNew}>
+      <button onClick={handleShowModal}>
         <NewVolunteersCard />
       </button>
-      { newCard && <VolunteersForm volunteers={true} handler={handleNew}/>}
+      { showModal && <ShortEntityForm handleShow={handleShowModal}/>}
       {(vehicles).map((v,index) => {
         return(
           <VolunteersCard
@@ -108,10 +104,10 @@ const AdminDataScreen = () => {
 
     { vehiclesCard && (
     <div className="logs">
-      <button onClick={handleNew}>
+      <button onClick={handleShowModal}>
         <NewVolunteersCard />
       </button>
-      { newCard && <VolunteersForm volunteers={false} handler={handleNew}/>}
+      { showModal && <ShortEntityForm handleShow={handleShowModal}/>}
       {(vehicles).map((v,index) => {
         return(
           <VehiclesCard
@@ -124,15 +120,15 @@ const AdminDataScreen = () => {
 
     { donors && (
         <div className="logs">
-          <button onClick={handleNew}>
+          <button onClick={handleShowModal}>
             <NewDonorsCard />
           </button>
-          { newCard && <DonorsForm donors={true} /> }
+          { showModal && <EntityForm handleShow={handleShowModal}/> }
           {(vehicles).map((v,index) => {
             return(
               <DonorsCard
                 index={index}
-                donor="ella"
+                donor="Farm"
                 entityType= "Farm"
                 locationType= "Farm"
                 foodType= "Produce"
@@ -144,15 +140,15 @@ const AdminDataScreen = () => {
 
     { recipients && (
         <div className="logs">
-          <button onClick={handleNew}>
+          <button onClick={handleShowModal}>
             <NewDonorsCard />
           </button>
-          { newCard && <DonorsForm donors={false} /> }
+          { showModal && <EntityForm handleShow={handleShowModal}/> }
           {(vehicles).map((v,index) => {
             return(
               <RecipientsCard
                 index={index}
-                donor="ella"
+                donor="Farm"
                 entityType= "Farm"
                 demographicName= "Farm"
                 foodType= "Produce"
