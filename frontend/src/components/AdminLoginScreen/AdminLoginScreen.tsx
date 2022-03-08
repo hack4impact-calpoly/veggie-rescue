@@ -1,40 +1,78 @@
-import React from 'react';
-// import './AdminLoginScreen.css';
-import { useEffect, useState, ChangeEvent, FormEvent } from 'react';
+import { useEffect, useState, ChangeEvent } from 'react';
+import { useAppSelector, useAppDispatch } from '../../app/hooks';
+import { login, reset } from '../../features/adminAuth/adminAuthSlice';
+
+import './AdminLoginScreen.css';
 import logo from '../../imgs/veggie-rescue-logo.png';
+import { toast } from 'react-toastify';
+import { useNavigate } from 'react-router-dom';
 
 const AdminLoginScreen = () => {
-  const [email, setEmail] = useState("");
-  const[password, setPassword] = useState("");
+  // const [email, setEmail] = useState("");
+  // const[password, setPassword] = useState("");
+    const [formData, setFormData] = useState({
+      email: '',
+      password: '',
+    })
+    const { email, password } = formData;
+    // const [loading, setLoading] = useState(true);
 
-  const handleEmailChange = (e: ChangeEvent<HTMLInputElement>) => {
-    setEmail(e.currentTarget.value);
-  };
+  const dispatch = useAppDispatch();
+  const navigate = useNavigate();
 
-  const handlePasswordChange = (e: ChangeEvent<HTMLInputElement>) => {
-    setPassword(e.currentTarget.value);
-  };
+    const { admin, isLoading, isError, isSuccess, message } = useAppSelector(
+    (state) => state.adminAuth
+  )
+
+    useEffect(()=>{
+      if(isError){
+        toast.error(message)
+      }
+      if(isSuccess || Object.keys(admin).length !== 0){
+        toast.success(`Success!  Welcome ${admin.name}`)
+       navigate('/Admin')
+      }
+      dispatch(reset())
+  },[isError, isSuccess, admin, message, navigate, dispatch])
+
+   const onChange = (e: ChangeEvent<HTMLInputElement>) => {
+    setFormData((prevState) => ({
+      ...prevState,
+      [e.target.name]: e.target.value,
+    }))
+  }
 
   const validateEmail = () => {
-    let res = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+    let res = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
     return res.test(email);
   }
 
-  const handleSubmit = () => {
+  const handleSubmit = (e: any) => {
+    e.preventDefault();
+      const userData = {
+      email,
+      password,
+    }
     if (email === "" || password === "") {
-      alert("Missing email or password. Please try again.");
+             toast.error("Missing email or password. Please try again.");
+
     }
    else if(!validateEmail()){
-       alert("Please enter a valid email address.");
+       toast.error("Please enter a valid email address.");
    }
     else {
-      console.log({email});
-      console.log({password});
+      dispatch(login(userData))
+  
     }
   };
 
+
+
+if(isLoading){
+  return <h1> Loading... </h1>
+}
   return(
-    
+      
     <div className="bg-[url('imgs/carrot-background.png')] font-Poppins w-full h-screen relative flex items-center justify-center flex-col">
       <div className="bg-white w-[460px] h-[525px] rounded-[15px] shadow-[0_2px_20px_2px_rgba(0,0,0,0.2)] flex flex-col items-center justify-center">
         <div className="w-[350px] pt-[0px] pb-[15px]">
@@ -54,7 +92,7 @@ const AdminLoginScreen = () => {
               name="email"
               placeholder="Email"
               value={email}
-              onChange={handleEmailChange}
+              onChange={onChange}
             />
           </div>
           <div className="rounded-[30px] h-[55px]">
@@ -64,7 +102,7 @@ const AdminLoginScreen = () => {
               name="password"
               placeholder="Password"
               value={password}
-              onChange={handlePasswordChange}
+              onChange={onChange}
             />
           </div>
           <div className="rounded-[30px] h-[55px]">

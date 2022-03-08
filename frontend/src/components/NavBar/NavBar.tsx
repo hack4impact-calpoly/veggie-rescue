@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 
 import NavBarButton_DARK from '../../imgs/button_dark_left.svg';
 import NavBarButton_right_LIGHT from '../../imgs/button_light_right.svg';
-// import './NavBar.css'
+import './NavBar.css'
 
 export default function NavBar() {
     
