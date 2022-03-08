@@ -46,7 +46,9 @@
   white-space: nowrap;
   text-overflow: ellipsis;
   font-size: 15px;
-background: white;
+  background: white;
+  display: flex;
+  flex-direction: row;
 }
 
 .donors-entry-text:hover{

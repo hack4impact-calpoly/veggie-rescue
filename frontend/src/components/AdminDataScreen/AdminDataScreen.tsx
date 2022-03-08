@@ -9,7 +9,7 @@ import NewDonorsCard from '../../components/DonorsCard/NewDonorsCard';
 import EntityForm from './EntityForm';
 import ShortEntityForm from './ShortEntityForm';
 
-import { vehicles } from '../../data/dbMock';
+import { vehicles, deliverySchema, pickupSchema } from '../../data/dbMock';
 import { AiOutlineSearch } from 'react-icons/ai';
 
 const AdminDataScreen = () => {
@@ -124,15 +124,15 @@ const AdminDataScreen = () => {
             <NewDonorsCard />
           </button>
           { showModal && <EntityForm handleShow={handleShowModal}/> }
-          {(vehicles).map((v,index) => {
+          {(pickupSchema).map((v,index) => {
             return(
               <DonorsCard
-                index={index}
-                donor="Farm"
-                entityType= "Farm"
-                locationType= "Farm"
-                foodType= "Produce"
-                areaName= "SM/Orcutt"/>
+                index={v.id}
+                donor={v.name}
+                entityType= {v.donorEntityType}
+                locationType= {v.donorLocationType}
+                foodType= {v.foodType}
+                areaName= {v.area}/>
             );
           })}
         </div>
@@ -144,15 +144,15 @@ const AdminDataScreen = () => {
             <NewDonorsCard />
           </button>
           { showModal && <EntityForm handleShow={handleShowModal}/> }
-          {(vehicles).map((v,index) => {
+          {(deliverySchema).map((v,index) => {
             return(
               <RecipientsCard
-                index={index}
-                donor="Farm"
-                entityType= "Farm"
-                demographicName= "Farm"
-                foodType= "Produce"
-                areaName= "SM/Orcutt"/>
+                index={v.id}
+                donor={v.name}
+                entityType={v.recipientEntityType}
+                demographicName={v.demographic}
+                foodType={v.foodType}
+                areaName={v.area}/>
               );
           })}
         </div>

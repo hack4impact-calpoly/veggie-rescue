@@ -2,6 +2,31 @@ import React, { useLayoutEffect, useState } from 'react';
 import './EntityForm.css';
 import { RiUser3Fill } from 'react-icons/ri';
 
+const Button = (props:any) => {
+  const [color, setColors] = React.useState("");
+  const [active, setActive] = React.useState(false);
+  const handleClickButton = (name:'') => {
+    setActive(true);
+    setColors('2px solid #FF9C55');
+    if (active === true) {
+      setActive(false);
+      setColors("");
+    }
+    props.handleClick(props.name);
+  };
+
+  return (
+    <button
+      type="button"
+      className="food-button"
+      onClick={() => handleClickButton(props.name)}
+      style={{border:color}}
+    >
+      {props.name}
+    </button>
+  );
+};
+
 const EntityForm = (props: any) => {
   const [entityType, setEntityType] = useState("");
   const [locationType, setLocationType] = useState("");
@@ -11,6 +36,9 @@ const EntityForm = (props: any) => {
   const [demographicName, setDemographicName] = useState("");
   const [donor, setDonor] = useState(true);
   const [recipient, setRecipient] = useState(false);
+  const [border, setBorder] = useState('1px solid black');
+  let foodTypes = ['Baked Goods','Packaged/Processed','Produce'];
+  let selectedFoodTypes = [''];
 
   function handleDonor(){
     setDonor((prev) => !prev);
@@ -20,6 +48,14 @@ const EntityForm = (props: any) => {
     setRecipient((prev) => !prev);
     setDonor(false);
   }
+
+  const handleFoodClick = (name: '') =>{
+    var beforeLen = selectedFoodTypes.length;
+    selectedFoodTypes = (selectedFoodTypes.filter(item => (item !== name)));
+    var afterLen = selectedFoodTypes.length;
+    {(afterLen == beforeLen) && selectedFoodTypes.push(name)};
+  }
+
   function handleSubmit(e:any){
      e.preventDefault();
      {(!donor && !recipient) ? alert("Please select Donor or Recipient") :
@@ -61,11 +97,14 @@ const EntityForm = (props: any) => {
       onChange={(e:any) => setEntityType(e)}
     />
     <h2>Food Type</h2>
-    <input
-          className="input"
-          placeholder="Food Type"
-          onChange={(e:any) => setFoodType(e)}
-    />
+    <h4>Select all that apply</h4>
+    <div className="food-type">
+      {(foodTypes).map((v:any, index:any) => {
+        return(
+          <Button id={index} name={v} handleClick={handleFoodClick}/>
+      );
+      })}
+    </div>
     { donor ? (
       <div className="internal-div"><h2>Location Type</h2>
       <input

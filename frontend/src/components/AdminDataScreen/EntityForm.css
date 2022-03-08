@@ -38,10 +38,12 @@
 .entity-type{
   margin-left: 15px;
   display: flex;
-  justify-content: space-between;
+
   width: 38%;
   background: white;
   margin-bottom: 10px;
+  font-size: 15px;
+  gap: 15px;
 }
 .type-button{
   border: 1px solid black;
@@ -53,6 +55,13 @@
   margin-left: 15px;
   font-size: 15px;
 }
+#modal h4{
+  background: white;
+  margin-left: 15px;
+  font-size: 12px;
+  color: #616161;
+  margin-bottom: 5px;
+}
 .internal-div{
   background: white;
   width: 100%;
@@ -62,7 +71,7 @@
 }
 .internal-div input{
   float: left;
-  height: 33px;
+  height: 30px;
 }
 #modal input{
   width: 95%;
@@ -86,4 +95,18 @@
   width:100%;
   height: 100%;
   background: rgba(0, 0, 0, 0.6);
+}
+.food-type{
+  width: 100%;
+  background: white;
+  display: flex;
+  gap: 15px;
+  margin-left: 15px;
+  font-size: 15px;
+  margin-bottom: 10px;
+}
+.food-button{
+  border: 1px solid black;
+  border-radius: 20px;
+  padding: 2px 15px;
 }
