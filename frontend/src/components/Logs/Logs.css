@@ -1,0 +1,47 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap');
+
+.text-container{
+  font-size: 20px;
+  color: #9BA3AC;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.logs-container{
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 50px;
+  background-color: #F0F9F1;
+}
+
+.logs{
+  margin-top: 30px;
+}
+
+.subtitle{
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  width: 500px;
+}
+
+.your-logs{
+  height: 80px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 300px;
+}
+
+#icon{
+  position: absolute;
+  left: 30%;
+  font-size: 30px;
+}
+
+#logs-text{
+  position: relative;
+}

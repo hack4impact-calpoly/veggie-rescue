@@ -1,42 +1,51 @@
-import { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
+import { useAppSelector, useAppDispatch } from '../../app/hooks';
+import { toast } from 'react-toastify';
+import { login, reset } from '../../features/driverAuth/driverAuthSlice';
+
 import AsterixDisplay from '../AsterixDisplay/AsterixDisplay';
-import './LoginScreen.css';
 import NumPad from '../NumPad/NumPad';
 import logo from '../../imgs/veggie-rescue-logo.png';
 
-function LoginScreen() {
+import { useNavigate } from 'react-router-dom';
+
+type Props = {};
+
+const LoginScreen: React.FC<Props> = () => {
   const [asterix, setAsterix] = useState<string[]>([]);
   const [pin, setPin] = useState('');
-  const [loading, setLoading] = useState(false);
-  const [driver, setDriver] = useState({
-    id: '',
-    name: '',
-    isLoggedIn: false,
-    clock_in: '',
-    clock_out: '',
-    pin: ''
-  });
+  const [loading, setLoading] = useState(true);
 
+  const dispatch = useAppDispatch();
+  const navigate = useNavigate();
+
+  const { driver, isError, isSuccess, message } = useAppSelector(
+    (state) => state.driverAuth
+  );
   useEffect(() => {
-    //on component load, set loading; fetch driver data and put into state
-    if (driver.name !== '') {
-      alert(`Found driver:${driver.name}`);
-    }
-  }, [driver]);
-
-  //on numpad submit check to see if driver exists; if so add to driver state
-  const submitHandler = () => {
+    // Once user enters 4 numbers, dispatch API call for logging in and immediately clear asterix display
     if (pin.length === 4) {
-      const driverFilter = DriverData.filter((d) => d.pin === pin);
-      if (driverFilter.length !== 0) {
-        setDriver(driverFilter[0]);
-        // here we will navigate to next page
-      }else{
-        alert('No driver found... hint: try 1111 or 2222 or 3333!')
-      }
+      setLoading(true);
+      dispatch(login(pin));
+      clearHandler();
     }
-    clearHandler();
-  };
+    // Display toast if we have an error with driver login
+    if (isError) {
+      toast.error(message);
+      //reset state in case we had an error and none of the if statements were reached
+      dispatch(reset());
+      setLoading(false);
+    }
+    // If we have a successful call then use the driver data to get vehicles, we also check if the user was saved in localStorage
+    if (isSuccess || Object.keys(driver).length !== 0) {
+      toast.success(`Welcome ${driver.name}`);
+      navigate('/Dashboard');
+      setLoading(false);
+    }
+    if (Object.keys(driver).length === 0) {
+      setLoading(false);
+    }
+  }, [driver, isError, isSuccess, message, navigate, pin, dispatch]);
 
   const buttonHandler = (btnId: string) => {
     if (pin.length <= 3) {
@@ -50,66 +59,30 @@ function LoginScreen() {
     setAsterix([]);
   };
 
-  const backSpaceHandler = () =>{
-    setPin(pin.slice(0,-1));
-    setAsterix(a => a.filter((_, i) => i !== a.length -1));
-  }
+  const backSpaceHandler = () => {
+    setPin(pin.slice(0, -1));
+    setAsterix((a) => a.filter((_, i) => i !== a.length - 1));
+  };
 
   if (loading) {
     return <h3>Loading...</h3>;
   }
   return (
     <div className="container">
-      <div className="logo">
-        <img className='logo' src={logo} alt="veggie rescue logo" />
+      <div className="flex flex-col items-center justify-center">
+        <div className=" mt-5 mb-3 w-4/6 ">
+          <img src={logo} alt="veggie rescue logo" />
+        </div>
+        <span>Enter your 4 digit pin</span>
+        <AsterixDisplay asterix={asterix} />
       </div>
-      <span style={{ fontFamily: 'Roboto' }}>Enter your 4 digit pin</span>
-      <AsterixDisplay asterix={asterix} />
       <NumPad
         buttonHandler={buttonHandler}
-        submitHandler={submitHandler}
         clearHandler={clearHandler}
         backSpaceHandler={backSpaceHandler}
       />
     </div>
   );
-}
+};
 
 export default LoginScreen;
-
-//below will be deleted once we implement API calls
-interface drivers {
-  id: string;
-  name: string;
-  isLoggedIn: boolean;
-  clock_in: string;
-  clock_out: string;
-  pin: string;
-}
-
-const DriverData: drivers[] = [
-  {
-    id: '1',
-    name: 'diana',
-    isLoggedIn: false,
-    clock_in: '',
-    clock_out: '',
-    pin: '1111'
-  },
-  {
-    id: '1',
-    name: 'carl',
-    isLoggedIn: false,
-    clock_in: '',
-    clock_out: '',
-    pin: '2222'
-  },
-  {
-    id: '1',
-    name: 'maggie',
-    isLoggedIn: false,
-    clock_in: '',
-    clock_out: '',
-    pin: '3333'
-  }
-];

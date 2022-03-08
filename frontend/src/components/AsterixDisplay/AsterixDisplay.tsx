@@ -4,29 +4,32 @@ type Props = {
 
 function AsterixDisplay({ asterix }: Props) {
   return (
-    <>
-      <div style={{ display: 'flex', paddingBottom: '15px' }}>
+    <> 
+      <div className="flex  pb-5 pt-5 ">
         <div
           style={{
+            display:"flex",
             justifyContent: 'center',
             alignItems: 'center',
             height: '56px',
             borderBottom: '4px solid black',
-            width: '48px',
+            width: '56px',
             fontWeight: '900',
             fontSize: '48px',
-            marginRight: '15px'
+            marginRight: '15px',
+        
           }}
         >
           {asterix[0]}
         </div>
         <div
           style={{
+            display:"flex",
             justifyContent: 'center',
             alignItems: 'center',
             height: '56px',
             borderBottom: '4px solid black',
-            width: '48px',
+            width: '56px',
             fontWeight: '900',
             fontSize: '48px',
             marginRight: '15px'
@@ -36,11 +39,12 @@ function AsterixDisplay({ asterix }: Props) {
         </div>
         <div
           style={{
+            display:"flex",
             justifyContent: 'center',
             alignItems: 'center',
             height: '56px',
             borderBottom: '4px solid black',
-            width: '48px',
+            width: '56px',
             fontWeight: '900',
             fontSize: '48px',
             marginRight: '15px'
@@ -50,14 +54,16 @@ function AsterixDisplay({ asterix }: Props) {
         </div>
         <div
           style={{
+            display:"flex",
             justifyContent: 'center',
             alignItems: 'center',
             height: '56px',
             borderBottom: '4px solid black',
-            width: '48px',
+            width: '56px',
             fontWeight: '900',
             fontSize: '48px',
-            marginRight: '15px'
+            
+        
           }}
         >
           {asterix[3]}
