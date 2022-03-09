@@ -24,14 +24,16 @@
 .logs{
   display: flex;
   align-items: center;
-  justify-content: space-between;
-  gap: 30px;
+  justify-content: start;
+  gap: 30px 68px;
   flex-wrap:wrap;
   background-color: white;
   margin-top: 40px;
   width: 100%;
 }
-
+.long-log{
+  justify-content: space-between;
+}
 #header-search{
   z-index: 4;
   height: 40px;

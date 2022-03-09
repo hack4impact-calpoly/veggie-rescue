@@ -9,7 +9,7 @@ import NewDonorsCard from '../../components/DonorsCard/NewDonorsCard';
 import EntityForm from './EntityForm';
 import ShortEntityForm from './ShortEntityForm';
 
-import { vehicles, deliverySchema, pickupSchema } from '../../data/dbMock';
+import { vehicles, volunteerSchema, deliverySchema, pickupSchema } from '../../data/dbMock';
 import { AiOutlineSearch } from 'react-icons/ai';
 
 const AdminDataScreen = () => {
@@ -91,12 +91,12 @@ const AdminDataScreen = () => {
         <NewVolunteersCard />
       </button>
       { showModal && <ShortEntityForm handleShow={handleShowModal}/>}
-      {(vehicles).map((v,index) => {
+      {(volunteerSchema).map((v,index) => {
         return(
           <VolunteersCard
             index={index}
-            name= "Sam Favreau"
-            pin= "1111" />
+            name={v.name}
+            pin={v.pin}/>
         );
       })}
     </div>
@@ -119,7 +119,7 @@ const AdminDataScreen = () => {
     )}
 
     { donors && (
-        <div className="logs">
+        <div className="logs long-log">
           <button onClick={handleShowModal}>
             <NewDonorsCard />
           </button>
@@ -139,7 +139,7 @@ const AdminDataScreen = () => {
     )}
 
     { recipients && (
-        <div className="logs">
+        <div className="logs long-log">
           <button onClick={handleShowModal}>
             <NewDonorsCard />
           </button>
