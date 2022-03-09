@@ -2,6 +2,7 @@ import React, { useLayoutEffect, useState } from 'react';
 import './EntityForm.css';
 import { RiUser3Fill } from 'react-icons/ri';
 
+/* button for food types */
 const Button = (props:any) => {
   const [color, setColors] = React.useState("");
   const [active, setActive] = React.useState(false);
@@ -50,9 +51,11 @@ const EntityForm = (props: any) => {
   }
 
   const handleFoodClick = (name: '') =>{
+    /* remove from selectedFoodTypes list if in list */
     var beforeLen = selectedFoodTypes.length;
     selectedFoodTypes = (selectedFoodTypes.filter(item => (item !== name)));
     var afterLen = selectedFoodTypes.length;
+    /* otherwise, add to selectedFoodTypes list */
     {(afterLen == beforeLen) && selectedFoodTypes.push(name)};
   }
 
