@@ -84,6 +84,7 @@ if(isLoading){
           </h4>
         </div>
 
+        <form onSubmit={handleSubmit}>
         <div className="rounded-10 flex items-center justify-center flex-col mt-5">
         <div className="rounded-[30px] h-[55px]">
             <input
@@ -110,7 +111,9 @@ if(isLoading){
               <h3>Login</h3>
             </button>
           </div>
+         
         </div>
+         </form>
       </div>
     </div>
   );
