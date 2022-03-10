@@ -20,6 +20,7 @@ connectDatabase();
 
 app.use("/api/drivers", require("./routes/driverRoutes"));
 app.use("/api/admin", require("./routes/adminRoutes"));
+app.use("/api", require("./routes/logRoutes"));
 
 app.get("/", (req, res) => {
   res.status(200).json({ message: "Welcome to Veggie Rescue API" });
