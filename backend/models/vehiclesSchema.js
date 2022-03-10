@@ -7,7 +7,7 @@ const VehicleSchema = new mongoose.Schema({
     currentPickups: Array,
     currentDropoffs: Array,
     totalWeight: Number
-}, {collection: 'People'});
+}, {collection: 'Vehicle'});
 
 const Vehicle = mongoose.model('Vehicle', VehicleSchema)
 
