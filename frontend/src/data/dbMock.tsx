@@ -158,3 +158,18 @@ export const pickupSchema = [
     id: 'd93iJ7n'
   }
 ];
+
+export const logs = [
+  {
+    id: '', //dp mpt meed id
+    date: '02-Jan-21',
+    driver: 'Becky',
+    vehicle: 'Van',
+    name: "Ebby's Organic Farm",
+    foodType: 'Produce',
+    lbsPickedUp: 10,
+    locationType: 'Farmers Market',
+    donorEntityType: 'Farm',
+    area: 'SB/Goleta',
+  },
+];
