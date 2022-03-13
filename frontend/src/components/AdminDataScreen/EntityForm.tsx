@@ -64,7 +64,7 @@ const EntityForm = (props: any) => {
      {(!donor && !recipient) ? alert("Please select Donor or Recipient") :
        ((donorName == "") ? alert("Missing Entity Name") :
        ((entityType == "") ? alert("Missing Entity Type") :
-       ((foodType == "") ? alert("Missing Food Type") :
+       ((selectedFoodTypes.length <= 1) ? alert("Missing Food Type") :
        ((areaName == "") ? alert("Missing Area Name") :
        ((donor && (locationType == "")) ? alert("Missing Location Type") :
        ((recipient && (demographicName == "")) ? alert("Missing Demographic Name") :
