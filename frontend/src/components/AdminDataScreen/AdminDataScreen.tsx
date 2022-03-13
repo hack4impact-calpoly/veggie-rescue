@@ -8,7 +8,6 @@ import NewVolunteersCard from '../../components/VolunteersCard/NewVolunteersCard
 import NewDonorsCard from '../../components/DonorsCard/NewDonorsCard';
 import EntityForm from './EntityForm';
 import ShortEntityForm from './ShortEntityForm';
-
 import { vehicles, volunteerSchema, deliverySchema, pickupSchema } from '../../data/dbMock';
 import { AiOutlineSearch } from 'react-icons/ai';
 
@@ -18,13 +17,12 @@ const AdminDataScreen = () => {
   const [donors, setDonors] = useState(false);
   const [recipients, setRecipients] = useState(false);
   const [showModal, setShowModal] = useState(false);
-
-  function handleClick(){
-    console.log("button clicked");
-  }
+  const [q, setQ] = useState("");
+  const [searchParam, setSearchParam] = useState(["name"]);
 
   function handleVolunteers(){
     setVolunteers((prev) => !prev);
+    setSearchParam(["name", "pin"]);
     setVehiclesCard(false);
     setDonors(false);
     setRecipients(false);
@@ -32,6 +30,7 @@ const AdminDataScreen = () => {
   function handleVehicles(){
     setVolunteers(false);
     setVehiclesCard((prev) => !prev);
+    setSearchParam(["name"]);
     setDonors(false);
     setRecipients(false);
   }
@@ -39,6 +38,7 @@ const AdminDataScreen = () => {
     setVolunteers(false);
     setVehiclesCard(false);
     setDonors((prev) => !prev);
+    setSearchParam(["name", "donorLocationType", "donorEntityType", "foodType", "area"]);
     setRecipients(false);
   }
   function handleRecipients(){
@@ -46,9 +46,64 @@ const AdminDataScreen = () => {
     setVehiclesCard(false);
     setDonors(false);
     setRecipients((prev) => !prev);
+    setSearchParam(["name", "recipientEntityType", "demographic", "foodType", "area"]);
   }
   function handleShowModal(){
     setShowModal((prev) => !prev);
+  }
+
+  /* reset input when category switches */
+  useLayoutEffect(() => {
+    setQ('');
+  }, [volunteers, vehiclesCard, donors, recipients]);
+
+  /* this function adds cards to query based on search */
+  function search(items:any){
+    if(volunteers){
+      return volunteerSchema.filter((item:any) => {
+        return searchParam.some((newItem:any) => {
+          return (
+            item[newItem]
+              .toString()
+              .toLowerCase()
+              .indexOf(q.toLowerCase()) > -1
+          );
+        });
+      });
+    } else if(vehiclesCard){
+      return vehicles.filter((item:any) => {
+        return searchParam.some((newItem:any) => {
+          return (
+            item[newItem]
+              .toString()
+              .toLowerCase()
+              .indexOf(q.toLowerCase()) > -1
+          );
+        });
+      });
+    } else if(donors){
+      return pickupSchema.filter((item:any) => {
+        return searchParam.some((newItem:any) => {
+          return (
+            item[newItem]
+              .toString()
+              .toLowerCase()
+              .indexOf(q.toLowerCase()) > -1
+          );
+        });
+      });
+    } else{
+      return deliverySchema.filter((item:any) => {
+        return searchParam.some((newItem:any) => {
+          return (
+            item[newItem]
+              .toString()
+              .toLowerCase()
+              .indexOf(q.toLowerCase()) > -1
+          );
+        });
+      });
+    }
   }
 
   return(
@@ -81,6 +136,8 @@ const AdminDataScreen = () => {
         id="header-search"
         placeholder="Search"
         name="s"
+        value={q}
+        onChange={(e) => setQ(e.target.value)}
       />
       <AiOutlineSearch id="search-icon" style={{color:'grey'}}/>
     </div>
@@ -91,74 +148,74 @@ const AdminDataScreen = () => {
         <NewVolunteersCard />
       </button>
       { showModal && <ShortEntityForm handleShow={handleShowModal}/>}
-      {(volunteerSchema).map((v,index) => {
+      {search(q).map((item:any, index:any) => {
         return(
           <VolunteersCard
             index={index}
-            name={v.name}
-            pin={v.pin}/>
+            name={item.name}
+            pin={item.pin}/>
         );
       })}
     </div>
-    )}
+  )}
 
-    { vehiclesCard && (
+  { vehiclesCard && (
     <div className="logs">
       <button onClick={handleShowModal}>
         <NewVolunteersCard />
       </button>
       { showModal && <ShortEntityForm handleShow={handleShowModal}/>}
-      {(vehicles).map((v,index) => {
+      {search(q).map((item:any, index:any) => {
         return(
           <VehiclesCard
             index={index}
-            vehicle={v.name} />
+            vehicle={item.name}/>
         );
       })}
     </div>
-    )}
+  )}
 
-    { donors && (
-        <div className="logs long-log">
-          <button onClick={handleShowModal}>
-            <NewDonorsCard />
-          </button>
-          { showModal && <EntityForm handleShow={handleShowModal}/> }
-          {(pickupSchema).map((v,index) => {
-            return(
-              <DonorsCard
-                index={v.id}
-                donor={v.name}
-                entityType= {v.donorEntityType}
-                locationType= {v.donorLocationType}
-                foodType= {v.foodType}
-                areaName= {v.area}/>
-            );
-          })}
-        </div>
-    )}
+  { donors && (
+    <div className="logs long-log">
+      <button onClick={handleShowModal}>
+        <NewDonorsCard />
+      </button>
+      { showModal && <EntityForm handleShow={handleShowModal}/> }
+      {search(q).map((item:any, index:any) => {
+        return(
+          <DonorsCard
+            index={item.id}
+            donor={item.name}
+            entityType= {item.donorEntityType}
+            locationType= {item.donorLocationType}
+            foodType= {item.foodType}
+            areaName= {item.area}/>
+        );
+      })}
+    </div>
+  )}
 
-    { recipients && (
-        <div className="logs long-log">
-          <button onClick={handleShowModal}>
-            <NewDonorsCard />
-          </button>
-          { showModal && <EntityForm handleShow={handleShowModal}/> }
-          {(deliverySchema).map((v,index) => {
-            return(
-              <RecipientsCard
-                index={v.id}
-                donor={v.name}
-                entityType={v.recipientEntityType}
-                demographicName={v.demographic}
-                foodType={v.foodType}
-                areaName={v.area}/>
-              );
-          })}
-        </div>
-    )}
+  { recipients && (
+    <div className="logs long-log">
+      <button onClick={handleShowModal}>
+        <NewDonorsCard />
+      </button>
+      { showModal && <EntityForm handleShow={handleShowModal}/> }
+      {search(q).map((item:any, index:any) => {
+        return(
+          <RecipientsCard
+            index={item.id}
+            donor={item.name}
+            entityType={item.recipientEntityType}
+            demographicName={item.demographic}
+            foodType={item.foodType}
+            areaName={item.area}/>
+        );
+      })}
+    </div>
+  )}
   </div>
-  );
+);
 }
 
 export default AdminDataScreen;
