@@ -14,6 +14,8 @@ import Logs from './components/Logs/Logs';
 import Transfering from './components/Transfering/Transfering';
 import Weight from './components/Weight/Weight';
 
+import NewLogWrapper from './components/NewLogWrapper/NewLogWrapper'
+
 const App: React.FC = () => {
   return (
     <>
@@ -63,6 +65,12 @@ const App: React.FC = () => {
             element={<ProtectedRoute redirectTo="/Login" />}
           >
             <Route path="/Weight" element={<Weight />} />
+          </Route>
+          <Route
+            path="/NewLog"
+            element={<ProtectedRoute redirectTo="/Login" />}
+          >
+            <Route path="/NewLog" element={<NewLogWrapper />} />
           </Route>
 
           <Route

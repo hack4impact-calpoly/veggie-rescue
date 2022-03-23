@@ -5,7 +5,7 @@ import LocationForm from "./LocationForm";
 import Locations from "./Locations";
 import { useEffect } from "react";
 
-import NavBar from "../NavBar/NavBar";
+// import NavBar from "../NavBar/NavBar";
 
 import './Location.css'
 
@@ -63,7 +63,7 @@ function Location() {
         This <NavBar /> needs to be tied to some logic so that the following page
         only renders when its at a certain spot in the navigateion!!!
       */}
-      <NavBar /> 
+      {/* <NavBar />  */}
 
       {!current && (
         <LocationFilter

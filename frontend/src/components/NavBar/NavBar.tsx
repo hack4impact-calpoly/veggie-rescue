@@ -4,7 +4,11 @@ import NavBarButton_DARK from '../../imgs/button_dark_left.svg';
 import NavBarButton_right_LIGHT from '../../imgs/button_light_right.svg';
 import './NavBar.css'
 
-export default function NavBar() {
+interface Props {
+    setWrapperCurrentPosition : Function
+}
+
+export default function NavBar({setWrapperCurrentPosition} : Props) {
     
     const [progressBarPercent, setProgressBarPercent] = useState<number>(33.3);
     const [currentPosition, setCurrentPosition] = useState<number>(0);
@@ -16,10 +20,12 @@ export default function NavBar() {
         if (leftOrRight === -1 && progressBarPercent > 33.3){
             setProgressBarPercent(progressBarPercent - 33.3)
             setCurrentPosition(currentPosition - 1);
+            setWrapperCurrentPosition(currentPosition - 1);
         }
         else if (leftOrRight === 1 && progressBarPercent < 99){
             setProgressBarPercent(progressBarPercent + 33.3)
             setCurrentPosition(currentPosition + 1);
+            setWrapperCurrentPosition(currentPosition + 1);
 
             setMaxPosition(Math.max(maxPosition, currentPosition + 1));
         }
