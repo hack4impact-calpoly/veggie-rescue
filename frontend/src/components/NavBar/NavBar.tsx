@@ -66,7 +66,7 @@ export default function NavBar({setWrapperCurrentPosition} : Props) {
     }
 
     return (
-        <main className='bg-[#F0F9F1] pt-[20px] w-full justify-around'>
+        <div className='bg-[#F0F9F1] pt-[20px] w-full justify-around'>
             <div className="flex">
                 <button className='border-none bg-[#F0F9F1] mr-auto ml-[15px] mt-[15px] rotate-0' onClick={() => shiftNavBarSection(-1)}>
                     <img src={changeArrowColors(0)} alt='leftButton'></img>
@@ -81,6 +81,6 @@ export default function NavBar({setWrapperCurrentPosition} : Props) {
                     &shy; {/* Can't get the div to render without some character here... */}
                 </div>
             </div>
-        </main>
+        </div>
     )
 }

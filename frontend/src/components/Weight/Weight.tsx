@@ -40,9 +40,8 @@ export default function Weight() {
   return (
     <div className='container'>
       <main className="main">
-        {/* <NavBar /> */}
         <div className="NumberForm">
-          {charNumToInt(charNum)} <span>&nbsp; lbs</span>
+          <span className='test1'>{charNumToInt(charNum)}</span> <span className='test'>&nbsp; lbs</span>
         </div>
       </main>
       <NumPad

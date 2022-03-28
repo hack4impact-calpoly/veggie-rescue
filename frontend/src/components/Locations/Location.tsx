@@ -5,8 +5,6 @@ import LocationForm from "./LocationForm";
 import Locations from "./Locations";
 import { useEffect } from "react";
 
-// import NavBar from "../NavBar/NavBar";
-
 import './Location.css'
 
 interface locale {

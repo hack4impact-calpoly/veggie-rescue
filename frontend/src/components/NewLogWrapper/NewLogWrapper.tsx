@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 
 import NavBar from '../NavBar/NavBar'
 import PickupDelivery from '../PickupDelivery/PickupDelivery'
@@ -10,13 +10,20 @@ export default function NewLogWrapper() {
     const [wrapperCurrentPosition, setWrapperCurrentPosition] = useState<number>(0);
     const [isPickup, setIsPickup] = useState<boolean>(false);
 
+    useEffect(() => {
+        // if (savedLocation !== null) {
+        //   console.log(savedLocation);
+        // }
+        console.log(wrapperCurrentPosition);
+      }, [wrapperCurrentPosition]);
+
     return (
         <div className='container'>
             <NavBar setWrapperCurrentPosition={setWrapperCurrentPosition}/>
             {wrapperCurrentPosition === 0 && 
                 <PickupDelivery setIsPickup={setIsPickup} />
             }
-            {wrapperCurrentPosition === 1 && 
+            {wrapperCurrentPosition === 1 &&
                 <Location />
             }
             {wrapperCurrentPosition === 2 && 
