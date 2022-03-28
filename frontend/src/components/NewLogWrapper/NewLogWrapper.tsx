@@ -10,13 +10,6 @@ export default function NewLogWrapper() {
     const [wrapperCurrentPosition, setWrapperCurrentPosition] = useState<number>(0);
     const [isPickup, setIsPickup] = useState<boolean>(false);
 
-    useEffect(() => {
-        // if (savedLocation !== null) {
-        //   console.log(savedLocation);
-        // }
-        console.log(wrapperCurrentPosition);
-      }, [wrapperCurrentPosition]);
-
     return (
         <div className='container'>
             <NavBar setWrapperCurrentPosition={setWrapperCurrentPosition}/>
