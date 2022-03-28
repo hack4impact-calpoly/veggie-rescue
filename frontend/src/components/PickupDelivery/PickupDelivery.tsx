@@ -16,11 +16,13 @@ export default function PickupDelivery({setIsPickup} : Props) {
             setIsPickup(true)
             setStyleButton1('large-wrapper-selected')
             setStyleButton2('large-wrapper')
+            console.log("pickup!")
         }
         else{
             setIsPickup(false)
             setStyleButton2('large-wrapper-selected')
             setStyleButton1('large-wrapper')
+            console.log("delivery!")
         }
     }
 

@@ -58,12 +58,6 @@ function Location() {
   // otherwise it will not be displayed
   return (
     <div className="main">
-      {/*
-      !!IMPORTANT!!
-        This <NavBar /> needs to be tied to some logic so that the following page
-        only renders when its at a certain spot in the navigateion!!!
-      */}
-      {/* <NavBar />  */}
 
       {!current && (
         <LocationFilter

@@ -115,7 +115,7 @@ const LocationForm = ({current, createNew, setLocation} : Props) =>{
                     type="radio"
                     name="foodType"
                     onClick={() => setIsClicked(false)}
-                  />{" "}
+                  />{"Other"}
                   <input className="specify-item"
                     type="text"
                     disabled={isClicked}
