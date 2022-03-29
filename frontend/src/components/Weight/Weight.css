@@ -29,8 +29,6 @@
     box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.25);
     border-radius: 30px;
     
-    /* Inside auto layout */
-    
     flex: none;
     order: 0;
     flex-grow: 0;
@@ -122,13 +120,10 @@
     height: 84px;
     left: 38.5px;
     top: 680px;
-    /* Primary Orange */
 
     background: #FF9C55;
     box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.25);
     border-radius: 30px;
-
-    /* Inside auto layout */
 
     flex: none;
     order: 2;
@@ -143,8 +138,6 @@
     display: flex;
     align-items: center;
     text-align: center;
-    
-    /* PrimaryWhite */
     
     color: #FFFFFF;
 }
