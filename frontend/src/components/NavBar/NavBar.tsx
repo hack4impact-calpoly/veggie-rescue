@@ -76,7 +76,7 @@ export default function NavBar({setWrapperCurrentPosition} : Props) {
                     <img src={changeArrowColors(1)} alt='rightButton'></img>
                 </button>
             </div>
-            <div className='mt-[20px] bg-[] w-[7/10] ml-auto mr-auto rounded-[30px]'>
+            <div className='mt-[20px] bg-[#FFE2CC] w-[7/10] ml-auto mr-auto rounded-[30px]'>
                 <div className='bg-[#FF9C55] rounded-[30px]' style={{width: `${progressBarPercent}%`}}>
                     &shy; {/* Can't get the div to render without some character here... */}
                 </div>
