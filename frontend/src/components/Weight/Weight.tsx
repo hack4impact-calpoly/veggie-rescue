@@ -17,7 +17,7 @@ export default function Weight() {
   };
 
   const buttonHandler = (btnId: string) => {
-    if (charNum.length > 8) {
+    if (charNum.length > 7) {
       console.log('input is unreasonably long...');
       return;
     }
