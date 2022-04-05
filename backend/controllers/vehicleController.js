@@ -147,6 +147,35 @@ const editVehicle = asyncHandler(async (req, res) => {
     //res.send('Register Route')
 })
 
+const deleteVehicle = asyncHandler(async (req, res) => {
+    const adminEmail = req.params.email
+    const adminExists = await Admin.findOne({adminEmail})
+
+    if(!adminExists){
+        res.status(400)
+        throw new Error('This User does not have access')
+    }
+    const body = req.body
+    const vehicle_id = body.id
+    //const donorInDB = db[donor_id]
+    const vehicleInDB = await Vehicle.findOne({id: vehicle_id})
+
+    if(!vehicleInDB){
+        return res
+        .status(404)
+        .json({ error: 'Vehicle not found'});
+    }
+
+    Vehicle.findOneAndRemove({id: vehicle_id}, function(err){
+        if(err){
+            console.log(err);
+            return res.status(500).send();
+        }
+        return res.status(200).send();
+    })
+
+})
+
 const generateToken = (id) => {
     return jwt.sign({ id }, process.env.JWT_SECRET, {
         expiresIn: '24h'
@@ -156,5 +185,6 @@ const generateToken = (id) => {
 module.exports = {
     findVehicle,
     createVehicle,
-    editVehicle
+    editVehicle,
+    deleteVehicle,
 }
