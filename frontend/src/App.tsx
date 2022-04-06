@@ -12,6 +12,7 @@ import AdminLoginScreen from './components/AdminLoginScreen/AdminLoginScreen';
 import Admin from './components/Admin/Admin';
 import Logs from './components/Logs/Logs';
 import Transfering from './components/Transfering/Transfering';
+import AdminDataScreen from './components/AdminDataScreen/AdminDataScreen';
 import Weight from './components/Weight/Weight';
 
 const App: React.FC = () => {
@@ -69,7 +70,7 @@ const App: React.FC = () => {
             path="/Admin"
             element={<ProtectedRoute redirectTo="/AdminLogin" />}
           >
-            <Route path="/Admin" element={<Admin />} />
+            <Route path="/Admin" element={<AdminDataScreen />} />
           </Route>
         </Routes>
       </Router>
