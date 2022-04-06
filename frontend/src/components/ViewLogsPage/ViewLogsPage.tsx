@@ -3,7 +3,7 @@ import { DataGrid, GridColDef, GridValueGetterParams } from '@mui/x-data-grid';
 import { logs } from '../../data/dbMock';
 
 const columns: GridColDef[] = [
-    { field: 'id', headerName: 'Pickup Date', width: 130},
+    { field: 'date', headerName: 'Pickup Date', width: 130},
     { field: 'driverName', headerName: 'Driver Name', width: 130 },
     { field: 'vehicle', headerName: 'Vehicle', width: 130 },
     { field: 'foodType', headerName: 'Food Type', width: 130 },
@@ -23,9 +23,11 @@ const columns: GridColDef[] = [
     // },
 ];
 
-const rows = logs?.map(log => { 
-    return { 
-        id: log.date,
+let i = 0;
+const rows = logs?.map((log) => {
+    return {
+        id: i++,
+        date: log.date,
         driverName: log.driver,
         vehicle: log.vehicle,
         name: log.name,
@@ -36,33 +38,31 @@ const rows = logs?.map(log => {
         area: log.area
     } 
 });
-    
 
 
 export default function DataTable() {
     return (
-         <div className='bg-green-50 w-screen h-screen'>
-             <div className='font-poppins flex items-center flex-col space-y-[50px]'>
-                    <h4 className='mt-[50px] text-[50px] text-[#555555]'>
-                        Logs
-                    </h4>
-                    <div className='w-[1120px] h-[650px] mb-[1000px]'>
-                        <DataGrid
-                            sx={{
-                                borderRadius: 3,
-                                boxShadow: 4,
-                                bgcolor: 'white',
-                                fontFamily: 'poppins',
-                            }}
-                            rows={rows}
-                            columns={columns}
-                            pageSize={5}
-                            rowsPerPageOptions={[10]}
-                            checkboxSelection
-                        />
-                    </div>
-                
+        <div className='bg-green-50 w-screen h-screen'>
+            <div className='font-poppins flex items-center flex-col space-y-[50px]'>
+                <h4 className='mt-[50px] text-[50px] text-[#555555]'>
+                    Logs
+                </h4>
+                <div className='w-[1120px] h-[650px] mb-[1000px]'>
+                    <DataGrid
+                        sx={{
+                            borderRadius: 3,
+                            boxShadow: 4,
+                            bgcolor: 'white',
+                            fontFamily: 'poppins',
+                        }}
+                        rows={rows}
+                        getRowId={(row) => row.id}
+                        columns={columns}
+                        pageSize={10}
+                        rowsPerPageOptions={[10]}
+                    />
+                </div>
             </div>
         </div>
-      );
+    );
 }
