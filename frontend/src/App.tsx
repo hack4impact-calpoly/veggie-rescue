@@ -45,8 +45,8 @@ const App: React.FC = () => {
           >
             <Route path="/Transfer" element={<TransferPage />} />
           </Route>
-          <Route path="/Logs" element={<ProtectedRoute redirectTo="/Login" />}>
-            <Route path="/Logs" element={<Logs />} />
+          <Route path="/UserLogs" element={<ProtectedRoute redirectTo="/Login" />}>
+            <Route path="/UserLogs" element={<Logs />} />
           </Route>
           <Route
             path="/Transfer"
