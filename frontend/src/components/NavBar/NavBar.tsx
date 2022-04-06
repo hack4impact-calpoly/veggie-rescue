@@ -60,18 +60,18 @@ export default function NavBar() {
     }
 
     return (
-        <main>
-            <div className="topLayer">
-                <button className='leftButton' onClick={() => shiftNavBarSection(-1)}>
+        <main className='bg-[#F0F9F1] pt-[20px] w-full justify-around'>
+            <div className="flex">
+                <button className='border-none bg-[#F0F9F1] mr-auto ml-[15px] mt-[15px] rotate-0' onClick={() => shiftNavBarSection(-1)}>
                     <img src={changeArrowColors(0)} alt='leftButton'></img>
                 </button>
-                <p className="text">{changeString(currentPosition)}</p>
-                <button className='rightButton' onClick={() => shiftNavBarSection(1)} style={rotateArrow()}>
+                <p className="text-[#9BA3AC] font-Poppins text-[32px] not-italic font-normal leading-[48px] text-center">{changeString(currentPosition)}</p>
+                <button className='border-none bg-[#F0F9F1] ml-auto mr-[15px] mt-[15px]' onClick={() => shiftNavBarSection(1)} style={rotateArrow()}>
                     <img src={changeArrowColors(1)} alt='rightButton'></img>
                 </button>
             </div>
-            <div className='progressBarWrapper'>
-                <div className='progressBarMain' style={{width: `${progressBarPercent}%`}}>
+            <div className='mt-[20px] bg-[] w-[7/10] ml-auto mr-auto rounded-[30px]'>
+                <div className='bg-[#FF9C55] rounded-[30px]' style={{width: `${progressBarPercent}%`}}>
                     &shy; {/* Can't get the div to render without some character here... */}
                 </div>
             </div>

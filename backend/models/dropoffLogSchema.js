@@ -1,7 +1,6 @@
 const mongoose = require('mongoose')
 
 const DropoffLogSchema = new mongoose.Schema({
-    id: String,
     date: String,
     driver: String,
     vehicle: String,
@@ -11,7 +10,7 @@ const DropoffLogSchema = new mongoose.Schema({
     foodType: String,
     area: String,
     lbsDroppedOff: Number
-}, {collection: 'People'});
+}, {collection: 'DropoffLog'});
 
 const DropoffLog = mongoose.model('DropoffLog', DropoffLogSchema)
 

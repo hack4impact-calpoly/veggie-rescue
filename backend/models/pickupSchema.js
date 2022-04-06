@@ -7,7 +7,7 @@ const PickupSchema = new mongoose.Schema({
     donorEntityType: String,
     foodType: Array,
     area: String
-}, {collection: 'People'});
+}, {collection: 'Pickup'});
 
 const Pickup = mongoose.model('Pickup', PickupSchema)
 

@@ -33,7 +33,7 @@ const DriverSchema = new mongoose.Schema({
         type: String,
         required: false
     }
-});
+}, {collection: 'Drivers'});
 
 const Driver = mongoose.model('Driver', DriverSchema)
 
