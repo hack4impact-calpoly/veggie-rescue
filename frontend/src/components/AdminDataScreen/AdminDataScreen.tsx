@@ -107,6 +107,7 @@ const AdminDataScreen = () => {
   }
 
   return(
+    <div className="admin-container">
     <div className="data-container" style={{background: 'white'}}>
     <div className="titles">
       <div>
@@ -214,6 +215,7 @@ const AdminDataScreen = () => {
       })}
     </div>
   )}
+  </div>
   </div>
 );
 }
