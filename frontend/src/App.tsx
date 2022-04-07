@@ -15,6 +15,8 @@ import Transfering from './components/Transfering/Transfering';
 import AdminDataScreen from './components/AdminDataScreen/AdminDataScreen';
 import Weight from './components/Weight/Weight';
 
+import NewLogWrapper from './components/NewLogWrapper/NewLogWrapper'
+
 const App: React.FC = () => {
   return (
     <>
@@ -44,8 +46,8 @@ const App: React.FC = () => {
           >
             <Route path="/Transfer" element={<TransferPage />} />
           </Route>
-          <Route path="/Logs" element={<ProtectedRoute redirectTo="/Login" />}>
-            <Route path="/Logs" element={<Logs />} />
+          <Route path="/UserLogs" element={<ProtectedRoute redirectTo="/Login" />}>
+            <Route path="/UserLogs" element={<Logs />} />
           </Route>
           <Route
             path="/Transfer"
@@ -64,6 +66,12 @@ const App: React.FC = () => {
             element={<ProtectedRoute redirectTo="/Login" />}
           >
             <Route path="/Weight" element={<Weight />} />
+          </Route>
+          <Route
+            path="/NewLog"
+            element={<ProtectedRoute redirectTo="/Login" />}
+          >
+            <Route path="/NewLog" element={<NewLogWrapper />} />
           </Route>
 
           <Route
