@@ -8,6 +8,7 @@
   font-weight: bold;
   font-size: 25px;
   line-height: 60px;
+  background-color: white;
 }
 
 .admin-container{
@@ -16,7 +17,6 @@
   align-items: center;
   min-width: 100vw;
   max-width: 834px;
-  height: 100vh;
   margin: 0 auto;
   text-align: center;
   background-color: white;
