@@ -2,6 +2,14 @@
   width: 70vw;
 }
 
+.data-title{
+  margin-top: 70px;
+  color: #555555;
+  font-weight: bold;
+  font-size: 25px;
+  line-height: 60px;
+}
+
 .admin-container{
   display: flex;
   flex-direction: column;
@@ -19,7 +27,7 @@
   flex-direction: row;
   align-items: center;
   justify-content: space-between;
-  margin-top: 100px;
+  margin-top: 20px;
   background: white;
 }
 
