@@ -20,12 +20,9 @@ connectDatabase();
 
 app.use("/api/drivers", require("./routes/driverRoutes"));
 app.use("/api/admin", require("./routes/adminRoutes"));
-<<<<<<< HEAD
 app.use("/api/location", require("./routes/locationRoutes"));
-app.use("/api/vehicles", require("./routes/vehicleRoutes"))
-=======
+app.use("/api/vehicles", require("./routes/vehicleRoutes"));
 app.use("/api", require("./routes/logRoutes"));
->>>>>>> 2efdb9d (Add pickup/dropoff api)
 
 app.get("/", (req, res) => {
   res.status(200).json({ message: "Welcome to Veggie Rescue API" });

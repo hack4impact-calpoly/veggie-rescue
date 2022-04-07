@@ -41,7 +41,7 @@ const createPickup = async (req, res) => {
   });
   try {
     pickup = await pickup.save();
-    res.send(`Success`);
+    res.send(`Success\n${pickup}`);
   } catch (error) {
     res.status(500).send(error.message);
     console.log(`error is ${error.message}`);
@@ -76,7 +76,7 @@ const createDropoff = async (req, res) => {
   });
   try {
     dropoff = await dropoff.save();
-    res.send(`Success`);
+    res.send(`Success\n${dropoff}`);
   } catch (error) {
     res.status(500).send(error.message);
     console.log(`error is ${error.message}`);
@@ -92,7 +92,7 @@ const deletePickup = async (req, res) => {
     await PickupLog.findOneAndRemove({
       _id: _id,
     });
-    res.send(`Pickup was successfully deleted`);
+    res.send(`Pickup with id ${_id} was successfully deleted`);
   } catch (error) {
     res.status(500).send(error.message);
     console.log(`error is ${error.message}`);
@@ -108,7 +108,7 @@ const deleteDropoff = async (req, res) => {
     await DropoffLog.findOneAndRemove({
       _id: _id,
     });
-    res.send(`Dropoff was successfully deleted`);
+    res.send(`Dropoff with id ${_id} was successfully deleted`);
   } catch (error) {
     res.status(500).send(error.message);
     console.log(`error is ${error.message}`);
