@@ -48,6 +48,7 @@
   border: 1px solid black;
   border-radius: 20px;
   padding: 2px 20px;
+  background-color: #f0f9f1;
 }
 #modal h2{
   background: white;
