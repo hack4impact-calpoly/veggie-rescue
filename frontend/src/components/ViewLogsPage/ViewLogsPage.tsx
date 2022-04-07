@@ -1,16 +1,57 @@
 import * as React from 'react';
-import { DataGrid, GridColDef, GridValueGetterParams } from '@mui/x-data-grid';
+import { DataGrid, GridColDef, GridToolbar, GridToolbarContainer, GridToolbarExport, GridValueGetterParams } from '@mui/x-data-grid';
 import { logs } from '../../data/dbMock';
 
 const columns: GridColDef[] = [
-    { field: 'date', headerName: 'Pickup Date', width: 130},
-    { field: 'driverName', headerName: 'Driver Name', width: 130 },
-    { field: 'vehicle', headerName: 'Vehicle', width: 130 },
-    { field: 'foodType', headerName: 'Food Type', width: 130 },
-    { field: 'lbsPickedUp', headerName: 'Pounds Picked Up', width: 130 },
-    { field: 'locationType', headerName: 'Location Type', width: 130 },
-    { field: 'donorEntityType', headerName: 'Farm', width: 130 },
-    { field: 'area', headerName: 'Area', width: 130 },
+    { 
+        field: 'date', 
+        headerName: 'Pickup Date', 
+        width: 130,
+        sortable: true,
+        headerAlign: 'center',
+    },
+    { 
+        field: 'driverName', 
+        headerName: 'Driver Name', 
+        width: 130,
+        headerAlign: 'center',
+    },
+    { 
+        field: 'vehicle', 
+        headerName: 'Vehicle', 
+        width: 130,
+        headerAlign: 'center',
+    },
+    { 
+        field: 'foodType', 
+        headerName: 'Food Type', 
+        width: 130,
+        headerAlign: 'center',
+    },
+    { 
+        field: 'lbsPickedUp', 
+        headerName: 'lbs. Picked', 
+        width: 100,
+        headerAlign: 'center',
+    },
+    { 
+        field: 'locationType', 
+        headerName: 'Location Type', 
+        width: 130,
+        headerAlign: 'center', 
+    },
+    { 
+        field: 'donorEntityType', 
+        headerName: 'Farm', 
+        width: 130,
+        headerAlign: 'center',
+    },
+    { 
+        field: 'area', 
+        headerName: 'Area', 
+        width: 130,
+        headerAlign: 'center',
+    },
     // {field: 'age', headerName: 'Age', type: 'number', width: 90},
     // {
     //     field: 'fullName',
@@ -39,6 +80,14 @@ const rows = logs?.map((log) => {
     } 
 });
 
+function CustomToolbar() {
+    return (
+      <GridToolbarContainer>
+        <GridToolbarExport />
+      </GridToolbarContainer>
+    );
+  }
+
 
 export default function DataTable() {
     return (
@@ -47,8 +96,11 @@ export default function DataTable() {
                 <h4 className='mt-[50px] text-[50px] text-[#555555]'>
                     Logs
                 </h4>
-                <div className='w-[1120px] h-[650px] mb-[1000px]'>
+                <div className='w-[1120px] h-[550px] mb-[1000px]'>
                     <DataGrid
+                        components={{
+                            Toolbar: CustomToolbar
+                        }}
                         sx={{
                             borderRadius: 3,
                             boxShadow: 4,
