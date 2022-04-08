@@ -107,7 +107,9 @@ const AdminDataScreen = () => {
   }
 
   return(
+    <div className="admin-container">
     <div className="data-container" style={{background: 'white'}}>
+    <div className="data-title">Manage Data</div>
     <div className="titles">
       <div>
         <button className="title" onClick={handleVolunteers} style={{border: volunteers ? '2px solid #FF9C55' : ''}}>
@@ -214,6 +216,7 @@ const AdminDataScreen = () => {
       })}
     </div>
   )}
+  </div>
   </div>
 );
 }
