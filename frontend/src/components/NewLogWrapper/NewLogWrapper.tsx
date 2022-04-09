@@ -51,7 +51,6 @@ export default function NewLogWrapper() {
             {wrapperCurrentPosition === 2 && 
                 <Weight />
             }
-            <button onClick={() => console.log(pickupDeliveryObject)}>test</button>
         </div>
     );
 }
