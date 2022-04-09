@@ -5,16 +5,45 @@ import PickupDelivery from '../PickupDelivery/PickupDelivery'
 import Location from '../Locations/Location'
 import Weight from '../Weight/Weight'
 
+interface pickupDeliveryObjectSchema {
+    pickupOrDelivery: number,
+    id: String,
+    date: String,
+    driver: String,
+    vehicle: String,
+    name: String,
+    recipientEntityType: String,
+    demographic: String,
+    foodType: String,
+    area: String,
+    lbsDroppedOff: Number
+}
+
 export default function NewLogWrapper() {
 
     const [wrapperCurrentPosition, setWrapperCurrentPosition] = useState<number>(0);
-    const [isPickup, setIsPickup] = useState<boolean>(false);
+
+    const [pickupDeliveryObject, setPickupDeliveryObject] = useState<pickupDeliveryObjectSchema>(
+        {
+            pickupOrDelivery: 0,
+            id: '',
+            date: '',
+            driver: '',
+            vehicle: '',
+            name: '',
+            recipientEntityType: '',
+            demographic: '',
+            foodType: '',
+            area: '',
+            lbsDroppedOff: 0
+          }
+    );
 
     return (
         <div className='container'>
             <NavBar setWrapperCurrentPosition={setWrapperCurrentPosition}/>
             {wrapperCurrentPosition === 0 && 
-                <PickupDelivery setIsPickup={setIsPickup} />
+                <PickupDelivery setPickupDeliveryObject={setPickupDeliveryObject} PickupDeliveryObject={pickupDeliveryObject} />
             }
             {wrapperCurrentPosition === 1 &&
                 <Location />
@@ -22,6 +51,7 @@ export default function NewLogWrapper() {
             {wrapperCurrentPosition === 2 && 
                 <Weight />
             }
+            <button onClick={() => console.log(pickupDeliveryObject)}>test</button>
         </div>
     );
 }
