@@ -3,15 +3,10 @@ import VehicleItem from './VehicleItem';
 import { vehicles } from '../../data/dbMock';
 import { useNavigate } from 'react-router-dom';
 
-// declare global {
-//   var VEHICLESELECTED: any;
-// }
-
 function Vehicles() {
   // Local state to hold the data from db, as well as a piece of state which will be sent to the rest of the app depending on what car
   // driver clicks
   const [transport] = useState(vehicles);
-  // const [transport] = axios.get('http://localhost:3001/api/vehicle/find');
   const [userVehicle, setUserVehicle] = useState(null);
   const navigate = useNavigate();
 
