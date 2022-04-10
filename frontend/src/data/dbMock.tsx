@@ -46,6 +46,25 @@ export const vehicles = [
   }
 ];
 
+export const volunteerSchema = [
+  {
+    name: 'Sam Favreau',
+    pin: '1111'
+  },
+  {
+    name: 'Angelina Heber',
+    pin: '2222'
+  },
+  {
+    name: 'Rickie Yirian',
+    pin: '3333'
+  },
+  {
+    name: 'Elena Huda',
+    pin: '4444'
+  }
+];
+
 export const vehicle = {
   id: '3',
   name: 'honda',

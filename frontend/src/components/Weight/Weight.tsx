@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 
 import NumPad from '../NumPad/NumPad';
-import NavBar from '../NavBar/NavBar';
+// import NavBar from '../NavBar/NavBar';
 
 import './Weight.css';
 
@@ -17,7 +17,7 @@ export default function Weight() {
   };
 
   const buttonHandler = (btnId: string) => {
-    if (charNum.length > 8) {
+    if (charNum.length > 7) {
       console.log('input is unreasonably long...');
       return;
     }
@@ -40,9 +40,8 @@ export default function Weight() {
   return (
     <div className='container'>
       <main className="main">
-        <NavBar />
         <div className="NumberForm">
-          {charNumToInt(charNum)} <span>&nbsp; lbs</span>
+          <span className='test1'>{charNumToInt(charNum)}</span> <span className='test'>&nbsp; lbs</span>
         </div>
       </main>
       <NumPad

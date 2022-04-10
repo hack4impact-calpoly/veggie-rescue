@@ -4,7 +4,11 @@ import NavBarButton_DARK from '../../imgs/button_dark_left.svg';
 import NavBarButton_right_LIGHT from '../../imgs/button_light_right.svg';
 import './NavBar.css'
 
-export default function NavBar() {
+interface Props {
+    setWrapperCurrentPosition : Function
+}
+
+export default function NavBar({setWrapperCurrentPosition} : Props) {
     
     const [progressBarPercent, setProgressBarPercent] = useState<number>(33.3);
     const [currentPosition, setCurrentPosition] = useState<number>(0);
@@ -16,10 +20,12 @@ export default function NavBar() {
         if (leftOrRight === -1 && progressBarPercent > 33.3){
             setProgressBarPercent(progressBarPercent - 33.3)
             setCurrentPosition(currentPosition - 1);
+            setWrapperCurrentPosition(currentPosition - 1);
         }
         else if (leftOrRight === 1 && progressBarPercent < 99){
             setProgressBarPercent(progressBarPercent + 33.3)
             setCurrentPosition(currentPosition + 1);
+            setWrapperCurrentPosition(currentPosition + 1);
 
             setMaxPosition(Math.max(maxPosition, currentPosition + 1));
         }
@@ -60,7 +66,7 @@ export default function NavBar() {
     }
 
     return (
-        <main className='bg-[#F0F9F1] pt-[20px] w-full justify-around'>
+        <div className='bg-[#F0F9F1] pt-[20px] w-full justify-around'>
             <div className="flex">
                 <button className='border-none bg-[#F0F9F1] mr-auto ml-[15px] mt-[15px] rotate-0' onClick={() => shiftNavBarSection(-1)}>
                     <img src={changeArrowColors(0)} alt='leftButton'></img>
@@ -70,12 +76,11 @@ export default function NavBar() {
                     <img src={changeArrowColors(1)} alt='rightButton'></img>
                 </button>
             </div>
-            <div className='mt-[20px] bg-[] w-[7/10] ml-auto mr-auto rounded-[30px]'>
+            <div className='mt-[20px] bg-[#FFE2CC] w-[7/10] ml-auto mr-auto rounded-[30px]'>
                 <div className='bg-[#FF9C55] rounded-[30px]' style={{width: `${progressBarPercent}%`}}>
                     &shy; {/* Can't get the div to render without some character here... */}
                 </div>
             </div>
-        </main>
-        </>
+        </div>
     )
 }

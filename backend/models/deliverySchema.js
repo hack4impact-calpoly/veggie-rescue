@@ -7,7 +7,7 @@ const DeliverySchema = new mongoose.Schema({
     demographic: String,
     foodType: Array,
     area: String
-}, {collection: 'People'});
+}, {collection: 'Delivery'});
 
 const Delivery = mongoose.model('Delivery', DeliverySchema)
 

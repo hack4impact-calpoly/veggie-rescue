@@ -17,7 +17,13 @@ const DonorsCard = (props: any) => {
         </div>
         <div className="donors-entry">
           <div className="donors-entry-title">Food Type</div>
-          <div className="donors-entry-text">{ props.foodType }</div>
+          <div className="donors-entry-text">
+            {(props.foodType).map((v:any, index:any) => {
+              return(
+                <div>{(index ? ', ' : '')}{v}</div>
+              );
+            })}
+          </div>
         </div>
         <div className="donors-entry">
           <div className="donors-entry-title">Combined Area Name</div>
