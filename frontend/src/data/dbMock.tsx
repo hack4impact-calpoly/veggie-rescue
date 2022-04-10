@@ -13,7 +13,7 @@ export const vehicles = [
     img: 'https://i.postimg.cc/6p9k9tvN/boxtruck.png',
     currentPickups: [],
     currentDropoffs: [],
-    totalWeight: 0
+    totalWeight: 40
   },
   {
     id: '3',
@@ -42,7 +42,7 @@ export const vehicles = [
     img: 'https://i.postimg.cc/jSZG2mHn/car.png',
     currentPickups: [],
     currentDropoffs: [],
-    totalWeight: 0
+    totalWeight: 60
   }
 ];
 

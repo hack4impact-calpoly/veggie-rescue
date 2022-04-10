@@ -22,6 +22,7 @@ const LoginScreen: React.FC<Props> = () => {
   const { driver, isError, isSuccess, message } = useAppSelector(
     (state) => state.driverAuth
   );
+
   useEffect(() => {
     // Once user enters 4 numbers, dispatch API call for logging in and immediately clear asterix display
     if (pin.length === 4) {
@@ -39,7 +40,8 @@ const LoginScreen: React.FC<Props> = () => {
     // If we have a successful call then use the driver data to get vehicles, we also check if the user was saved in localStorage
     if (isSuccess || Object.keys(driver).length !== 0) {
       toast.success(`Welcome ${driver.name}`);
-      navigate('/Dashboard');
+      localStorage.setItem('name', driver.name);
+      navigate('/Vehicles');
       setLoading(false);
     }
     if (Object.keys(driver).length === 0) {

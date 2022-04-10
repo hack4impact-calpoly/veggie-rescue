@@ -15,7 +15,7 @@ import Transfering from './components/Transfering/Transfering';
 import AdminDataScreen from './components/AdminDataScreen/AdminDataScreen';
 import Weight from './components/Weight/Weight';
 
-import NewLogWrapper from './components/NewLogWrapper/NewLogWrapper'
+import NewLogWrapper from './components/NewLogWrapper/NewLogWrapper';
 
 const App: React.FC = () => {
   return (
@@ -26,19 +26,21 @@ const App: React.FC = () => {
           <Route path="/Login" element={<LoginScreen />} />
           <Route path="/" element={<LoginScreen />} />
           <Route path="/AdminLogin" element={<AdminLoginScreen />} />
+          <Route path="/Dashboard" element={<Dashboard />} />
+          <Route path="/Vehicles" element={<Vehicles />} />
 
           {/* (Protected Routes) Below are protected routes which are only accessed after driver is logged in */}
           <Route
             path="/Dashboard"
             element={<ProtectedRoute redirectTo="/Login" />}
           >
-            <Route path="/Dashboard" element={<Dashboard />} />
+            {/* <Route path="/Dashboard" element={<Dashboard />} /> */}
           </Route>
           <Route
             path="/Vehicles"
             element={<ProtectedRoute redirectTo="/Login" />}
           >
-            <Route path="/Vehicles" element={<Vehicles />} />
+            {/* <Route path="/Vehicles" element={<Vehicles />} /> */}
           </Route>
           <Route
             path="/Transfer"
@@ -46,7 +48,10 @@ const App: React.FC = () => {
           >
             <Route path="/Transfer" element={<TransferPage />} />
           </Route>
-          <Route path="/UserLogs" element={<ProtectedRoute redirectTo="/Login" />}>
+          <Route
+            path="/UserLogs"
+            element={<ProtectedRoute redirectTo="/Login" />}
+          >
             <Route path="/UserLogs" element={<Logs />} />
           </Route>
           <Route
