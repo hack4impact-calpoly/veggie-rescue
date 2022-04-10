@@ -26,21 +26,19 @@ const App: React.FC = () => {
           <Route path="/Login" element={<LoginScreen />} />
           <Route path="/" element={<LoginScreen />} />
           <Route path="/AdminLogin" element={<AdminLoginScreen />} />
-          <Route path="/Dashboard" element={<Dashboard />} />
-          <Route path="/Vehicles" element={<Vehicles />} />
 
           {/* (Protected Routes) Below are protected routes which are only accessed after driver is logged in */}
           <Route
             path="/Dashboard"
             element={<ProtectedRoute redirectTo="/Login" />}
           >
-            {/* <Route path="/Dashboard" element={<Dashboard />} /> */}
+            <Route path="/Dashboard" element={<Dashboard />} />
           </Route>
           <Route
             path="/Vehicles"
             element={<ProtectedRoute redirectTo="/Login" />}
           >
-            {/* <Route path="/Vehicles" element={<Vehicles />} /> */}
+            <Route path="/Vehicles" element={<Vehicles />} />
           </Route>
           <Route
             path="/Transfer"
