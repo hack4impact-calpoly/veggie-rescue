@@ -5,7 +5,26 @@ import NumPad from '../NumPad/NumPad';
 
 import './Weight.css';
 
-export default function Weight() {
+interface pickupDeliveryObjectSchema {
+  pickupOrDelivery: number,
+  id: String,
+  date: String,
+  driver: String,
+  vehicle: String,
+  name: String,
+  recipientEntityType: String,
+  demographic: String,
+  foodType: String,
+  area: String,
+  lbsDroppedOff: number
+}
+
+interface Props {
+  setPickupDeliveryObject : Function
+  PickupDeliveryObject    : pickupDeliveryObjectSchema
+}
+
+export default function Weight({PickupDeliveryObject, setPickupDeliveryObject} : Props) {
   const [charNum, setCharNum] = useState('');
   const [weightNum, setWeightNum] = useState(0);
 
@@ -35,6 +54,10 @@ export default function Weight() {
   const submitButton = () => {
     console.log('submitting with: ' + charNum + ' lbs');
     setWeightNum(charNumToInt(charNum));
+    setPickupDeliveryObject({
+      ...PickupDeliveryObject,
+      lbsDroppedOff : charNumToInt(charNum)
+    })
   };
 
   return (

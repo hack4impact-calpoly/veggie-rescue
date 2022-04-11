@@ -18,7 +18,7 @@ interface pickupDeliveryObjectSchema {
     demographic: String,
     foodType: String,
     area: String,
-    lbsDroppedOff: Number
+    lbsDroppedOff: number
 }
 
 export default function PickupDelivery({setPickupDeliveryObject, PickupDeliveryObject} : Props) {

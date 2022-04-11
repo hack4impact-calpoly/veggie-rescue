@@ -16,7 +16,7 @@ interface pickupDeliveryObjectSchema {
     demographic: String,
     foodType: String,
     area: String,
-    lbsDroppedOff: Number
+    lbsDroppedOff: number
 }
 
 export default function NewLogWrapper() {
@@ -49,8 +49,9 @@ export default function NewLogWrapper() {
                 <Location />
             }
             {wrapperCurrentPosition === 2 && 
-                <Weight />
+                <Weight setPickupDeliveryObject={setPickupDeliveryObject} PickupDeliveryObject={pickupDeliveryObject} />
             }
+            <button onClick={() => console.log(pickupDeliveryObject)}>TEST</button>
         </div>
     );
 }
