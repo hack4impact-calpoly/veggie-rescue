@@ -1,11 +1,5 @@
 import veggie_logo from '../../imgs/veggie-rescue-logo.png';
 import admin_profile_image from '../../imgs/admin_profile.png'
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import ProtectedRoute from '../../ProtectedRoute';
-import AdminDataScreen from '../AdminDataScreen/AdminDataScreen';
-import ViewLogsPage from '../ViewLogsPage/ViewLogsPage';
-import Link from 'react-router-dom';
-import App from '../../App';
 import { useNavigate } from 'react-router-dom';
 
 const  AdminHeader = () => {
