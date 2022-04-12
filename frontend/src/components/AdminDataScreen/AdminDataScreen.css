@@ -3,11 +3,11 @@
 }
 
 .data-title{
-  margin-top: 70px;
+  margin-top: 30px;
   color: #555555;
   font-weight: bold;
-  font-size: 25px;
-  line-height: 60px;
+  font-size: 28px;
+
   background-color: white;
 }
 
@@ -15,11 +15,10 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  min-width: 100vw;
-  max-width: 834px;
   margin: 0 auto;
   text-align: center;
   background-color: white;
+  min-height: 100vh;
 }
 
 .titles{

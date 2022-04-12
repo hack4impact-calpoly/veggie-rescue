@@ -10,10 +10,11 @@ import EntityForm from './EntityForm';
 import ShortEntityForm from './ShortEntityForm';
 import { vehicles, volunteerSchema, deliverySchema, pickupSchema } from '../../data/dbMock';
 import { AiOutlineSearch } from 'react-icons/ai';
+import AdminHeader from '../AdminHeader/AdminHeader'
 
 const AdminDataScreen = () => {
   const [vehiclesCard, setVehiclesCard] = useState(false);
-  const [volunteers, setVolunteers] = useState(false);
+  const [volunteers, setVolunteers] = useState(true);
   const [donors, setDonors] = useState(false);
   const [recipients, setRecipients] = useState(false);
   const [showModal, setShowModal] = useState(false);
@@ -107,7 +108,10 @@ const AdminDataScreen = () => {
   }
 
   return(
+  <div>
+    <AdminHeader />
     <div className="admin-container">
+
     <div className="data-container" style={{background: 'white'}}>
     <div className="data-title">Manage Data</div>
     <div className="titles">
@@ -216,6 +220,7 @@ const AdminDataScreen = () => {
       })}
     </div>
   )}
+  </div>
   </div>
   </div>
 );

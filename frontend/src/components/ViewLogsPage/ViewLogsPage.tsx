@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { DataGrid, GridColDef, GridToolbar, GridToolbarContainer, GridToolbarExport, GridValueGetterParams } from '@mui/x-data-grid';
 import { logs } from '../../data/dbMock';
+import AdminHeader from '../AdminHeader/AdminHeader'
 
 const columns: GridColDef[] = [
     { 
@@ -91,10 +92,12 @@ function CustomToolbar() {
 
 export default function DataTable() {
     return (
-        <div className='bg-green-50 w-screen h-screen'>
+        <div>
+        <AdminHeader />
+        <div className='bg-white w-screen h-screen'>
             <div className='font-poppins flex items-center flex-col space-y-[50px]'>
-                <h4 className='mt-[50px] text-[50px] text-[#555555]'>
-                    Logs
+                <h4 className='mt-[30px] text-[28px] text-[#555555] font-bold'>
+                    View Logs
                 </h4>
                 <div className='w-[1120px] h-[550px] mb-[1000px]'>
                     <DataGrid
@@ -115,6 +118,7 @@ export default function DataTable() {
                     />
                 </div>
             </div>
+        </div>
         </div>
     );
 }

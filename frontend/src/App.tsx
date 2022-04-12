@@ -9,6 +9,8 @@ import LoginScreen from './components/LoginScreen/LoginScreen';
 import TransferPage from './components/TransferPage/TransferPage';
 import Vehicles from './components/VehicleSelection/Vehicle';
 import AdminLoginScreen from './components/AdminLoginScreen/AdminLoginScreen';
+import AdminDataScreen from './components/AdminDataScreen/AdminDataScreen';
+import ViewLogsPage from './components/ViewLogsPage/ViewLogsPage';
 import Admin from './components/Admin/Admin';
 import Logs from './components/Logs/Logs';
 import Transfering from './components/Transfering/Transfering';
@@ -70,6 +72,18 @@ const App: React.FC = () => {
             element={<ProtectedRoute redirectTo="/AdminLogin" />}
           >
             <Route path="/Admin" element={<Admin />} />
+          </Route>
+          <Route
+            path="/AdminData"
+            element={<ProtectedRoute redirectTo="/AdminLogin" />}
+          >
+            <Route path="/AdminData" element={<AdminDataScreen />} />
+          </Route>
+          <Route
+            path="/ViewLogsPage"
+            element={<ProtectedRoute redirectTo="/AdminLogin" />}
+          >
+            <Route path="/ViewLogsPage" element={<ViewLogsPage />} />
           </Route>
         </Routes>
       </Router>
