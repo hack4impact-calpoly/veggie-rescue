@@ -5,6 +5,7 @@ import './PickupDelivery.css'
 interface Props {
     setPickupDeliveryObject : Function
     PickupDeliveryObject    : pickupDeliveryObjectSchema
+    setForceNext            : Function
 }
 
 interface pickupDeliveryObjectSchema {
@@ -21,7 +22,7 @@ interface pickupDeliveryObjectSchema {
     lbsDroppedOff: number
 }
 
-export default function PickupDelivery({setPickupDeliveryObject, PickupDeliveryObject} : Props) {
+export default function PickupDelivery({setPickupDeliveryObject, PickupDeliveryObject, setForceNext} : Props) {
 
     const [styleButton1, setStyleButton1] = useState<string>('large-wrapper');
     const [styleButton2, setStyleButton2] = useState<string>('large-wrapper');
@@ -47,6 +48,7 @@ export default function PickupDelivery({setPickupDeliveryObject, PickupDeliveryO
             setStyleButton2('large-wrapper-selected')
             setStyleButton1('large-wrapper')
         }
+        setForceNext(true);
     }
 
     const initStyle = (isPickup : number) => {

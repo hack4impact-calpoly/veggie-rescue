@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 
 import NavBar from '../NavBar/NavBar'
 import PickupDelivery from '../PickupDelivery/PickupDelivery'
@@ -22,7 +22,8 @@ interface pickupDeliveryObjectSchema {
 export default function NewLogWrapper() {
 
     const [wrapperCurrentPosition, setWrapperCurrentPosition] = useState<number>(0);
-
+    const [forceNext, setForceNext] = useState<boolean>(false);
+    const [doneFlag, setDoneFlag] = useState<boolean>(false);
     const [pickupDeliveryObject, setPickupDeliveryObject] = useState<pickupDeliveryObjectSchema>(
         {
             pickupOrDelivery: 0,
@@ -39,19 +40,30 @@ export default function NewLogWrapper() {
           }
     );
 
+    useEffect(() => {
+        if (doneFlag === true) {
+            // MAKE API CALL HERE
+            console.log("submittng with: " + JSON.stringify(pickupDeliveryObject, null, 2));
+        }
+      }, [doneFlag, pickupDeliveryObject]);
+    
+
     return (
         <div className='container'>
-            <NavBar setWrapperCurrentPosition={setWrapperCurrentPosition}/>
+            <NavBar setWrapperCurrentPosition={setWrapperCurrentPosition} forceNext={forceNext} setForceNext={setForceNext}/>
             {wrapperCurrentPosition === 0 && 
-                <PickupDelivery setPickupDeliveryObject={setPickupDeliveryObject} PickupDeliveryObject={pickupDeliveryObject} />
+                <PickupDelivery setPickupDeliveryObject={setPickupDeliveryObject} 
+                                PickupDeliveryObject={pickupDeliveryObject} 
+                                setForceNext={setForceNext}/>
             }
             {wrapperCurrentPosition === 1 &&
-                <Location />
+                <Location setPickupDeliveryObject={setPickupDeliveryObject} 
+                          PickupDeliveryObject={pickupDeliveryObject} 
+                          setForceNext={setForceNext} />
             }
             {wrapperCurrentPosition === 2 && 
-                <Weight setPickupDeliveryObject={setPickupDeliveryObject} PickupDeliveryObject={pickupDeliveryObject} />
+                <Weight setPickupDeliveryObject={setPickupDeliveryObject} PickupDeliveryObject={pickupDeliveryObject} setDoneFlag={setDoneFlag}/>
             }
-            <button onClick={() => console.log(pickupDeliveryObject)}>TEST</button>
         </div>
     );
 }

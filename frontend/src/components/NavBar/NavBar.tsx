@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 
 import NavBarButton_DARK from '../../imgs/button_dark_left.svg';
 import NavBarButton_right_LIGHT from '../../imgs/button_light_right.svg';
@@ -6,9 +6,12 @@ import './NavBar.css'
 
 interface Props {
     setWrapperCurrentPosition : Function
+
+    forceNext : boolean,
+    setForceNext : Function
 }
 
-export default function NavBar({setWrapperCurrentPosition} : Props) {
+export default function NavBar({setWrapperCurrentPosition, forceNext, setForceNext} : Props) {
     
     const [progressBarPercent, setProgressBarPercent] = useState<number>(33.3);
     const [currentPosition, setCurrentPosition] = useState<number>(0);
@@ -36,7 +39,7 @@ export default function NavBar({setWrapperCurrentPosition} : Props) {
             case 0:
                 return 'Trip Type';
             case 1:
-                return 'Pickup Location';
+                return 'Location';
             case 2:
                 return 'Pounds Picked Up';
             default:
@@ -65,6 +68,14 @@ export default function NavBar({setWrapperCurrentPosition} : Props) {
         }
     }
 
+    useEffect(() => {
+        if (forceNext === true) {
+          shiftNavBarSection(1);
+          setForceNext(false);
+        }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+      }, [forceNext, setForceNext]);
+
     return (
         <div className='bg-[#F0F9F1] pt-[20px] w-full justify-around'>
             <div className="flex">
@@ -72,7 +83,7 @@ export default function NavBar({setWrapperCurrentPosition} : Props) {
                     <img src={changeArrowColors(0)} alt='leftButton'></img>
                 </button>
                 <p className="text-[#9BA3AC] font-Poppins text-[32px] not-italic font-normal leading-[48px] text-center">{changeString(currentPosition)}</p>
-                <button className='border-none bg-[#F0F9F1] ml-auto mr-[15px] mt-[15px]' onClick={() => shiftNavBarSection(1)} style={rotateArrow()}>
+                <button className='border-none bg-[#F0F9F1] ml-auto mr-[15px] mt-[15px]' style={rotateArrow()}>
                     <img src={changeArrowColors(1)} alt='rightButton'></img>
                 </button>
             </div>

@@ -22,11 +22,12 @@ interface pickupDeliveryObjectSchema {
 interface Props {
   setPickupDeliveryObject : Function
   PickupDeliveryObject    : pickupDeliveryObjectSchema
+  setDoneFlag             : Function
 }
 
-export default function Weight({PickupDeliveryObject, setPickupDeliveryObject} : Props) {
+export default function Weight({PickupDeliveryObject, setPickupDeliveryObject, setDoneFlag} : Props) {
   const [charNum, setCharNum] = useState('');
-  const [weightNum, setWeightNum] = useState(0);
+  // const [weightNum, setWeightNum] = useState(0);
 
   const charNumToInt = (charNum: string) => {
     if (charNum.length === 0) {
@@ -37,7 +38,6 @@ export default function Weight({PickupDeliveryObject, setPickupDeliveryObject} :
 
   const buttonHandler = (btnId: string) => {
     if (charNum.length > 7) {
-      console.log('input is unreasonably long...');
       return;
     }
     setCharNum(charNum + btnId);
@@ -52,12 +52,11 @@ export default function Weight({PickupDeliveryObject, setPickupDeliveryObject} :
   };
 
   const submitButton = () => {
-    console.log('submitting with: ' + charNum + ' lbs');
-    setWeightNum(charNumToInt(charNum));
     setPickupDeliveryObject({
       ...PickupDeliveryObject,
       lbsDroppedOff : charNumToInt(charNum)
     })
+    setDoneFlag(true);
   };
 
   return (
