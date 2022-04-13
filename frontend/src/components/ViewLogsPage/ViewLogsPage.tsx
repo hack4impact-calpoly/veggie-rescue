@@ -1,56 +1,73 @@
 import * as React from 'react';
-import { DataGrid, GridColDef, GridToolbar, GridToolbarContainer, GridToolbarExport, GridValueGetterParams } from '@mui/x-data-grid';
+import { DataGrid, GridColDef, GridToolbar, GridToolbarContainer, GridToolbarExport, GridCsvExportOptions, GridValueGetterParams, GridValueFormatterParams } from '@mui/x-data-grid';
 import { logs } from '../../data/dbMock';
 
 const columns: GridColDef[] = [
     { 
-        field: 'date', 
+        field: 'date',
         headerName: 'Pickup Date', 
-        width: 130,
+        width: 160,
         sortable: true,
         headerAlign: 'center',
+        type: 'date',
+        valueFormatter: (params: GridValueFormatterParams) => {
+            const date = new Date(params.value);
+            return date.toDateString().replace(/^\S+\s/,'')
+        },
+        align: 'center'
+        // valueGetter: (params: GridValueGetterParams) => {
+        //     const date = new Date(params.value);
+        //     return date.toDateString().replace(/^\S+\s/,'');
+        // },
     },
     { 
         field: 'driverName', 
         headerName: 'Driver Name', 
         width: 130,
         headerAlign: 'center',
+        align: 'center'
     },
     { 
         field: 'vehicle', 
         headerName: 'Vehicle', 
         width: 130,
         headerAlign: 'center',
+        align: 'center'
     },
     { 
         field: 'foodType', 
         headerName: 'Food Type', 
         width: 130,
         headerAlign: 'center',
+        align: 'center'
     },
     { 
         field: 'lbsPickedUp', 
         headerName: 'lbs. Picked', 
         width: 100,
         headerAlign: 'center',
+        align: 'center'
     },
     { 
         field: 'locationType', 
         headerName: 'Location Type', 
         width: 130,
         headerAlign: 'center', 
+        align: 'center'
     },
     { 
         field: 'donorEntityType', 
         headerName: 'Farm', 
-        width: 130,
+        width: 180,
         headerAlign: 'center',
+        align: 'center'
     },
     { 
         field: 'area', 
         headerName: 'Area', 
         width: 130,
         headerAlign: 'center',
+        align: 'center'
     },
     // {field: 'age', headerName: 'Age', type: 'number', width: 90},
     // {
@@ -80,13 +97,26 @@ const rows = logs?.map((log) => {
     } 
 });
 
+const GridCustomToolbarExport = (props: GridCsvExportOptions) => {
+    return (
+      <GridToolbarExport
+        csvOptions={{fileName: 'logs'}}
+      />
+    );
+  };
+
 function CustomToolbar() {
     return (
       <GridToolbarContainer>
-        <GridToolbarExport />
+        <GridCustomToolbarExport />
       </GridToolbarContainer>
     );
   }
+
+
+const s = "02-Jan-21";
+const d = new Date(s);
+console.log(d);
 
 
 export default function DataTable() {
