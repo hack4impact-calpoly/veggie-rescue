@@ -15,6 +15,7 @@
   flex-wrap: wrap;
   height: 140px;
   margin-left: 20px;
+
 }
 
 .donors-entry{
@@ -28,6 +29,8 @@
   margin-top: 10px;
   margin-bottom: 20px;
   font-size: 20px;
+  display: flex;
+  justify-content: center;
 }
 
 .donors-entry-title{
@@ -35,6 +38,7 @@
   color: #549672;
   font-size: 13px;
   align-self: flex-start;
+  background: white;
 }
 
 .donors-entry-text{
@@ -44,8 +48,24 @@
   white-space: nowrap;
   text-overflow: ellipsis;
   font-size: 15px;
+  background: white;
+  display: flex;
+  flex-direction: row;
 }
 
 .donors-entry-text:hover{
   overflow: visible;
+}
+
+#new-card{
+  border: dashed grey;
+  box-shadow: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+}
+
+.input{
+  margin: 10px;
 }

@@ -29,6 +29,8 @@
   margin-top: 10px;
   margin-bottom: 20px;
   font-size: 20px;
+  display: flex;
+  justify-content: center;
 }
 
 .donors-entry-title{
@@ -45,6 +47,8 @@
   white-space: nowrap;
   text-overflow: ellipsis;
   font-size: 15px;
+  display: flex;
+  flex-direction: row;
 }
 
 .donors-entry-text:hover{

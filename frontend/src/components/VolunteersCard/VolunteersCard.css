@@ -9,7 +9,6 @@
   flex-direction: column;
   justify-content: center;
   align-items: center;
-
 }
 
 .volunteer-text{
@@ -22,4 +21,33 @@
 .user-icon{
   font-size: 125px;
   margin-bottom: 20px;
+}
+#new-card{
+  border: dashed grey;
+  box-shadow: none;
+}
+.new-card-text{
+  font-size: 25px;
+  color: grey;
+}
+#modal{
+  z-index: 10;
+}
+.form-name{
+  background: white;
+}
+
+.input{
+  margin-top: 10px;
+}
+
+#form-submit{
+  width: 100px;
+  color: white;
+  background-color: rgb(255, 156, 85);
+  padding-left: none;
+  box-shadow: 0px 4px 14px rgba(0,0,0,0.1);
+  border-radius: 10px;
+  height: 38px;
+  margin-top: 20px;
 }
