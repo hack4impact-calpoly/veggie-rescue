@@ -23,7 +23,6 @@ export default function NavBar({setWrapperCurrentPosition, forceNext, setForceNe
         //INPUT: -1 for shift left, else for shift right
         //OUTPUT: NULL
         if (leftOrRight === -1 && currentPosition === 0){
-            console.log('go back!');
             navigate("/Dashboard");
             return;
         }
