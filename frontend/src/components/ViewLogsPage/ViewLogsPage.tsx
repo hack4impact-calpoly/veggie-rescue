@@ -1,6 +1,120 @@
 import * as React from 'react';
-import { DataGrid, GridColDef, GridToolbar, GridToolbarContainer, GridToolbarExport, GridCsvExportOptions, GridValueGetterParams, GridValueFormatterParams } from '@mui/x-data-grid';
+import { DataGrid, GridColDef, GridRenderCellParams, GridToolbarContainer, GridToolbarExport, GridCsvExportOptions, GridValueGetterParams, GridValueFormatterParams } from '@mui/x-data-grid';
+import Box from '@mui/material/Box';
+import Typography from '@mui/material/Typography';
+import Paper from '@mui/material/Paper';
+import Popper from '@mui/material/Popper';
 import { logs } from '../../data/dbMock';
+
+interface GridCellExpandProps {
+    value: string;
+    width: number;
+}
+
+function isOverflown(element: Element): boolean {
+return (
+    element.scrollHeight > element.clientHeight ||
+    element.scrollWidth > element.clientWidth
+);
+}
+
+const GridCellExpand = React.memo(function GridCellExpand(
+    props: GridCellExpandProps,
+  ) {
+    const { width, value } = props;
+    const wrapper = React.useRef<HTMLDivElement | null>(null);
+    const cellDiv = React.useRef(null);
+    const cellValue = React.useRef(null);
+    const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
+    const [showFullCell, setShowFullCell] = React.useState(false);
+    const [showPopper, setShowPopper] = React.useState(false);
+  
+    const handleMouseEnter = () => {
+      const isCurrentlyOverflown = isOverflown(cellValue.current!);
+      setShowPopper(isCurrentlyOverflown);
+      setAnchorEl(cellDiv.current);
+      setShowFullCell(true);
+    };
+  
+    const handleMouseLeave = () => {
+      setShowFullCell(false);
+    };
+  
+    React.useEffect(() => {
+      if (!showFullCell) {
+        return undefined;
+      }
+  
+      function handleKeyDown(nativeEvent: KeyboardEvent) {
+        // IE11, Edge (prior to using Bink?) use 'Esc'
+        if (nativeEvent.key === 'Escape' || nativeEvent.key === 'Esc') {
+          setShowFullCell(false);
+        }
+      }
+  
+      document.addEventListener('keydown', handleKeyDown);
+  
+      return () => {
+        document.removeEventListener('keydown', handleKeyDown);
+      };
+    }, [setShowFullCell, showFullCell]);
+  
+    return (
+      <Box
+        ref={wrapper}
+        onMouseEnter={handleMouseEnter}
+        onMouseLeave={handleMouseLeave}
+        sx={{
+            alignItems: 'center',
+            lineHeight: '24px',
+            width: 1,
+            height: 1,
+            position: 'relative',
+            display: 'flex',
+            flexDirection: 'row',
+        }}
+      >
+        <Box
+          ref={cellDiv}
+          sx={{
+            height: 1,
+            width,
+            display: 'block',
+            position: 'absolute',
+            top: 0,
+          }}
+        />
+        <Box
+          ref={cellValue}
+          sx={{whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis',}}
+        >
+          {value}
+        </Box>
+        {showPopper && (
+          <Popper
+            open={showFullCell && anchorEl !== null}
+            anchorEl={anchorEl}
+            style={{ width, marginLeft: -17 }}
+          >
+            <Paper
+              elevation={1}
+              style={{ minHeight: wrapper.current!.offsetHeight - 3 }}
+            >
+              <Typography variant="body2" style={{ padding: 8 }}>
+                {value}
+              </Typography>
+            </Paper>
+          </Popper>
+        )}
+      </Box>
+    );
+});
+
+function renderCellExpand(params: GridRenderCellParams<string>) {
+    return (
+      <GridCellExpand value={params.value || ''} width={params.colDef.computedWidth} />
+    );
+}
 
 const columns: GridColDef[] = [
     { 
@@ -9,42 +123,42 @@ const columns: GridColDef[] = [
         width: 160,
         sortable: true,
         headerAlign: 'center',
-        type: 'date',
+        type: 'dateTime',
         valueFormatter: (params: GridValueFormatterParams) => {
             const date = new Date(params.value);
             return date.toDateString().replace(/^\S+\s/,'')
         },
-        align: 'center'
-        // valueGetter: (params: GridValueGetterParams) => {
-        //     const date = new Date(params.value);
-        //     return date.toDateString().replace(/^\S+\s/,'');
-        // },
+        valueGetter: ({ value }) => value && new Date(value),
+        align: 'center',
     },
     { 
         field: 'driverName', 
         headerName: 'Driver Name', 
         width: 130,
         headerAlign: 'center',
-        align: 'center'
+        align: 'center',
+        renderCell: renderCellExpand
     },
     { 
         field: 'vehicle', 
         headerName: 'Vehicle', 
         width: 130,
         headerAlign: 'center',
-        align: 'center'
+        align: 'center',
+        renderCell: renderCellExpand,
     },
     { 
         field: 'foodType', 
         headerName: 'Food Type', 
         width: 130,
         headerAlign: 'center',
-        align: 'center'
+        align: 'center',
+        renderCell: renderCellExpand,
     },
     { 
         field: 'lbsPickedUp', 
         headerName: 'lbs. Picked', 
-        width: 100,
+        width: 130,
         headerAlign: 'center',
         align: 'center'
     },
@@ -53,32 +167,25 @@ const columns: GridColDef[] = [
         headerName: 'Location Type', 
         width: 130,
         headerAlign: 'center', 
-        align: 'center'
+        align: 'center',
+        renderCell: renderCellExpand,
     },
     { 
         field: 'donorEntityType', 
+        align: 'center',
         headerName: 'Farm', 
-        width: 180,
+        width: 130,
         headerAlign: 'center',
-        align: 'center'
+        renderCell: renderCellExpand,
     },
     { 
         field: 'area', 
         headerName: 'Area', 
         width: 130,
         headerAlign: 'center',
-        align: 'center'
+        align: 'center',
+        renderCell: renderCellExpand,
     },
-    // {field: 'age', headerName: 'Age', type: 'number', width: 90},
-    // {
-    //     field: 'fullName',
-    //     headerName: 'Full name',
-    //     description: 'This column has a value getter and is not sortable.',
-    //     sortable: false,
-    //     width: 160,
-    //     valueGetter: (params: GridValueGetterParams) =>
-    //     `${params.row.firstName || ''} ${params.row.lastName || ''}`,
-    // },
 ];
 
 let i = 0;
@@ -111,13 +218,7 @@ function CustomToolbar() {
         <GridCustomToolbarExport />
       </GridToolbarContainer>
     );
-  }
-
-
-const s = "02-Jan-21";
-const d = new Date(s);
-console.log(d);
-
+}
 
 export default function DataTable() {
     return (
