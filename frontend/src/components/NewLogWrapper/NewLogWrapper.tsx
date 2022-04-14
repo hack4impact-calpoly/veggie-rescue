@@ -4,6 +4,7 @@ import NavBar from '../NavBar/NavBar'
 import PickupDelivery from '../PickupDelivery/PickupDelivery'
 import Location from '../Locations/Location'
 import Weight from '../Weight/Weight'
+import { useNavigate } from 'react-router-dom';
 
 interface pickupDeliveryObjectSchema {
     pickupOrDelivery: number,
@@ -39,13 +40,15 @@ export default function NewLogWrapper() {
             lbsDroppedOff: 0
           }
     );
+    const navigate = useNavigate();
 
     useEffect(() => {
         if (doneFlag === true) {
             // MAKE API CALL HERE
-            console.log("submittng with: " + JSON.stringify(pickupDeliveryObject, null, 2));
+            // console.log("submittng with: " + JSON.stringify(pickupDeliveryObject, null, 2));
+            navigate("/Dashboard");
         }
-      }, [doneFlag, pickupDeliveryObject]);
+      }, [doneFlag, pickupDeliveryObject, navigate]);
     
 
     return (

@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react'
+import { useNavigate } from 'react-router-dom';
 
 import NavBarButton_DARK from '../../imgs/button_dark_left.svg';
 import NavBarButton_right_LIGHT from '../../imgs/button_light_right.svg';
@@ -16,10 +17,16 @@ export default function NavBar({setWrapperCurrentPosition, forceNext, setForceNe
     const [progressBarPercent, setProgressBarPercent] = useState<number>(33.3);
     const [currentPosition, setCurrentPosition] = useState<number>(0);
     const [maxPosition, setMaxPosition] = useState<number>(currentPosition);
+    const navigate = useNavigate();
 
     const shiftNavBarSection = (leftOrRight: number) => {
         //INPUT: -1 for shift left, else for shift right
         //OUTPUT: NULL
+        if (leftOrRight === -1 && currentPosition === 0){
+            console.log('go back!');
+            navigate("/Dashboard");
+            return;
+        }
         if (leftOrRight === -1 && progressBarPercent > 33.3){
             setProgressBarPercent(progressBarPercent - 33.3)
             setCurrentPosition(currentPosition - 1);

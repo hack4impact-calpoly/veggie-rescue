@@ -3,7 +3,6 @@ import { pickupSchema } from "./dbMock"; //import data from dbMock
 import LocationFilter from "./LocationFilter";
 import LocationForm from "./LocationForm";
 import Locations from "./Locations";
-import { useEffect } from "react";
 
 import './Location.css'
 

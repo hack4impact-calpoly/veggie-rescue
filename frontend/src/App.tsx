@@ -12,7 +12,6 @@ import AdminLoginScreen from './components/AdminLoginScreen/AdminLoginScreen';
 import Admin from './components/Admin/Admin';
 import Logs from './components/Logs/Logs';
 import Transfering from './components/Transfering/Transfering';
-import Weight from './components/Weight/Weight';
 
 import NewLogWrapper from './components/NewLogWrapper/NewLogWrapper'
 
