@@ -8,7 +8,7 @@ import {
   getVehicle,
   updateVehicle,
   reset
-} from '../../features/vehicles/vehicleSlice';
+} from '../../features/vehicles/vehiclesSlice';
 
 import { useAppSelector, useAppDispatch } from '../../app/hooks';
 
@@ -32,11 +32,10 @@ function Vehicles() {
       dispatch(getVehicles());
     }
     if (vehicleSuccess && Object.keys(vehicle).length !== 0) {
-      console.log('got it!');
       dispatch(reset());
       navigate('/Dashboard');
     }
-  }, [getVehicles, vehicleSuccess, vehicle]);
+  }, [vehicleSuccess, vehicle, vehicles.length, dispatch, navigate]);
 
   // Response to click in VehicleItem component
   const onClick = (e: string) => {
@@ -54,14 +53,14 @@ function Vehicles() {
         Choose your vehicle
       </p>
       <div className="grid grid-cols-2 gap-4">
-        {vehicles.map((car) => {
-          if (!car.isLoggedIn) {
+        {vehicles.filter(car => ((car.name === 'personal vehicle' && car.driver === driver._id) || (car.name !== 'personal vehicle' && !car.isLoggedIn) )
+).map((car) => {        
             return (
               <div className="flex items-center justify-center w-40 m-5 shadow-2xl rounded-3xl">
                 <VehicleItem car={car} onClick={onClick} />
               </div>
             );
-          }
+          
         })}
       </div>
     </div>

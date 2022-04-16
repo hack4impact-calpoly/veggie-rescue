@@ -8,56 +8,9 @@ const initialState: VehicleState = {
   isError: false,
   isSuccess: false,
   isLoading: false,
+  isLoggedOut: false,
   message: ''
 };
-interface locale {
-  name: string;
-  donorLocationType: string;
-  donorEntityType: string;
-  foodType: string[];
-  area: string;
-  id: string;
-}
-// Interface for vehicles object
-interface Vehicle {
-  _id: string;
-  driver: string;
-  name: string;
-  isLoggedIn: boolean;
-  img: string;
-  currentPickups: locale[];
-  currentDropoffs: locale[];
-  totalWeight: number;
-}
-
-// Define a type for the slice state
-interface VehicleState {
-  vehicles: Vehicle[];
-  vehicle: Vehicle;
-  isError: boolean;
-  isSuccess: boolean;
-  isLoading: boolean;
-  message: any | [];
-}
-
-// Define a type for a vehicle object
-interface VehicleItem {
-  _id: String,
-  driver: String,
-  name: String,
-  isLoggedIn: Boolean,
-  img: String,
-  currentPickups: [],
-  currentDropoffs: [],
-  totalWeight: Number
-}
-interface VehicleChoice {
-  _id: string,
-  driver: string,
-  isLoggedIn: string,
- 
-}
-
 
 
 // Get all vehicles
@@ -177,28 +130,30 @@ export const deleteVehicle = createAsyncThunk(
 );
 
 //Log Out this will take all logs in vehicle and put them in main log database...
-// it will also clear the vehicle logs and update the weight
-// export const logoutVehicle = createAsyncThunk(
-//   'vehicles/logout',
-//   async (vehicleData: Vehicle, thunkAPI) => {
-//     try {
-//         const state = thunkAPI.getState() as RootState;
-//        const token = state.driverAuth.driver.token
-//        const id = state.driverAuth.driver._id
+//it will also clear the vehicle logs and update the weight
 
-//       return await vehicleService.logout(vehicleData,id,token)
-//     } catch (error: any) {
-//       const message =
-//         (error.response &&
-//           error.response.data &&
-//           error.response.data.message) ||
-//         error.message ||
-//         error.toString()
+export const logoutVehicle = createAsyncThunk(
+  'vehicles/logout',
+  async (_, thunkAPI) => {
+    try {
+        const state = thunkAPI.getState() as RootState;
+       const token = state.driverAuth.driver.token
+       const id = state.driverAuth.driver._id
 
-//       return thunkAPI.rejectWithValue(message)
-//     }
-//   }
-// )
+      return await vehicleService.logout(id,token)
+    } catch (error: any) {
+      const message =
+        (error.response &&
+          error.response.data &&
+          error.response.data.message) ||
+        error.message ||
+        error.toString()
+
+      return thunkAPI.rejectWithValue(message)
+    }
+  }
+);
+
 
 export const vehicleSlice = createSlice({
   name: 'vehicle',
@@ -208,6 +163,7 @@ export const vehicleSlice = createSlice({
       state.isLoading = false;
       state.isError = false;
       state.isSuccess = false;
+      state.isLoggedOut = false;
       state.message = '';
     }
     // setVehicle: (state)=>{state.vehicle = state.vehicles[0]},
@@ -285,19 +241,72 @@ export const vehicleSlice = createSlice({
         state.isError = true;
         state.message = action.payload;
         state.vehicles = [];
-      });
-    // .addCase(logoutVehicle.pending, (state) => {
-    //   state.isLoading = true
-    // })
-    // .addCase(logoutVehicle.fulfilled, (state) => {
-    //   state.vehicles = []
-    //   state.vehicle= {} as Vehicle
-    //   state.isError= false
-    //   state.isSuccess= false
-    //   state.isLoading= false
-    // })
+      })
+      .addCase(logoutVehicle.pending, (state) => {
+      state.isLoading = true
+      })
+      .addCase(logoutVehicle.fulfilled, (state) => {
+      state.vehicles = []
+      state.vehicle= {} as Vehicle
+      state.isError= false
+      state.isSuccess= false
+      state.isLoading= false
+      state.isLoggedOut = true;
+    });
   }
 });
+
+
+
+interface locale {
+  name: string;
+  donorLocationType: string;
+  donorEntityType: string;
+  foodType: string[];
+  area: string;
+  id: string;
+}
+// Interface for vehicles object
+interface Vehicle {
+  _id: string;
+  driver: string;
+  name: string;
+  isLoggedIn: boolean;
+  img: string;
+  currentPickups: locale[];
+  currentDropoffs: locale[];
+  totalWeight: number;
+}
+
+// Define a type for the slice state
+interface VehicleState {
+  vehicles: Vehicle[];
+  vehicle: Vehicle;
+  isError: boolean;
+  isSuccess: boolean;
+  isLoading: boolean;
+  isLoggedOut: boolean;
+  message: any | [];
+}
+
+// Define a type for a vehicle object
+interface VehicleItem {
+  _id: String,
+  driver: String,
+  name: String,
+  isLoggedIn: Boolean,
+  img: String,
+  currentPickups: [],
+  currentDropoffs: [],
+  totalWeight: Number
+}
+interface VehicleChoice {
+  _id: string,
+  driver: string,
+  isLoggedIn: string,
+ 
+}
+
 
 export const { reset } = vehicleSlice.actions;
 export default vehicleSlice.reducer;

@@ -1,40 +1,7 @@
 import axios from 'axios';
 const API_URL = '/api/vehicles/';
 
-interface Vehicle {
-  _id: string;
-  driver: string;
-  name: string;
-  isLoggedIn: boolean;
-  img: string;
-  currentPickups: locale[];
-  currentDropoffs: locale[];
-  totalWeight: number;
-}
-interface locale {
-  name: string;
-  donorLocationType: string;
-  donorEntityType: string;
-  foodType: string[];
-  area: string;
-  id: string;
-}
-// Define a type for a vehicle object
-interface VehicleItem {
-  _id: String;
-  driver: String;
-  name: String;
-  isLoggedIn: Boolean;
-  img: String;
-  currentPickups: [];
-  currentDropoffs: [];
-  totalWeight: Number;
-}
-interface VehicleChoice {
-  _id: string;
-  driver: string;
-  isLoggedIn: string;
-}
+
 
 //  Gets ALL vehicles ( Can be driver or admin to use this )
 const getVehicles = async (token: string) => {
@@ -104,7 +71,7 @@ const deleteVehicle = async (vehicleID: string, token: string) => {
   return response.data;
 };
 // Need to implement this still
-const logout = async (vehicleData: Vehicle, id: string, token: string) => {
+const logout = async (id: string, token: string) => {
   const config = {
     headers: {
       Authorization: `Bearer ${token}`
@@ -127,6 +94,44 @@ const logout = async (vehicleData: Vehicle, id: string, token: string) => {
   //return response.data
 };
 
+
+
+interface Vehicle {
+  _id: string;
+  driver: string;
+  name: string;
+  isLoggedIn: boolean;
+  img: string;
+  currentPickups: locale[];
+  currentDropoffs: locale[];
+  totalWeight: number;
+}
+interface locale {
+  name: string;
+  donorLocationType: string;
+  donorEntityType: string;
+  foodType: string[];
+  area: string;
+  id: string;
+}
+// Define a type for a vehicle object
+interface VehicleItem {
+  _id: String;
+  driver: String;
+  name: String;
+  isLoggedIn: Boolean;
+  img: String;
+  currentPickups: [];
+  currentDropoffs: [];
+  totalWeight: Number;
+}
+interface VehicleChoice {
+  _id: string;
+  driver: string;
+  isLoggedIn: string;
+}
+
+
 const vehicleService = {
   getVehicles,
   logout,
@@ -134,6 +139,6 @@ const vehicleService = {
   getVehicle,
   createVehicle,
   deleteVehicle
-};
 
+};
 export default vehicleService;

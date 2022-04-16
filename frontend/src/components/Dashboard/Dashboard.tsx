@@ -4,12 +4,17 @@ import { FaPencilAlt, FaClipboardList, FaHandPaper } from 'react-icons/fa';
 import { useNavigate } from 'react-router-dom';
 import { useAppSelector, useAppDispatch } from '../../app/hooks';
 import { reset } from '../../features/driverAuth/driverAuthSlice';
+import { toast } from 'react-toastify';
+
 import {
   getVehicles,
   getVehicle,
+  logoutVehicle,
   updateVehicle,
   reset as resetVehicles
-} from '../../features/vehicles/vehicleSlice';
+} from '../../features/vehicles/vehiclesSlice';
+
+
 
 const name = 'Diana';
 const weight = '1,234';
@@ -20,18 +25,22 @@ const Dashboard = () => {
   const {
     vehicle,
     isLoading: vehicleIsLoading,
-    isSuccess
+    isSuccess : vehicleIsSuccess,
+    isLoggedOut
   } = useAppSelector((state) => state.vehicle);
-
+  const {
+    driver
+  } = useAppSelector((state) => state.driverAuth);
   const { isSuccess: driverAuthSuccess } = useAppSelector(
     (state) => state.driverAuth
   );
   useEffect(() => {
-    if (isSuccess) {
-      navigate('/');
+    if (isLoggedOut) {
+      toast.success('Successfully logged out.')
+      //navigate('/');
     }
-    dispatch(resetVehicles())
-  }, [driverAuthSuccess]);
+    //dispatch(resetVehicles())
+  }, [dispatch, driverAuthSuccess, vehicleIsSuccess, navigate, isLoggedOut]);
 
   function handleClick(button: Number) {
     switch (button) {
@@ -43,12 +52,15 @@ const Dashboard = () => {
         break;
       case 2:
         // When logging out we will need to implement a check to make sure everything is logged to backend.  For now we just clear the stored driver and navigate to login page.
-        const newVehicle = { _id: vehicle._id, driver: ' ', isLoggedIn: "false" };
-        dispatch(updateVehicle(newVehicle));
+        // We need to only clear name if it is not a personal vehicle.
+  
+        let resetVehicle = { _id: vehicle._id, driver: vehicle.name  === 'personal vehicle' ? driver._id : " " , isLoggedIn: "false" };
+
+        dispatch(updateVehicle(resetVehicle));
         localStorage.removeItem('driver');
+        dispatch(logoutVehicle());
         dispatch(reset());
         dispatch(resetVehicles());
-
         break;
 
       default:

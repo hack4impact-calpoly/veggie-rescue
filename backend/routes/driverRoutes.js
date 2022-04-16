@@ -5,9 +5,9 @@ const {
   loginDriver,
   getDriver,
 } = require("../controllers/driverController");
-const { protectDriver } = require("../middleware/authMiddleware");
+const { protectDriver, protectAdmin, protectAdminOrDriver } = require("../middleware/authMiddleware");
 
-router.post("/", registerDriver);
+router.post("/", protectAdmin, registerDriver);
 
 router.post("/login", loginDriver);
 

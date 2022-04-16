@@ -1,18 +1,16 @@
 import React, { useState, useEffect } from 'react';
 import { useAppSelector, useAppDispatch } from '../../app/hooks';
+import { login, reset } from '../../features/driverAuth/driverAuthSlice';
+import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import {
-  getVehicles,
   getVehicle,
-  reset as resetDriver
-} from '../../features/vehicles/vehicleSlice';
-import { login, reset } from '../../features/driverAuth/driverAuthSlice';
+  reset as resetVehicle
+} from '../../features/vehicles/vehiclesSlice';
 
 import AsterixDisplay from '../AsterixDisplay/AsterixDisplay';
 import NumPad from '../NumPad/NumPad';
 import logo from '../../imgs/veggie-rescue-logo.png';
-
-import { useNavigate } from 'react-router-dom';
 
 type Props = {};
 
@@ -30,8 +28,8 @@ const LoginScreen: React.FC<Props> = () => {
     isSuccess: driverSuccess,
     message: driverMessage
   } = useAppSelector((state) => state.driverAuth);
+ 
   const {
-    vehicles,
     vehicle,
     isError: vehicleError,
     isSuccess: vehicleSuccess,
@@ -39,16 +37,19 @@ const LoginScreen: React.FC<Props> = () => {
   } = useAppSelector((state) => state.vehicle);
 
   useEffect(() => {
-    
     // If we have a driver in local storage (initial state) or dispatching login puts one there:
-    if (driverSuccess || Object.keys(driver).length !== 0) {
+    if ((driverSuccess || Object.keys(driver).length !== 0) && !vehicleError && !vehicleSuccess) {
       // Dispatch to get vehicle associated with this current driver
       dispatch(getVehicle());
     }
+
     // We must check if vehicleSuccess returns true (means API call found vehicle associated with driver)
-    if ((driverSuccess || Object.keys(driver).length !== 0) && vehicleSuccess) {
+    if ((Object.keys(vehicle).length !== 0) && vehicleSuccess) {
+      setLoading(false);
+      dispatch(resetVehicle())
       toast.success(`Welcome ${driver.name}`);
       toast.success(`You are current driving a : ${vehicle.name}`);
+
       // NOW depending on if there is currently weight in the vehicle or not we either go to Dashboard or Transfer page
       if (vehicle.totalWeight !== 0) {
         toast.error('Navigating to transfer weight page');
@@ -57,22 +58,21 @@ const LoginScreen: React.FC<Props> = () => {
         toast.success('Navigating to dashboard... weight of vehicle is at 0');
         navigate('/Dashboard');
       }
-      
     }
 
     // We must check if vehicleError returns error
-    if ((driverSuccess || Object.keys(driver).length !== 0) && vehicleError) {
+    if (vehicleError) {
       toast.success(`Welcome ${driver.name}`);
       toast.error(
         'You are not logged in with vehicle sending you to choose one'
       );
-      toast.error(vehicleMessage);
+      dispatch(resetVehicle())
       navigate('/Vehicles');
     }
 
     // Once user enters 4 numbers, dispatch API call for logging in and immediately clear asterix display
     if (pin.length === 4) {
-      //setLoading(true);
+      setLoading(true);
       dispatch(login(pin));
       clearHandler();
     }
@@ -84,23 +84,9 @@ const LoginScreen: React.FC<Props> = () => {
       dispatch(reset());
       setLoading(false);
     }
-    /*
 
-    if (Object.keys(driver).length === 0) {
-      setLoading(false);
-    }
-    */
-  }, [
-    vehicleSuccess,
-    vehicleError,
-    driver,
-    driverError,
-    driverSuccess,
-    driverMessage,
-    navigate,
-    pin,
-    dispatch
-  ]);
+
+  }, [vehicleSuccess, vehicleError, driver, driverError, driverSuccess, driverMessage, navigate, pin, dispatch, vehicle.name, vehicle.totalWeight, vehicleMessage, vehicle]);
 
   const buttonHandler = (btnId: string) => {
     if (pin.length <= 3) {

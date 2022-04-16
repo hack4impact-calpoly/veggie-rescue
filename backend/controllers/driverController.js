@@ -2,6 +2,7 @@ const asyncHandler = require("express-async-handler");
 const bcrypt = require("bcryptjs");
 const Driver = require("../models/driverModel");
 const jwt = require("jsonwebtoken");
+const Vehicle = require("../models/vehiclesSchema")
 
 // @desc Register a new driver; make sure password is <= 4 in length.
 // @route /api/drivers
@@ -51,6 +52,18 @@ const registerDriver = asyncHandler(async (req, res) => {
   const driver = await Driver.create({
     name,
     pin: newHashPin,
+  });
+ 
+
+// We have to create a personal vehicle with each driver so do that here.
+  const vehicle = await Vehicle.create({
+    driver: driver._id,
+    name : "personal vehicle",
+    isLoggedIn: false,
+    img : "no image",
+    currentPickups: [],
+    currentDropoffs: [],
+    totalWeight: 0,
   });
 
   if (driver) {
@@ -116,6 +129,8 @@ const getDriver = asyncHandler(async (req, res) => {
   };
   res.status(200).json(driver);
 });
+
+
 
 // Generate token
 const generateToken = (id) => {
