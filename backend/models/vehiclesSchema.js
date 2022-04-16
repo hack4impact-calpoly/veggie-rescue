@@ -1,8 +1,9 @@
 const mongoose = require('mongoose')
 
 const VehicleSchema = new mongoose.Schema({
-    id: String,
+    driver: String,
     name: String,
+    isLoggedIn: Boolean,
     img: String,
     currentPickups: Array,
     currentDropoffs: Array,

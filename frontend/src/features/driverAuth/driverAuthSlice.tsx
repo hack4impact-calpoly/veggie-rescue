@@ -82,12 +82,7 @@ export const authSlice = createSlice({
   name: 'driverAuth',
   initialState,
   reducers: {
-    reset: (state) => {
-      state.isLoading = false;
-      state.isError = false;
-      state.isSuccess = false;
-      state.message = '';
-    }
+    reset: (state) => initialState
   },
   extraReducers: (builder) => {
     builder
