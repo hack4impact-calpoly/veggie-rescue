@@ -78,8 +78,9 @@ const logout = async (id: string, token: string) => {
     }
   };
 
+  console.log('what the heck')
+
   //STILL NEED TO IMPLEMENT
-  console.log('LOGGING  OUT AND DELETING DRIVER TOKEN');
   // const { name, _id } = vehicleData
   // const nameUpdate = (name === 'Personal Vehicle') ? id : '';
   // const response = await axios.put(API_URL + _id, {

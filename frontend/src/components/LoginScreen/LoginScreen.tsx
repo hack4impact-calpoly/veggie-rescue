@@ -52,10 +52,8 @@ const LoginScreen: React.FC<Props> = () => {
 
       // NOW depending on if there is currently weight in the vehicle or not we either go to Dashboard or Transfer page
       if (vehicle.totalWeight !== 0) {
-        toast.error('Navigating to transfer weight page');
         navigate('/Transfer');
       } else {
-        toast.success('Navigating to dashboard... weight of vehicle is at 0');
         navigate('/Dashboard');
       }
     }
@@ -63,9 +61,6 @@ const LoginScreen: React.FC<Props> = () => {
     // We must check if vehicleError returns error
     if (vehicleError) {
       toast.success(`Welcome ${driver.name}`);
-      toast.error(
-        'You are not logged in with vehicle sending you to choose one'
-      );
       dispatch(resetVehicle())
       navigate('/Vehicles');
     }

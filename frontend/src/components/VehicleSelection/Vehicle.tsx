@@ -33,7 +33,12 @@ function Vehicles() {
     }
     if (vehicleSuccess && Object.keys(vehicle).length !== 0) {
       dispatch(reset());
-      navigate('/Dashboard');
+      // NOW depending on if there is currently weight in the vehicle or not we either go to Dashboard or Transfer page
+      if (vehicle.totalWeight !== 0) {
+        navigate('/Transfer');
+      } else {
+        navigate('/Dashboard');
+      }
     }
   }, [vehicleSuccess, vehicle, vehicles.length, dispatch, navigate]);
 

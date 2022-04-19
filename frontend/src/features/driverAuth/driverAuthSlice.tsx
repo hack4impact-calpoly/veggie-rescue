@@ -2,6 +2,14 @@ import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import driverAuthService from './driverAuthService';
 // import type { RootState } from '../../app/store'
 
+
+const initialState: DriverAuthState = {
+  driver: JSON.parse(localStorage.getItem('driver') || '{}') as Driver,
+  isError: false,
+  isSuccess: false,
+  isLoading: false,
+  message: ''
+};
 // Interface for driver object
 interface Driver {
   _id: string;
@@ -27,13 +35,7 @@ interface DriverAuthState {
 
 const emptyDriver = {} as Driver;
 
-const initialState: DriverAuthState = {
-  driver: JSON.parse(localStorage.getItem('driver') || '{}') as Driver,
-  isError: false,
-  isSuccess: false,
-  isLoading: false,
-  message: ''
-};
+
 
 // Register new driver
 export const register = createAsyncThunk(
@@ -82,7 +84,14 @@ export const authSlice = createSlice({
   name: 'driverAuth',
   initialState,
   reducers: {
-    reset: (state) => initialState
+    reset: (state) => initialState,
+    clear: (state) => {
+      state.driver = {} as Driver
+      state.isError = false
+      state.isSuccess = false 
+      state.isLoading = false 
+      state.message = ''    
+    }
   },
   extraReducers: (builder) => {
     builder
@@ -126,5 +135,5 @@ export const authSlice = createSlice({
   }
 });
 
-export const { reset } = authSlice.actions;
+export const { reset, clear } = authSlice.actions;
 export default authSlice.reducer;

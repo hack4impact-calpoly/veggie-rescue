@@ -1,7 +1,8 @@
 import { configureStore } from '@reduxjs/toolkit';
 import driverAuthReducer from '../features/driverAuth/driverAuthSlice';
 import adminAuthReducer from '../features/adminAuth/adminAuthSlice';
-import vehicleReducer from '../features/vehicles/vehiclesSlice';
+import vehicleReducer from '../features/vehicles/vehiclesSlice'
+
 export const store = configureStore({
   reducer: {
     driverAuth: driverAuthReducer,
@@ -9,7 +10,6 @@ export const store = configureStore({
     vehicle: vehicleReducer,
   }
 });
-
 // Infer the `RootState` and `AppDispatch` types from the store itself
 export type RootState = ReturnType<typeof store.getState>;
 // Inferred type: {driverAuth: driverAuthState, comments: CommentsState, users: UsersState}
