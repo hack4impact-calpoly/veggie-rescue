@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React from 'react';
 import { DataGrid, GridColDef, GridRenderCellParams, GridToolbarContainer, GridToolbarExport, GridCsvExportOptions, GridValueGetterParams, GridValueFormatterParams } from '@mui/x-data-grid';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
@@ -6,11 +6,13 @@ import Paper from '@mui/material/Paper';
 import Popper from '@mui/material/Popper';
 import { logs } from '../../data/dbMock';
 
+// props for expanding cell if too long
 interface GridCellExpandProps {
     value: string;
     width: number;
 }
 
+// checks if the cell is overflowing the cell width
 function isOverflown(element: Element): boolean {
 return (
     element.scrollHeight > element.clientHeight ||
@@ -18,6 +20,7 @@ return (
 );
 }
 
+// handles all the logic and formatting for expanding the cell
 const GridCellExpand = React.memo(function GridCellExpand(
     props: GridCellExpandProps,
   ) {
@@ -110,12 +113,14 @@ const GridCellExpand = React.memo(function GridCellExpand(
     );
 });
 
+// function that expands the cell
 function renderCellExpand(params: GridRenderCellParams<string>) {
     return (
       <GridCellExpand value={params.value || ''} width={params.colDef.computedWidth} />
     );
 }
 
+// Formatting the column headers, its data types, and sorting of the column headers
 const columns: GridColDef[] = [
     { 
         field: 'date',
@@ -188,8 +193,77 @@ const columns: GridColDef[] = [
     },
 ];
 
-let i = 0;
-const rows = logs?.map((log) => {
+// Custom toolbar that only houses the export button
+const GridCustomToolbarExport = (props: GridCsvExportOptions) => {
+    return (
+      <GridToolbarExport
+        csvOptions={{fileName: 'logs'}}
+      />
+    );
+  };
+
+// function to call the custom toolbar
+function CustomToolbar() {
+    return (
+      <GridToolbarContainer>
+        <GridCustomToolbarExport />
+      </GridToolbarContainer>
+    );
+}
+
+// function componentDidMount() {
+//     const eventsURL = `${process.env.REACT_APP_SERVER_URL}/api/event/get-all`
+//     fetch(eventsURL,
+//         {
+//           credentials: 'include',
+//           mode: 'cors'
+//         })
+//         .then((res) => res.json())
+//         .then((events) => this.setState({events: events}))
+//         .catch((err) => console.error(err))
+//     const shiftsURL = `${process.env.REACT_APP_SERVER_URL}/api/user/shifts`
+//     fetch(shiftsURL,
+//         {
+//           method: 'POST',
+//           credentials: 'include',
+//           mode: 'cors'
+//         })
+//         .then(res => res.json())
+//         .then(userShifts => this.setState({userShifts: userShifts}))
+//         .catch(err => console.error(err))
+//     }
+  
+
+export default function DataTable() {
+
+    // constructor(props){
+    //     super(props);
+    //     this.state = {
+    //       showModal: false,
+    //       events: [],
+    //       dateClickedStr: "",
+    //       dateClickedEvents: [],
+    //       eventClicked: "",
+    //       eventModalData: {},
+    //       userShifts: []
+    //     }
+    // }
+
+    
+
+    // let [logs, setLogs] = useState();
+
+    // useEffect(() => {
+    //     const loadLogs = async () => {
+    //       let res = await fetch('http://localhost:3001/api/people')
+    //       setLogs(await res.json())
+    //     }
+        
+    //     loadLogs();
+    //   }, [])
+
+    let i = 0;
+    const rows = logs?.map((log) => {
     return {
         id: i++,
         date: log.date,
@@ -201,26 +275,9 @@ const rows = logs?.map((log) => {
         locationType: log.locationType,
         donorEntityType: log.donorEntityType,
         area: log.area
-    } 
-});
+        } 
+    }); 
 
-const GridCustomToolbarExport = (props: GridCsvExportOptions) => {
-    return (
-      <GridToolbarExport
-        csvOptions={{fileName: 'logs'}}
-      />
-    );
-  };
-
-function CustomToolbar() {
-    return (
-      <GridToolbarContainer>
-        <GridCustomToolbarExport />
-      </GridToolbarContainer>
-    );
-}
-
-export default function DataTable() {
     return (
         <div className='bg-green-50 w-screen h-screen'>
             <div className='font-poppins flex items-center flex-col space-y-[50px]'>
