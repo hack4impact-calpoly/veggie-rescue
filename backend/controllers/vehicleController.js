@@ -171,7 +171,7 @@ const editVehicle = asyncHandler(async (req, res) => {
     vehicleInDB.currentDropoffs = [...vehicleInDB.currentDropoffs, dropoff];
   }
   if (body.totalWeight) {
-    vehicleInDB.totalWeight = body.totalWeight;
+    vehicleInDB.totalWeight = body.totalWeight
   }
   const updatedVehicle = await Vehicle.findByIdAndUpdate(
     req.params.id,
