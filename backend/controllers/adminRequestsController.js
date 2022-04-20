@@ -9,11 +9,11 @@ const Admin = require('../models/adminModel.js')
 const Driver = require('../models/driverModel.js')
 
 // @desc Finding a donor
-// @route /api/donor/find
+// @route /api/donor/get
 // @access Public
 
 const findDonor = asyncHandler(async (req, res) => {
-    const{email} = req.body;
+    const email = req.params.email;
     const driverExists = await Driver.findOne({email})
     const adminExists = await Admin.findOne({email})
 
@@ -120,7 +120,7 @@ const createDonor = asyncHandler(async (req, res) => {
 })
 
 // @desc Create a Recipient
-// @route /api/recipient/create
+// @route /api/location/recipient/create
 // @access Public
 
 const createRecipient = asyncHandler(async (req, res) => {
@@ -141,9 +141,9 @@ const createRecipient = asyncHandler(async (req, res) => {
     // Find if donor does not already exist
     const recipientExists = await Recipient.findOne({id})
 
-    if(!recipientExists){
+    if(recipientExists){
         res.status(400)
-        throw new Error('Donor already exists')
+        throw new Error('Recipient already exists')
     }
 
 
@@ -263,6 +263,89 @@ const editRecipient = asyncHandler(async (req, res) => {
     //res.send('Register Route')
 })
 
+// @desc Delete a Donor
+// @route /api/location/donor/delete
+// @access Public
+
+const deleteDonor = asyncHandler(async (req, res) => {
+    const adminEmail = req.params.email
+    const adminExists = await Admin.findOne({adminEmail})
+
+    if(!adminExists){
+        res.status(400)
+        throw new Error('This User does not have access')
+    }
+    const body = req.body
+    const donor_id = body.id
+    //const donorInDB = db[donor_id]
+    const donorInDB = await Donor.findOne({id: donor_id})
+
+    if(!donorInDB){
+        return res
+        .status(404)
+        .json({ error: 'Donor not found'});
+    }
+
+    Donor.findOneAndRemove({id: donor_id}, function(err){
+        if(err){
+            console.log(err);
+            return res.status(500).send();
+        }
+        return res.status(200).send();
+    })
+
+    //return res.status(200).json(donorInDB)
+    /*
+
+    //const donorDeleted = await Donor.deleteById(donor_id);
+    const donorDeleted = Donor.findByIdAndDelete(donor_id);
+
+    if(!donorDeleted){
+        return res.status(404).json({ error: 'Donor could not be deleted'})
+    }
+
+
+    return res
+            .status(201)
+            .json(donor_id);*/
+
+
+    //res.send('Register Route')
+})
+
+// @desc Delete a Recipient
+// @route /api/location/recipient/delete
+// @access Public
+
+const deleteRecipient = asyncHandler(async (req, res) => {
+    const adminEmail = req.params.email
+    const adminExists = await Admin.findOne({adminEmail})
+
+    if(!adminExists){
+        res.status(400)
+        throw new Error('This User does not have access')
+    }
+    const body = req.body
+    const recip_id = body.id
+    //const donorInDB = db[donor_id]
+    const recipInDB = await Recipient.findOne({id: recip_id})
+
+    if(!recipInDB){
+        return res
+        .status(404)
+        .json({ error: 'Recipient not found'});
+    }
+
+    Recipient.findOneAndRemove({id: recip_id}, function(err){
+        if(err){
+            console.log(err);
+            return res.status(500).send();
+        }
+        return res.status(200).send();
+    })
+
+})
+
 const generateToken = (id) => {
     return jwt.sign({ id }, process.env.JWT_SECRET, {
         expiresIn: '24h'
@@ -276,4 +359,6 @@ module.exports = {
     createRecipient,
     editDonor,
     editRecipient,
+    deleteDonor,
+    deleteRecipient,
 }
