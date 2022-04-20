@@ -11,6 +11,11 @@ import ShortEntityForm from './ShortEntityForm';
 import { vehicles, volunteerSchema, deliverySchema, pickupSchema } from '../../data/dbMock';
 import { AiOutlineSearch } from 'react-icons/ai';
 
+import VehicleEditForm from './EditComponents/VehicleEditForm';
+import VolunteerEditForm from './EditComponents/VolunteerEditForm';
+import DonorEditForm from './EditComponents/DonorEditForm';
+import RecipientEditForm from './EditComponents/RecipientEditForm';
+
 const AdminDataScreen = () => {
   const [vehiclesCard, setVehiclesCard] = useState(false);
   const [volunteers, setVolunteers] = useState(false);
@@ -19,6 +24,9 @@ const AdminDataScreen = () => {
   const [showModal, setShowModal] = useState(false);
   const [q, setQ] = useState("");
   const [searchParam, setSearchParam] = useState(["name"]);
+
+  const [edit, setEdit] = useState(false);
+  const [dataToEdit, setDataToEdit] = useState({});
 
   function handleVolunteers(){
     setVolunteers((prev) => !prev);
@@ -149,13 +157,16 @@ const AdminDataScreen = () => {
       <button onClick={handleShowModal}>
         <NewVolunteersCard />
       </button>
-      { showModal && <ShortEntityForm handleShow={handleShowModal}/>}
+      { (showModal) && <ShortEntityForm handleShow={handleShowModal}/>}
+      { (edit) && <VolunteerEditForm setEdit={setEdit} dataToEdit={dataToEdit}/>}
       {search(q).map((item:any, index:any) => {
         return(
-          <VolunteersCard
-            index={index}
-            name={item.name}
-            pin={item.pin}/>
+          <button onClick={() => {setEdit(true); setDataToEdit(item)}}>
+            <VolunteersCard
+              index={index}
+              name={item.name}
+              pin={item.pin}/>
+          </button>
         );
       })}
     </div>
@@ -167,11 +178,14 @@ const AdminDataScreen = () => {
         <NewVolunteersCard />
       </button>
       { showModal && <ShortEntityForm handleShow={handleShowModal}/>}
+      { (edit) && <VehicleEditForm setEdit={setEdit} dataToEdit={dataToEdit}/>}
       {search(q).map((item:any, index:any) => {
         return(
-          <VehiclesCard
-            index={index}
-            vehicle={item.name}/>
+          <button onClick={() => {setEdit(true); setDataToEdit(item)}}>
+            <VehiclesCard
+              index={index}
+              vehicle={item.name}/>
+          </button>
         );
       })}
     </div>
@@ -183,15 +197,18 @@ const AdminDataScreen = () => {
         <NewDonorsCard />
       </button>
       { showModal && <EntityForm handleShow={handleShowModal}/> }
+      { (edit) && <DonorEditForm setEdit={setEdit} dataToEdit={dataToEdit}/>}
       {search(q).map((item:any, index:any) => {
         return(
+          <button onClick={() => {setEdit(true); setDataToEdit(item); console.log(item)}}>
           <DonorsCard
-            index={item.id}
-            donor={item.name}
-            entityType= {item.donorEntityType}
-            locationType= {item.donorLocationType}
-            foodType= {item.foodType}
-            areaName= {item.area}/>
+              index={item.id}
+              donor={item.name}
+              entityType= {item.donorEntityType}
+              locationType= {item.donorLocationType}
+              foodType= {item.foodType}
+              areaName= {item.area}/>
+          </button>
         );
       })}
     </div>
@@ -203,15 +220,18 @@ const AdminDataScreen = () => {
         <NewDonorsCard />
       </button>
       { showModal && <EntityForm handleShow={handleShowModal}/> }
+      { (edit) && <RecipientEditForm setEdit={setEdit} dataToEdit={dataToEdit}/>}
       {search(q).map((item:any, index:any) => {
         return(
-          <RecipientsCard
-            index={item.id}
-            donor={item.name}
-            entityType={item.recipientEntityType}
-            demographicName={item.demographic}
-            foodType={item.foodType}
-            areaName={item.area}/>
+          <button onClick={() => {setEdit(true); setDataToEdit(item); console.log(item)}}>
+            <RecipientsCard
+              index={item.id}
+              donor={item.name}
+              entityType={item.recipientEntityType}
+              demographicName={item.demographic}
+              foodType={item.foodType}
+              areaName={item.area}/>
+          </button>
         );
       })}
     </div>
