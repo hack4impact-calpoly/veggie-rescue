@@ -1,11 +1,13 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
-import pickupsService from './pickupsService';
+import recipientsService from './recipientsService';
 import type { RootState } from '../../app/store';
 
-// Interface for pickup items (This is what will be kept in store and what you will have access)
-interface Pickup {
+// Interface for recipient items (This is what will be kept in store and 
+//what you will have access)  
+interface Recipient {
   _id: string;
   name: string;
+
 }
 
 // // Interface for object when registering new admin
@@ -20,25 +22,25 @@ interface Pickup {
 // }
 
 // // Define a type for the slice state
-interface PickupState {
-  pickups: [];
+interface RecipientState {
+  recipients: [];
   isError: boolean;
   isSuccess: boolean;
   isLoading: boolean;
   message: any | null;
 }
 
-const initialState: PickupState = {
-  pickups: [],
+const initialState: RecipientState = {
+  recipients: [],
   isError: false,
   isSuccess: false,
   isLoading: false,
   message: ''
 };
 
-
-export const getPickups = createAsyncThunk(
-  'api/pickups',
+// Get list of all recipients in DB
+export const getRecipients = createAsyncThunk(
+  'api/recipients',
   async (_, thunkAPI) => {
     try {
       const state = thunkAPI.getState() as RootState;
@@ -47,7 +49,7 @@ export const getPickups = createAsyncThunk(
         token = state.adminAuth.admin.token;
       }
 
-      return await pickupsService.getPickups(token);
+      return await recipientsService.getRecipients(token);
     } catch (error: any) {
       const message =
         (error.response &&
@@ -61,8 +63,8 @@ export const getPickups = createAsyncThunk(
   }
 );
 
-export const pickupsSlice = createSlice({
-  name: 'pickup',
+export const recipientsSlice = createSlice({
+  name: 'recipients',
   initialState,
   reducers: {
     reset: (state) => {
@@ -74,15 +76,15 @@ export const pickupsSlice = createSlice({
   },
   extraReducers: (builder) => {
     builder
-      .addCase(getPickups.pending, (state) => {
+      .addCase(getRecipients.pending, (state) => {
         state.isLoading = true;
       })
-      .addCase(getPickups.fulfilled, (state, action) => {
+      .addCase(getRecipients.fulfilled, (state, action) => {
         state.isLoading = false;
         state.isSuccess = true;
-        state.pickups = action.payload;
+        state.recipients = action.payload;
       })
-      .addCase(getPickups.rejected, (state, action) => {
+      .addCase(getRecipients.rejected, (state, action) => {
         state.isLoading = false;
         state.isError = true;
         state.message = action.payload;
@@ -90,5 +92,5 @@ export const pickupsSlice = createSlice({
   }
 });
 
-export const { reset } = pickupsSlice.actions;
-export default pickupsSlice.reducer;
+export const { reset } =recipientsSlice.actions;
+export default recipientsSlice.reducer;

@@ -1,12 +1,12 @@
 import axios from 'axios';
-const API_URL = '/api/pickup';
+const API_URL = '/api/dropoff';
 
 //THIS IS WHERE YOU CAN DO YOUR API CALLS
 //THE CONFIG IS WHERE IT AUTHORIZES USER TOKEN WITH BACKEND
 //YOU CAN DO FULL CRUD OPS HERE
 
-//  Get master log of pickups
-const getPickups = async (token: string) => {
+//  Get master log of drop offs
+const getDropoffs = async (token: string) => {
   const config = {
     headers: {
       Authorization: `Bearer ${token}`
@@ -37,9 +37,9 @@ const getPickups = async (token: string) => {
 // Logout admin
 //const logout = () => localStorage.removeItem('admin');
 
-const pickupsService = {
-getPickups
+const dropoffsService = {
+getDropoffs
 };
 
-export default pickupsService;
+export default dropoffsService;
 

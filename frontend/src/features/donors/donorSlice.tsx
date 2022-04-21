@@ -1,9 +1,9 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
-import pickupsService from './pickupsService';
+import donorsService from './donorsService';
 import type { RootState } from '../../app/store';
 
-// Interface for pickup items (This is what will be kept in store and what you will have access)
-interface Pickup {
+// Interface for donor items (This is what will be kept in store and what you will have access)
+interface Donor {
   _id: string;
   name: string;
 }
@@ -20,16 +20,16 @@ interface Pickup {
 // }
 
 // // Define a type for the slice state
-interface PickupState {
-  pickups: [];
+interface DonorState {
+  donors: [];
   isError: boolean;
   isSuccess: boolean;
   isLoading: boolean;
   message: any | null;
 }
 
-const initialState: PickupState = {
-  pickups: [],
+const initialState: DonorState = {
+  donors: [],
   isError: false,
   isSuccess: false,
   isLoading: false,
@@ -37,8 +37,8 @@ const initialState: PickupState = {
 };
 
 
-export const getPickups = createAsyncThunk(
-  'api/pickups',
+export const getDonors = createAsyncThunk(
+  'api/donors',
   async (_, thunkAPI) => {
     try {
       const state = thunkAPI.getState() as RootState;
@@ -47,7 +47,7 @@ export const getPickups = createAsyncThunk(
         token = state.adminAuth.admin.token;
       }
 
-      return await pickupsService.getPickups(token);
+      return await donorsService.getDonors(token);
     } catch (error: any) {
       const message =
         (error.response &&
@@ -61,8 +61,8 @@ export const getPickups = createAsyncThunk(
   }
 );
 
-export const pickupsSlice = createSlice({
-  name: 'pickup',
+export const donorsSlice = createSlice({
+  name: 'donors',
   initialState,
   reducers: {
     reset: (state) => {
@@ -74,15 +74,15 @@ export const pickupsSlice = createSlice({
   },
   extraReducers: (builder) => {
     builder
-      .addCase(getPickups.pending, (state) => {
+      .addCase(getDonors.pending, (state) => {
         state.isLoading = true;
       })
-      .addCase(getPickups.fulfilled, (state, action) => {
+      .addCase(getDonors.fulfilled, (state, action) => {
         state.isLoading = false;
         state.isSuccess = true;
-        state.pickups = action.payload;
+        state.donors = action.payload;
       })
-      .addCase(getPickups.rejected, (state, action) => {
+      .addCase(getDonors.rejected, (state, action) => {
         state.isLoading = false;
         state.isError = true;
         state.message = action.payload;
@@ -90,5 +90,5 @@ export const pickupsSlice = createSlice({
   }
 });
 
-export const { reset } = pickupsSlice.actions;
-export default pickupsSlice.reducer;
+export const { reset } = donorsSlice.actions;
+export default donorsSlice.reducer;

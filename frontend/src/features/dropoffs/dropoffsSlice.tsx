@@ -1,11 +1,12 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
-import pickupsService from './pickupsService';
+import dropoffsService from './dropoffsService';
 import type { RootState } from '../../app/store';
 
-// Interface for pickup items (This is what will be kept in store and what you will have access)
-interface Pickup {
+// Interface for dropoff items (This is what will be kept in store and what you will have access)
+interface Dropoff {
   _id: string;
   name: string;
+  token: string;
 }
 
 // // Interface for object when registering new admin
@@ -20,25 +21,25 @@ interface Pickup {
 // }
 
 // // Define a type for the slice state
-interface PickupState {
-  pickups: [];
+interface DropoffState {
+  dropoffs: [];
   isError: boolean;
   isSuccess: boolean;
   isLoading: boolean;
   message: any | null;
 }
 
-const initialState: PickupState = {
-  pickups: [],
+const initialState: DropoffState = {
+  dropoffs: [],
   isError: false,
   isSuccess: false,
   isLoading: false,
   message: ''
 };
+// GET ALL LOGS
 
-
-export const getPickups = createAsyncThunk(
-  'api/pickups',
+export const getDropoffs = createAsyncThunk(
+  'api/dropoff',
   async (_, thunkAPI) => {
     try {
       const state = thunkAPI.getState() as RootState;
@@ -47,7 +48,7 @@ export const getPickups = createAsyncThunk(
         token = state.adminAuth.admin.token;
       }
 
-      return await pickupsService.getPickups(token);
+      return await dropoffsService.getDropoffs(token);
     } catch (error: any) {
       const message =
         (error.response &&
@@ -61,8 +62,8 @@ export const getPickups = createAsyncThunk(
   }
 );
 
-export const pickupsSlice = createSlice({
-  name: 'pickup',
+export const dropoffsSlice = createSlice({
+  name: 'dropoff',
   initialState,
   reducers: {
     reset: (state) => {
@@ -74,15 +75,15 @@ export const pickupsSlice = createSlice({
   },
   extraReducers: (builder) => {
     builder
-      .addCase(getPickups.pending, (state) => {
+      .addCase(getDropoffs.pending, (state) => {
         state.isLoading = true;
       })
-      .addCase(getPickups.fulfilled, (state, action) => {
+      .addCase(getDropoffs.fulfilled, (state, action) => {
         state.isLoading = false;
         state.isSuccess = true;
-        state.pickups = action.payload;
+        state.dropoffs = action.payload;
       })
-      .addCase(getPickups.rejected, (state, action) => {
+      .addCase(getDropoffs.rejected, (state, action) => {
         state.isLoading = false;
         state.isError = true;
         state.message = action.payload;
@@ -90,5 +91,5 @@ export const pickupsSlice = createSlice({
   }
 });
 
-export const { reset } = pickupsSlice.actions;
-export default pickupsSlice.reducer;
+export const { reset } = dropoffsSlice.actions;
+export default dropoffsSlice.reducer;
