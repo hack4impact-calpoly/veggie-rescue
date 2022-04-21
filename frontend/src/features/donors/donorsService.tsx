@@ -1,5 +1,11 @@
 import axios from 'axios';
-const API_URL = '/api/donor';
+const API_URL = '/api/location/donor/';
+
+/////////////////////////////////////////
+//                                     //
+//       LIST OF DONOR LOCATIONS       //
+//                                     //
+/////////////////////////////////////////
 
 //THIS IS WHERE YOU CAN DO YOUR API CALLS
 //THE CONFIG IS WHERE IT AUTHORIZES USER TOKEN WITH BACKEND

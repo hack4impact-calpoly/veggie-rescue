@@ -11,6 +11,11 @@ router.post("/", protectAdmin, registerDriver);
 
 router.post("/login", loginDriver);
 
-router.get("/get", protectDriver, getDriver);
+router.get("/get", protectAdmin, getDriver);
 
+
+// Need to make:
+// Get all drivers route 
+// Delete Driver
+// Update Driver
 module.exports = router;

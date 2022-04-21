@@ -1,5 +1,11 @@
 import axios from 'axios';
-const API_URL = '/api/pickup';
+const API_URL = '/api/pickup/';
+
+/////////////////////////////////////////
+//                                     //
+//         MASTER PICKUP LOG           //
+//                                     //
+/////////////////////////////////////////
 
 //THIS IS WHERE YOU CAN DO YOUR API CALLS
 //THE CONFIG IS WHERE IT AUTHORIZES USER TOKEN WITH BACKEND

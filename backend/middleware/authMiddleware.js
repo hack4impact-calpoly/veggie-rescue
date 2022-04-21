@@ -3,6 +3,7 @@ const asyncHandler = require("express-async-handler");
 const Driver = require("../models/driverModel");
 const Admin = require("../models/adminModel");
 
+// Insert this into routes where you want only users who are logged in as drivers accessing routes
 const protectDriver = asyncHandler(async (req, res, next) => {
   let token;
 
@@ -35,6 +36,7 @@ const protectDriver = asyncHandler(async (req, res, next) => {
   }
 });
 
+// Insert this into routes where you want only users who are logged in as admins accessing routes
 const protectAdmin = asyncHandler(async (req, res, next) => {
   let token;
 
@@ -68,7 +70,7 @@ const protectAdmin = asyncHandler(async (req, res, next) => {
   }
 });
 
-// This middleware is used for routes which both admins and drivers can use
+// Insert this into routes where you want only users who are logged in as drivers OR admins accessing routes
 const protectAdminOrDriver = asyncHandler(async (req, res, next) => {
   let token;
 

@@ -1,4 +1,4 @@
-import { createSlice, createAsyncThunk, EmptyObject } from '@reduxjs/toolkit';
+import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import vehicleService from './VehiclesService';
 import type { RootState } from '../../app/store';
 
@@ -194,7 +194,6 @@ export const logoutVehicle = createAsyncThunk(
           error.response.data.message) ||
         error.message ||
         error.toString();
-
       return thunkAPI.rejectWithValue(message);
     }
   }
@@ -218,11 +217,6 @@ export const vehicleSlice = createSlice({
       state.isLoading = false;
       state.message = '';
     }
-    // setVehicle: (state)=>{state.vehicle = state.vehicles[0]},
-    // setSpecificVehicle: (state, action)=>{
-    //   state.vehicle = action.payload
-    //   // state.vehicle === null ?  state.vehicle = null : state.vehicle.isLoggedIn = true
-    // },
   },
   extraReducers: (builder) => {
     builder
@@ -266,20 +260,6 @@ export const vehicleSlice = createSlice({
         state.message = action.payload;
         state.vehicle = {} as Vehicle;
       })
-      // .addCase(getAllVehicles.pending, (state) => {
-      //   state.isLoading = true
-      // })
-      // .addCase(getAllVehicles.fulfilled, (state, action) => {
-      //   state.isLoading = false
-      //   state.isSuccess = true
-      //   state.allVehicles = action.payload
-      // })
-      // .addCase(getAllVehicles.rejected, (state, action ) => {
-      //   state.isLoading = false
-      //   state.isError = true
-      //   state.message = action.payload
-      //   state.allVehicles = []
-      // })
       .addCase(updateVehicle.pending, (state) => {
         state.isLoading = true;
       })

@@ -1,8 +1,4 @@
 const asyncHandler = require("express-async-handler");
-
-const { JsonWebTokenError } = require("jsonwebtoken");
-const jwt = require("jsonwebtoken");
-
 const Vehicle = require("../models/vehiclesSchema.js");
 const Admin = require("../models/adminModel.js");
 const Driver = require("../models/driverModel.js");
@@ -13,7 +9,7 @@ const PickupLogSchema = require("../models/pickupLogSchema.js");
 // @route  GET /api/vehicles
 // @access Private access to drivers OR admins
 const getVehicles = asyncHandler(async (req, res) => {
-  // Check and verifity that this this is driver or admin accessing data
+  // Check and verify that this this is driver OR admin accessing data
   if (req.admin) {
     const admin = await Admin.findById(req.admin.id);
     if (!admin) {
@@ -27,7 +23,6 @@ const getVehicles = asyncHandler(async (req, res) => {
       throw new Error("Driver not found");
     }
   }
-
   // Return array of vehicles
   const vehicle = await Vehicle.find();
   res.status(200).json(vehicle);
@@ -73,10 +68,8 @@ const createVehicle = asyncHandler(async (req, res) => {
     res.status(400);
     throw new Error("Please include all fields");
   }
-
   // Find if vehicle does not already exist
   const vehicleExists = await Vehicle.findOne({ name });
-
   if (vehicleExists) {
     res.status(400);
     throw new Error("Vehicle already exists");
@@ -179,6 +172,7 @@ const editVehicle = asyncHandler(async (req, res) => {
   );
   res.status(200).json(updatedVehicle);
 });
+
 // @desc    Delete vehicle
 // @route   DELETE /api/vehicles/:id
 // @access  Private Admin only
@@ -189,7 +183,6 @@ const deleteVehicle = asyncHandler(async (req, res) => {
     res.status(401);
     throw new Error("Admin not found");
   }
-
   const vehicle = await Vehicle.findById(req.params.id);
   if (!vehicle) {
     res.status(404);

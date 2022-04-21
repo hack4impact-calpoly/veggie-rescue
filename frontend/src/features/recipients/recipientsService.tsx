@@ -1,5 +1,12 @@
 import axios from 'axios';
-const API_URL = '/api/recipient/find';
+const API_URL = '/api/locations/recipient';
+
+/////////////////////////////////////////
+//                                     //
+//     LIST OF RECIPIENT LOCATIONS     //
+//                                     //
+/////////////////////////////////////////
+
 
 //THIS IS WHERE YOU CAN DO YOUR API CALLS
 //THE CONFIG IS WHERE IT AUTHORIZES USER TOKEN WITH BACKEND
