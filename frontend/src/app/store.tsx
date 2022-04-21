@@ -1,10 +1,12 @@
 import { configureStore } from '@reduxjs/toolkit';
 import driverAuthReducer from '../features/driverAuth/driverAuthSlice';
 import adminAuthReducer from '../features/adminAuth/adminAuthSlice';
+import pickupsReducer from '../features/pickups/pickupsSlice';
 export const store = configureStore({
   reducer: {
     driverAuth: driverAuthReducer,
-    adminAuth: adminAuthReducer
+    adminAuth: adminAuthReducer,
+    pickups: pickupsReducer
   }
 });
 
