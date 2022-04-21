@@ -115,7 +115,7 @@ const editVehicle = asyncHandler(async (req, res) => {
     }
     const body = req.body
     const vehicle_id = req.params.id
-    const vehicleInDB = await Vehicle.findOne({vehicle_id})
+    const vehicleInDB = await Vehicle.findOne({id: vehicle_id})
 
     if(!vehicleInDB){
         return res.status(404).json({ error: 'Vehicle not found'});

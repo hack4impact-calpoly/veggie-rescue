@@ -44,13 +44,13 @@ const registerDriver = asyncHandler(async (req, res) => {
   }
 
   // Hash password
-  const salty = await bcrypt.genSalt(10);
-  const newHashPin = await bcrypt.hash(pin, salty);
+  /*const salty = await bcrypt.genSalt(10);
+  const newHashPin = await bcrypt.hash(pin, salty);*/
 
   // Create driver
   const driver = await Driver.create({
     name,
-    pin: newHashPin,
+    pin,
   });
 
   if (driver) {
@@ -79,7 +79,7 @@ const loginDriver = asyncHandler(async (req, res) => {
 
   // Iterate through those results and compare pins, put those promises into data
   const data = foundDrivers.map(async (e) => {
-    if (await bcrypt.compare(pin, e.pin)) return e;
+    if (pin == e.pin) return e;
   });
 
   // Now return the fullfilled promise into foundDriver
