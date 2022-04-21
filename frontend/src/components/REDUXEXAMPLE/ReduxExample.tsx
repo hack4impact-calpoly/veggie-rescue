@@ -1,17 +1,17 @@
 import { useEffect } from 'react';
 import { toast } from 'react-toastify'; //this is for the pop up
 import { useAppSelector, useAppDispatch } from '../../app/hooks';
-import { getRecipients } from '../../features/recipients/recipientsSlice';
+import { getPickups } from '../../features/pickups/pickupsSlice'
 
 const ReduxExample = () => {
   const dispatch = useAppDispatch();
 
   const onClick = () => {
-    dispatch(getRecipients());
+    dispatch(getPickups());
   };
 
-  const { recipients, isError, isSuccess, message } = useAppSelector(
-    (state) => state.recipients
+  const { pickups, isError, isSuccess, message } = useAppSelector(
+    (state) => state.pickups
   );
 
   useEffect(() => {
@@ -21,7 +21,7 @@ const ReduxExample = () => {
     if (isError) {
       toast.error('Error unable to get list of recipients from db');
     }
-  }, [getRecipients, isSuccess, isError]);
+  }, [getPickups, isSuccess, isError]);
 
   return (
     <div className="flex flex-row items-center justify-center bg-state-100 h-screen">
