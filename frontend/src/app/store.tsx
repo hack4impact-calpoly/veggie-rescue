@@ -5,6 +5,7 @@ import pickupsReducer from '../features/pickups/pickupsSlice';
 import dropoffsReducer from '../features/dropoffs/dropoffsSlice';
 import donorsReducer from '../features/donors/donorSlice';
 import recipientsReducer from '../features/recipients/recipientsSlice';
+import vehiclesReducer from '../features/vehicles/VehiclesSlice';
 export const store = configureStore({
   reducer: {
     driverAuth: driverAuthReducer,
@@ -12,8 +13,8 @@ export const store = configureStore({
     pickups: pickupsReducer,
     dropoffs: dropoffsReducer,
     donors: donorsReducer,
-    recipients: recipientsReducer
-
+    recipients: recipientsReducer,
+    vehicle: vehiclesReducer
   }
 });
 

@@ -13,7 +13,7 @@ import Admin from './components/Admin/Admin';
 import Logs from './components/Logs/Logs';
 import Transfering from './components/Transfering/Transfering';
 import Weight from './components/Weight/Weight';
-
+import ReduxExample from './components/REDUXEXAMPLE/ReduxExample';
 import NewLogWrapper from './components/NewLogWrapper/NewLogWrapper';
 
 const App: React.FC = () => {
@@ -21,6 +21,8 @@ const App: React.FC = () => {
     <>
       <Router>
         <Routes>
+        <Route path="/REDUX" element={<ReduxExample />} />
+
           {/* (Unprotected routes) depending on the redirectTo Variable value it redirects to the corresponding page if user is not logged in */}
           <Route path="/Login" element={<LoginScreen />} />
           <Route path="/" element={<LoginScreen />} />

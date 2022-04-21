@@ -1,5 +1,5 @@
 import axios from 'axios';
-const API_URL = '/api/recipients';
+const API_URL = '/api/recipient/find';
 
 //THIS IS WHERE YOU CAN DO YOUR API CALLS
 //THE CONFIG IS WHERE IT AUTHORIZES USER TOKEN WITH BACKEND
@@ -38,7 +38,7 @@ const getRecipients = async (token: string) => {
 //const logout = () => localStorage.removeItem('admin');
 
 const recipientsService = {
-getRecipients
+  getRecipients
 };
 
 export default recipientsService;
