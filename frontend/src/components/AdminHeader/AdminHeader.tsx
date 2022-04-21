@@ -5,11 +5,17 @@ import { useNavigate } from 'react-router-dom';
 const  AdminHeader = () => {
     const navigate = useNavigate();
 
+    function handleLogsBtn(){
+        navigate('/ViewLogsPage')
+    }
+    function handleDataBtn(){
+        navigate('/AdminData')
+    }
     return (
         <div>
             <link rel="preconnect" href="https://fonts.googleapis.com"></link>
             <link href="https://fonts.googleapis.com/css2?family=Jost:wght@400;500;600;700;800;900&display=swap" rel="stylesheet"></link>
-	        <nav className="shadow-lg  isolate hover:isolation-auto h-16 bg-green-900 flex items-center justify-between">
+	        <nav className="shadow-lg  isolate h-16 bg-green-900 flex items-center justify-between">
                 <div className="flex items-center justify-around">
                     <div className='px-10'>
                         <div className='h-24 bg-green-100 rounded shadow-lg w-60'>
@@ -20,13 +26,13 @@ const  AdminHeader = () => {
                     </div>
                     <div className="hidden md:flex space-x-1">
                         <button
-                            onClick={() => navigate('/ViewLogsPage')}
+                            onClick={handleLogsBtn}
                             className="py-4 px-9 text-white text-lg font-jost font-semibold hover:text-orange-500 transition duration-300"
                             >View Logs
                         </button>
 
                         <button
-                            onClick={() => navigate('/AdminData')}
+                            onClick={handleDataBtn}
                             className="py-4 px-9 text-white text-lg font-jost font-semibold hover:text-orange-500 transition duration-300"
                             >Manage Data
                         </button>

@@ -1,13 +1,38 @@
-import React, { useLayoutEffect, useState } from 'react';
+import React, { useState } from 'react';
 import './EntityForm.css';
-import { RiUser3Fill } from 'react-icons/ri';
 
-const ShortEntityForm = (props: any) => {
-  const [name, setName] = useState("");
-  const [pin, setPin] = useState("");
+const ShortEntityForm = (props:any) => {
+  const volunteerSchema = {
+    volunteerName: "",
+    volunteerPin: ""
+  };
+
+  const vehicleSchema = {
+    vehicleName: "",
+  };
+
   const [volunteer, setVolunteer] = useState(true);
   const [vehicle, setVehicle] = useState(false);
+  const [volunteerCard, setVolunteerCard] = useState(volunteerSchema);
+  const [vehicleCard, setVehicleCard] = useState(vehicleSchema);
 
+  function setVolunteerCardPin(e:string){
+    setVolunteerCard({
+      ...volunteerCard,
+      volunteerPin: e
+    });
+  };
+  function setVolunteerCardName(e:string){
+    setVolunteerCard({
+      ...volunteerCard,
+      volunteerName: e
+    });
+  };
+  function setVehicleCardName(e:string){
+    setVehicleCard({
+      vehicleName: e
+    });
+  };
   function handleVolunteer(){
     setVolunteer((prev) => !prev);
     setVehicle(false);
@@ -16,12 +41,18 @@ const ShortEntityForm = (props: any) => {
     setVehicle((prev) => !prev);
     setVolunteer(false);
   }
+
   function handleSubmit(e:any){
      e.preventDefault();
-     {(!volunteer && !vehicle) ? alert("Please select Volunteer or Vehicle") :
-       ((name == "") ? alert("Missing Name") :
-       ((volunteer && (pin == "")) ? alert("Missing Pin") :
-       props.handleShow()))}
+     (!volunteer && !vehicle) ? alert("Please select Volunteer or Vehicle") :
+       (((volunteer && volunteerCard.volunteerName === "") ||
+        (vehicle && vehicleCard.vehicleName === "")) ? alert("Missing Name") :
+       ((volunteer && (volunteerCard.volunteerPin === "")) ? alert("Missing Pin") :
+       props.handleShow()))
+
+     /* objects to be sent to backend */
+     volunteer ? console.log(JSON.stringify(volunteerCard)) :
+                 console.log(JSON.stringify(vehicleCard))
   }
 
   return(
@@ -43,14 +74,15 @@ const ShortEntityForm = (props: any) => {
     <input
       className="input"
       placeholder="Name"
-      onChange={(e:any) => setName(e)}
-      />
+      onChange={(e:any) => (volunteer ? setVolunteerCardName(e.target.value) :
+                                        setVehicleCardName(e.target.value))}
+    />
     { volunteer && (
       <div className="internal-div"><h2>Pin</h2>
       <input
         className="input"
         placeholder="Pin"
-        onChange={(e:any) => setPin(e)}
+        onChange={(e:any) => setVolunteerCardPin(e.target.value)}
       /></div>
     )}
     <button
