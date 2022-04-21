@@ -13,6 +13,8 @@ import Admin from './components/Admin/Admin';
 import Logs from './components/Logs/Logs';
 import Transfering from './components/Transfering/Transfering';
 import Weight from './components/Weight/Weight';
+import Transferring from './components/TransferWeight/TransferWeight'
+
 
 const App: React.FC = () => {
   return (
@@ -56,7 +58,7 @@ const App: React.FC = () => {
             path="/TransferPage"
             element={<ProtectedRoute redirectTo="/Login" />}
           >
-            <Route path="/TransferPage" element={<TransferPage />} />
+            <Route path="/TransferPage" element={<Transferring />} />
           </Route>
           <Route
             path="/Weight"

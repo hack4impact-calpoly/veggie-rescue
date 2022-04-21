@@ -17,7 +17,7 @@ export default function TransferPage() {
   const numOfPounds = 200;
 
   function transfer(){
-    console.log("Do something to transfer!")
+    navigate('/TransferPage')
   }
 
   function leaveIt(){

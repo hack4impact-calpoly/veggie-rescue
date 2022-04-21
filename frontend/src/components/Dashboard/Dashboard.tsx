@@ -25,7 +25,8 @@ const Dashboard = () => {
     vehicle,
     isLoading: vehicleIsLoading,
     isSuccess : vehicleIsSuccess,
-    isLoggedOut
+    isLoggedOut,
+    isUpdate
   } = useAppSelector((state) => state.vehicle);
 
   // Get the driver object from the store
@@ -41,14 +42,19 @@ const Dashboard = () => {
       dispatch(getVehicle());
     }
     // If we are logged out and vehicle success (meaning we have updated backend) is true
-    if (isLoggedOut && vehicleIsSuccess) {
+    if (isLoggedOut && isUpdate) {
       toast.success('Successfully logged out.')
         // Clear state for vehicles and auth and then navigate to Login page.
         dispatch(clearVehicles());
         dispatch(clearDrivers());          
        navigate('/')
     }
-  }, [dispatch, vehicleIsSuccess, navigate, isLoggedOut, vehicle, vehicleIsLoading]);
+    if(isUpdate){
+      //dispatch(getVehicle())
+      //dispatch(getVehicles())
+      //dispatch(resetVehicles());
+    }
+  }, [dispatch, vehicleIsSuccess, navigate, isLoggedOut, vehicle, vehicleIsLoading, isUpdate]);
 
   function handleClick(button: Number) {
     switch (button) {

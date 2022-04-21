@@ -16,6 +16,7 @@ function Vehicles() {
   const {
     vehicles,
     vehicle,
+    isUpdate,
     isLoading: vehicleLoading,
     isError: vehicleError,
     isSuccess: vehicleSuccess,
@@ -31,7 +32,7 @@ function Vehicles() {
     if (vehicles.length === 0) {
       dispatch(getVehicles());
     }
-    if (vehicleSuccess && Object.keys(vehicle).length !== 0) {
+    if (isUpdate && Object.keys(vehicle).length !== 0) {
       dispatch(reset());
       // NOW depending on if there is currently weight in the vehicle or not we either go to Dashboard or Transfer page
       if (vehicle.totalWeight !== 0) {
@@ -40,7 +41,7 @@ function Vehicles() {
         navigate('/Dashboard');
       }
     }
-  }, [vehicleSuccess, vehicle, vehicles.length, dispatch, navigate]);
+  }, [vehicleSuccess, vehicle, vehicles.length, dispatch, navigate, isUpdate]);
 
   // Response to click in VehicleItem component
   const onClick = (e: string) => {
@@ -59,10 +60,10 @@ function Vehicles() {
       </p>
       <div className="grid grid-cols-2 gap-4">
         {vehicles.filter(car => ((car.name === 'personal vehicle' && car.driver === driver._id) || (car.name !== 'personal vehicle' && !car.isLoggedIn) )
-).map((car) => {        
+).map((car, idx) => {        
             return (
               <div className="flex items-center justify-center w-40 m-5 shadow-2xl rounded-3xl">
-                <VehicleItem car={car} onClick={onClick} />
+                <VehicleItem car={car} onClick={onClick} key={idx}/>
               </div>
             );
           
