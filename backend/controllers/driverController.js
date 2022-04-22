@@ -139,7 +139,6 @@ const generateToken = (id) => {
 // @desc    Delete driver
 // @route   DELETE /api/drivers/:id
 // @access  Private
-
 const deleteDriver = asyncHandler(async (req, res) => {
   // Get admin using the id in the JWT
       const admin = await Admin.findById(req.admin.id);
@@ -162,25 +161,22 @@ const deleteDriver = asyncHandler(async (req, res) => {
     res.status(401);
     throw new Error("Personal Vehicle is currently logged in");
   }
-  
+
 
   const driver = await Driver.findById(req.params.id)
-
   
   if (!driver) {
     res.status(404)
     throw new Error('Driver not found')
   }
 
-  // if (ticket.user.toString() !== req.user.id) {
-  //   res.status(401)
-  //   throw new Error('Not Authorized')
-  // }
 
-  await updateVehicle.remove();
+  await Vehicle.findByIdAndDelete(updateVehicle[0]._id);
   await driver.remove();
 
-  res.status(200).json({ success: true })
+  res.status(200).json({ 
+    success: true,
+  msg: 'Successfully removed '})
 })
 module.exports = {
   registerDriver,
