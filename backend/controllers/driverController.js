@@ -1,6 +1,8 @@
 const asyncHandler = require("express-async-handler");
 const bcrypt = require("bcryptjs");
 const Driver = require("../models/driverModel");
+const Admin = require("../models/adminModel")
+const Vehicle = require("../models/vehiclesSchema");
 const jwt = require("jsonwebtoken");
 
 // @desc Register a new driver; make sure password is <= 4 in length.
@@ -15,22 +17,21 @@ const registerDriver = asyncHandler(async (req, res) => {
   }
 
   // We have to see if the password already exists
-  const foundDrivers = await Driver.find();
-
+  const foundDrivers = await Driver.find({ pin: pin });
   //iterate through those results and compare pins, put those promises into data
-  const data = foundDrivers.map(async (e) => {
-    if (await bcrypt.compare(pin, e.pin)) return e;
-  });
+  // const data = foundDrivers.map(async (e) => {
+  //   if (pin, e.pin) return e;
+  // });
 
   //now return the fullfilled promise into foundDriver
-  const result = await Promise.all(data);
+  // const result = await Promise.all(data);
 
   //since its an array filter out the undefined elements
-  let foundDriver = result.filter((e) => e !== undefined);
-  foundDriver = foundDriver[0];
-
+  // let foundDriver = result.filter((e) => e !== undefined);
+  // foundDriver = foundDriver[0];
+//console.log(foundDrivers )
   //Check if pin matched
-  if (foundDriver !== undefined) {
+  if (foundDrivers === []) {
     res.status(401);
     throw new Error("Pin already exists");
   }
@@ -44,13 +45,24 @@ const registerDriver = asyncHandler(async (req, res) => {
   }
 
   // Hash password
-  const salty = await bcrypt.genSalt(10);
-  const newHashPin = await bcrypt.hash(pin, salty);
+  // const salty = await bcrypt.genSalt(10);
+  // const newHashPin = await bcrypt.hash(pin, salty);
 
   // Create driver
   const driver = await Driver.create({
     name,
-    pin: newHashPin,
+    pin,
+  });
+
+  // We have to create a personal vehicle with each driver so do that here.
+  const vehicle = await Vehicle.create({
+    driver: driver._id,
+    name: "personal vehicle",
+    isLoggedIn: false,
+    img: "no image",
+    currentPickups: [],
+    currentDropoffs: [],
+    totalWeight: 0,
   });
 
   if (driver) {
@@ -79,7 +91,7 @@ const loginDriver = asyncHandler(async (req, res) => {
 
   // Iterate through those results and compare pins, put those promises into data
   const data = foundDrivers.map(async (e) => {
-    if (await bcrypt.compare(pin, e.pin)) return e;
+    if (pin, e.pin) return e;
   });
 
   // Now return the fullfilled promise into foundDriver
@@ -124,8 +136,55 @@ const generateToken = (id) => {
   });
 };
 
+// @desc    Delete driver
+// @route   DELETE /api/drivers/:id
+// @access  Private
+
+const deleteDriver = asyncHandler(async (req, res) => {
+  // Get admin using the id in the JWT
+      const admin = await Admin.findById(req.admin.id);
+      if (!admin) {
+        res.status(401);
+        throw new Error("Admin not found");
+      }
+
+
+  // Get the personal vehicle which is connected to driver; make sure it is not logged in.
+  const vehicle = await Vehicle.find({ driver: req.params.id });
+  if (!vehicle) {
+    res.status(401);
+    throw new Error("Vehicle not found");
+  }
+  const updateVehicle = vehicle.filter(
+    (e) => !e.isLoggedIn && e.name === "personal vehicle"
+  );
+  if (!updateVehicle) {
+    res.status(401);
+    throw new Error("Personal Vehicle is currently logged in");
+  }
+  
+
+  const driver = await Driver.findById(req.params.id)
+
+  
+  if (!driver) {
+    res.status(404)
+    throw new Error('Driver not found')
+  }
+
+  // if (ticket.user.toString() !== req.user.id) {
+  //   res.status(401)
+  //   throw new Error('Not Authorized')
+  // }
+
+  await updateVehicle.remove();
+  await driver.remove();
+
+  res.status(200).json({ success: true })
+})
 module.exports = {
   registerDriver,
   loginDriver,
   getDriver,
+  deleteDriver
 };

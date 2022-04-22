@@ -16,7 +16,7 @@ const {
 } = require("../middleware/authMiddleware");
 
 // Get all pickup logs
-router.get("/pickup", protectAdmin, getPickups);
+router.get("/pickup", getPickups);
 
 // Post to pickup log
 router.post("/pickup", protectDriver, createPickup);
