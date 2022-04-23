@@ -12,6 +12,8 @@ const API_URL = '/api/locations/recipient';
 //THE CONFIG IS WHERE IT AUTHORIZES USER TOKEN WITH BACKEND
 //YOU CAN DO FULL CRUD OPS HERE
 
+
+
 //  Get  log of ALL recipients
 const getRecipients = async (token: string) => {
   const config = {

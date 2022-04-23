@@ -170,7 +170,7 @@ const editVehicle = asyncHandler(async (req, res) => {
     req.params.id,
     vehicleInDB
   );
-  res.status(200).json(updatedVehicle);
+  res.status(201).json(updatedVehicle);
 });
 
 // @desc    Delete vehicle

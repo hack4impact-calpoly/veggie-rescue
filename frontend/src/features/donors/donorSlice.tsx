@@ -2,22 +2,16 @@ import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import donorsService from './donorsService';
 import type { RootState } from '../../app/store';
 
-// Interface for donor items (This is what will be kept in store and what you will have access)
-interface Donor {
-  _id: string;
-  name: string;
-}
 
-// // Interface for object when registering new admin
-// interface AdminData {
-//   name: string;
-//   email: string;
-//   password: string;
-// }
-// interface AdminObject {
-//     email: string;
-//     password: string;
-// }
+// Donor Object
+interface DonorObject   {
+    id: string,
+    name: string,
+    EntityType: string,
+    FoodType: string,
+    LocationType: string,
+    CombinedAreaName: string,
+  }
 
 // // Define a type for the slice state
 interface DonorState {
@@ -38,7 +32,7 @@ const initialState: DonorState = {
 
 
 export const getDonors = createAsyncThunk(
-  'api/donors',
+  'api/location/donors/create',
   async (_, thunkAPI) => {
     try {
       const state = thunkAPI.getState() as RootState;
@@ -48,6 +42,28 @@ export const getDonors = createAsyncThunk(
       }
 
       return await donorsService.getDonors(token);
+    } catch (error: any) {
+      const message =
+        (error.response &&
+          error.response.data &&
+          error.response.data.message) ||
+        error.message ||
+        error.toString();
+
+      return thunkAPI.rejectWithValue(message);
+    }
+  }
+);
+
+// Create donor 
+export const createDonor = createAsyncThunk(
+  'api/location/donors',
+  async (donorData : DonorObject, thunkAPI) => {
+    try {
+      const state = thunkAPI.getState() as RootState;
+      const token = state.adminAuth.admin.token;
+  
+      return await donorsService.createDonor(donorData, token);
     } catch (error: any) {
       const message =
         (error.response &&
@@ -83,6 +99,19 @@ export const donorsSlice = createSlice({
         state.donors = action.payload;
       })
       .addCase(getDonors.rejected, (state, action) => {
+        state.isLoading = false;
+        state.isError = true;
+        state.message = action.payload;
+      })
+      .addCase(createDonor.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(createDonor.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.isSuccess = true;
+        state.message = action.payload;
+      })
+      .addCase(createDonor.rejected, (state, action) => {
         state.isLoading = false;
         state.isError = true;
         state.message = action.payload;
