@@ -1,21 +1,35 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import './Logs.css';
-import { IoIosArrowBack } from "react-icons/io";
+import { IoIosArrowBack } from 'react-icons/io';
+import { useAppDispatch } from '../../app/hooks';
+
 import TripLog from '../../components/TripLog/TripLog';
-import { vehicle } from '../../data/dbMock';
+import { getVehicle } from '../../features/vehicles/VehiclesSlice';
 
 const Logs = () => {
+  const [data, dataSet] = useState<any>(null);
+  const dispatch = useAppDispatch();
 
-  function handleClick(){
-    console.log("button clicked");
-  }
+  useEffect(() => {
+    async function fetchMyAPI() {
+      let response = dispatch(getVehicle());
+      dataSet(await response);
+      console.log(response);
+    }
+    fetchMyAPI();
+  }, []);
 
-  return(
+  return (
     <div className="container">
       <div className="text-container">
         <div className="your-logs">
-          <button id="icon" onClick={() => {alert("hi")}}>
-            <IoIosArrowBack style={{color: "FF9C55"}} />
+          <button
+            id="icon"
+            onClick={() => {
+              alert('hi');
+            }}
+          >
+            <IoIosArrowBack style={{ color: 'FF9C55' }} />
           </button>
           <h3 id="logs-text">Your Logs</h3>
         </div>
@@ -25,28 +39,38 @@ const Logs = () => {
           <h3>Pounds</h3>
         </div>
       </div>
-      <div className="logs">
-        {(vehicle.currentPickups).map((v,index) => {
-          return(
-            <TripLog
-              key={index}
-              trip="Pickup"
-              name={v.name}
-              pounds={v.lbsPickedUp} />
-          );
-        })}
-        {(vehicle.currentDropoffs).map((v,index) => {
-          return(
-            <TripLog
-              key={index}
-              trip="Dropoff"
-              name={v.name}
-              pounds={v.lbsDroppedOff} />
-            );
-        })}
-      </div>
+      {data && data.abort != null ? (
+        <div className="logs">
+          {data.currentPickups.map(
+            (v: { name: any; lbsPickedUp: any }, index: any) => {
+              return (
+                <TripLog
+                  key={index}
+                  trip="Pickup"
+                  name={v.name}
+                  pounds={v.lbsPickedUp}
+                />
+              );
+            }
+          )}
+          {data.currentDropoffs.map(
+            (v: { name: any; lbsDroppedOff: any }, index: any) => {
+              return (
+                <TripLog
+                  key={index}
+                  trip="Dropoff"
+                  name={v.name}
+                  pounds={v.lbsDroppedOff}
+                />
+              );
+            }
+          )}
+        </div>
+      ) : (
+        'Loading'
+      )}
     </div>
   );
-}
+};
 
 export default Logs;
