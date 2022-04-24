@@ -54,7 +54,7 @@ const loginAdmin = asyncHandler(async (req, res) => {
   //get email
   const foundAdmin = await Admin.findOne({ email });
 
-  if (foundAdmin && (await bcrypt.compare(password, foundAdmin.password))) {
+  if (foundAdmin && (await bycrpt.compare(password, foundAdmin.password))) {
     res.status(200).json({
       _id: foundAdmin._id,
       name: foundAdmin.name,

@@ -27,14 +27,14 @@ const registerUser = asyncHandler(async (req, res) => {
     }
 
     // Hash password
-    const salty = await bcrypt.genSalt(10)
-    const newHashPin = await bcrypt.hash(password, salty)
+    /*const salty = await bcrypt.genSalt(10)
+    const newHashPin = await bcrypt.hash(password, salty)*/
 
     // Create driver
     const driver = await Driver.create({
         name,
         email,
-        password: newHashPin
+        password: password
     })
 
     if(driver){
@@ -61,7 +61,7 @@ const loginUser = asyncHandler(async (req, res) => {
     const foundDriver = await Driver.findOne({email})
 
     // Check if id and password matched
-    if(foundDriver && (await bcrypt.compare(password, foundDriver.password))) {
+    if(foundDriver && (password == foundDriver.password)) {
         res.status(200).json({
             _id: foundDriver._id,
             name: foundDriver.name,

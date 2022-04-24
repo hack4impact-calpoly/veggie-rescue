@@ -8,6 +8,41 @@ const Recipient = require('../models/recipientSchema.js')
 const Admin = require('../models/adminModel.js')
 const Driver = require('../models/driverModel.js')
 
+
+// @desc Returns all donors
+// @route /api/donor/find
+// @access Public
+
+const findAllDonors = asyncHandler(async (req, res) => {
+    const userEmail = req.params.email
+    const driverExists = await Driver.findOne({userEmail})
+    const adminExists = await Admin.findOne({userEmail})
+
+    if(!driverExists && !adminExists){
+        res.status(400)
+        throw new Error('This User does not have access')
+    }
+    const donor = await Donor.find();
+    res.status(200).json(donor);
+})
+
+// @desc Returns all donors
+// @route /api/donor/find
+// @access Public
+
+const findAllRecipients = asyncHandler(async (req, res) => {
+    const userEmail = req.params.email
+    const driverExists = await Driver.findOne({userEmail})
+    const adminExists = await Admin.findOne({userEmail})
+
+    if(!driverExists && !adminExists){
+        res.status(400)
+        throw new Error('This User does not have access')
+    }
+    const recipient = await Recipient.find();
+    res.status(200).json(recipient);
+})
+
 // @desc Finding a donor
 // @route /api/donor/get
 // @access Public
