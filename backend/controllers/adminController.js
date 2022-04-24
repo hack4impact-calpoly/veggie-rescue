@@ -22,14 +22,14 @@ const registerAdmin = asyncHandler(async (req, res) => {
   }
 
   // Hash password
-  /*const salty = await bcrypt.genSalt(10);
-  const newHashPin = await bcrypt.hash(password, salty);*/
+  const salty = await bcrypt.genSalt(10);
+  const newHashPin = await bcrypt.hash(password, salty);
 
   // Create admin
   const admin = await Admin.create({
     name,
     email,
-    password,
+    password: newHashPin,
   });
 
   if (admin) {
@@ -54,7 +54,7 @@ const loginAdmin = asyncHandler(async (req, res) => {
   //get email
   const foundAdmin = await Admin.findOne({ email });
 
-  if (foundAdmin && (password == foundAdmin.password)) {
+  if (foundAdmin && (await bycrpt.compare(password, foundAdmin.password))) {
     res.status(200).json({
       _id: foundAdmin._id,
       name: foundAdmin.name,
