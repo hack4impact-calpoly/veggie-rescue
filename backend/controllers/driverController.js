@@ -180,32 +180,25 @@ const loginDriver = asyncHandler(async (req, res) => {
     res.status(401);
     throw new Error("Invalid Pin length");
   }
-  //  Get all drivers
-  const foundDrivers = await Driver.find();
-
-  // Iterate through those results and compare pins, put those promises into data
-  const data = foundDrivers.map(async (e) => {
-    if (pin, e.pin) return e;
-  });
-
-  // Now return the fullfilled promise into foundDriver
-  const result = await Promise.all(data);
-
-  // Since its an array filter out the undefined elements
-  let foundDriver = result.filter((e) => e !== undefined);
-  foundDriver = foundDriver[0];
-
-  //Check if pin is found, if so return token
-  if (foundDriver) {
-    res.status(200).json({
-      _id: foundDriver._id,
-      name: foundDriver.name,
-      token: generateToken(foundDriver._id),
-    });
-  } else {
-    res.status(401);
-    throw new Error("Invalid Pin");
+  //  Check if pin matches any driver
+  const hasPin = await Driver.findOne({pin});
+  if (!hasPin) {
+    res.status(404);
+    throw new Error("Invalid pin!");
   }
+  // Set logged in to true and set date to log in time.
+  const body = {
+      isLoggedIn: true,
+      clock_in: Date.now(),
+    }
+  await Driver.findByIdAndUpdate(hasPin._id, body );
+
+    res.status(200).json({
+      id: hasPin._id,
+      name: hasPin.name,
+      token: generateToken(hasPin._id),
+    });
+ 
 });
 
 
