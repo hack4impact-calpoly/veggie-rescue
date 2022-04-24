@@ -27,6 +27,8 @@ const driverModel = mongoose.Schema(
   },
   {
     timestamps: true,
-  }, {collection: 'Driver'});
+  },
+  { collection: "Driver" }
+);
 
 module.exports = mongoose.model("Driver", driverModel);

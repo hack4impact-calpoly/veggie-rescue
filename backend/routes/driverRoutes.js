@@ -1,16 +1,27 @@
 const express = require("express");
 const router = express.Router();
 const {
+  getDrivers,
   registerDriver,
+  editDriver,
+  deleteDriver,
   loginDriver,
   getDriver,
 } = require("../controllers/driverController");
-const { protectDriver } = require("../middleware/authMiddleware");
+const { protectAdmin } = require("../middleware/authMiddleware");
 
-router.post("/", registerDriver);
+router
+  .get("/", protectAdmin, getDrivers)
+  .post("/", protectAdmin, registerDriver);
 
 router.post("/login", loginDriver);
 
-router.get("/get", protectDriver, getDriver);
+router
+  .route("/:id")
+  .put(protectAdmin, editDriver)
+  .delete(protectAdmin, deleteDriver);
+
+router.get("/get", protectAdmin, getDriver);
+
 
 module.exports = router;

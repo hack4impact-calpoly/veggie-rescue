@@ -38,9 +38,7 @@ This will open the server using Nodemon so that you do not need to restart each 
 
 ## `/api/drivers`
 
-Unprotected route; used to register a new driver.
-
-### Compatible Methods
+adminProtected route; used to register a new driver.
 
 - POST
 
@@ -59,14 +57,15 @@ Body:
 | `name`  | Driver name                                      |
 | `token` | A token to be used as an identifier for a drived |
 
+
+
 ## `/api/drivers/login`
 
 Unprotected route; used to login a driver.
-
 ### Compatible Methods
 
 - POST
-
+- 
 ### Request
 
 Body:
@@ -81,11 +80,13 @@ Body:
 | `name`  | Driver name                                      |
 | `token` | A token to be used as an identifier for a drived |
 
+
+
 ## Admin Side Application
 
 ## `/api/admin`
 
-Unprotected route; used to register a new admin.
+Unprotected route; used to register a new admin. (Will need to eventually protect this)
 
 ### Compatible Methods
 
@@ -131,3 +132,5 @@ Body:
 | `name`  | Admin name                                       |
 | `email` | Admin name                                       |
 | `token` | A token to be used as an identifier for an admin |
+
+
