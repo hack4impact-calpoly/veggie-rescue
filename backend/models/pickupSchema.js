@@ -1,7 +1,6 @@
 const mongoose = require('mongoose')
 
 const PickupSchema = new mongoose.Schema({
-    id: String,
     name: String,
     donorLocationType: String,
     donorEntityType: String,

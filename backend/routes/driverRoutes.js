@@ -8,7 +8,7 @@ const {
   loginDriver,
   getDriver,
 } = require("../controllers/driverController");
-const { protectDriver, protectAdmin, protectAdminOrDriver } = require("../middleware/authMiddleware");
+const { protectAdmin } = require("../middleware/authMiddleware");
 
 router
   .get("/", protectAdmin, getDrivers)
@@ -16,8 +16,12 @@ router
 
 router.post("/login", loginDriver);
 
+router
+  .route("/:id")
+  .put(protectAdmin, editDriver)
+  .delete(protectAdmin, deleteDriver);
+
 router.get("/get", protectAdmin, getDriver);
 
-router.route("/:id").put(protectAdmin, editDriver).delete(protectAdmin, deleteDriver);
 
 module.exports = router;

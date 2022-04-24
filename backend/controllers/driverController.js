@@ -106,8 +106,6 @@ const editDriver = asyncHandler (async (req,res) => {
   if (pin) {
     // We have to see if the password already exists
     const foundDrivers = await Driver.find({ pin: pin });
-    console.log(foundDrivers);
-    console.log(pin)
     //Check if pin matched
     if (foundDrivers.length !== 0) {
       res.status(401);
@@ -125,7 +123,7 @@ const editDriver = asyncHandler (async (req,res) => {
       req.params.id,
       { $set: driverFields });
 
-    res.json(driver);
+    res.json({ updated: driver, new: driverFields });
   } catch (err) {
     console.error(err.message);
     res.status(500).send("Server Error");

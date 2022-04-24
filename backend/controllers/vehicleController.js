@@ -17,7 +17,9 @@ const getVehicles = asyncHandler(async (req, res) => {
       throw new Error("Admin not found");
     }
   } else if (req.driver) {
+
     const driver = await Driver.findById(req.driver.id);
+    
     if (!driver) {
       res.status(401);
       throw new Error("Driver not found");
