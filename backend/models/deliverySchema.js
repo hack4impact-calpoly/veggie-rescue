@@ -1,7 +1,6 @@
 const mongoose = require('mongoose')
 
 const DeliverySchema = new mongoose.Schema({
-    id: String,
     name: String,
     recipientEntityType: String,
     demographic: String,
