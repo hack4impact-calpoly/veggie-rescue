@@ -131,7 +131,6 @@ const editVehicle = asyncHandler(async (req, res) => {
       throw new Error("Driver not found");
     }
   }
-
   const vehicleInDB = await Vehicle.findById(req.params.id);
   const body = req.body;
   if (!vehicleInDB) {
@@ -172,7 +171,8 @@ const editVehicle = asyncHandler(async (req, res) => {
     req.params.id,
     vehicleInDB
   );
-  res.status(201).json(updatedVehicle);
+  const update = await Vehicle.findById(updatedVehicle._id);
+  res.status(201).json(update);
 });
 
 // @desc    Delete vehicle

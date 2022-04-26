@@ -1,21 +1,61 @@
+import { useEffect } from 'react';
 import './Dashboard.css';
 import { FaPencilAlt, FaClipboardList, FaHandPaper } from 'react-icons/fa';
 import { useNavigate } from 'react-router-dom';
+import { useAppSelector, useAppDispatch } from '../../app/hooks';
+import { reset, clear as clearDrivers} from '../../features/driverAuth/driverAuthSlice';
+import { toast } from 'react-toastify';
 
-let name: any = null;
-let weight: any = null;
+import {
+  getVehicles,
+  getVehicle,
+  logoutVehicle,
+  updateVehicle,
+  reset as resetVehicles,
+  clear as clearVehicles
+
+} from '../../features/vehicles/VehiclesSlice';
+
 
 const Dashboard = () => {
   const navigate = useNavigate();
+  const dispatch = useAppDispatch();
+  // Get the vehicle object from the store
+  const {
+    vehicle,
+    isLoading: vehicleIsLoading,
+    isSuccess : vehicleIsSuccess,
+    isLoggedOut,
+    isUpdate
+  } = useAppSelector((state) => state.vehicle);
 
-  if (JSON.parse(localStorage.getItem('vehicleSelected') || '{}')) {
-    weight = JSON.parse(
-      localStorage.getItem('vehicleSelected') || '{}'
-    ).totalWeight;
-  }
-  if (localStorage.getItem('name')) {
-    name = localStorage.getItem('name');
-  }
+  // Get the driver object from the store
+  const {
+    driver,
+    isSuccess: driverAuthSuccess
+  } = useAppSelector((state) => state.driverAuth);
+
+
+  useEffect(() => {
+    //  This call will get our vehicle object if we have refreshed page and it is not in state.
+    if(Object.keys(vehicle).length === 0 && !isLoggedOut && !vehicleIsLoading){
+      dispatch(getVehicle());
+    }
+    // If we are logged out and vehicle success (meaning we have updated backend) is true
+    if (isLoggedOut && isUpdate) {
+      toast.success('Successfully logged out.')
+        // Clear state for vehicles and auth and then navigate to Login page.
+        dispatch(clearVehicles());
+        dispatch(clearDrivers());          
+       navigate('/')
+    }
+    if(isUpdate){
+      //dispatch(getVehicle())
+      //dispatch(getVehicles())
+      //dispatch(resetVehicles());
+    }
+  }, [dispatch, vehicleIsSuccess, navigate, isLoggedOut, vehicle, vehicleIsLoading, isUpdate]);
+
   function handleClick(button: Number) {
     switch (button) {
       case 0:
@@ -25,11 +65,19 @@ const Dashboard = () => {
         navigate('/UserLogs');
         break;
       case 2:
-        {
-          /* Need to implement transfer logic as specified in PR*/
-        }
-        break;
 
+              let resetVehicle = { _id: vehicle._id, driver: vehicle.name  === 'personal vehicle' ? driver.id : " " , isLoggedIn: "false" };
+        dispatch(updateVehicle(resetVehicle));
+        dispatch(logoutVehicle());
+        // We need to check and see if the total weight is === 0.  If no, direct to transfer weight page.
+        // if(vehicle.totalWeight === 0){
+        // let resetVehicle = { _id: vehicle._id, driver: vehicle.name  === 'personal vehicle' ? driver._id : " " , isLoggedIn: "false" };
+        // dispatch(updateVehicle(resetVehicle));
+        // dispatch(logoutVehicle());
+        // }else{
+        //   navigate('/Transfer');
+        // }
+        break;
       default:
         break;
     }
@@ -39,7 +87,7 @@ const Dashboard = () => {
     <div className="container bgimg">
       <div className="greeting-box">
         <div className="greeting">
-          <h2>Hi {name}!</h2>
+          <h2>Hi {driver.name}!</h2>
         </div>
       </div>
 
@@ -48,7 +96,7 @@ const Dashboard = () => {
           <h3>Current Weight</h3>
         </div>
         <div className="lbs">
-          <h2>{weight} lbs</h2>
+          <h2>{vehicle.totalWeight} lbs</h2>
         </div>
       </div>
 

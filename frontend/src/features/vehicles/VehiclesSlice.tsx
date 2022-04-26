@@ -9,6 +9,7 @@ const initialState: VehicleState = {
   isSuccess: false,
   isLoading: false,
   isLoggedOut: false,
+  isUpdate: false,
   message: ''
 };
 
@@ -40,6 +41,7 @@ interface VehicleState {
   isSuccess: boolean;
   isLoading: boolean;
   isLoggedOut: boolean;
+  isUpdate: boolean;
   message: any | [];
 }
 
@@ -59,6 +61,11 @@ interface VehicleChoice {
   _id: string;
   driver: string;
   isLoggedIn: string;
+}
+interface VehicleWeightTransfer {
+  _id: string,
+  totalWeight: number
+
 }
 
 // Get all vehicles
@@ -139,6 +146,7 @@ export const updateVehicle = createAsyncThunk(
       if (!token) {
         token = state.adminAuth.admin.token;
       }
+      console.log("FROM FRONT END" + vehicleData.driver)
       return await vehicleService.update(vehicleData, token);
     } catch (error: any) {
       const message =
@@ -185,7 +193,7 @@ export const logoutVehicle = createAsyncThunk(
     try {
       const state = thunkAPI.getState() as RootState;
       const token = state.driverAuth.driver.token;
-      const id = state.driverAuth.driver._id;
+      const id = state.driverAuth.driver.id;
       return await vehicleService.logout(id, token);
     } catch (error: any) {
       const message =
@@ -208,6 +216,7 @@ export const vehicleSlice = createSlice({
       state.isError = false;
       state.isSuccess = false;
       state.isLoggedOut = false;
+      state.isUpdate = false;
       state.message = '';
     },
     clear: (state) => {
@@ -215,6 +224,8 @@ export const vehicleSlice = createSlice({
       state.isError = false;
       state.isSuccess = false;
       state.isLoading = false;
+      state.isUpdate = false;
+      state.isLoggedOut = false;
       state.message = '';
     }
   },
@@ -266,6 +277,7 @@ export const vehicleSlice = createSlice({
       .addCase(updateVehicle.fulfilled, (state, action) => {
         state.isLoading = false;
         state.isSuccess = true;
+        state.isUpdate = true;
         state.vehicle = action.payload;
       })
       .addCase(updateVehicle.rejected, (state, action) => {

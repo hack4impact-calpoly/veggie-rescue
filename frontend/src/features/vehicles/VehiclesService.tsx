@@ -38,7 +38,7 @@ const getVehicle = async (token: string) => {
 
 // update a vehicle given its id as a parameter... can be admin or driver
 const update = async (
-  vehicleData: VehicleItem | VehicleChoice,
+  vehicleData: VehicleItem | VehicleChoice | VehicleWeightTransfer | any,
   token: string
 ) => {
   const config = {
@@ -48,7 +48,6 @@ const update = async (
   };
   //using rest operator to take just the id out.
   const { _id, ...rest } = vehicleData;
-
   const response = await axios.put(
     API_URL + _id,
     {
@@ -130,6 +129,11 @@ interface VehicleChoice {
   _id: string;
   driver: string;
   isLoggedIn: string;
+}
+interface VehicleWeightTransfer {
+  _id: string,
+  totalWeight: number
+
 }
 
 
