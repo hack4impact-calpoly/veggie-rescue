@@ -3,7 +3,6 @@ import { pickupSchema } from "./dbMock"; //import data from dbMock
 import LocationFilter from "./LocationFilter";
 import LocationForm from "./LocationForm";
 import Locations from "./Locations";
-import { useEffect } from "react";
 
 import './Location.css'
 
@@ -16,7 +15,27 @@ interface locale {
   id: string,
 }
 
-function Location() {
+interface pickupDeliveryObjectSchema {
+  pickupOrDelivery: number,
+  id: String,
+  date: String,
+  driver: String,
+  vehicle: String,
+  name: String,
+  recipientEntityType: String,
+  demographic: String,
+  foodType: String,
+  area: String,
+  lbsDroppedOff: number
+}
+
+interface Props {
+  setPickupDeliveryObject : Function
+  PickupDeliveryObject    : pickupDeliveryObjectSchema,
+  setForceNext            : Function
+}
+
+function Location({setPickupDeliveryObject, PickupDeliveryObject, setForceNext} : Props) {
   // Elements we will keep in local state and pass back and forth to components
   const [locations] = useState(pickupSchema);
   const [current, setCurrent] = useState< undefined | locale>();
@@ -45,13 +64,6 @@ function Location() {
     setFiltered(filtered);
   };
 
-  //this is what we will use to send new object to API
-  useEffect(() => {
-    if (savedLocation !== null) {
-      console.log(savedLocation);
-    }
-  }, [savedLocation]);
-
   // We display the location filter, followed by the locations returned from filter results.  If there is a current location in state, then we display LocationForm component
   // otherwise it will not be displayed
   return (
@@ -79,6 +91,9 @@ function Location() {
             current={current}
             createNew={createNew}
             setLocation={setLocation}
+            setForceNext={setForceNext}
+            PickupDeliveryObject={PickupDeliveryObject}
+            setPickupDeliveryObject={setPickupDeliveryObject}
           />
       )}
     </div>

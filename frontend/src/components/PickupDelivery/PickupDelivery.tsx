@@ -1,28 +1,68 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 
 import './PickupDelivery.css'
 
 interface Props {
-    setIsPickup : Function
+    setPickupDeliveryObject : Function
+    PickupDeliveryObject    : pickupDeliveryObjectSchema
+    setForceNext            : Function
 }
 
-export default function PickupDelivery({setIsPickup} : Props) {
+interface pickupDeliveryObjectSchema {
+    pickupOrDelivery: number,
+    id: String,
+    date: String,
+    driver: String,
+    vehicle: String,
+    name: String,
+    recipientEntityType: String,
+    demographic: String,
+    foodType: String,
+    area: String,
+    lbsDroppedOff: number
+}
+
+export default function PickupDelivery({setPickupDeliveryObject, PickupDeliveryObject, setForceNext} : Props) {
 
     const [styleButton1, setStyleButton1] = useState<string>('large-wrapper');
     const [styleButton2, setStyleButton2] = useState<string>('large-wrapper');
 
+    useEffect(() => {
+        initStyle(PickupDeliveryObject.pickupOrDelivery)
+    })
+
     const changeStyle = (buttonToChange : number) => {
         if (buttonToChange === 1){
-            setIsPickup(true)
+            setPickupDeliveryObject({
+                ...PickupDeliveryObject,
+                pickupOrDelivery : 1
+            })
             setStyleButton1('large-wrapper-selected')
             setStyleButton2('large-wrapper')
-            console.log("pickup!")
         }
         else{
-            setIsPickup(false)
+            setPickupDeliveryObject({
+                ...PickupDeliveryObject,
+                pickupOrDelivery : 2
+            })
             setStyleButton2('large-wrapper-selected')
             setStyleButton1('large-wrapper')
-            console.log("delivery!")
+        }
+        setForceNext(true);
+    }
+
+    const initStyle = (isPickup : number) => {
+        if (isPickup === 0 ){
+            setStyleButton1('large-wrapper')
+            setStyleButton2('large-wrapper')
+        }
+        else if (isPickup === 1){
+            setStyleButton1('large-wrapper-selected')
+            setStyleButton2('large-wrapper')
+        }
+        else if (isPickup === 2){
+            setStyleButton1('large-wrapper')
+            setStyleButton2('large-wrapper-selected')
         }
     }
 
