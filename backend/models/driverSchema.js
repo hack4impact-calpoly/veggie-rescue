@@ -1,6 +1,7 @@
 const mongoose = require('mongoose')
 
 const DriverSchema = new mongoose.Schema({
+
     name: {
         type: String,
         required: [true, 'Please add a name']
@@ -28,11 +29,8 @@ const DriverSchema = new mongoose.Schema({
         type: String,
         required: false,
         default: '0:00'
-    },
-    id: {
-        type: String,
-        required: false
     }
+
 }, {collection: 'Drivers'});
 
 const Driver = mongoose.model('Driver', DriverSchema)

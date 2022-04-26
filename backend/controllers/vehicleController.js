@@ -1,101 +1,113 @@
-const asyncHandler = require('express-async-handler')
+const asyncHandler = require("express-async-handler");
+const Vehicle = require("../models/vehiclesSchema.js");
+const Admin = require("../models/adminModel.js");
+const Driver = require("../models/driverModel.js");
+const DropoffLogSchema = require("../models/dropoffLogSchema.js");
+const PickupLogSchema = require("../models/pickupLogSchema.js");
 
-const { JsonWebTokenError } = require('jsonwebtoken')
-const jwt = require("jsonwebtoken")
-
-const Vehicle = require('../models/vehiclesSchema.js')
-const Admin = require('../models/adminModel.js')
-const Driver = require('../models/driverModel.js')
-
-
-// @desc Finding a Vehicle
-// @route /api/vehicle/find
-// @access Public
-
-const findVehicle = asyncHandler(async (req, res) => {
-    const userEmail = req.params.email
-    const driverExists = await Driver.findOne({userEmail})
-    const adminExists = await Admin.findOne({userEmail})
-
-    if(!driverExists && !adminExists){
-        res.status(400)
-        throw new Error('This User does not have access')
+// @desc GET all vehicles
+// @route  GET /api/vehicles
+// @access Private access to drivers OR admins
+const getVehicles = asyncHandler(async (req, res) => {
+  // Check and verify that this this is driver OR admin accessing data
+  if (req.admin) {
+    const admin = await Admin.findById(req.admin.id);
+    if (!admin) {
+      res.status(401);
+      throw new Error("Admin not found");
     }
-    /*const recipientId = req.params.id
-    Donor.findById(recipientId, function(err, resultRecipient){
-        if(err){
-            res.status(422).send({ errors : [{title: 'Recipient Error!', detail: 'Could not find recipient!' }]})
-        }
-        res.json(resultRecipient);
-    })*/
-    const vehicle = await Vehicle.find();
-    res.status(200).json(vehicle);
-})
+  } else if (req.driver) {
 
-
-// @desc Create a Vehicle
-// @route /api/vehicle/manage
-// @access Public
-
-const createVehicle = asyncHandler(async (req, res) => {
-    const adminEmail = req.params.email
-    const adminExists = await Admin.findOne({adminEmail})
-
-    if(!adminExists){
-        res.status(400)
-        throw new Error('This User does not have access')
-    }
-    const { id, name, img, currentPickups, currentDropoffs, totalWeight} = req.body
+    const driver = await Driver.findById(req.driver.id);
     
-    if(!id || !name || !img || !currentPickups || !currentDropoffs || !totalWeight){
-        res.status(400)
-        throw new Error('Please include all fields')
+    if (!driver) {
+      res.status(401);
+      throw new Error("Driver not found");
     }
+  }
+  // Return array of vehicles
+  const vehicle = await Vehicle.find();
+  res.status(200).json(vehicle);
+});
 
-    // Find if donor does not already exist
-    const vehicleExists = await Vehicle.findOne({id})
+// @desc GET vehicle
+// @route GET /api/vehicles/match
+// @access Private to driver
+const matchVehicle = asyncHandler(async (req, res) => {
+  //Get user using the id in the JWT.  This is passed in through authMiddleware.
+  const driver = await Driver.findById(req.driver.id);
+  if (!driver) {
+    res.status(401);
+    throw new Error("Current driver not found");
+  }
+  // Check all the vehicles and see if any of their their driver strings match the current user's
+  // Then filter that array to see if any are currently logged in (This will take care of personal vehicle case)
+  let vehicles = await Vehicle.find({ driver: req.driver.id.toString() });
+  vehicles = vehicles.filter((e) => e.isLoggedIn);
+  if (vehicles.length === 0) {
+    // It will return an empty object if nothing is found.
+    res.status(401);
+    throw new Error("No Vehicle matched to driver.");
+  } else {
+    res.status(200).json(vehicles);
+  }
+});
 
-    if(vehicleExists){
-        res.status(400)
-        throw new Error('Vehicle already exists')
+// @desc POST / create a Vehicle
+// @route POST /api/vehicles
+// @access Private to admin
+const createVehicle = asyncHandler(async (req, res) => {
+  if (req.admin) {
+    const admin = await Admin.findById(req.admin.id);
+    if (!admin) {
+      res.status(401);
+      throw new Error("Admin not found");
     }
+  }
+  const { name, img } = req.body;
 
+  if (!name || !img) {
+    res.status(400);
+    throw new Error("Please include all fields");
+  }
+  // Find if vehicle does not already exist
+  const vehicleExists = await Vehicle.findOne({ name });
+  if (vehicleExists) {
+    res.status(400);
+    throw new Error("Vehicle already exists");
+  }
 
-    // Create donor
-    const vehicle = await Vehicle.create({
-        id, 
-        name, 
-        img, 
-        currentPickups, 
-        currentDropoffs,
-        totalWeight
-    })
+  // Create vehicle
+  const vehicle = await Vehicle.create({
+    driver: "",
+    name,
+    isLoggedIn: false,
+    img,
+    currentPickups: [],
+    currentDropoffs: [],
+    totalWeight: 0,
+  });
 
-    if(vehicle){
-        res.status(201).json({
-            _id: vehicle._id,
-            id: vehicle.id,
-            name: vehicle.name,
-            img: vehicle.img,
-            currentPickups: vehicle.currentPickups,
-            currentDropoffs: vehicle.currentDropoffs,
-            totalWeight: vehicle.totalWeight,
-            token: generateToken(vehicle._id),
-        })
-    } else{
-        res.status(400)
-        throw new Error('Invalid Vehicle Data')
-    }
+  if (vehicle) {
+    res.status(201).json({
+      _id: vehicle._id,
+      driver: vehicle.driver,
+      isLoggedIn: vehicle.isLoggedIn,
+      name: vehicle.name,
+      img: vehicle.img,
+      currentPickups: vehicle.currentPickups,
+      currentDropoffs: vehicle.currentDropoffs,
+      totalWeight: vehicle.totalWeight,
+    });
+  } else {
+    res.status(400);
+    throw new Error("Invalid Vehicle Data");
+  }
+});
 
-
-    //res.send('Register Route')
-})
-
-
-// @desc Update a Vehicle
-// @route /api/vehicle/edit
-// @access Public
-
+// @desc PUT Update a Vehicle
+// @route PUT /api/vehicle/edit
+// @access PRIVATE -> admin OR driver have access
 /*
 *id: String,
     name: String,
@@ -104,57 +116,90 @@ const createVehicle = asyncHandler(async (req, res) => {
     currentDropoffs: Array,
     totalWeight: Number
 */
-
 const editVehicle = asyncHandler(async (req, res) => {
-    const adminEmail = req.params.email
-    const adminExists = await Admin.findOne({adminEmail})
-
-    if(!adminExists){
-        res.status(400)
-        throw new Error('This User does not have access')
+  // Check and verifity that this this is driver or admin accessing data
+  if (req.admin) {
+    const admin = await Admin.findById(req.admin.id);
+    if (!admin) {
+      res.status(401);
+      throw new Error("Admin not found");
     }
-    const body = req.body
-    const vehicle_id = req.params.id
-    const vehicleInDB = await Vehicle.findOne({vehicle_id})
-
-    if(!vehicleInDB){
-        return res.status(404).json({ error: 'Vehicle not found'});
+  } else if (req.driver) {
+    const driver = await Driver.findById(req.driver.id);
+    if (!driver) {
+      res.status(401);
+      throw new Error("Driver not found");
     }
+  }
 
-    if(body.id || body.token){
-        return res.status(400).json({ error: 'Cannot edit id or token'})
-    }
+  const vehicleInDB = await Vehicle.findById(req.params.id);
+  const body = req.body;
+  if (!vehicleInDB) {
+    res.status(404);
+    throw new Error("Vehicle paired to given ID not found");
+  }
 
-    if(body.name){
-        vehicleInDB.name = body.name
-    }
-    if(body.img){
-        vehicleInDB.img = body.img
-    }
-    if(body.currentPickups){
-        vehicleInDB.currentPickups = body.currentPickups
-    }
-    if(body.currentDropoffs){
-        vehicleInDB.currentDropoffs = body.currentDropoffs
-    }
-    if(body.totalWeight){
-        vehicleInDB.totalWeight = body.totalWeight
-    }
+  if (body.id || body.token) {
+    return res.status(400).json({ error: "Cannot edit id or token" });
+  }
+  if (body.driver) {
+    vehicleInDB.driver = body.driver;
+  }
+  if (body.isLoggedIn) {
+    vehicleInDB.isLoggedIn = body.isLoggedIn;
+  }
 
-    return res.status(201).json(vehicleInDB);
+  if (body.name) {
+    vehicleInDB.name = body.name;
+  }
+  if (body.img) {
+    vehicleInDB.img = body.img;
+  }
+  if (body.currentPickups) {
+    // Create a pickup object and push it into the array
+    const pickup = await PickupLogSchema.create(body.currentPickups);
+    vehicleInDB.currentPickups = [...vehicleInDB.currentPickups, pickup];
+  }
+  if (body.currentDropoffs) {
+    // Create a dropoff object and push it into the array
+    const dropoff = await DropoffLogSchema.create(body.currentDropoffs);
+    vehicleInDB.currentDropoffs = [...vehicleInDB.currentDropoffs, dropoff];
+  }
+  if (body.totalWeight) {
+    vehicleInDB.totalWeight = body.totalWeight
+  }
+  const updatedVehicle = await Vehicle.findByIdAndUpdate(
+    req.params.id,
+    vehicleInDB
+  );
+  res.status(201).json(updatedVehicle);
+});
 
+// @desc    Delete vehicle
+// @route   DELETE /api/vehicles/:id
+// @access  Private Admin only
+const deleteVehicle = asyncHandler(async (req, res) => {
+  // Get admin using the id in the JWT
+  const admin = await Admin.findById(req.admin.id);
+  if (!admin) {
+    res.status(401);
+    throw new Error("Admin not found");
+  }
+  const vehicle = await Vehicle.findById(req.params.id);
+  if (!vehicle) {
+    res.status(404);
+    throw new Error("Vehicle not found...");
+  }
 
-    //res.send('Register Route')
-})
+  await vehicle.remove();
 
-const generateToken = (id) => {
-    return jwt.sign({ id }, process.env.JWT_SECRET, {
-        expiresIn: '24h'
-    })
-}
+  res.status(200).json({ success: true });
+});
 
 module.exports = {
-    findVehicle,
-    createVehicle,
-    editVehicle
-}
+  getVehicles,
+  createVehicle,
+  editVehicle,
+  matchVehicle,
+  deleteVehicle,
+};
