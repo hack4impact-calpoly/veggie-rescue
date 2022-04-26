@@ -2,6 +2,7 @@ import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import recipientsService from './recipientsService';
 import type { RootState } from '../../app/store';
 
+//RUN BACKEND USING NPM RUN SERVER
 
 // Interface for recipient items (This is what will be kept in store and 
 //what you will have access)  
@@ -28,6 +29,7 @@ const initialState: RecipientState = {
 // Define a type for a recipient object
 
 interface RecipientObj{
+  id: String,
   name: String,
   EntityType: String,
   DemographicName: String,
@@ -82,7 +84,7 @@ export const createRecipient = createAsyncThunk(
       return thunkAPI.rejectWithValue(message);
     }
   }
-)
+);
 
 // UPDATE: Accessible only by Admin
 export const updateRecipient = createAsyncThunk(
@@ -104,7 +106,7 @@ export const updateRecipient = createAsyncThunk(
       return thunkAPI.rejectWithValue(message);
     }
   }
-)
+);
 
 // DELETE: Accessible only by Admin
 export const deleteRecipient = createAsyncThunk(
@@ -126,7 +128,7 @@ export const deleteRecipient = createAsyncThunk(
       return thunkAPI.rejectWithValue(message);
     }
   }
-)
+);
 
 export const recipientsSlice = createSlice({
   name: 'recipients',

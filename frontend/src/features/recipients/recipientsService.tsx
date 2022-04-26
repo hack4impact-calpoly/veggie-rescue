@@ -1,5 +1,5 @@
 import axios from 'axios';
-const API_URL = '/api/locations/recipient';
+const API_URL = '/api/location/recipient/';
 
 /////////////////////////////////////////
 //                                     //
@@ -11,6 +11,17 @@ const API_URL = '/api/locations/recipient';
 //THIS IS WHERE YOU CAN DO YOUR API CALLS
 //THE CONFIG IS WHERE IT AUTHORIZES USER TOKEN WITH BACKEND
 //YOU CAN DO FULL CRUD OPS HERE
+
+// Define a type for a recipient object
+
+interface RecipientObj{
+  id: String,
+  name: String,
+  EntityType: String,
+  DemographicName: String,
+  FoodType: String,
+  CombinedAreaName: String
+}
 
 
 
@@ -48,9 +59,9 @@ const updateRecipient = async (
     }
   };
 
-  const {name, ...rest} = recipientData;
+  const {id, ...rest} = recipientData;
   const response = await axios.put(
-    API_URL + name, 
+    API_URL + id, 
     {
       ...rest
     }, config);
@@ -58,13 +69,13 @@ const updateRecipient = async (
 };
 
 // Delete recipients
-const deleteRecipient = async (recipientId: string, token: string) => {
+const deleteRecipient = async (recipientID: string, token: string) => {
   const config = {
     headers: {
       Authorization: `Bearer ${token}`
     }
   };
-  const response = await axios.delete(API_URL + recipientId, config);
+  const response = await axios.delete(API_URL + recipientID, config);
   return response.data;
 };
 
@@ -91,18 +102,6 @@ const deleteRecipient = async (recipientId: string, token: string) => {
 // Logout admin
 //const logout = () => localStorage.removeItem('admin');
 
-
-
-
-// Define a type for a recipient object
-
-interface RecipientObj{
-  name: String,
-  EntityType: String,
-  DemographicName: String,
-  FoodType: String,
-  CombinedAreaName: String
-}
 
 
 const recipientsService = {
