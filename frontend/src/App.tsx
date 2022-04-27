@@ -15,6 +15,7 @@ import Transfering from './components/Transfering/Transfering';
 import Weight from './components/Weight/Weight';
 import ReduxExample from './components/REDUXEXAMPLE/ReduxExample';
 import NewLogWrapper from './components/NewLogWrapper/NewLogWrapper';
+import AdminDataScreen from './components/AdminDataScreen/AdminDataScreen'
 
 const App: React.FC = () => {
   return (
@@ -78,6 +79,12 @@ const App: React.FC = () => {
           >
             <Route path="/Admin" element={<Admin />} />
           </Route>
+       <Route
+            path="/AdminData"
+            element={<ProtectedRoute redirectTo="/AdminLogin" />}
+          >
+            <Route path="/AdminData" element={<AdminDataScreen />} />
+          </Route>          
         </Routes>
       </Router>
       <ToastContainer />
