@@ -120,6 +120,24 @@ function renderCellExpand(params: GridRenderCellParams<string>) {
     );
 }
 
+// Custom toolbar that only houses the export button
+const GridCustomToolbarExport = (props: GridCsvExportOptions) => {
+    return (
+      <GridToolbarExport
+        csvOptions={{fileName: 'logs'}}
+      />
+    );
+  };
+
+// function to call the custom toolbar
+function CustomToolbar() {
+    return (
+      <GridToolbarContainer>
+        <GridCustomToolbarExport />
+      </GridToolbarContainer>
+    );
+}
+
 // Formatting the column headers, its data types, and sorting of the column headers
 const columns: GridColDef[] = [
     { 
@@ -193,24 +211,6 @@ const columns: GridColDef[] = [
     },
 ];
 
-// Custom toolbar that only houses the export button
-const GridCustomToolbarExport = (props: GridCsvExportOptions) => {
-    return (
-      <GridToolbarExport
-        csvOptions={{fileName: 'logs'}}
-      />
-    );
-  };
-
-// function to call the custom toolbar
-function CustomToolbar() {
-    return (
-      <GridToolbarContainer>
-        <GridCustomToolbarExport />
-      </GridToolbarContainer>
-    );
-}
-
 // function componentDidMount() {
 //     const eventsURL = `${process.env.REACT_APP_SERVER_URL}/api/event/get-all`
 //     fetch(eventsURL,
@@ -233,34 +233,30 @@ function CustomToolbar() {
 //         .catch(err => console.error(err))
 //     }
   
+interface Logs {
+    date: string;
+    driverName: string;
+    vehicle: string;
+    foodType: string;
+    lbsPickedUp: number;
+    locationType: string;
+    donorEntityType: string;
+    area: string;
+}
+
+// function getLogs(): Promise<Logs[]> {
+
+//     // For now, consider the data is stored on a static `users.json` file
+//     return fetch('/users.json')
+//             // the JSON body is taken from the response
+//             .then(res => res.json())
+//             .then(res => {
+//                     // The response has an `any` type, so we need to cast
+//                     // it to the `User` type, and return it from the promise
+//                     return res as Logs[]
+// })
 
 export default function DataTable() {
-
-    // constructor(props){
-    //     super(props);
-    //     this.state = {
-    //       showModal: false,
-    //       events: [],
-    //       dateClickedStr: "",
-    //       dateClickedEvents: [],
-    //       eventClicked: "",
-    //       eventModalData: {},
-    //       userShifts: []
-    //     }
-    // }
-
-    
-
-    // let [logs, setLogs] = useState();
-
-    // useEffect(() => {
-    //     const loadLogs = async () => {
-    //       let res = await fetch('http://localhost:3001/api/people')
-    //       setLogs(await res.json())
-    //     }
-        
-    //     loadLogs();
-    //   }, [])
 
     let i = 0;
     const rows = logs?.map((log) => {
@@ -287,7 +283,7 @@ export default function DataTable() {
                 <div className='w-[1120px] h-[550px] mb-[1000px]'>
                     <DataGrid
                         components={{
-                            Toolbar: CustomToolbar
+                            Toolbar: CustomToolbar,                
                         }}
                         sx={{
                             borderRadius: 3,
