@@ -17,11 +17,11 @@ router.post("/donor", protectAdmin, createDonor);
 router.post('/recipient', protectAdmin,  createRecipient)
 
 //Edit
-router.put("/donor", protectAdmin, editDonor);
+router.put("/donor/:id", protectAdmin, editDonor);
 router.put("/recipient", protectAdmin, editRecipient);
 
 //Delete
-router.delete("/donor", protectAdmin, deleteDonor);
+router.delete("/donor/:id", protectAdmin, deleteDonor);
 router.delete("/recipient", protectAdmin, deleteRecipient);
 
 

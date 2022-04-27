@@ -1,9 +1,9 @@
 const mongoose = require('mongoose')
 
 const RecipientSchema = new mongoose.Schema({
-    id: String,
+    name: String,
     EntityType: String,
-    LocationType: String,
+    DemographicName: String,
     CombinedAreaName: String
 },  {collection: 'Recipients'});
 

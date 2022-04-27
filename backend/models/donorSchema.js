@@ -2,9 +2,10 @@ const mongoose = require('mongoose')
 
 const DonorSchema = new mongoose.Schema({
     id: String,
+    name: String,
     EntityType: String,
     FoodType: String,
-    DemographicName: String,
+    LocationType: String,
     CombinedAreaName: String
 }, {collection: 'Donors'});
 

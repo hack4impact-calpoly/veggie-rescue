@@ -9,8 +9,8 @@ const Admin = require('../models/adminModel.js')
 const Driver = require('../models/driverModel.js')
 
 // @desc Finding a donor
-// @route /api/donor/get
-// @access Public
+// @route /api/location/donor
+// @access Private
 
 const findDonor = asyncHandler(async (req, res) => {
     const email = req.params.email;
@@ -62,10 +62,9 @@ const findRecipient = asyncHandler(async (req, res) => {
 })
 
 
-// @desc Manage a Donor
-// @route /api/donor/manage
-// @access Public
-
+// @desc Create a Donor
+// @route /api/location/donor
+// @access Private
 const createDonor = asyncHandler(async (req, res) => {
     const adminEmail = req.params.email
     const adminExists = await Admin.findOne({adminEmail})
@@ -74,15 +73,15 @@ const createDonor = asyncHandler(async (req, res) => {
         res.status(400)
         throw new Error('This User does not have access')
     }
-    const { id, EntityType, FoodType, DemographicName, CombinedAreaName } = req.body
+    const { name, EntityType, FoodType, LocationType, CombinedAreaName } = req.body
     
-    if(!id || !EntityType || !FoodType || !DemographicName || !CombinedAreaName){
+    if(!name || !EntityType || !FoodType || !LocationType || !CombinedAreaName){
         res.status(400)
         throw new Error('Please include all fields')
     }
 
     // Find if donor does not already exist
-    const donorExists = await Donor.findOne({id})
+    const donorExists = await Donor.findOne({name : name})
 
     if(donorExists){
         res.status(400)
@@ -93,22 +92,21 @@ const createDonor = asyncHandler(async (req, res) => {
 
     // Create donor
     const donor = await Donor.create({
-        id, 
+        name, 
         EntityType, 
         FoodType, 
-        DemographicName, 
+        LocationType, 
         CombinedAreaName
     })
 
     if(donor){
         res.status(201).json({
             _id: donor._id,
-            id: donor.id,
+            name: donor.name,
             EntityType: donor.EntityType,
             FoodType: donor.FoodType,
-            DemographicName: donor.DemographicName,
+            LocationType: donor.LocationType,
             CombinedAreaName: donor.CombinedAreaName,
-            token: generateToken(donor._id),
         })
     } else{
         res.status(400)
@@ -131,15 +129,15 @@ const createRecipient = asyncHandler(async (req, res) => {
         res.status(400)
         throw new Error('This User does not have access')
     }
-    const { id, EntityType, LocationType, CombinedAreaName } = req.body
+    const { name, EntityType, DemographicName, CombinedAreaName } = req.body
     
-    if(!id || !EntityType || !LocationType || !CombinedAreaName){
+    if(!name || !EntityType || !DemographicName || !CombinedAreaName){
         res.status(400)
         throw new Error('Please include all fields')
     }
 
     // Find if donor does not already exist
-    const recipientExists = await Recipient.findOne({id})
+    const recipientExists = await Recipient.findOne({name : name})
 
     if(recipientExists){
         res.status(400)
@@ -149,20 +147,19 @@ const createRecipient = asyncHandler(async (req, res) => {
 
     // Create donor
     const recipient = await Recipient.create({
-        id, 
+        name, 
         EntityType, 
-        LocationType,  
+        DemographicName,  
         CombinedAreaName
     })
 
     if(recipient){
         res.status(201).json({
             _id: recipient._id,
-            id: recipient.id,
+            name: recipient.name,
             EntityType: recipient.EntityType,
-            LocationType: recipient.LocationType,
+            DemographicName: recipient.DemographicName,
             CombinedAreaName: recipient.CombinedAreaName,
-            token: generateToken(recipient._id),
         })
     } else{
         res.status(400)
@@ -174,48 +171,43 @@ const createRecipient = asyncHandler(async (req, res) => {
 })
 
 // @desc Update a Donor
-// @route /api/donor/edit
+// @route /api/location/donor
 // @access Public
-
 const editDonor = asyncHandler(async (req, res) => {
-    const adminEmail = req.params.email
-    const adminExists = await Admin.findOne({adminEmail})
+    const admin = await Admin.findById(req.admin.id);
 
-    if(!adminExists){
-        res.status(400)
-        throw new Error('This User does not have access')
+    if (!admin) {
+        res.status(401);
+        throw new Error("Admin not found");
     }
+
+    const donor = await Donor.findById(req.params.id)
+
+    if (!donor) {
+        res.status(404);
+        throw new Error("No donor found");
+    }
+
     const body = req.body
-    const donor_id = req.params.id
-    const donorInDB = db[donor_id]
 
-    if(!donorInDB){
-        return res
-        .status(404)
-        .json({ error: 'Donor not found'});
+    if(body.name){
+        donor.name = body.name
     }
-
-    if(body.id || body.token){
-        return res.status(400).json({ error: 'Cannot edit id'})
-    }
-
     if(body.EntityType){
-        donorInDB.EntityType = body.EntityType
+        donor.EntityType = body.EntityType
     }
     if(body.FoodType){
-        donorInDB.FoodType = body.FoodType
+        donor.FoodType = body.FoodType
     }
     if(body.DemographicName){
-        donorInDB.DemographicName = body.DemographicName
+        donor.DemographicName = body.DemographicName
     }
     if(body.CombinedAreaName){
-        donorInDB.CombinedAreaName = body.CombinedAreaName
+        donor.CombinedAreaName = body.CombinedAreaName
     }
 
-    return res
-            .status(201)
-            .json(donorInDB);
-
+    await Donor.findByIdAndUpdate(req.params.id, donor);
+    return res.status(201).json(donor);
 
     //res.send('Register Route')
 })
@@ -268,49 +260,21 @@ const editRecipient = asyncHandler(async (req, res) => {
 // @access Public
 
 const deleteDonor = asyncHandler(async (req, res) => {
-    const adminEmail = req.params.email
-    const adminExists = await Admin.findOne({adminEmail})
-
-    if(!adminExists){
-        res.status(400)
-        throw new Error('This User does not have access')
+    const admin = await Admin.findById(req.admin.id);
+    if (!admin) {
+      res.status(401);
+      throw new Error("Admin not found");
     }
-    const body = req.body
-    const donor_id = body.id
-    //const donorInDB = db[donor_id]
-    const donorInDB = await Donor.findOne({id: donor_id})
+    
+    const donor = await Donor.findById(req.params.id);
 
-    if(!donorInDB){
-        return res
-        .status(404)
-        .json({ error: 'Donor not found'});
-    }
+      if (!donor) {
+        res.status(404);
+        throw new Error("Donor not found");
+      }
 
-    Donor.findOneAndRemove({id: donor_id}, function(err){
-        if(err){
-            console.log(err);
-            return res.status(500).send();
-        }
-        return res.status(200).send();
-    })
-
-    //return res.status(200).json(donorInDB)
-    /*
-
-    //const donorDeleted = await Donor.deleteById(donor_id);
-    const donorDeleted = Donor.findByIdAndDelete(donor_id);
-
-    if(!donorDeleted){
-        return res.status(404).json({ error: 'Donor could not be deleted'})
-    }
-
-
-    return res
-            .status(201)
-            .json(donor_id);*/
-
-
-    //res.send('Register Route')
+    await donor.remove();
+      res.status(200).json({ success: true });
 })
 
 // @desc Delete a Recipient
