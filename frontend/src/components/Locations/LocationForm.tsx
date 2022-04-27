@@ -9,13 +9,30 @@ interface locale {
 	id: string,
   }
 
-interface Props{
-  current : locale,
-  createNew : boolean,
-  setLocation : Function;
+interface pickupDeliveryObjectSchema {
+    pickupOrDelivery: number,
+    id: String,
+    date: String,
+    driver: String,
+    vehicle: String,
+    name: String,
+    recipientEntityType: String,
+    demographic: String,
+    foodType: String,
+    area: String,
+    lbsDroppedOff: number
 }
 
-const LocationForm = ({current, createNew, setLocation} : Props) =>{
+interface Props{
+  current                 : locale,
+  createNew               : boolean,
+  setLocation             : Function,
+  PickupDeliveryObject    : pickupDeliveryObjectSchema,
+  setPickupDeliveryObject : Function,
+  setForceNext            : Function
+}
+
+const LocationForm = ({current, createNew, setLocation, PickupDeliveryObject, setPickupDeliveryObject, setForceNext} : Props) =>{
   const [active, setActive] = useState(""); // State for radio buttons
   const [isClicked, setIsClicked] = useState(true); // State for radio buttons
 
@@ -28,27 +45,56 @@ const LocationForm = ({current, createNew, setLocation} : Props) =>{
 
   const { name } = current;
 
-  const onSubmit = (e : Event) => {
-    e.preventDefault();
-    if (createNew) {
-      setLocation({
-        name: donorName,
-        donorLocationType: donorLocationType,
-        donorEntityType: donorEntityType,
-        foodType: food,
-        area: area,
-      });
-    } else {
-      setLocation({
-        ...current,
-        foodType: active,
-      });
+  // const onSubmit = (e : Event) => {
+  //   e.preventDefault();
+  //   if (createNew) {
+  //     setLocation({
+  //       name: donorName,
+  //       donorLocationType: donorLocationType,
+  //       donorEntityType: donorEntityType,
+  //       foodType: food,
+  //       area: area,
+  //     });
+  //   } else {
+  //     setLocation({
+  //       ...current,
+  //       foodType: active,
+  //     });
+  //   }
+  // };
+
+  const submitPressed = () => {
+    if (createNew === false && active !== ""){
+      setPickupDeliveryObject({
+        ...PickupDeliveryObject,
+        id : current.id,
+        name : current.name,
+        recipientEntityType : current.donorEntityType,
+        demographic : current.donorLocationType,
+        foodType : current.foodType,
+        area : current.area
+      })
+      setForceNext(true);
     }
-  };
+    else if (createNew === true){
+      setPickupDeliveryObject({
+        ...PickupDeliveryObject,
+        // id : ID?,
+        name : donorName,
+        recipientEntityType : donorEntityType,
+        demographic : donorLocationType,
+        foodType : food,
+        area : area
+      })
+      setForceNext(true); 
+    }
+    else{
+      console.log("bad input!");
+    }
+  }
 
   return (
     <div className="Form-main">
-      <form onSubmit={() => onSubmit}>
         <h2 className="text-primary-locationForm">
           {createNew ? "New Location" : "Donor Name"}{" "}
         </h2>
@@ -129,9 +175,9 @@ const LocationForm = ({current, createNew, setLocation} : Props) =>{
         )}
 
         <div>
-          <button className="continue_button" onClick={() => console.log("cliked!")}>Continue</button>
+          <button className="continue_button" onClick={() => submitPressed()}>Continue</button>
         </div>
-      </form>
+      {/* </form> */}
     </div>
   );
 }

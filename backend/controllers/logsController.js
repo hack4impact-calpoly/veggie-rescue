@@ -1,17 +1,31 @@
 const PickupLog = require("../models/pickupLogSchema");
 const DropoffLog = require("../models/dropoffLogSchema");
+const Admin = require("../models/adminModel.js");
+const Driver = require('../models/driverModel.js')
 
 // @desc Get all pickup logs
 // @route GET : /api/pickup
-// @access Private
+// @access Private -> Admin only
 const getPickups = async (req, res) => {
+  // Check and verify that this this is admin accessing data
+  const admin = await Admin.findById(req.admin.id);
+  if (!admin) {
+    res.status(401);
+    throw new Error("Admin not found");
+  }
   res.send(await PickupLog.find({}));
 };
 
 // @desc Get all dropoff logs
 // @route GET : /api/dropoffs
-// @access Private
+// @access Private -> Admin only
 const getDropoffs = async (req, res) => {
+  // Check and verify that this this is admin accessing data
+  const admin = await Admin.findById(req.admin.id);
+  if (!admin) {
+    res.status(401);
+    throw new Error("Admin not found");
+  }
   res.send(await DropoffLog.find({}));
 };
 
@@ -19,6 +33,22 @@ const getDropoffs = async (req, res) => {
 // @route POST : /api/pickup
 // @access Private
 const createPickup = async (req, res) => {
+  // Check and verify that this this is driver OR admin accessing data
+  if (req.admin) {
+    const admin = await Admin.findById(req.admin.id);
+    if (!admin) {
+      res.status(401);
+      throw new Error("Admin not found");
+    }
+  } else if (req.driver) {
+    const driver = await Driver.findById(req.driver.id);
+
+    if (!driver) {
+      res.status(401);
+      throw new Error("Driver not found");
+    }
+  }
+
   const {
     date,
     driver,
@@ -29,6 +59,7 @@ const createPickup = async (req, res) => {
     area,
     lbsPickedUp,
   } = req.body;
+  
   let pickup = new PickupLog({
     date: date,
     driver: driver,
@@ -52,6 +83,21 @@ const createPickup = async (req, res) => {
 // @route POST : /api/dropoffs
 // @access Private
 const createDropoff = async (req, res) => {
+  // Check and verify that this this is driver OR admin accessing data
+  if (req.admin) {
+    const admin = await Admin.findById(req.admin.id);
+    if (!admin) {
+      res.status(401);
+      throw new Error("Admin not found");
+    }
+  } else if (req.driver) {
+    const driver = await Driver.findById(req.driver.id);
+
+    if (!driver) {
+      res.status(401);
+      throw new Error("Driver not found");
+    }
+  }
   const {
     date,
     driver,
@@ -82,6 +128,7 @@ const createDropoff = async (req, res) => {
     console.log(`error is ${error.message}`);
   }
 };
+
 
 // @desc Delete a specific pickup
 // @route DELETE : /api/pickup
@@ -115,6 +162,58 @@ const deleteDropoff = async (req, res) => {
   }
 };
 
+// @desc Post multiple pickups
+// @route POST : /api/pickup/batch
+// @access Private -> Driver only
+const pushPickups = async (req, res) => {
+  // Check and verify that this this is driver OR admin accessing data
+  if (req.admin) {
+    const admin = await Admin.findById(req.admin.id);
+    if (!admin) {
+      res.status(401);
+      throw new Error("Admin not found");
+    }
+  } else if (req.driver) {
+    const driver = await Driver.findById(req.driver.id);
+
+    if (!driver) {
+      res.status(401);
+      throw new Error("Driver not found");
+    }
+  }
+
+  // Get array from request body
+  const data = req.body;
+  const response = await PickupLog.insertMany(data);
+  res.status(200).json(response);
+};
+
+// @desc Post multiple dropoffs
+// @route POST : /api/dropoff/batch
+// @access Private -> Driver only
+const pushDropoffs = async (req, res) => {
+  // Check and verify that this this is driver OR admin accessing data
+  if (req.admin) {
+    const admin = await Admin.findById(req.admin.id);
+    if (!admin) {
+      res.status(401);
+      throw new Error("Admin not found");
+    }
+  } else if (req.driver) {
+    const driver = await Driver.findById(req.driver.id);
+
+    if (!driver) {
+      res.status(401);
+      throw new Error("Driver not found");
+    }
+  }
+  // Get array from request body
+  const data = req.body;
+  const response = await DropoffLog.insertMany(data);
+  res.status(200).json(response);
+};
+
+
 module.exports = {
   getPickups,
   getDropoffs,
@@ -122,4 +221,6 @@ module.exports = {
   createDropoff,
   deletePickup,
   deleteDropoff,
+  pushPickups,
+  pushDropoffs
 };
