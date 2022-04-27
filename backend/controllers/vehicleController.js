@@ -155,14 +155,29 @@ const editVehicle = asyncHandler(async (req, res) => {
     vehicleInDB.img = body.img;
   }
   if (body.currentPickups) {
-    // Create a pickup object and push it into the array
-    const pickup = await PickupLogSchema.create(body.currentPickups);
-    vehicleInDB.currentPickups = [...vehicleInDB.currentPickups, pickup];
+    // First check if the object is an empty array.  If so, clear out the array
+    if (Object.keys(body.currentPickups).length === 0) {
+      console.log("ok cowboy.");
+    } else {
+      // Otherwise...
+      // Create a pickup object and push it into the array
+      const pickup = await PickupLogSchema.create(body.currentPickups);
+      vehicleInDB.currentPickups = [...vehicleInDB.currentPickups, pickup];
+    }
+
+
   }
   if (body.currentDropoffs) {
+    console.log(body.currentDropoffs)
+    // First check if the object is an empty array.  If so, clear out the array
+    if(Object.keys(body.currentDropoffs).length === 0){
+      console.log('ok cowboy.')
+    }else{
+    // Otherwise...
     // Create a dropoff object and push it into the array
     const dropoff = await DropoffLogSchema.create(body.currentDropoffs);
     vehicleInDB.currentDropoffs = [...vehicleInDB.currentDropoffs, dropoff];
+    }
   }
   if (body.totalWeight) {
     vehicleInDB.totalWeight = body.totalWeight

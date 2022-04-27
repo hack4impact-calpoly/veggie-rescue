@@ -184,6 +184,7 @@ const pushPickups = async (req, res) => {
 
   // Get array from request body
   const data = req.body;
+  console.log(data)
   const response = await PickupLog.insertMany(data);
   res.status(200).json(response);
 };

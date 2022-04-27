@@ -13,6 +13,28 @@ const initialState: VehicleState = {
   message: ''
 };
 
+interface pickupObject {
+  date: String;
+  driver: String;
+  vehicle: String;
+  name: String;
+  donorEntityType: String;
+  foodType: String;
+  area: String;
+  lbsPickedUp: Number;
+}
+
+interface dropoffObject {
+  date: String;
+  driver: String;
+  vehicle: String;
+  name: String;
+  recipientEntityType: String;
+  demographic: String;
+  foodType: String;
+  area: String;
+  lbsDroppedoff: Number;
+}
 interface locale {
   name: string;
   donorLocationType: string;
@@ -28,8 +50,8 @@ interface Vehicle {
   name: string;
   isLoggedIn: boolean;
   img: string;
-  currentPickups: locale[];
-  currentDropoffs: locale[];
+  currentPickups: pickupObject[];
+  currentDropoffs: dropoffObject[];
   totalWeight: number;
 }
 
@@ -146,7 +168,6 @@ export const updateVehicle = createAsyncThunk(
       if (!token) {
         token = state.adminAuth.admin.token;
       }
-      console.log("FROM FRONT END" + vehicleData.driver)
       return await vehicleService.update(vehicleData, token);
     } catch (error: any) {
       const message =

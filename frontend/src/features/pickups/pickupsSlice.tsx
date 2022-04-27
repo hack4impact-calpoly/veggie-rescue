@@ -2,24 +2,20 @@ import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import pickupsService from './pickupsService';
 import type { RootState } from '../../app/store';
 
-// Interface for pickup items (This is what will be kept in store and what you will have access)
-interface Pickup {
-  _id: string;
-  name: string;
+
+
+interface pickupObject {
+  date: String;
+  driver: String;
+  vehicle: String;
+  name: String;
+  donorEntityType: String;
+  foodType: String;
+  area: String;
+  lbsPickedUp: Number;
 }
 
-// // Interface for object when registering new admin
-// interface AdminData {
-//   name: string;
-//   email: string;
-//   password: string;
-// }
-// interface AdminObject {
-//     email: string;
-//     password: string;
-// }
-
-// // Define a type for the slice state
+// Define a type for the pickup slice state
 interface PickupState {
   pickups: [];
   isError: boolean;
@@ -35,7 +31,6 @@ const initialState: PickupState = {
   isLoading: false,
   message: ''
 };
-
 
 export const getPickups = createAsyncThunk(
   'api/pickups',
@@ -61,6 +56,47 @@ export const getPickups = createAsyncThunk(
   }
 );
 
+export const createPickup = createAsyncThunk(
+  'api/createPickups',
+  async (pickup: pickupObject, thunkAPI) => {
+    try {
+      return await pickupsService.createPickup(pickup);
+    } catch (error: any) {
+      const message =
+        (error.response &&
+          error.response.data &&
+          error.response.data.message) ||
+        error.message ||
+        error.toString();
+
+      return thunkAPI.rejectWithValue(message);
+    }
+  }
+);
+
+export const createBatchPickup = createAsyncThunk(
+  'api/createBatchPickups/batch',
+  async (pickup: pickupObject[], thunkAPI) => {
+    try {
+
+       // Set up token for authenticating route
+      const state = thunkAPI.getState() as RootState;
+      const token = state.driverAuth.driver.token;
+      return await pickupsService.createBatchPickup(pickup, token);
+    } catch (error: any) {
+      const message =
+        (error.response &&
+          error.response.data &&
+          error.response.data.message) ||
+        error.message ||
+        error.toString();
+
+      return thunkAPI.rejectWithValue(message);
+    }
+  }
+);
+
+
 export const pickupsSlice = createSlice({
   name: 'pickup',
   initialState,
@@ -83,6 +119,31 @@ export const pickupsSlice = createSlice({
         state.pickups = action.payload;
       })
       .addCase(getPickups.rejected, (state, action) => {
+        state.isLoading = false;
+        state.isError = true;
+        state.message = action.payload;
+      })
+      .addCase(createPickup.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(createPickup.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.isSuccess = true;
+        state.pickups = action.payload;
+      })
+      .addCase(createPickup.rejected, (state, action) => {
+        state.isLoading = false;
+        state.isError = true;
+        state.message = action.payload;
+      })
+      .addCase(createBatchPickup.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(createBatchPickup.fulfilled, (state) => {
+        state.isLoading = false;
+        state.isSuccess = true;
+      })
+      .addCase(createBatchPickup.rejected, (state, action) => {
         state.isLoading = false;
         state.isError = true;
         state.message = action.payload;
