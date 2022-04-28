@@ -1,7 +1,4 @@
 import React, { useState, useLayoutEffect, useEffect } from 'react';
-
-
-
 import './AdminDataScreen.css';
 import DonorsCard from '../../components/DonorsCard/DonorsCard';
 import RecipientsCard from '../../components/RecipientsCard/RecipientsCard';
@@ -11,13 +8,13 @@ import NewVolunteersCard from '../../components/VolunteersCard/NewVolunteersCard
 import NewDonorsCard from '../../components/DonorsCard/NewDonorsCard';
 import EntityForm from './EntityForm';
 import ShortEntityForm from './ShortEntityForm';
-import { vehicles, volunteerSchema, deliverySchema, pickupSchema } from '../../data/dbMock';
+import { vehicles, deliverySchema, pickupSchema } from '../../data/dbMock';
 import { AiOutlineSearch } from 'react-icons/ai';
+import { useAppSelector, useAppDispatch } from '../../app/hooks';
+import { getDrivers, deleteDriver } from '../../features/driverAuth/driverAuthSlice'
+import AdminHeader from '../AdminHeader/AdminHeader';
 
 const AdminDataScreen = () => {
-
-
-
   const [vehiclesCard, setVehiclesCard] = useState(false);
   const [volunteers, setVolunteers] = useState(false);
   const [donors, setDonors] = useState(false);
@@ -25,6 +22,20 @@ const AdminDataScreen = () => {
   const [showModal, setShowModal] = useState(false);
   const [q, setQ] = useState("");
   const [searchParam, setSearchParam] = useState(["name"]);
+  const dispatch = useAppDispatch();
+  const { isLoading, drivers, isError, isSuccess, message } = useAppSelector(
+    (state) => state.driverAuth
+  );
+
+  useEffect(() => {
+    dispatch(getDrivers());
+  }, [dispatch]);
+
+  const removeDriver = (id:string) => {
+    window.confirm('Are you sure you want to delete this driver?') &&
+      dispatch(deleteDriver(id))
+      window.location.reload()
+  };
 
   function handleVolunteers(){
     setVolunteers((prev) => !prev);
@@ -33,6 +44,7 @@ const AdminDataScreen = () => {
     setDonors(false);
     setRecipients(false);
   }
+
   function handleVehicles(){
     setVolunteers(false);
     setVehiclesCard((prev) => !prev);
@@ -40,6 +52,7 @@ const AdminDataScreen = () => {
     setDonors(false);
     setRecipients(false);
   }
+
   function handleDonors(){
     setVolunteers(false);
     setVehiclesCard(false);
@@ -47,6 +60,7 @@ const AdminDataScreen = () => {
     setSearchParam(["name", "donorLocationType", "donorEntityType", "foodType", "area"]);
     setRecipients(false);
   }
+
   function handleRecipients(){
     setVolunteers(false);
     setVehiclesCard(false);
@@ -54,6 +68,7 @@ const AdminDataScreen = () => {
     setRecipients((prev) => !prev);
     setSearchParam(["name", "recipientEntityType", "demographic", "foodType", "area"]);
   }
+
   function handleShowModal(){
     setShowModal((prev) => !prev);
   }
@@ -66,7 +81,7 @@ const AdminDataScreen = () => {
   /* this function adds cards to query based on search */
   function search(items:any){
     if(volunteers){
-      return volunteerSchema.filter((item:any) => {
+      return drivers.filter((item:any) => {
         return searchParam.some((newItem:any) => {
           return (
             item[newItem]
@@ -114,6 +129,7 @@ const AdminDataScreen = () => {
 
   return(
     <div className="admin-container">
+    <AdminHeader />
     <div className="data-container" style={{background: 'white'}}>
     <div className="data-title">Manage Data</div>
     <div className="titles">
@@ -161,7 +177,9 @@ const AdminDataScreen = () => {
           <VolunteersCard
             index={index}
             name={item.name}
-            pin={item.pin}/>
+            pin={item.pin}
+            id={item._id}
+            removeDriver={removeDriver}/>
         );
       })}
     </div>
