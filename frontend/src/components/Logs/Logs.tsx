@@ -5,10 +5,12 @@ import { useAppDispatch } from '../../app/hooks';
 
 import TripLog from '../../components/TripLog/TripLog';
 import { getVehicle } from '../../features/vehicles/VehiclesSlice';
+import { Navigate, useNavigate } from 'react-router-dom';
 
 const Logs = () => {
   let [data, dataSet] = useState<any>(null);
   const dispatch = useAppDispatch();
+  const navigate = useNavigate();
 
   useEffect(() => {
     async function fetchMyAPI() {
@@ -25,7 +27,7 @@ const Logs = () => {
           <button
             id="icon"
             onClick={() => {
-              alert('hi');
+              navigate('/Dashboard');
             }}
           >
             <IoIosArrowBack style={{ color: 'FF9C55' }} />
