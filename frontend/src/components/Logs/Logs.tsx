@@ -7,14 +7,13 @@ import TripLog from '../../components/TripLog/TripLog';
 import { getVehicle } from '../../features/vehicles/VehiclesSlice';
 
 const Logs = () => {
-  const [data, dataSet] = useState<any>(null);
+  let [data, dataSet] = useState<any>(null);
   const dispatch = useAppDispatch();
 
   useEffect(() => {
     async function fetchMyAPI() {
       let response = dispatch(getVehicle());
-      dataSet(await response);
-      console.log(response);
+      dataSet((await response).payload);
     }
     fetchMyAPI();
   }, []);
@@ -39,7 +38,7 @@ const Logs = () => {
           <h3>Pounds</h3>
         </div>
       </div>
-      {data && data.abort != null ? (
+      {data ? (
         <div className="logs">
           {data.currentPickups.map(
             (v: { name: any; lbsPickedUp: any }, index: any) => {
