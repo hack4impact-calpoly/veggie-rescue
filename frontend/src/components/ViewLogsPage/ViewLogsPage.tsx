@@ -1,10 +1,14 @@
-import React from 'react';
+
+import React, { useEffect, useState } from 'react';
 import { DataGrid, GridColDef, GridRenderCellParams, GridToolbarContainer, GridToolbarExport, GridCsvExportOptions, GridValueGetterParams, GridValueFormatterParams } from '@mui/x-data-grid';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import Paper from '@mui/material/Paper';
 import Popper from '@mui/material/Popper';
+import Button from '@mui/material/Button';
 import { logs } from '../../data/dbMock';
+import { useAppDispatch, useAppSelector } from '../../app/hooks';
+import { getPickups } from '../../features/pickups/pickupsSlice';
 
 // props for expanding cell if too long
 interface GridCellExpandProps {
@@ -211,94 +215,68 @@ const columns: GridColDef[] = [
     },
 ];
 
-// function componentDidMount() {
-//     const eventsURL = `${process.env.REACT_APP_SERVER_URL}/api/event/get-all`
-//     fetch(eventsURL,
-//         {
-//           credentials: 'include',
-//           mode: 'cors'
-//         })
-//         .then((res) => res.json())
-//         .then((events) => this.setState({events: events}))
-//         .catch((err) => console.error(err))
-//     const shiftsURL = `${process.env.REACT_APP_SERVER_URL}/api/user/shifts`
-//     fetch(shiftsURL,
-//         {
-//           method: 'POST',
-//           credentials: 'include',
-//           mode: 'cors'
-//         })
-//         .then(res => res.json())
-//         .then(userShifts => this.setState({userShifts: userShifts}))
-//         .catch(err => console.error(err))
-//     }
-  
-interface Logs {
-    date: string;
-    driverName: string;
-    vehicle: string;
-    foodType: string;
-    lbsPickedUp: number;
-    locationType: string;
-    donorEntityType: string;
-    area: string;
-}
-
-// function getLogs(): Promise<Logs[]> {
-
-//     // For now, consider the data is stored on a static `users.json` file
-//     return fetch('/users.json')
-//             // the JSON body is taken from the response
-//             .then(res => res.json())
-//             .then(res => {
-//                     // The response has an `any` type, so we need to cast
-//                     // it to the `User` type, and return it from the promise
-//                     return res as Logs[]
-// })
-
 export default function DataTable() {
 
-    let i = 0;
-    const rows = logs?.map((log) => {
-    return {
-        id: i++,
-        date: log.date,
-        driverName: log.driver,
-        vehicle: log.vehicle,
-        name: log.name,
-        foodType: log.foodType,
-        lbsPickedUp: log.lbsPickedUp,
-        locationType: log.locationType,
-        donorEntityType: log.donorEntityType,
-        area: log.area
-        } 
-    }); 
+  const [pickupData, pickupDataSet] = useState<any>(null);
+  const dispatch = useAppDispatch();
 
-    return (
-        <div className='bg-green-50 w-screen h-screen'>
-            <div className='font-poppins flex items-center flex-col space-y-[50px]'>
-                <h4 className='mt-[50px] text-[50px] text-[#555555]'>
-                    Logs
-                </h4>
-                <div className='w-[1120px] h-[550px] mb-[1000px]'>
-                    <DataGrid
-                        components={{
-                            Toolbar: CustomToolbar,                
-                        }}
-                        sx={{
-                            borderRadius: 3,
-                            boxShadow: 4,
-                            bgcolor: 'white',
-                            fontFamily: 'poppins',
-                        }}
-                        rows={rows}
-                        getRowId={(row) => row.id}
-                        columns={columns}
-                        pageSize={10}
-                        rowsPerPageOptions={[10]}
-                    />
-                </div>
-            </div>
-        </div>
-    );
+  useEffect(() => {
+    async function fetchMyAPI() {
+      let response = dispatch(getPickups());
+      pickupDataSet(await response);
+      console.log(response);
+    }
+    fetchMyAPI();
+  }, []);
+
+  let i = 0;
+  const rows = pickupData?.map((log: { date: String; driver: String; vehicle: String; name: String; foodType: String; lbsPickedUp: Number; locationType: String; donorEntityType: String; area: String; }) => {
+  return {
+      id: i++,
+      date: log.date,
+      driverName: log.driver,
+      vehicle: log.vehicle,
+      name: log.name,
+      foodType: log.foodType,
+      lbsPickedUp: log.lbsPickedUp,
+      locationType: log.locationType,
+      donorEntityType: log.donorEntityType,
+      area: log.area
+      } 
+  }); 
+
+  return (
+      <div className='bg-green-50 w-screen h-screen'>
+          <div className='font-poppins flex items-center flex-col space-y-[30px]'>
+              <h4 className='mt-[50px] text-[50px] text-[#555555]'>
+                  Logs
+              </h4>
+              <div className='w-[1120px] h-[550px] mb-[1000px]'>
+                  <DataGrid
+                      components={{
+                          Toolbar: CustomToolbar,                
+                      }}
+                      sx={{
+                          borderRadius: 3,
+                          boxShadow: 4,
+                          bgcolor: 'white',
+                          fontFamily: 'poppins',
+                      }}
+                      rows={rows}
+                      getRowId={(row) => row.id}
+                      columns={columns}
+                      pageSize={10}
+                      rowsPerPageOptions={[10]}
+                  />
+              <div className='mt-[10px]'>
+                  <Button
+                    color="success"
+                    variant="contained"
+                    onClick={() => console.log('clicked')}>Toggle Pickup/Dropoff
+                  </Button>
+              </div>
+              </div>
+          </div>
+      </div>
+  );
 }
