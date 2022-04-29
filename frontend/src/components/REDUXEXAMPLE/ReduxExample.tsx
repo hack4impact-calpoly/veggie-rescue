@@ -1,22 +1,22 @@
 import { useEffect } from 'react';
 import { toast } from 'react-toastify'; //this is for the pop up
 import { useAppSelector, useAppDispatch } from '../../app/hooks';
-import { getDonors, createDonor } from '../../features/donors/donorSlice'
+import { getDonors, createDonor } from '../../features/donors/donorSlice';
 
 const ReduxExample = () => {
-
   const dispatch = useAppDispatch();
 
   const onClick = () => {
-    dispatch(createDonor({
-      id: "0",
-    name: "Tod McMuffin",
-    EntityType: "buncha weeds",
-    FoodType: "garbage foods",
-    LocationType: "Dumpster",
-    CombinedAreaName: "Your house",
-    
-  }));
+    dispatch(
+      createDonor({
+        id: '0',
+        name: 'Tod McMuffin',
+        EntityType: 'buncha weeds',
+        FoodType: 'garbage foods',
+        LocationType: 'Dumpster',
+        CombinedAreaName: 'Your house'
+      })
+    );
   };
 
   const { donors, isError, isSuccess, message } = useAppSelector(
@@ -34,7 +34,10 @@ const ReduxExample = () => {
 
   return (
     <div className="flex flex-row items-center justify-center bg-state-100 h-screen">
-      <button className='bg-slate-500 rounded-xl p-5' onClick={onClick}> CLICK TO POPULATE Welcome </button>
+      <button className="bg-slate-500 rounded-xl p-5" onClick={onClick}>
+        {' '}
+        CLICK TO POPULATE Welcome{' '}
+      </button>
     </div>
   );
 };

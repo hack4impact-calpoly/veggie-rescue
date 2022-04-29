@@ -8,18 +8,18 @@ interface Pickup {
   name: string;
 }
 
-// // Interface for object when registering new admin
-// interface AdminData {
-//   name: string;
-//   email: string;
-//   password: string;
-// }
-// interface AdminObject {
-//     email: string;
-//     password: string;
-// }
+interface pickupObject {
+  date: String;
+  driver: String;
+  vehicle: String;
+  name: String;
+  donorEntityType: String;
+  foodType: String;
+  area: String;
+  lbsPickedUp: Number;
+}
 
-// // Define a type for the slice state
+// Define a type for the pickup slice state
 interface PickupState {
   pickups: [];
   isError: boolean;
@@ -36,7 +36,6 @@ const initialState: PickupState = {
   message: ''
 };
 
-
 export const getPickups = createAsyncThunk(
   'api/pickups',
   async (_, thunkAPI) => {
@@ -48,6 +47,24 @@ export const getPickups = createAsyncThunk(
       }
 
       return await pickupsService.getPickups(token);
+    } catch (error: any) {
+      const message =
+        (error.response &&
+          error.response.data &&
+          error.response.data.message) ||
+        error.message ||
+        error.toString();
+
+      return thunkAPI.rejectWithValue(message);
+    }
+  }
+);
+
+export const createPickup = createAsyncThunk(
+  'api/createPickups',
+  async (pickup: pickupObject, thunkAPI) => {
+    try {
+      return await pickupsService.createPickup(pickup);
     } catch (error: any) {
       const message =
         (error.response &&
@@ -83,6 +100,19 @@ export const pickupsSlice = createSlice({
         state.pickups = action.payload;
       })
       .addCase(getPickups.rejected, (state, action) => {
+        state.isLoading = false;
+        state.isError = true;
+        state.message = action.payload;
+      })
+      .addCase(createPickup.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(createPickup.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.isSuccess = true;
+        state.pickups = action.payload;
+      })
+      .addCase(createPickup.rejected, (state, action) => {
         state.isLoading = false;
         state.isError = true;
         state.message = action.payload;
