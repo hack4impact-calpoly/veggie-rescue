@@ -88,9 +88,9 @@ export const getDrivers = createAsyncThunk(
   async (_, thunkAPI) => {
     try {
       const state = thunkAPI.getState() as RootState;
-      let token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYyNjQ4ODRiZjI3ZmQxZjA1N2VlYmMyMiIsImlhdCI6MTY1MDg0MTkxOCwiZXhwIjoxNjUzNDMzOTE4fQ.ERpXvtwfpiVZwiBOOWKxYLeRxJkYxy3B4g14c3Jw28U";
+      let token = state.adminAuth.admin.token;
       if (!token) {
-        token = state.adminAuth.admin.token;
+        token = state.driverAuth.driver.token;
       }
 
       return await driverAuthService.getDrivers(token);
@@ -113,7 +113,7 @@ export const createDriver = createAsyncThunk(
   async (driverData: DriverData, thunkAPI) => {
     try {
       const state = thunkAPI.getState() as RootState;
-      const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYyNjQ4ODRiZjI3ZmQxZjA1N2VlYmMyMiIsImlhdCI6MTY1MDg0MTkxOCwiZXhwIjoxNjUzNDMzOTE4fQ.ERpXvtwfpiVZwiBOOWKxYLeRxJkYxy3B4g14c3Jw28U";
+      const token = state.adminAuth.admin.token;
 
       return await driverAuthService.createDriver(driverData, token);
     } catch (error: any) {
@@ -135,7 +135,7 @@ export const getDriver = createAsyncThunk(
   async (_, thunkAPI) => {
     try {
       const state = thunkAPI.getState() as RootState;
-      const token = state.driverAuth.driver.token;
+      const token = state.adminAuth.admin.token;
       return await driverAuthService.getDriver(token);
     } catch (error: any) {
       const message =
@@ -157,9 +157,9 @@ export const updateDriver = createAsyncThunk(
     try {
       // Set up token for authenticating route
       const state = thunkAPI.getState() as RootState;
-      let token = state.driverAuth.driver.token;
+      let token = state.adminAuth.admin.token;
       if (!token) {
-        token = state.adminAuth.admin.token;
+        token = state.driverAuth.driver.token;
       }
       return await driverAuthService.update(driverData, token);
     } catch (error: any) {
@@ -182,8 +182,7 @@ export const deleteDriver = createAsyncThunk(
     try {
       // Set up token for authenticating route
       const state = thunkAPI.getState() as RootState;
-      let token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYyNjQ4ODRiZjI3ZmQxZjA1N2VlYmMyMiIsImlhdCI6MTY1MDg0MTkxOCwiZXhwIjoxNjUzNDMzOTE4fQ.ERpXvtwfpiVZwiBOOWKxYLeRxJkYxy3B4g14c3Jw28U";
-
+      let token = state.adminAuth.admin.token;
       return await driverAuthService.deleteDriver(driverID, token);
     } catch (error: any) {
       const message =
