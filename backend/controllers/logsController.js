@@ -50,7 +50,6 @@ const createPickup = async (req, res) => {
   }
 
   const {
-    date,
     driver,
     vehicle,
     name,
@@ -61,7 +60,6 @@ const createPickup = async (req, res) => {
   } = req.body;
   
   let pickup = new PickupLog({
-    date: date,
     driver: driver,
     vehicle: vehicle,
     name: name,
@@ -99,7 +97,6 @@ const createDropoff = async (req, res) => {
     }
   }
   const {
-    date,
     driver,
     vehicle,
     name,
@@ -110,7 +107,6 @@ const createDropoff = async (req, res) => {
     lbsDroppedOff,
   } = req.body;
   let dropoff = new DropoffLog({
-    date: date,
     driver: driver,
     vehicle: vehicle,
     name: name,
@@ -184,8 +180,16 @@ const pushPickups = async (req, res) => {
 
   // Get array from request body
   const data = req.body;
-  const response = await PickupLog.insertMany(data);
-  res.status(200).json(response);
+  let counter = 0;
+    console.log("PICKUP -> " + data + " " + counter++);
+  try {
+    const response = await PickupLog.insertMany(data, { ordered: false });
+     res.status(200).json(response);
+
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).send("Server Error");
+  }
 };
 
 // @desc Post multiple dropoffs
@@ -193,7 +197,6 @@ const pushPickups = async (req, res) => {
 // @access Private -> Driver only
 const pushDropoffs = async (req, res) => {
   // Check and verify that this this is driver OR admin accessing data
-    console.log("HIII");
 
   if (req.admin) {
     const admin = await Admin.findById(req.admin.id);
@@ -211,9 +214,13 @@ const pushDropoffs = async (req, res) => {
   }
   // Get array from request body
   const data = req.body;
-  console.log(data)
-  const response = await DropoffLog.insertMany(data);
+    try{
+  const response = await DropoffLog.insertMany(data, { ordered: false });
   res.status(200).json(response);
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).send("Server Error");
+  }
 };
 
 

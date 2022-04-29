@@ -66,11 +66,12 @@ const App: React.FC = () => {
           >
             <Route path="/TransferPage" element={<TransferPage />} />
           </Route>
+
           <Route
-            path="/Weight"
+            path="/NewLog"
             element={<ProtectedRoute redirectTo="/Login" />}
           >
-            <Route path="/Weight" element={<Weight />} />
+            <Route path="/NewLog" element={<NewLogWrapper />} />
           </Route>
 
           <Route

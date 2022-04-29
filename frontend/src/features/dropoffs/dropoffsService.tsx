@@ -11,7 +11,7 @@ const API_URL = '/api/dropoffs/';
 //THE CONFIG IS WHERE IT AUTHORIZES USER TOKEN WITH BACKEND
 //YOU CAN DO FULL CRUD OPS HERE
 interface dropoffObject {
-  date: String;
+ // date: String;
   driver: String;
   vehicle: String;
   name: String;

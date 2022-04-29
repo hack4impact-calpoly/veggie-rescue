@@ -38,7 +38,7 @@ const getVehicle = async (token: string) => {
 
 // update a vehicle given its id as a parameter... can be admin or driver
 const update = async (
-  vehicleData: VehicleItem | VehicleChoice | VehicleWeightTransfer | any,
+  vehicleData: VehicleItem | VehicleChoice | VehicleWeightTransfer | PickupSchema | DropoffSchema,
   token: string
 ) => {
   const config = {
@@ -142,7 +142,7 @@ interface VehicleLogout {
   currentDropoffs: dropoffObject[];
 }
 interface pickupObject {
-  date: String;
+ // date: String;
   driver: String;
   vehicle: String;
   name: String;
@@ -153,7 +153,7 @@ interface pickupObject {
 }
 
 interface dropoffObject {
-  date: String;
+  //date: String;
   driver: String;
   vehicle: String;
   name: String;
@@ -163,7 +163,37 @@ interface dropoffObject {
   area: String;
   lbsDroppedOff: Number;
 }
+interface PickupSchema {
+    _id: String;
+    currentPickups: {
+    //date: String,
+    driver: String,
+    vehicle: String,
+    name: String,
+    donorEntityType: String,
+    foodType: String,
+    area: String,
+    lbsPickedUp: number,
+    },
+    totalWeight: number
 
+}
+interface DropoffSchema {
+    _id: String;
+    currentDropoffs: {
+   // date: String,
+    driver: String,
+    vehicle: String,
+    name: String,
+    recipientEntityType: String,
+    foodType: String,
+    demographic: String,
+    area: String,
+    lbsDroppedOff: number,
+    }, 
+    totalWeight: number
+
+}
 
 const vehicleService = {
   getVehicles,

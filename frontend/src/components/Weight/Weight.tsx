@@ -5,9 +5,29 @@ import NumPad from '../NumPad/NumPad';
 
 import './Weight.css';
 
-export default function Weight() {
+interface pickupDeliveryObjectSchema {
+  pickupOrDelivery: number,
+  id: String,
+  date: String,
+  driver: String,
+  vehicle: String,
+  name: String,
+  recipientEntityType: String,
+  demographic: String,
+  foodType: String,
+  area: String,
+  lbsDroppedOff: number
+}
+
+interface Props {
+  setPickupDeliveryObject : Function
+  PickupDeliveryObject    : pickupDeliveryObjectSchema
+  setDoneFlag             : Function
+}
+
+export default function Weight({PickupDeliveryObject, setPickupDeliveryObject, setDoneFlag} : Props) {
   const [charNum, setCharNum] = useState('');
-  const [weightNum, setWeightNum] = useState(0);
+  // const [weightNum, setWeightNum] = useState(0);
 
   const charNumToInt = (charNum: string) => {
     if (charNum.length === 0) {
@@ -18,7 +38,6 @@ export default function Weight() {
 
   const buttonHandler = (btnId: string) => {
     if (charNum.length > 7) {
-      console.log('input is unreasonably long...');
       return;
     }
     setCharNum(charNum + btnId);
@@ -33,8 +52,12 @@ export default function Weight() {
   };
 
   const submitButton = () => {
-    console.log('submitting with: ' + charNum + ' lbs');
-    setWeightNum(charNumToInt(charNum));
+    setPickupDeliveryObject({
+      ...PickupDeliveryObject,
+      lbsDroppedOff : charNumToInt(charNum)
+    })
+    setDoneFlag(true);
+    
   };
 
   return (

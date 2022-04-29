@@ -16,7 +16,7 @@ const initialState: VehicleState = {
 };
 
 interface pickupObject {
-  date: String;
+  //date: String;
   driver: String;
   vehicle: String;
   name: String;
@@ -27,7 +27,7 @@ interface pickupObject {
 }
 
 interface dropoffObject {
-  date: String;
+  //date: String;
   driver: String;
   vehicle: String;
   name: String;
@@ -98,6 +98,37 @@ interface VehicleLogout {
   isLoggedIn: string;
   currentPickups: pickupObject[];
   currentDropoffs: dropoffObject[];
+}
+interface PickupSchema {
+    _id: String;
+    currentPickups: {
+    //date: String,
+    driver: String,
+    vehicle: String,
+    name: String,
+    donorEntityType: String,
+    foodType: String,
+    area: String,
+    lbsPickedUp: number,
+    },
+    totalWeight: number
+
+}
+interface DropoffSchema {
+    _id: String;
+    currentDropoffs: {
+    //date: String,
+    driver: String,
+    vehicle: String,
+    name: String,
+    recipientEntityType: String,
+    foodType: String,
+    demographic: String,
+    area: String,
+    lbsDroppedOff: number,
+    }, 
+    totalWeight: number
+
 }
 
 // Get all vehicles
@@ -170,7 +201,7 @@ export const getVehicle = createAsyncThunk(
 // update a vehicle given its id as a parameter... can be admin or driver
 export const updateVehicle = createAsyncThunk(
   'vehicles/update:id',
-  async (vehicleData: VehicleItem | VehicleChoice, thunkAPI) => {
+  async (vehicleData: VehicleItem | VehicleChoice | PickupSchema | DropoffSchema, thunkAPI) => {
     try {
       // Set up token for authenticating route
       const state = thunkAPI.getState() as RootState;

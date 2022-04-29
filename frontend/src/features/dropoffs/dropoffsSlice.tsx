@@ -3,7 +3,7 @@ import dropoffsService from './dropoffsService';
 import type { RootState } from '../../app/store';
 
 interface dropoffObject {
-  date: String;
+  //date: String;
   driver: String;
   vehicle: String;
   name: String;

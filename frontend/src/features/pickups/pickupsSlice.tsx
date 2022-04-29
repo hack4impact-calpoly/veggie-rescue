@@ -5,7 +5,7 @@ import type { RootState } from '../../app/store';
 
 
 interface pickupObject {
-  date: String;
+  //date: String;
   driver: String;
   vehicle: String;
   name: String;

@@ -1,7 +1,10 @@
 const mongoose = require('mongoose')
 
 const DropoffLogSchema = new mongoose.Schema({
-    date: String,
+    date: {
+      type: Date,
+      default: Date.now(),
+    },
     driver: String,
     vehicle: String,
     name: String,

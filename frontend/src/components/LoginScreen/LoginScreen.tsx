@@ -1,9 +1,9 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { useAppSelector, useAppDispatch } from '../../app/hooks';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 
-// Components and assets
+// components and assets
 import Spinner from '../Spinner/Spinner';
 import AsterixDisplay from '../AsterixDisplay/AsterixDisplay';
 import NumPad from '../NumPad/NumPad';
@@ -19,12 +19,12 @@ import {
 type Props = {};
 
 const LoginScreen: React.FC<Props> = () => {
-  // Local state
+  // local state
   const [asterix, setAsterix] = useState<string[]>([]);
   const [pin, setPin] = useState('');
   const [loading, setLoading] = useState(false);
 
-// Setup navigation and services
+// setup navigation and services
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
 

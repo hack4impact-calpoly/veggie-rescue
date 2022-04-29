@@ -161,8 +161,11 @@ const editVehicle = asyncHandler(async (req, res) => {
     } else {
       // Otherwise...
       // Create a pickup object and push it into the array
-      const pickup = await PickupLogSchema.create(body.currentPickups);
-      vehicleInDB.currentPickups = [...vehicleInDB.currentPickups, pickup];
+      //const pickup = await PickupLogSchema.create(body.currentPickups);
+      vehicleInDB.currentPickups = [
+        ...vehicleInDB.currentPickups,
+        body.currentPickups,
+      ];
     }
 
 
@@ -175,12 +178,16 @@ const editVehicle = asyncHandler(async (req, res) => {
     }else{
     // Otherwise...
     // Create a dropoff object and push it into the array
-    const dropoff = await DropoffLogSchema.create(body.currentDropoffs);
-    vehicleInDB.currentDropoffs = [...vehicleInDB.currentDropoffs, dropoff];
+    //const dropoff = await DropoffLogSchema.create(body.currentDropoffs);
+    vehicleInDB.currentDropoffs = [
+      ...vehicleInDB.currentDropoffs,
+      body.currentDropoffs,
+    ];
     }
   }
-  if (body.totalWeight) {
-    vehicleInDB.totalWeight = body.totalWeight
+  if (body.totalWeight === 0 || body.totalWeight) {
+
+    vehicleInDB.totalWeight = body.totalWeight;
   }
   const updatedVehicle = await Vehicle.findByIdAndUpdate(
     req.params.id,

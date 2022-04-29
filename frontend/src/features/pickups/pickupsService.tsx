@@ -12,7 +12,7 @@ const API_URL = '/api/pickup/';
 //YOU CAN DO FULL CRUD OPS HERE
 
 interface pickupObject {
-  date: String;
+  //date: String;
   driver: String;
   vehicle: String;
   name: String;

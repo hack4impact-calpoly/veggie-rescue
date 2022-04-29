@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import './Dashboard.css';
 import { useAppSelector, useAppDispatch } from '../../app/hooks';
 import { useNavigate } from 'react-router-dom';
@@ -8,15 +8,11 @@ import { FaPencilAlt, FaClipboardList, FaHandPaper } from 'react-icons/fa';
 // Components and assets
 import Spinner from '../Spinner/Spinner';
 
-
-
 // import driver auth slice and vehicles for API calls
-import { reset, clear as clearDrivers} from '../../features/driverAuth/driverAuthSlice';
+import { clear as clearDrivers} from '../../features/driverAuth/driverAuthSlice';
 import {
-  getVehicles,
   getVehicle,
   logoutVehicle,
-  updateVehicle,
   reset as resetVehicles,
   clear as clearVehicles,
   setIsLoggingOut
@@ -26,22 +22,16 @@ import {
   createBatchPickup,
   setSuccess as setPickupSuccess
 } from '../../features/pickups/pickupsSlice';
-import { createBatchDropoff, 
-setSuccess as setDropoffSuccess  } from '../../features/dropoffs/dropoffsSlice';
-// import {
-//   getVehicles,
-//   getVehicle,
-//   logoutVehicle,
-//   updateVehicle,
-//   reset as resetVehicles,
-//   clear as clearVehicles
-// } from '../../features/dropoffs/dropoffsSlice';
-
+import { 
+  createBatchDropoff, 
+  setSuccess as setDropoffSuccess  
+} from '../../features/dropoffs/dropoffsSlice';
 
 const Dashboard = () => {
-    const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
+
   // Get the vehicle object from the store
   const {
     vehicle,
@@ -54,45 +44,45 @@ const Dashboard = () => {
   // Get the driver object from the store
   const {
     driver,
-    isSuccess: driverAuthSuccess
   } = useAppSelector((state) => state.driverAuth);
-const { isSuccess: batchPickupSuccess } = useAppSelector((state) => state.pickups);
-const { isSuccess: batchDropoffSuccess } = useAppSelector((state) => state.dropoffs);
+
+  // get batch push success calls for after logging out
+  const { isSuccess: batchPickupSuccess, isError: isPickupError } = useAppSelector((state) => state.pickups);
+  const { isSuccess: batchDropoffSuccess, isError: isDropoffError } = useAppSelector((state) => state.dropoffs);
 
   useEffect(() => {
-    //  This call will get our vehicle object if we have refreshed page and it is not in state.
+    //  This will get our vehicle object if we have refreshed page and it is not in state.
     if(Object.keys(vehicle).length === 0 && !isLoggedOut && !vehicleIsLoading){
       setLoading(true);
       dispatch(getVehicle());
     }
+    // after dispatching getVehicles, wait for this till we set loading to false
+    if(vehicleIsSuccess){
+      setLoading(false);
+    }    
     // If we are logged out and vehicle success (meaning we have updated backend) is true
     if (isLoggedOut) {
       toast.success('Successfully logged out.')
       setLoading(false);
-        // Clear state for vehicles and auth and then navigate to Login page.
-        dispatch(clearVehicles());
-        dispatch(clearDrivers());          
-       navigate('/')
+      // Clear state for vehicles and auth and then navigate to Login page.
+      dispatch(clearVehicles());
+      dispatch(clearDrivers());          
+      navigate('/')
     }
-    if(vehicleIsSuccess){
-      setLoading(false);
-    }
+    // this is after logs are being pushed but we haven't logged out fully
     if(isUpdate && vehicleIsSuccess && !isLoggedOut){
       setLoading(true);
-      //dispatch(getVehicle())
-      //dispatch(getVehicles())
-      //dispatch(resetVehicles());
     }
+
     if(batchPickupSuccess && batchDropoffSuccess){
-        // We need to check and see if driver is currently using personal vehicle, in that case we don't clear the vehicle name.
-        const currentPickups : pickupObject[] = []
-        const currentDropoffs : dropoffObject[] = []
-        let resetVehicle = { _id: vehicle._id, driver: vehicle.name  === 'personal vehicle' ? driver.id : " " , currentPickups , currentDropoffs, isLoggedIn: "false" };
+      // We need to check and see if driver is currently using personal vehicle, in that case we don't clear the vehicle name.
+      const currentPickups : pickupObject[] = []
+      const currentDropoffs : dropoffObject[] = []
+      let resetVehicle = { _id: vehicle._id, driver: vehicle.name  === 'personal vehicle' ? driver.id : " " , currentPickups , currentDropoffs, isLoggedIn: "false" };
 
       // This means we were successful in posting both logs... now lets see if there is a total weight left unresolved.
-      if(vehicle.totalWeight === 0 && !vehicleIsLoading
-        )
-      {
+      // if the weight is zero, and not in the middle of a call we set the dropoff and pickup to success and logout/clear the vehicle
+      if(vehicle.totalWeight === 0 && !vehicleIsLoading){
         dispatch(setDropoffSuccess())
         dispatch(setPickupSuccess())
         dispatch(logoutVehicle(resetVehicle))
@@ -100,31 +90,41 @@ const { isSuccess: batchDropoffSuccess } = useAppSelector((state) => state.dropo
         //otherwise we need to ask if user cares to transfer weight before logging out.
         dispatch(setIsLoggingOut())
         navigate('/transfer')
+      }}
+      if(isPickupError || isDropoffError)
+      {
+            toast.error("Something went wrong with your api call.")
+            setLoading(false);
       }
-    }
- 
-  }, [dispatch, vehicleIsSuccess, navigate, isLoggedOut, vehicle, vehicleIsLoading, isUpdate, batchPickupSuccess, batchDropoffSuccess, driver.id]);
+  }, [dispatch, vehicleIsSuccess, navigate, isLoggedOut, vehicle, vehicleIsLoading, isUpdate, batchPickupSuccess, batchDropoffSuccess, driver.id, isPickupError, isDropoffError]);
 
   function handleClick(button: Number) {
     switch (button) {
       case 0:
+        // create new log
+        dispatch(resetVehicles());
         navigate('/NewLog');
         break;
       case 1:
+        // viewing/editing current logs
+        dispatch(resetVehicles());
         navigate('/UserLogs');
         break;
       case 2:
+        // punching out
         setLoading(true);
-         
         const pickupsArray = vehicle.currentPickups;
         const dropoffArray = vehicle.currentDropoffs;
 
+        // if the pickups array in vehicle object is empty; we don't need to push anything to master logs
+        // otherwise we do.
         if(pickupsArray.length === 0 ){
           dispatch(setPickupSuccess());
         }else{
           dispatch(createBatchPickup(pickupsArray))
         }
-        
+        //if the dropoffs array in vehicle object is empty; we don't need to push anything to master logs
+        //otherwise we do.    
         if(dropoffArray.length === 0 ){
           dispatch(setDropoffSuccess());
         }else {
@@ -184,7 +184,7 @@ if(loading){
 };
 
 interface pickupObject {
-  date: String;
+  //date: String;
   driver: String;
   vehicle: String;
   name: String;
@@ -194,7 +194,7 @@ interface pickupObject {
   lbsPickedUp: Number;
 }
 interface dropoffObject {
-  date: String;
+ // date: String;
   driver: String;
   vehicle: String;
   name: String;
