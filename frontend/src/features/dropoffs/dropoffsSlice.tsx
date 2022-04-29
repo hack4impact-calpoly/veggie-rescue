@@ -11,7 +11,7 @@ interface dropoffObject {
   demographic: String;
   foodType: String;
   area: String;
-  lbsDroppedoff: Number;
+  lbsDroppedOff: Number;
 }
 
 
@@ -21,6 +21,7 @@ interface DropoffState {
   isError: boolean;
   isSuccess: boolean;
   isLoading: boolean;
+  isChecked: boolean;
   message: any | null;
 }
 
@@ -29,6 +30,7 @@ const initialState: DropoffState = {
   isError: false,
   isSuccess: false,
   isLoading: false,
+  isChecked: false,
   message: ''
 };
 // GET ALL LOGS
@@ -105,6 +107,9 @@ export const dropoffsSlice = createSlice({
       state.isError = false;
       state.isSuccess = false;
       state.message = '';
+    },
+    setSuccess: (state) => {
+      state.isSuccess = !state.isSuccess;
     }
   },
   extraReducers: (builder) => {
@@ -150,5 +155,5 @@ export const dropoffsSlice = createSlice({
   }
 });
 
-export const { reset } = dropoffsSlice.actions;
+export const { reset, setSuccess } = dropoffsSlice.actions;
 export default dropoffsSlice.reducer;

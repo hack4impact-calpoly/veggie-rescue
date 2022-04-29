@@ -157,7 +157,7 @@ const editVehicle = asyncHandler(async (req, res) => {
   if (body.currentPickups) {
     // First check if the object is an empty array.  If so, clear out the array
     if (Object.keys(body.currentPickups).length === 0) {
-      console.log("ok cowboy.");
+      vehicleInDB.currentPickups = [];
     } else {
       // Otherwise...
       // Create a pickup object and push it into the array
@@ -168,10 +168,10 @@ const editVehicle = asyncHandler(async (req, res) => {
 
   }
   if (body.currentDropoffs) {
-    console.log(body.currentDropoffs)
     // First check if the object is an empty array.  If so, clear out the array
     if(Object.keys(body.currentDropoffs).length === 0){
-      console.log('ok cowboy.')
+      vehicleInDB.currentDropoffs = [];
+
     }else{
     // Otherwise...
     // Create a dropoff object and push it into the array

@@ -1,5 +1,5 @@
 import axios from 'axios';
-const API_URL = '/api/dropoff/';
+const API_URL = '/api/dropoffs/';
 
 /////////////////////////////////////////
 //                                     //
@@ -19,7 +19,7 @@ interface dropoffObject {
   demographic: String;
   foodType: String;
   area: String;
-  lbsDroppedoff: Number;
+  lbsDroppedOff: Number;
 }
 
 //  Get master log of drop offs

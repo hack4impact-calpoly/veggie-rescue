@@ -184,7 +184,6 @@ const pushPickups = async (req, res) => {
 
   // Get array from request body
   const data = req.body;
-  console.log(data)
   const response = await PickupLog.insertMany(data);
   res.status(200).json(response);
 };
@@ -194,6 +193,8 @@ const pushPickups = async (req, res) => {
 // @access Private -> Driver only
 const pushDropoffs = async (req, res) => {
   // Check and verify that this this is driver OR admin accessing data
+    console.log("HIII");
+
   if (req.admin) {
     const admin = await Admin.findById(req.admin.id);
     if (!admin) {
@@ -210,6 +211,7 @@ const pushDropoffs = async (req, res) => {
   }
   // Get array from request body
   const data = req.body;
+  console.log(data)
   const response = await DropoffLog.insertMany(data);
   res.status(200).json(response);
 };
@@ -223,5 +225,5 @@ module.exports = {
   deletePickup,
   deleteDropoff,
   pushPickups,
-  pushDropoffs
+  pushDropoffs,
 };

@@ -8,6 +8,8 @@ import { FaPencilAlt, FaClipboardList, FaHandPaper } from 'react-icons/fa';
 // Components and assets
 import Spinner from '../Spinner/Spinner';
 
+
+
 // import driver auth slice and vehicles for API calls
 import { reset, clear as clearDrivers} from '../../features/driverAuth/driverAuthSlice';
 import {
@@ -16,13 +18,16 @@ import {
   logoutVehicle,
   updateVehicle,
   reset as resetVehicles,
-  clear as clearVehicles
+  clear as clearVehicles,
+  setIsLoggingOut
 } from '../../features/vehicles/VehiclesSlice';
 
 import {
   createBatchPickup,
+  setSuccess as setPickupSuccess
 } from '../../features/pickups/pickupsSlice';
-import { createBatchDropoff } from '../../features/dropoffs/dropoffsSlice';
+import { createBatchDropoff, 
+setSuccess as setDropoffSuccess  } from '../../features/dropoffs/dropoffsSlice';
 // import {
 //   getVehicles,
 //   getVehicle,
@@ -61,7 +66,7 @@ const { isSuccess: batchDropoffSuccess } = useAppSelector((state) => state.dropo
       dispatch(getVehicle());
     }
     // If we are logged out and vehicle success (meaning we have updated backend) is true
-    if (isLoggedOut && isUpdate) {
+    if (isLoggedOut) {
       toast.success('Successfully logged out.')
       setLoading(false);
         // Clear state for vehicles and auth and then navigate to Login page.
@@ -79,10 +84,26 @@ const { isSuccess: batchDropoffSuccess } = useAppSelector((state) => state.dropo
       //dispatch(resetVehicles());
     }
     if(batchPickupSuccess && batchDropoffSuccess){
-      // This means we were successful in posting logs to the main logs
+        // We need to check and see if driver is currently using personal vehicle, in that case we don't clear the vehicle name.
+        const currentPickups : pickupObject[] = []
+        const currentDropoffs : dropoffObject[] = []
+        let resetVehicle = { _id: vehicle._id, driver: vehicle.name  === 'personal vehicle' ? driver.id : " " , currentPickups , currentDropoffs, isLoggedIn: "false" };
+
+      // This means we were successful in posting both logs... now lets see if there is a total weight left unresolved.
+      if(vehicle.totalWeight === 0 && !vehicleIsLoading
+        )
+      {
+        dispatch(setDropoffSuccess())
+        dispatch(setPickupSuccess())
+        dispatch(logoutVehicle(resetVehicle))
+      }else{
+        //otherwise we need to ask if user cares to transfer weight before logging out.
+        dispatch(setIsLoggingOut())
+        navigate('/transfer')
+      }
     }
  
-  }, [dispatch, vehicleIsSuccess, navigate, isLoggedOut, vehicle, vehicleIsLoading, isUpdate]);
+  }, [dispatch, vehicleIsSuccess, navigate, isLoggedOut, vehicle, vehicleIsLoading, isUpdate, batchPickupSuccess, batchDropoffSuccess, driver.id]);
 
   function handleClick(button: Number) {
     switch (button) {
@@ -94,34 +115,22 @@ const { isSuccess: batchDropoffSuccess } = useAppSelector((state) => state.dropo
         break;
       case 2:
         setLoading(true);
-        // We need to check and see if driver is currently using personal vehicle, in that case we don't clear the vehicle name.
-        let resetVehicle = { _id: vehicle._id, driver: vehicle.name  === 'personal vehicle' ? driver.id : " " , isLoggedIn: "false" };
-      
-        // Dispatch currentPickups and currentDroppoffs to master logs
+         
         const pickupsArray = vehicle.currentPickups;
         const dropoffArray = vehicle.currentDropoffs;
-      if(pickupsArray.length !== 0){
-        dispatch(createBatchPickup(pickupsArray))
-      }else if(dropoffArray.length !== 0){
-        dispatch(createBatchDropoff(dropoffArray))
-      }
-      
-//OUR NEXT STEP IS TO SEE WHAT HAPPENS IF ITS SUCCESSFUL OR NOT
 
-
-      //we have to somehow wait for success
-      //clear currentPickups and currentDropoffs arrays
-
-      // dispatch(updateVehicle(resetVehicle));
-      //dispatch(logoutVehicle());
-      // We need to check and see if the total weight is === 0.  If no, direct to transfer weight page.
-      // if(vehicle.totalWeight === 0){
-      // let resetVehicle = { _id: vehicle._id, driver: vehicle.name  === 'personal vehicle' ? driver._id : " " , isLoggedIn: "false" };
-      // dispatch(updateVehicle(resetVehicle));
-      // dispatch(logoutVehicle());
-      // }else{
-      //   navigate('/Transfer');
-      // }
+        if(pickupsArray.length === 0 ){
+          dispatch(setPickupSuccess());
+        }else{
+          dispatch(createBatchPickup(pickupsArray))
+        }
+        
+        if(dropoffArray.length === 0 ){
+          dispatch(setDropoffSuccess());
+        }else {
+          dispatch(createBatchDropoff(dropoffArray))
+        }
+        
         break;
       default:
         break;
@@ -173,5 +182,27 @@ if(loading){
     </div>
   );
 };
+
+interface pickupObject {
+  date: String;
+  driver: String;
+  vehicle: String;
+  name: String;
+  donorEntityType: String;
+  foodType: String;
+  area: String;
+  lbsPickedUp: Number;
+}
+interface dropoffObject {
+  date: String;
+  driver: String;
+  vehicle: String;
+  name: String;
+  recipientEntityType: String;
+  demographic: String;
+  foodType: String;
+  area: String;
+  lbsDroppedOff: Number;
+}
 
 export default Dashboard;

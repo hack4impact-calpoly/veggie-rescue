@@ -70,27 +70,26 @@ const deleteVehicle = async (vehicleID: string, token: string) => {
   return response.data;
 };
 // Need to implement this still
-const logout = async (id: string, token: string) => {
+const logout = async (VehicleLogout : VehicleLogout, token: string) => {
   const config = {
     headers: {
       Authorization: `Bearer ${token}`
     }
   };
-
-  console.log('what the heck')
-
-  //STILL NEED TO IMPLEMENT
-  // const { name, _id } = vehicleData
-  // const nameUpdate = (name === 'Personal Vehicle') ? id : '';
-  // const response = await axios.put(API_URL + _id, {
-  //     driver : nameUpdate,
-  //     isLoggedIn : false,
-  //     currentPickups : [],
-  //     currentDropoffs : [],
-  // },
-  // config)
+    //using rest operator to take just the id out.
+  const { _id, ...rest } = VehicleLogout;
+    //const nameUpdate = (name === 'Personal Vehicle') ? id : '';
+  const response = await axios.put(
+    API_URL + _id,
+    {
+      ...rest
+    },
+    config
+  );
+  
   // Logout user
   localStorage.removeItem('driver');
+  return response.data;
   //return response.data
 };
 
@@ -135,6 +134,35 @@ interface VehicleWeightTransfer {
   totalWeight: number
 
 }
+interface VehicleLogout {
+  _id: String;
+  driver: String;
+  isLoggedIn: string;
+  currentPickups: pickupObject[];
+  currentDropoffs: dropoffObject[];
+}
+interface pickupObject {
+  date: String;
+  driver: String;
+  vehicle: String;
+  name: String;
+  donorEntityType: String;
+  foodType: String;
+  area: String;
+  lbsPickedUp: Number;
+}
+
+interface dropoffObject {
+  date: String;
+  driver: String;
+  vehicle: String;
+  name: String;
+  recipientEntityType: String;
+  demographic: String;
+  foodType: String;
+  area: String;
+  lbsDroppedOff: Number;
+}
 
 
 const vehicleService = {
@@ -143,7 +171,7 @@ const vehicleService = {
   update,
   getVehicle,
   createVehicle,
-  deleteVehicle
+  deleteVehicle,
 
 };
 export default vehicleService;

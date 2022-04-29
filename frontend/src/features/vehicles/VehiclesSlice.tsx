@@ -9,6 +9,8 @@ const initialState: VehicleState = {
   isSuccess: false,
   isLoading: false,
   isLoggedOut: false,
+  isLoggingOut: false,
+
   isUpdate: false,
   message: ''
 };
@@ -33,7 +35,7 @@ interface dropoffObject {
   demographic: String;
   foodType: String;
   area: String;
-  lbsDroppedoff: Number;
+  lbsDroppedOff: Number;
 }
 interface locale {
   name: string;
@@ -63,6 +65,7 @@ interface VehicleState {
   isSuccess: boolean;
   isLoading: boolean;
   isLoggedOut: boolean;
+  isLoggingOut: boolean;
   isUpdate: boolean;
   message: any | [];
 }
@@ -87,7 +90,14 @@ interface VehicleChoice {
 interface VehicleWeightTransfer {
   _id: string,
   totalWeight: number
-
+}
+// Define a type for a vehicle object
+interface VehicleLogout {
+  _id: String;
+  driver: String;
+  isLoggedIn: string;
+  currentPickups: pickupObject[];
+  currentDropoffs: dropoffObject[];
 }
 
 // Get all vehicles
@@ -205,17 +215,19 @@ export const deleteVehicle = createAsyncThunk(
   }
 );
 
-//Log Out this will take all logs in vehicle and put them in main log database...
-//it will also clear the vehicle logs and update the weight
 
+//it will also clear the vehicle logs and update the weight
 export const logoutVehicle = createAsyncThunk(
   'vehicles/logout',
-  async (_, thunkAPI) => {
+ async (vehicleData: VehicleLogout, thunkAPI) => {
     try {
+      // Set up token for authenticating route
       const state = thunkAPI.getState() as RootState;
-      const token = state.driverAuth.driver.token;
-      const id = state.driverAuth.driver.id;
-      return await vehicleService.logout(id, token);
+      let token = state.driverAuth.driver.token;
+      if (!token) {
+        token = state.adminAuth.admin.token;
+      }
+      return await vehicleService.logout(vehicleData, token);
     } catch (error: any) {
       const message =
         (error.response &&
@@ -223,6 +235,7 @@ export const logoutVehicle = createAsyncThunk(
           error.response.data.message) ||
         error.message ||
         error.toString();
+
       return thunkAPI.rejectWithValue(message);
     }
   }
@@ -247,7 +260,11 @@ export const vehicleSlice = createSlice({
       state.isLoading = false;
       state.isUpdate = false;
       state.isLoggedOut = false;
+      state.isLoggingOut = false;
       state.message = '';
+    },
+    setIsLoggingOut:(state)=> {
+      state.isLoggingOut = !state.isLoggingOut
     }
   },
   extraReducers: (builder) => {
@@ -294,6 +311,7 @@ export const vehicleSlice = createSlice({
       })
       .addCase(updateVehicle.pending, (state) => {
         state.isLoading = true;
+        
       })
       .addCase(updateVehicle.fulfilled, (state, action) => {
         state.isLoading = false;
@@ -321,5 +339,5 @@ export const vehicleSlice = createSlice({
   }
 });
 
-export const { reset, clear } = vehicleSlice.actions;
+export const { reset, clear, setIsLoggingOut } = vehicleSlice.actions;
 export default vehicleSlice.reducer;

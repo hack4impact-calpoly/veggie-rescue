@@ -106,6 +106,9 @@ export const pickupsSlice = createSlice({
       state.isError = false;
       state.isSuccess = false;
       state.message = '';
+    }, 
+    setSuccess: (state) => {
+      state.isSuccess = !state.isSuccess;
     }
   },
   extraReducers: (builder) => {
@@ -151,5 +154,5 @@ export const pickupsSlice = createSlice({
   }
 });
 
-export const { reset } = pickupsSlice.actions;
+export const { reset, setSuccess } = pickupsSlice.actions;
 export default pickupsSlice.reducer;
