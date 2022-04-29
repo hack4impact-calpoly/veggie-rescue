@@ -32,7 +32,7 @@
 .title-content{
   background: white;
 }
-#X{
+#X-form{
   color: #929292;
 }
 .entity-type{
@@ -85,7 +85,7 @@
   border-radius: 30px;
 }
 .short-entity{
-  height: 350px;
+  height: 440px;
 }
 .modal-container{
   z-index: 6;
@@ -103,13 +103,15 @@
   gap: 15px;
   margin-left: 15px;
   font-size: 15px;
-  margin-bottom: 10px;
+
 }
 .food-button{
   border: 1px solid black;
   border-radius: 20px;
   padding: 2px 15px;
+  font-size: 15px;
 }
+
 .search{
   background-color: white;
 }

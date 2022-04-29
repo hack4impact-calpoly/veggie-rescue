@@ -1,12 +1,17 @@
 import veggie_logo from '../../imgs/veggie-rescue-logo.png';
 import admin_profile_image from '../../imgs/admin_profile.png'
+import { useNavigate } from 'react-router-dom';
 
 export default function AdminHeader() {
+    const navigate = useNavigate();
+    function handleDataBtn(){
+     navigate('/Admin')
+    }
     return (
         <div>
             <link rel="preconnect" href="https://fonts.googleapis.com"></link>
             <link href="https://fonts.googleapis.com/css2?family=Jost:wght@400;500;600;700;800;900&display=swap" rel="stylesheet"></link>
-	        <nav className="shadow-lg  isolate hover:isolation-auto h-16 bg-green-900 flex items-center justify-between">
+	        <nav className="shadow-lg  isolate h-16 bg-green-900 flex items-center justify-between">
                 <div className="flex items-center justify-around">
                     <div className='px-10'>
                         <div className='h-24 bg-green-100 rounded shadow-lg w-60'>
@@ -22,7 +27,7 @@ export default function AdminHeader() {
                             >View Logs
                         </button>
                         <button
-                            onClick={() => console.log('Manage Data Clicked')}
+                            onClick={handleDataBtn}
                             className="py-4 px-9 text-white text-lg font-jost font-semibold hover:text-orange-500 transition duration-300"
                             >Manage Data
                         </button>

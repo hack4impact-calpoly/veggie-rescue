@@ -9,7 +9,7 @@ import LoginScreen from './components/LoginScreen/LoginScreen';
 import TransferPage from './components/TransferPage/TransferPage';
 import Vehicles from './components/VehicleSelection/Vehicle';
 import AdminLoginScreen from './components/AdminLoginScreen/AdminLoginScreen';
-import Admin from './components/Admin/Admin';
+import AdminDataScreen from './components/AdminDataScreen/AdminDataScreen';
 import Logs from './components/Logs/Logs';
 import Transfering from './components/Transfering/Transfering';
 import Weight from './components/Weight/Weight';
@@ -76,8 +76,9 @@ const App: React.FC = () => {
             path="/Admin"
             element={<ProtectedRoute redirectTo="/AdminLogin" />}
           >
-            <Route path="/Admin" element={<Admin />} />
+            <Route path="/Admin" element={<AdminDataScreen />} />
           </Route>
+
         </Routes>
       </Router>
       <ToastContainer />
