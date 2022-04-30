@@ -35,7 +35,7 @@ export default function TransferPage() {
       // Clear state for vehicles and auth and then navigate to Login page.
       dispatch(clearVehicles());
       dispatch(clearDrivers());   
-      //navigate('/');
+      navigate('/');
     }
   },[dispatch, isLoggedOut, isLoggingOut, navigate])
 

@@ -8,13 +8,16 @@ import NewVolunteersCard from '../../components/VolunteersCard/NewVolunteersCard
 import NewDonorsCard from '../../components/DonorsCard/NewDonorsCard';
 import EntityForm from './EntityForm';
 import ShortEntityForm from './ShortEntityForm';
-import { vehicles, deliverySchema, pickupSchema } from '../../data/dbMock';
+import { deliverySchema, pickupSchema } from '../../data/dbMock';
 import { AiOutlineSearch } from 'react-icons/ai';
 import { useAppSelector, useAppDispatch } from '../../app/hooks';
 import { getDrivers, deleteDriver } from '../../features/driverAuth/driverAuthSlice'
+import { getVehicles, deleteVehicle} from '../../features/vehicles/VehiclesSlice';
 import AdminHeader from '../AdminHeader/AdminHeader';
+import Spinner from '../Spinner/Spinner';
 
 const AdminDataScreen = () => {
+  const [loading, setLoading] = useState(false);
   const [vehiclesCard, setVehiclesCard] = useState(false);
   const [volunteers, setVolunteers] = useState(false);
   const [donors, setDonors] = useState(false);
@@ -26,9 +29,13 @@ const AdminDataScreen = () => {
   const { isLoading, drivers, isError, isSuccess, message } = useAppSelector(
     (state) => state.driverAuth
   );
+  const { vehicles, isLoading : vehicleLoading,  isError : vehicleError, isSuccess : vehicleSuccess, message : vehicleMessage } = useAppSelector(
+    (state) => state.vehicle
+  );
 
   useEffect(() => {
     dispatch(getDrivers());
+    dispatch(getVehicles());
   }, [dispatch]);
 
   const removeDriver = (id:string) => {
@@ -93,7 +100,7 @@ const AdminDataScreen = () => {
       });
     } else if(vehiclesCard){
       return vehicles.filter((item:any) => {
-        return searchParam.some((newItem:any) => {
+        return item.name !== 'personal vehicle' && searchParam.some((newItem:any) => {
           return (
             item[newItem]
               .toString()
@@ -127,6 +134,9 @@ const AdminDataScreen = () => {
     }
   }
 
+if(loading){
+  return <Spinner />
+}
   return(
     <div >
     <AdminHeader />
@@ -195,6 +205,7 @@ const AdminDataScreen = () => {
       {search(q).map((item:any, index:any) => {
         return(
           <VehiclesCard
+          
             index={index}
             vehicle={item.name}/>
         );

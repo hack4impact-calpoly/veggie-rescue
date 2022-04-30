@@ -70,9 +70,11 @@ const Dashboard = () => {
       toast.success('Successfully logged out.')
       //setLoading(false);
       // Clear state for vehicles and auth and then navigate to Login page.
-       dispatch(clearDonors()); 
-       dispatch(clearRecipients());  
+      dispatch(clearDonors()); 
+      dispatch(clearRecipients());  
       dispatch(clearDrivers());  
+
+      navigate('/')
 
       }
     // this is after logs are being pushed but we haven't logged out fully
