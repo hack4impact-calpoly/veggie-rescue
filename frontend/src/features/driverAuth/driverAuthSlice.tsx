@@ -4,14 +4,14 @@ import type { RootState } from '../../app/store';
 
 // Interface for driver object
 interface Driver {
-  _id: string;
+  id: string;
   name: string;
   token: string;
 }
 
 // Interface for object when registering new driver
 interface DriverData {
-  _id: string,
+   _id: string,
   name: string;
   email: string;
   pin: string;
@@ -205,7 +205,15 @@ export const authSlice = createSlice({
       state.isLoading = false;
       state.isError = false;
       state.isSuccess = false;
+      state.isLoading = false ;
       state.message = '';
+    },
+    clear: (state) => {
+    state.driver = {} as Driver
+    state.isError = false
+    state.isSuccess = false 
+    state.isLoading = false 
+    state.message = ''    
     }
   },
   extraReducers: (builder) => {
@@ -305,5 +313,5 @@ export const authSlice = createSlice({
   }
 });
 
-export const { reset } = authSlice.actions;
+export const { reset, clear  } = authSlice.actions;
 export default authSlice.reducer;

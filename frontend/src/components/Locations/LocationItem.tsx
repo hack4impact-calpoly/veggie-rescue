@@ -2,11 +2,11 @@ import {useEffect} from 'react'
 
 interface locale {
 	name: string,
-	donorLocationType: string,
-	donorEntityType: string,
-	foodType: string[],
-	area: string,
-	id: string,
+	LocationType: string,
+	EntityType: string,
+	FoodType: string,
+	CombinedAreaName: string,
+	_id: string,
   }
 
 interface Props {
@@ -20,7 +20,6 @@ interface Props {
 const LocationItem = ({location, setCurrent, clearFilter, setCreateNew, isNew} : Props) =>{
   // Deconstruct location prop and get location name.
   const { name } = location;
-  
   useEffect(()=>{
     if(isNew && setCreateNew !== undefined){
       setCreateNew(true)

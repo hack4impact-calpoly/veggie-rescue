@@ -1,25 +1,41 @@
 import React, { useEffect, useState } from 'react';
 import './Logs.css';
 import { IoIosArrowBack } from 'react-icons/io';
-import { useAppDispatch } from '../../app/hooks';
+import { useAppSelector, useAppDispatch } from '../../app/hooks';
 
 import TripLog from '../../components/TripLog/TripLog';
 import { getVehicle } from '../../features/vehicles/VehiclesSlice';
-import { Navigate, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
+import Spinner from '../Spinner/Spinner';
 
 const Logs = () => {
-  let [data, dataSet] = useState<any>(null);
+  //let [data, dataSet] = useState<any>(null);
+  
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
+  // Get the vehicle object from the store
+  
+  const {
+    vehicle,
+    isLoading: vehicleIsLoading,
+
+  } = useAppSelector((state) => state.vehicle);
 
   useEffect(() => {
-    async function fetchMyAPI() {
-      let response = dispatch(getVehicle());
-      dataSet((await response).payload);
-    }
-    fetchMyAPI();
-  }, []);
 
+    // async function fetchMyAPI() {
+    //   let response = dispatch(getVehicle());
+    //   dataSet((await response).payload);
+    // }
+    // fetchMyAPI();
+    if(Object.keys(vehicle).length === 0 ){
+      dispatch(getVehicle())
+    }
+  }, [dispatch, vehicle]);
+
+  if(vehicleIsLoading){
+    return <Spinner />
+  }
   return (
     <div className="container">
       <div className="text-container">
@@ -40,9 +56,9 @@ const Logs = () => {
           <h3>Pounds</h3>
         </div>
       </div>
-      {data ? (
-        <div className="logs">
-          {data.currentPickups.map(
+      {(vehicle.currentDropoffs.length !== 0 || vehicle.currentPickups.length !== 0) ? (
+        <div className="mt-8 ">
+          {vehicle.currentPickups.map(
             (v: { name: any; lbsPickedUp: any }, index: any) => {
               return (
                 <TripLog
@@ -54,7 +70,7 @@ const Logs = () => {
               );
             }
           )}
-          {data.currentDropoffs.map(
+          {vehicle.currentDropoffs.map(
             (v: { name: any; lbsDroppedOff: any }, index: any) => {
               return (
                 <TripLog
@@ -68,7 +84,7 @@ const Logs = () => {
           )}
         </div>
       ) : (
-        'Loading'
+        <h1 className='pt-20'> Currently no logs </h1> 
       )}
     </div>
   );

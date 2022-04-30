@@ -128,8 +128,9 @@ const AdminDataScreen = () => {
   }
 
   return(
-    <div className="admin-container">
+    <div >
     <AdminHeader />
+    <div className="admin-container">
     <div className="data-container" style={{background: 'white'}}>
     <div className="data-title">Manage Data</div>
     <div className="titles">
@@ -240,6 +241,7 @@ const AdminDataScreen = () => {
       })}
     </div>
   )}
+  </div>
   </div>
   </div>
 );

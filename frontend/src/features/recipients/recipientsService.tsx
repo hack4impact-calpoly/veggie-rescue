@@ -1,6 +1,5 @@
 import axios from 'axios';
-const API_URL = '/api/locations/recipient';
-
+const API_URL = '/api/location/recipient';
 /////////////////////////////////////////
 //                                     //
 //     LIST OF RECIPIENT LOCATIONS     //

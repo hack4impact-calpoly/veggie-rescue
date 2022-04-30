@@ -4,19 +4,19 @@ import NumPad from '../NumPad/NumPad';
 // import NavBar from '../NavBar/NavBar';
 
 import './Weight.css';
-
-interface pickupDeliveryObjectSchema {
-  pickupOrDelivery: number,
-  id: String,
-  date: String,
-  driver: String,
-  vehicle: String,
-  name: String,
-  recipientEntityType: String,
-  demographic: String,
-  foodType: String,
-  area: String,
-  lbsDroppedOff: number
+    interface pickupDeliveryObjectSchema {
+    pickupOrDelivery: number,
+    id: String,
+    date: String,
+    driver: String,
+    vehicle: String,
+    name: String,
+    EntityType: String,
+    LocationType: String,
+    Demographic: String,
+    FoodType: String,
+    Area: String,
+    lbsDroppedOff: number
 }
 
 interface Props {
@@ -57,6 +57,7 @@ export default function Weight({PickupDeliveryObject, setPickupDeliveryObject, s
       lbsDroppedOff : charNumToInt(charNum)
     })
     setDoneFlag(true);
+    
   };
 
   return (

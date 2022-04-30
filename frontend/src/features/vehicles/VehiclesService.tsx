@@ -36,9 +36,10 @@ const getVehicle = async (token: string) => {
   return response.data[0];
 };
 
+
 // update a vehicle given its id as a parameter... can be admin or driver
 const update = async (
-  vehicleData: VehicleItem | VehicleChoice,
+  vehicleData: VehicleItem | VehicleChoice | VehicleWeightTransfer | PickupSchema | DropoffSchema,
   token: string
 ) => {
   const config = {
@@ -48,7 +49,6 @@ const update = async (
   };
   //using rest operator to take just the id out.
   const { _id, ...rest } = vehicleData;
-
   const response = await axios.put(
     API_URL + _id,
     {
@@ -70,30 +70,30 @@ const deleteVehicle = async (vehicleID: string, token: string) => {
   const response = await axios.delete(API_URL + vehicleID, config);
   return response.data;
 };
-// Need to implement this still
-const logout = async (id: string, token: string) => {
+
+const logout = async (VehicleLogout : VehicleLogout, token: string) => {
   const config = {
     headers: {
       Authorization: `Bearer ${token}`
     }
   };
-
-  console.log('what the heck')
-
-  //STILL NEED TO IMPLEMENT
-  // const { name, _id } = vehicleData
-  // const nameUpdate = (name === 'Personal Vehicle') ? id : '';
-  // const response = await axios.put(API_URL + _id, {
-  //     driver : nameUpdate,
-  //     isLoggedIn : false,
-  //     currentPickups : [],
-  //     currentDropoffs : [],
-  // },
-  // config)
+    //using rest operator to take just the id out.
+  const { _id, ...rest } = VehicleLogout;
+    //const nameUpdate = (name === 'Personal Vehicle') ? id : '';
+  const response = await axios.put(
+    API_URL + _id,
+    {
+      ...rest
+    },
+    config
+  );
+  
   // Logout user
   localStorage.removeItem('driver');
-  //return response.data
+  return response.data;
+ 
 };
+
 
 
 
@@ -131,7 +131,71 @@ interface VehicleChoice {
   driver: string;
   isLoggedIn: string;
 }
+interface VehicleWeightTransfer {
+  _id: string,
+  totalWeight: number
 
+}
+interface VehicleLogout {
+  _id: String;
+  driver: String;
+  isLoggedIn: string;
+  currentPickups: pickupObject[];
+  currentDropoffs: dropoffObject[];
+}
+interface pickupObject {
+ // date: String;
+  driver: String;
+  vehicle: String;
+  name: String;
+  donorEntityType: String;
+  foodType: String;
+  area: String;
+  lbsPickedUp: Number;
+}
+
+interface dropoffObject {
+  //date: String;
+  driver: String;
+  vehicle: String;
+  name: String;
+  recipientEntityType: String;
+  demographic: String;
+  foodType: String;
+  area: String;
+  lbsDroppedOff: Number;
+}
+interface PickupSchema {
+    _id: String;
+    currentPickups: {
+    //date: String,
+    driver: String,
+    vehicle: String,
+    name: String,
+    donorEntityType: String,
+    foodType: String,
+    area: String,
+    lbsPickedUp: number,
+    },
+    totalWeight: number
+
+}
+interface DropoffSchema {
+    _id: String;
+    currentDropoffs: {
+   // date: String,
+    driver: String,
+    vehicle: String,
+    name: String,
+    recipientEntityType: String,
+    foodType: String,
+    demographic: String,
+    area: String,
+    lbsDroppedOff: number,
+    }, 
+    totalWeight: number
+
+}
 
 const vehicleService = {
   getVehicles,
@@ -139,7 +203,7 @@ const vehicleService = {
   update,
   getVehicle,
   createVehicle,
-  deleteVehicle
+  deleteVehicle,
 
 };
 export default vehicleService;
