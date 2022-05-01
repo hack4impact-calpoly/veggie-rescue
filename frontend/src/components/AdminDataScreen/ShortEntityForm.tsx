@@ -149,7 +149,9 @@ const ShortEntityForm = (props: any) => {
             </button>
           </div>
         </div>
+        
         <div className="entity-type">
+        {!isVehicle ?
           <button
             className="type-button"
             type="button"
@@ -158,6 +160,7 @@ const ShortEntityForm = (props: any) => {
           >
             Volunteer
           </button>
+        :
           <button
             className="type-button"
             type="button"
@@ -166,6 +169,7 @@ const ShortEntityForm = (props: any) => {
           >
             Vehicle
           </button>
+        }
         </div>
         <h2>Name</h2>
         <input
