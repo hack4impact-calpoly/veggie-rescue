@@ -15,7 +15,7 @@ const getVehicles = async (token: string) => {
 };
 
 // //  Create new vehicle (For admin only)
-const createVehicle = async (vehicleData: VehicleItem, token: string) => {
+const createVehicle = async (vehicleData: VehicleItem | NewVehicle , token: string) => {
   const config = {
     headers: {
       Authorization: `Bearer ${token}`
@@ -39,7 +39,7 @@ const getVehicle = async (token: string) => {
 
 // update a vehicle given its id as a parameter... can be admin or driver
 const update = async (
-  vehicleData: VehicleItem | VehicleChoice | VehicleWeightTransfer | PickupSchema | DropoffSchema,
+  vehicleData: VehicleItem | VehicleChoice | VehicleWeightTransfer | PickupSchema  | DropoffSchema | UpdateVehicle,
   token: string
 ) => {
   const config = {
@@ -126,6 +126,10 @@ interface VehicleItem {
   currentDropoffs: [];
   totalWeight: Number;
 }
+interface NewVehicle {
+  name: String;
+  img: String
+}
 interface VehicleChoice {
   _id: string;
   driver: string;
@@ -135,6 +139,10 @@ interface VehicleWeightTransfer {
   _id: string,
   totalWeight: number
 
+}
+interface UpdateVehicle{
+  _id: string;
+  name: string
 }
 interface VehicleLogout {
   _id: String;
