@@ -17,9 +17,8 @@ const getVehicles = asyncHandler(async (req, res) => {
       throw new Error("Admin not found");
     }
   } else if (req.driver) {
-
     const driver = await Driver.findById(req.driver.id);
-    
+
     if (!driver) {
       res.status(401);
       throw new Error("Driver not found");
@@ -131,7 +130,6 @@ const editVehicle = asyncHandler(async (req, res) => {
       throw new Error("Driver not found");
     }
   }
-
   const vehicleInDB = await Vehicle.findById(req.params.id);
   const body = req.body;
   if (!vehicleInDB) {
@@ -156,23 +154,42 @@ const editVehicle = asyncHandler(async (req, res) => {
     vehicleInDB.img = body.img;
   }
   if (body.currentPickups) {
-    // Create a pickup object and push it into the array
-    const pickup = await PickupLogSchema.create(body.currentPickups);
-    vehicleInDB.currentPickups = [...vehicleInDB.currentPickups, pickup];
+    // First check if the object is an empty array.  If so, clear out the array
+    if (Object.keys(body.currentPickups).length === 0) {
+      vehicleInDB.currentPickups = [];
+    } else {
+      // Otherwise...
+      // Create a pickup object and push it into the array
+      //const pickup = await PickupLogSchema.create(body.currentPickups);
+      vehicleInDB.currentPickups = [
+        ...vehicleInDB.currentPickups,
+        body.currentPickups,
+      ];
+    }
   }
   if (body.currentDropoffs) {
-    // Create a dropoff object and push it into the array
-    const dropoff = await DropoffLogSchema.create(body.currentDropoffs);
-    vehicleInDB.currentDropoffs = [...vehicleInDB.currentDropoffs, dropoff];
+    // First check if the object is an empty array.  If so, clear out the array
+    if (Object.keys(body.currentDropoffs).length === 0) {
+      vehicleInDB.currentDropoffs = [];
+    } else {
+      // Otherwise...
+      // Create a dropoff object and push it into the array
+      //const dropoff = await DropoffLogSchema.create(body.currentDropoffs);
+      vehicleInDB.currentDropoffs = [
+        ...vehicleInDB.currentDropoffs,
+        body.currentDropoffs,
+      ];
+    }
   }
-  if (body.totalWeight) {
-    vehicleInDB.totalWeight = body.totalWeight
+  if (body.totalWeight === 0 || body.totalWeight) {
+    vehicleInDB.totalWeight = body.totalWeight;
   }
   const updatedVehicle = await Vehicle.findByIdAndUpdate(
     req.params.id,
     vehicleInDB
   );
-  res.status(201).json(updatedVehicle);
+  const update = await Vehicle.findById(updatedVehicle._id);
+  res.status(201).json(update);
 });
 
 // @desc    Delete vehicle

@@ -72,7 +72,9 @@ export const recipientsSlice = createSlice({
       state.isError = false;
       state.isSuccess = false;
       state.message = '';
-    }
+    },
+      clear: (state) => initialState
+
   },
   extraReducers: (builder) => {
     builder
@@ -92,5 +94,5 @@ export const recipientsSlice = createSlice({
   }
 });
 
-export const { reset } =recipientsSlice.actions;
+export const { reset, clear } =recipientsSlice.actions;
 export default recipientsSlice.reducer;

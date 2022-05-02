@@ -86,7 +86,8 @@ export const donorsSlice = createSlice({
       state.isError = false;
       state.isSuccess = false;
       state.message = '';
-    }
+    },
+    clear: (state) => initialState
   },
   extraReducers: (builder) => {
     builder
@@ -119,5 +120,5 @@ export const donorsSlice = createSlice({
   }
 });
 
-export const { reset } = donorsSlice.actions;
+export const { reset, clear } = donorsSlice.actions;
 export default donorsSlice.reducer;

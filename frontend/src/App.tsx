@@ -77,6 +77,7 @@ const App: React.FC = () => {
             element={<ProtectedRoute redirectTo="/AdminLogin" />}
           >
             <Route path="/Admin" element={<AdminDataScreen />} />
+            
           </Route>
 
         </Routes>

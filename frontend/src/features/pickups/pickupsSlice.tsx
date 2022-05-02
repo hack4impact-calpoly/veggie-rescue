@@ -9,7 +9,7 @@ interface Pickup {
 }
 
 interface pickupObject {
-  date: String;
+  //date: String;
   driver: String;
   vehicle: String;
   name: String;
@@ -35,6 +35,7 @@ const initialState: PickupState = {
   isLoading: false,
   message: ''
 };
+
 
 export const getPickups = createAsyncThunk(
   'api/pickups',
@@ -78,6 +79,28 @@ export const createPickup = createAsyncThunk(
   }
 );
 
+export const createBatchPickup = createAsyncThunk(
+  'api/createBatchPickups/batch',
+  async (pickup: pickupObject[], thunkAPI) => {
+    try {
+
+       // Set up token for authenticating route
+      const state = thunkAPI.getState() as RootState;
+      const token = state.driverAuth.driver.token;
+      return await pickupsService.createBatchPickup(pickup, token);
+    } catch (error: any) {
+      const message =
+        (error.response &&
+          error.response.data &&
+          error.response.data.message) ||
+        error.message ||
+        error.toString();
+
+      return thunkAPI.rejectWithValue(message);
+    }
+  }
+);
+
 export const pickupsSlice = createSlice({
   name: 'pickup',
   initialState,
@@ -87,6 +110,9 @@ export const pickupsSlice = createSlice({
       state.isError = false;
       state.isSuccess = false;
       state.message = '';
+    }, 
+    setSuccess: (state) => {
+      state.isSuccess = !state.isSuccess;
     }
   },
   extraReducers: (builder) => {
@@ -116,9 +142,21 @@ export const pickupsSlice = createSlice({
         state.isLoading = false;
         state.isError = true;
         state.message = action.payload;
+      })
+            .addCase(createBatchPickup.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(createBatchPickup.fulfilled, (state) => {
+        state.isLoading = false;
+        state.isSuccess = true;
+      })
+      .addCase(createBatchPickup.rejected, (state, action) => {
+        state.isLoading = false;
+        state.isError = true;
+        state.message = action.payload;
       });
   }
 });
 
-export const { reset } = pickupsSlice.actions;
+export const { reset, setSuccess  } = pickupsSlice.actions;
 export default pickupsSlice.reducer;

@@ -4,11 +4,13 @@ import './Location.css'
 
 interface locale {
 	name: string,
-	donorLocationType: string,
-	donorEntityType: string,
-	foodType: string[],
-	area: string,
-	id: string,
+	LocationType: string,
+	EntityType: string,
+	FoodType: string,
+	  DemographicName: string,
+
+	CombinedAreaName: string,
+	_id: string,
   }
 
 interface Props {

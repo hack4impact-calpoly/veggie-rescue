@@ -12,7 +12,7 @@ const API_URL = '/api/pickup/';
 //YOU CAN DO FULL CRUD OPS HERE
 
 interface pickupObject {
-  date: String;
+  //date: String;
   driver: String;
   vehicle: String;
   name: String;
@@ -39,9 +39,29 @@ const createPickup = async (pickup: pickupObject) => {
   return response.data;
 };
 
+
+// create a batch pickup log
+const createBatchPickup = async (
+  pickups: pickupObject[],
+  token: string
+) => {
+  const config = {
+    headers: {
+      Authorization: `Bearer ${token}`
+    }
+  };
+  const response = await axios.post(
+    API_URL + 'batch',
+   pickups,
+    config
+  );
+  return response.data;
+};
+
 const pickupsService = {
   getPickups,
-  createPickup
+  createPickup,
+  createBatchPickup
 };
 
 export default pickupsService;
