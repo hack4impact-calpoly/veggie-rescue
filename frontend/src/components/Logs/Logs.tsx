@@ -37,7 +37,7 @@ const Logs = () => {
     return <Spinner />
   }
   return (
-    <div className="container">
+    <div className="container pt-10">
       <div className="text-container">
         <div className="your-logs">
           <button
