@@ -66,6 +66,7 @@ const Logs = () => {
                   trip="Pickup"
                   name={v.name}
                   pounds={v.lbsPickedUp}
+                  _id={vehicle._id}
                 />
               );
             }
@@ -77,7 +78,8 @@ const Logs = () => {
                   key={index}
                   trip="Dropoff"
                   name={v.name}
-                  pounds={v.lbsDroppedOff}
+                  pounds={+v.lbsDroppedOff}
+                  _id={vehicle._id}
                 />
               );
             }

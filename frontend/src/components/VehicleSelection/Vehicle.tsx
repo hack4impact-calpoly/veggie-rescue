@@ -76,10 +76,10 @@ function Vehicles() {
       <div className="grid grid-cols-2 gap-4">
         {/* Takes vehicle array and filters.  Personal vehicles where driver id matches the personal vehicle id OR the names dont match, but car is not logged into.*/}
         {vehicles.filter(car => ((car.name === 'personal vehicle' && car.driver === driver.id) || (car.name !== 'personal vehicle' && !car.isLoggedIn) )
-).map((car, idx) => {        
+).map((car, index: any) => {        
             return (
               <div className="flex items-center justify-center w-40 m-5 shadow-2xl rounded-3xl">
-                <VehicleItem car={car} key={idx} onClick={onClick} />
+                <VehicleItem car={car} onClick={onClick} key={index} index={undefined} />
               </div>
             );
           

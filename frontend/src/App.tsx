@@ -54,10 +54,10 @@ const App: React.FC = () => {
             <Route path="/UserLogs" element={<Logs />} />
           </Route>
           <Route
-            path="/Transfer"
+            path="/Transfering"
             element={<ProtectedRoute redirectTo="/Login" />}
           >
-            <Route path="/Transfer" element={<Transfering />} />
+            <Route path="/Transfering" element={<Transfering />} />
           </Route>
           <Route
             path="/TransferPage"
