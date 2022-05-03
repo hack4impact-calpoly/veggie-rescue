@@ -22,8 +22,10 @@ import { toast } from 'react-toastify';
 /* Form to add driver or vehicle */
 const ShortEntityForm = (props: any) => {
   /* Driver and vehicle state data here */
-  const [volunteerName, setName] = useState('');
-  const [volunteerPin, setPin] = useState('');
+  // const [volunteerName, setName] = useState('');
+  const [volunteerName, setName] = useState(props.isUpdate ? props.whichEntity ? props.vehicle.name : props.volunteer.name : '');
+  // const [volunteerPin, setPin] = useState('');
+  const [volunteerPin, setPin] = useState(props.isUpdate ? props.volunteer.pin : '');
   const [volunteer, setVolunteer] = useState(true);
   const [vehicle, setVehicle] = useState(false);
   const [isVehicle, setIsVehicle] = useState(props.whichEntity);
@@ -107,7 +109,7 @@ const ShortEntityForm = (props: any) => {
       toast.success('Successfully updated vehicle.');
       dispatchGetVehicles();
     } else {
-      console.log('update of a volunteer');
+      console.log('update of a volunteer: ' + volunteerName + ", " + volunteerPin);
       // here we can put the call to update a volunteer
       await dispatch(
         updateDriver({
@@ -163,6 +165,7 @@ const ShortEntityForm = (props: any) => {
         dispatchCreateNew();
     }
     else if (!isVehicle && props.isUpdate){
+      console.log("here")
       if (volunteerName === '')
         toast.error('Missing Name')
       else if (volunteerPin === '')

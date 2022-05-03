@@ -20,6 +20,7 @@ import {
 } from '../../features/vehicles/VehiclesSlice';
 import AdminHeader from '../AdminHeader/AdminHeader';
 import Spinner from '../Spinner/Spinner';
+import { getDonors } from '../../features/donors/donorSlice';
 
 // import VehicleEditForm from './EditComponents/VehicleEditForm';
 // import VolunteerEditForm from './EditComponents/VolunteerEditForm';
@@ -50,11 +51,14 @@ const AdminDataScreen = () => {
   // const [dataToEdit, setDataToEdit] = useState({});
   const [currentVehicle, setCurrentVehicle] = useState(null);
   const [currentVolunteer, setCurrentVolunteer] = useState(null);
+  const [currentDonor, setCurrentDonor] = useState(null);
+  const [currentRecipient, setCurrentRecipient] = useState(null);
 
   
   useEffect(() => {
      dispatch(getDrivers());
-    dispatch(getVehicles());
+     dispatch(getVehicles());
+     dispatch(getDonors());
   }, [dispatch]);
 
   // const removeDriver = (id: string) => {
@@ -85,6 +89,14 @@ const AdminDataScreen = () => {
   }
   function volunteerData(volunteer: any){
     setCurrentVolunteer(volunteer);
+    setUpdate(true);
+  }
+  function donorData(donor: any){
+    setCurrentDonor(donor);
+    setUpdate(true);
+  }
+  function recipientData(recipient: any){
+    setCurrentRecipient(recipient);
     setUpdate(true);
   }
   function handleDonors() {
@@ -279,19 +291,24 @@ const AdminDataScreen = () => {
 
           {donors && (
             <div className="logs long-log">
-              <button onClick={handleShowModal}>
+              {/* <button onClick={handleShowModal}> */}
+              <button onClick={()=>{handleShowModal(); setUpdate(false);}}>
                 <NewDonorsCard />
               </button>
-              {showModal && <EntityForm handleShow={handleShowModal} />}
+              {showModal && 
+                <EntityForm 
+                  handleShow={handleShowModal} 
+                  whichEntity={true}
+                  isUpdate={isUpdate} 
+                  donor={currentDonor}
+                  />}
               {search(q).map((item: any, index: any) => {
                 return (
                   <DonorsCard
-                    index={item.id}
-                    donor={item.name}
-                    entityType={item.donorEntityType}
-                    locationType={item.donorLocationType}
-                    foodType={item.foodType}
-                    areaName={item.area}
+                    index={index}
+                    donor={item}
+                    handleShow={handleShowModal}
+                    donorHandler={donorData}
                   />
                 );
               })}
@@ -300,19 +317,30 @@ const AdminDataScreen = () => {
 
           {recipients && (
             <div className="logs long-log">
-              <button onClick={handleShowModal}>
+              {/* <button onClick={handleShowModal}> */}
+              <button onClick={()=>{handleShowModal(); setUpdate(false);}}>
                 <NewDonorsCard />
               </button>
-              {showModal && <EntityForm handleShow={handleShowModal} />}
+              {showModal && 
+                <EntityForm 
+                  handleShow={handleShowModal} 
+                  whichEntity={false}
+                  isUpdate={isUpdate} 
+                  recipient={currentRecipient}
+                  />}
               {search(q).map((item: any, index: any) => {
                 return (
                   <RecipientsCard
-                    index={item.id}
-                    donor={item.name}
-                    entityType={item.recipientEntityType}
-                    demographicName={item.demographic}
-                    foodType={item.foodType}
-                    areaName={item.area}
+                    // index={item.id}
+                    // donor={item.name}
+                    // entityType={item.recipientEntityType}
+                    // demographicName={item.demographic}
+                    // foodType={item.foodType}
+                    // areaName={item.area}
+                    index={index}
+                    recipient={item}
+                    handleShow={handleShowModal}
+                    recipientHandler={recipientData}
                   />
                 );
               })}
