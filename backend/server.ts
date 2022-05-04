@@ -29,4 +29,7 @@ app.get("/", (req, res) => {
 });
 app.use(errorHandler);
 
-app.listen(port, () => console.log(`Server started on port ${port}`)); // 3. runs Express
+if (process.argv.includes('dev')) {
+  const PORT = process.env.PORT || 3001;
+  app.listen(PORT, () => console.log(`server running on port ${PORT}`));
+}
