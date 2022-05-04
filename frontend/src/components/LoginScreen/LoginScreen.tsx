@@ -115,8 +115,8 @@ const LoginScreen: React.FC<Props> = () => {
     return <Spinner />;
   }
   return (
-    <div className="container">
-      <div className="flex flex-col items-center justify-center">
+    <div className="container pt-10">
+      <div className="flex flex-col items-center justify-center ">
         <div className=" mt-5 mb-3 w-4/6 ">
           <img src={logo} alt="veggie rescue logo" />
         </div>

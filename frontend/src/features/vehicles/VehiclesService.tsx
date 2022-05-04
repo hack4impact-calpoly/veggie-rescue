@@ -39,7 +39,30 @@ const getVehicle = async (token: string) => {
 
 // update a vehicle given its id as a parameter... can be admin or driver
 const update = async (
-  vehicleData: VehicleItem | VehicleChoice | VehicleWeightTransfer | PickupSchema  | DropoffSchema | UpdateVehicle,
+  vehicleData: VehicleItem | VehicleChoice | VehicleWeightTransfer | PickupSchema  | DropoffSchema | UpdateVehicle | VehicleWeightTransfer  | PickupLog
+  | DropoffLog,
+  token: string
+) => {
+  const config = {
+    headers: {
+      Authorization: `Bearer ${token}`
+    }
+  };
+  //using rest operator to take just the id out.
+  const { _id, ...rest } = vehicleData;
+  const response = await axios.put(
+    API_URL + _id,
+    {
+      ...rest
+    },
+    config
+  );
+  return response.data;
+};
+
+// update a vehicle given its id as a parameter(special case)... can be admin or driver
+const updateTwo = async (
+  vehicleData:  VehicleWeightTransfer,
   token: string
 ) => {
   const config = {
@@ -151,8 +174,18 @@ interface VehicleLogout {
   currentPickups: pickupObject[];
   currentDropoffs: dropoffObject[];
 }
+interface PickupLog {
+  _id: string;
+  currentPickups: pickupObject[];
+  totalWeight: number;
+}
+interface DropoffLog {
+  _id: string;
+  currentDropoffs: dropoffObject[];
+  totalWeight: number;
+}
 interface pickupObject {
- // date: String;
+  //date: String;
   driver: String;
   vehicle: String;
   name: String;
@@ -212,6 +245,7 @@ const vehicleService = {
   getVehicle,
   createVehicle,
   deleteVehicle,
+  updateTwo
 
 };
 export default vehicleService;

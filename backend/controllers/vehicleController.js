@@ -154,8 +154,13 @@ const editVehicle = asyncHandler(async (req, res) => {
     vehicleInDB.img = body.img;
   }
   if (body.currentPickups) {
-    // First check if the object is an empty array.  If so, clear out the array
-    if (Object.keys(body.currentPickups).length === 0) {
+    // First check if it is an array
+    if (body.currentPickups.constructor == Array) {
+      // this is for update logs section
+      vehicleInDB.currentPickups = body.currentPickups;
+    } else if (Object.keys(body.currentPickups).length === 0) {
+      // First check if the object is an empty array.  If so, clear out the array
+
       vehicleInDB.currentPickups = [];
     } else {
       // Otherwise...
@@ -168,8 +173,13 @@ const editVehicle = asyncHandler(async (req, res) => {
     }
   }
   if (body.currentDropoffs) {
-    // First check if the object is an empty array.  If so, clear out the array
-    if (Object.keys(body.currentDropoffs).length === 0) {
+    // First check if it is an array
+    if (body.currentDropoffs.constructor == Array) {
+      // this is for update logs section
+      vehicleInDB.currentDropoffs = body.currentDropoffs;
+    } else if (Object.keys(body.currentDropoffs).length === 0) {
+      // First check if the object is an empty array.  If so, clear out the array
+
       vehicleInDB.currentDropoffs = [];
     } else {
       // Otherwise...
