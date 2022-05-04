@@ -1,7 +1,7 @@
 import { useEffect, useState, ChangeEvent } from 'react';
 import { useAppSelector, useAppDispatch } from '../../app/hooks';
 import { login, reset } from '../../features/adminAuth/adminAuthSlice';
-
+import Spinner from '../Spinner/Spinner';
 import './AdminLoginScreen.css';
 import logo from '../../imgs/veggie-rescue-logo.png';
 import { toast } from 'react-toastify';
@@ -69,7 +69,7 @@ const AdminLoginScreen = () => {
 
 
 if(isLoading){
-  return <h1> Loading... </h1>
+  return <Spinner />
 }
   return(
       
