@@ -18,6 +18,13 @@ connectDatabase();
 //.then(() => console.log(`Success`))
 //.catch((error) => console.error(`Could not connect due to ${error}`))
 
+app.use((req, res, next) => {
+  res.header("Access-Control-Allow-Origin", "*");
+  res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+  res.header('Access-Control-Allow-Methods', 'GET,POST,OPTIONS,DELETE,PUT');
+  next();
+});
+
 app.use("/api/drivers", require("./routes/driverRoutes"));
 app.use("/api/admin", require("./routes/adminRoutes"));
 app.use("/api/location", require("./routes/locationRoutes"));
