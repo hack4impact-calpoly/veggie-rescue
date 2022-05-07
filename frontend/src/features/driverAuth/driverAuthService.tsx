@@ -1,5 +1,6 @@
 import axios from 'axios';
 const API_URL = '/api/drivers/';
+const SERVER_URL = process.env.REACT_APP_SERVER_URL ||  ''
 
 interface DriverData {
   _id: string,
@@ -10,7 +11,7 @@ interface DriverData {
 
 // Register driver
 const register = async (driverData: DriverData) => {
-  const response = await axios.post(API_URL, driverData);
+  const response = await axios.post(SERVER_URL + API_URL, driverData);
 
   if (response.data) {
     localStorage.setItem('driver', JSON.stringify(response.data));
@@ -23,7 +24,7 @@ const login = async (pin: string) => {
   const driverData = {
     pin
   };
-  const response = await axios.put(API_URL + 'login', driverData);
+  const response = await axios.put(SERVER_URL + API_URL + 'login', driverData);
   if (response.data) {
     localStorage.setItem('driver', JSON.stringify(response.data));
   }
@@ -41,7 +42,7 @@ const getDrivers = async (token: string) => {
       Authorization: `Bearer ${token}`
     }
   };
-  const response = await axios.get(API_URL, config);
+  const response = await axios.get(SERVER_URL + API_URL, config);
   return response.data;
 };
 
@@ -52,7 +53,7 @@ const createDriver = async (driverData: DriverData, token: string) => {
       Authorization: `Bearer ${token}`
     }
   };
-  const response = await axios.post(API_URL, driverData, config);
+  const response = await axios.post(SERVER_URL + API_URL, driverData, config);
   return response.data;
 };
 
@@ -63,7 +64,7 @@ const getDriver = async (token: string) => {
       Authorization: `Bearer ${token}`
     }
   };
-  const response = await axios.get(API_URL + 'match', config);
+  const response = await axios.get(SERVER_URL + API_URL + 'match', config);
   return response.data[0];
 };
 
@@ -81,7 +82,7 @@ const update = async (
   const { _id, ...rest } = driverData;
 
   const response = await axios.put(
-    API_URL + _id,
+    SERVER_URL + API_URL + _id,
     {
       ...rest
     },
@@ -98,7 +99,7 @@ const deleteDriver = async (driverID: string, token: string) => {
     }
   };
 
-  const response = await axios.delete(API_URL + driverID, config);
+  const response = await axios.delete(SERVER_URL + API_URL + driverID, config);
   return response.data;
 };
 
