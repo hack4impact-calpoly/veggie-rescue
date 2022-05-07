@@ -23,7 +23,7 @@ const login = async (pin: string) => {
   const driverData = {
     pin
   };
-  const response = await axios.post(API_URL + 'login', driverData);
+  const response = await axios.put(API_URL + 'login', driverData);
   if (response.data) {
     localStorage.setItem('driver', JSON.stringify(response.data));
   }
