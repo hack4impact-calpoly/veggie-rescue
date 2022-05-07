@@ -12,9 +12,9 @@ const { protectAdmin } = require("../middleware/authMiddleware");
 
 router
   .get("/", protectAdmin, getDrivers)
-  .post("/", protectAdmin, registerDriver);
+  .put("/", protectAdmin, registerDriver);
 
-router.post("/login", loginDriver);
+router.put("/login", loginDriver);
 
 router
   .route("/:id")
