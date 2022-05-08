@@ -4,11 +4,13 @@ const app = express(); // 2. initializes Express
 const mongoose = require("mongoose"); // Initializing Mongoose for DB
 const { errorHandler } = require("./middleware/errorMiddleware");
 const connectDatabase = require("./config/db");
+var cors = require('cors');
 
 require("dotenv").config(); // dotenv package to protect secrets
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
+app.use(cors());
 
 app.use(errorHandler);
 
