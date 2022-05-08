@@ -24,7 +24,7 @@ jobs:
         stack-name: 'veggie-rescue-api-deployment-stack'
       env:
         REACT_APP_SERVER_URL: ${{ secrets.REACT_APP_SERVER_URL }}
-        JWT_SECRET: ${{ secrets.ILoveVeggies }}
+        JWT_SECRET: ${{ secrets.JWT_SECRET }}
 
     - run: echo API is at ${{ steps.backend-deployment.outputs.api-url }}
       shell: bash

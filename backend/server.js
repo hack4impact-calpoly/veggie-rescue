@@ -22,8 +22,12 @@ connectDatabase();
 
 app.use((req, res, next) => {
   res.header("Access-Control-Allow-Origin", "*");
-  res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
-  res.header('Access-Control-Allow-Methods', 'GET,POST,OPTIONS,DELETE,PUT');
+  res.header("Access-Control-Allow-Credentials", true);
+  res.header(
+    "Access-Control-Allow-Headers",
+    "Origin, X-Requested-With, Content-Type, Accept"
+  );
+  res.header("Access-Control-Allow-Methods", "GET,POST,OPTIONS,DELETE,PUT");
   next();
 });
 
@@ -38,7 +42,7 @@ app.get("/", (req, res) => {
 });
 app.use(errorHandler);
 
-if (process.argv.includes('dev')) {
+if (process.argv.includes("dev")) {
   const PORT = process.env.PORT || 3001;
   app.listen(PORT, () => console.log(`server running on port ${PORT}`));
 }
