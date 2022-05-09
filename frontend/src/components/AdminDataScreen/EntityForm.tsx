@@ -1,31 +1,27 @@
 import React, { useEffect, useState } from 'react';
 import './EntityForm.css';
 import { useAppSelector, useAppDispatch } from '../../app/hooks';
-
-// import {
-//   getDonor,
-//   updateDonoor,
-//   deleteVehicle,
-//   createVehicle
-// } from '../../features/vehicles/VehiclesSlice';
-// import {
-//   getDrivers,
-//   updateDriver,
-//   deleteDriver,
-//   createDriver
-// } from '../../features/driverAuth/driverAuthSlice';
-
 import { toast } from 'react-toastify';
+
+import {
+  getDonors,
+  updateDonor,
+  deleteDonor,
+  createDonor
+} from '../../features/donors/donorSlice';
+
+import {
+  getRecipients,
+  createRecipient,
+  updateRecipient,
+  deleteRecipient
+} from '../../features/recipients/recipientsSlice';
+
 
 /* Form to add recipient or donor */
 const EntityForm = (props: any) => {
 
   /* Recipient and donor state data here */
-  // const [entityType, setEntityType] = useState("");
-  // const [locationType, setLocationType] = useState("");
-  // const [areaName, setAreaName] = useState("");
-  // const [donorName, setDonorName] = useState("");
-  // const [demographicName, setDemographicName] = useState("");
   const [entityType, setEntityType] = useState(props.isUpdate ? props.whichEntity ? props.donor.donorEntityType : props.recipient.recipientEntityType : '');
   const [locationType, setLocationType] = useState(props.isUpdate ? props.whichEntity ? props.donor.donorLocationType : '' : '');
   const [areaName, setAreaName] = useState(props.isUpdate ? props.whichEntity ? props.donor.area : props.recipient.area : '');
@@ -42,48 +38,54 @@ const EntityForm = (props: any) => {
   const dispatch = useAppDispatch();
 
   const dispatchGetDonors = () => {
-    // dispatch(getVehicles());
+    dispatch(getDonors());
   };
   const dispatchGetRecipients = () => {
-    // dispatch(getDrivers());
+    dispatch(getRecipients());
   };
 
-  const dispatchDriver = () => {
-    props.handleShow();
-    // dispatch(
-    //   createDriver({
-    //     _id: '0',
-    //     name: volunteerName,
-    //     // email: volunteerEmail,
-    //     pin: volunteerPin
-    //   })
-    // );
-    window.location.reload();
-  };
+  // const dispatchDriver = () => {
+  //   props.handleShow();
+  //   // dispatch(
+  //   //   createDriver({
+  //   //     _id: '0',
+  //   //     name: volunteerName,
+  //   //     // email: volunteerEmail,
+  //   //     pin: volunteerPin
+  //   //   })
+  //   // );
+  //   window.location.reload();
+  // };
 
   // this function is called if we submit a new driver or vehicle
   const dispatchCreateNew = async () => {
     console.log("CREATE")
     if (isDonor) {
-      // await dispatch(
-        // createVehicle({
-        //   name: volunteerName,
-        //   img: 'https://icones.pro/wp-content/uploads/2021/03/icone-de-voiture-symbole-png-verte.png'
-        // })
-      // );
+      await dispatch(
+        createDonor({
+          id: '0',
+          name: donorName,
+          EntityType: entityType,
+          FoodType: foodTypes.toString(), //this is weird
+          LocationType: locationType,
+          CombinedAreaName: areaName,
+        })
+      );
       toast.success('Successfully created new donor.');
-
       dispatchGetDonors();
     } else {
       // console.log('creation of a new Volunteer');
       // here we can put the call to create a new volunteer
-      // await dispatch(
-        // createDriver({
-        //   _id: '0',
-        //   name: volunteerName,
-        //   pin: volunteerPin
-        // })
-      // );
+      await dispatch(
+        createRecipient({
+          id: '0',
+          name: donorName,
+          EntityType: entityType,
+          FoodType: foodTypes.toString(), //this is weird
+          DemographicName: demographicName,
+          CombinedAreaName: areaName,
+        })
+      );
       toast.success('Successfully created new recipient.');
 
       dispatchGetRecipients();
@@ -95,24 +97,29 @@ const EntityForm = (props: any) => {
   const dispatchUpdate = async () => {
     console.log("UPDAATE")    
     if (isDonor) {
-      // await dispatch(
-        // updateVehicle({
-        //   _id: props.vehicle._id,
-        //   name: volunteerName
-        // })
-      // );
+      await dispatch(
+        updateDonor({
+          id: props.donor.id,
+          name: donorName,
+          EntityType: entityType,
+          FoodType: foodTypes.toString(), //this is weird
+          LocationType: locationType,
+          CombinedAreaName: areaName,
+        })
+      );
       toast.success('Successfully updated donor.');
       dispatchGetDonors();
     } else {
-      // console.log('update of a volunteer');
-      // here we can put the call to update a volunteer
-      // await dispatch(
-        // updateDriver({
-        //   _id: props.volunteer._id,
-        //   name: volunteerName,
-        //   pin: volunteerPin
-        // })
-      // );
+      await dispatch(
+        updateRecipient({
+          id: props.recipient.id,
+          name: donorName,
+          EntityType: entityType,
+          FoodType: foodTypes.toString(), //this is weird
+          DemographicName: demographicName,
+          CombinedAreaName: areaName,
+        })
+      );
       toast.success('Successfully updated recipient.');
       dispatchGetRecipients();
     }
@@ -122,12 +129,12 @@ const EntityForm = (props: any) => {
     console.log("DELETE")
     e.preventDefault();
     if (isDonor) {
-      // await dispatch(deleteVehicle(props.vehicle._id));
+      await dispatch(deleteDonor(props.donor.id));
       toast.success('Successfully deleted donor.');
       dispatchGetDonors();
     } else {
       console.log('deletion of person');
-      // await dispatch(deleteDriver(props.volunteer._id));
+      await dispatch(deleteRecipient(props.recipient.id));
       toast.success('Successfully deleted recipient.');
       dispatchGetRecipients();
     }
@@ -162,20 +169,34 @@ const EntityForm = (props: any) => {
 
   function handleSubmit(e:any){
      e.preventDefault();
-      if (donorName === '')
+      if (donorName === ''){
         toast.error("Missing Entity Name")
-      else if (entityType === '')
+        return
+      }
+      else if (entityType === ''){
         toast.error("Missing Entity Type")
-      else if (selectedFoods.length < 1)
+        return
+      }
+      else if (selectedFoods.length < 1){
         toast.error("Missing Food Type")
-      else if (areaName === '')
+        return
+      }
+      else if (areaName === ''){
         toast.error("Missing Area Name")
+        return
+      }
       if (isDonor && locationType === ''){
         toast.error("Missing Location Type")
+        return
       }
       else if (!isDonor && demographicName === ''){
         toast.error("Missing Demographic Type")
+        return
       }
+      if (props.isUpdate)
+        dispatchUpdate();
+      else
+        dispatchCreateNew();
   }
 
   return(
