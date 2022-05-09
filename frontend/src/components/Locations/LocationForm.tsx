@@ -1,12 +1,14 @@
 import React, { useState } from "react";
+import { toast } from "react-toastify";
 
 interface locale {
 	name: string,
-	donorLocationType: string,
-	donorEntityType: string,
-	foodType: string[],
-	area: string,
-	id: string,
+	LocationType: string,
+	EntityType: string,
+	FoodType: string,
+  DemographicName: string,
+	CombinedAreaName: string,
+	_id: string,
   }
 
 interface pickupDeliveryObjectSchema {
@@ -16,12 +18,14 @@ interface pickupDeliveryObjectSchema {
     driver: String,
     vehicle: String,
     name: String,
-    recipientEntityType: String,
-    demographic: String,
-    foodType: String,
-    area: String,
+    EntityType: String,
+    LocationType: String,
+    Demographic: String,
+    FoodType: String,
+    Area: String,
     lbsDroppedOff: number
 }
+
 
 interface Props{
   current                 : locale,
@@ -41,38 +45,22 @@ const LocationForm = ({current, createNew, setLocation, PickupDeliveryObject, se
   const [donorLocationType, setDonorLocationType] = useState("");
   const [donorEntityType, setDonorEntityType] = useState("");
   const [food, setFoodType] = useState("");
+  const [demographic, setDemographic] = useState("");
   const [area, setArea] = useState("");
 
   const { name } = current;
-
-  // const onSubmit = (e : Event) => {
-  //   e.preventDefault();
-  //   if (createNew) {
-  //     setLocation({
-  //       name: donorName,
-  //       donorLocationType: donorLocationType,
-  //       donorEntityType: donorEntityType,
-  //       foodType: food,
-  //       area: area,
-  //     });
-  //   } else {
-  //     setLocation({
-  //       ...current,
-  //       foodType: active,
-  //     });
-  //   }
-  // };
 
   const submitPressed = () => {
     if (createNew === false && active !== ""){
       setPickupDeliveryObject({
         ...PickupDeliveryObject,
-        id : current.id,
+        id : current._id,
         name : current.name,
-        recipientEntityType : current.donorEntityType,
-        demographic : current.donorLocationType,
-        foodType : current.foodType,
-        area : current.area
+        EntityType : current.EntityType,
+        LocationType : current.LocationType,
+        Demographic : current.DemographicName,
+        FoodType : active.toLowerCase(),
+        Area : current.CombinedAreaName
       })
       setForceNext(true);
     }
@@ -81,26 +69,27 @@ const LocationForm = ({current, createNew, setLocation, PickupDeliveryObject, se
         ...PickupDeliveryObject,
         // id : ID?,
         name : donorName,
-        recipientEntityType : donorEntityType,
-        demographic : donorLocationType,
-        foodType : food,
-        area : area
+        EntityType : donorEntityType,
+        LocationType : donorLocationType,
+        Demographic : demographic,
+        FoodType : food,
+        Area : area
       })
       setForceNext(true); 
     }
     else{
-      console.log("bad input!");
+      toast.error("Please enter a food type.")
     }
   }
 
   return (
     <div className="Form-main">
         <h2 className="text-primary-locationForm">
-          {createNew ? "New Location" : "Donor Name"}{" "}
+          {createNew ? "New Location" : PickupDeliveryObject.pickupOrDelivery === 1 ? "Pickup Location" : "Dropoff Location"}
         </h2>
-
         {createNew ? (
-          <div className="newLocation">
+         PickupDeliveryObject.pickupOrDelivery === 1 ? (
+            <div className="newLocation">
             <input
               type="text"
               placeholder="Donor name"
@@ -133,35 +122,65 @@ const LocationForm = ({current, createNew, setLocation, PickupDeliveryObject, se
               onChange={(e) => setArea(e.target.value)}
             />
           </div>
+         ): ( <div className="newLocation">
+            <input
+              type="text"
+              placeholder="Recipient name"
+              name="name"
+              onChange={(e) => setName(e.target.value)}
+            />
+
+            <input
+              type="text"
+              placeholder="Entity Type"
+              name="location"
+              onChange={(e) => setDonorEntityType(e.target.value)}
+            />
+            <input
+              type="text"
+              placeholder="Food Type"
+              name="type"
+              onChange={(e) => setFoodType(e.target.value)}
+            />
+            <input
+              type="text"
+              placeholder="Demographic"
+              name="location"
+              onChange={(e) => setDemographic(e.target.value)}
+            />
+            <input
+              type="text"
+              placeholder="Area"
+              name="type"
+              onChange={(e) => setArea(e.target.value)}
+            />
+          </div>)
         ) : (
           <div className="existingLocation">
             <input className="location-name-form" type="text" placeholder={name} name="name" disabled={true} />
             <div className="food-type">Food type</div>
             <div className="select-parent">
               {current &&
-                current.foodType.map((ft : string, index : number) => {
-                  return (
-                    <div key={index}>
+                 <div >
                       <input
                         type="radio"
                         name="foodType"
-                        value={ft}
+                        value={current.FoodType}
                         onClick={() => {
-                          setActive(ft);
+                          setActive(current.FoodType);
                           setIsClicked(true);
                         }}
                       />
-                      <b>{ft}</b>
+                      <b> {current.FoodType}</b>
                     </div>
-                  );
-                })}
+                }
               {current && (
                 <div>
                   <input
                     type="radio"
                     name="foodType"
                     onClick={() => setIsClicked(false)}
-                  />{"Other"}
+                  />{" Other"}
                   <input className="specify-item"
                     type="text"
                     disabled={isClicked}

@@ -9,11 +9,10 @@ import LoginScreen from './components/LoginScreen/LoginScreen';
 import TransferPage from './components/TransferPage/TransferPage';
 import Vehicles from './components/VehicleSelection/Vehicle';
 import AdminLoginScreen from './components/AdminLoginScreen/AdminLoginScreen';
-import Admin from './components/Admin/Admin';
+import AdminDataScreen from './components/AdminDataScreen/AdminDataScreen';
 import Logs from './components/Logs/Logs';
 import Transfering from './components/Transfering/Transfering';
 import Weight from './components/Weight/Weight';
-import ReduxExample from './components/REDUXEXAMPLE/ReduxExample';
 import NewLogWrapper from './components/NewLogWrapper/NewLogWrapper';
 
 const App: React.FC = () => {
@@ -21,7 +20,6 @@ const App: React.FC = () => {
     <>
       <Router>
         <Routes>
-        <Route path="/REDUX" element={<ReduxExample />} />
 
           {/* (Unprotected routes) depending on the redirectTo Variable value it redirects to the corresponding page if user is not logged in */}
           <Route path="/Login" element={<LoginScreen />} />
@@ -54,10 +52,10 @@ const App: React.FC = () => {
             <Route path="/UserLogs" element={<Logs />} />
           </Route>
           <Route
-            path="/Transfer"
+            path="/Transfering"
             element={<ProtectedRoute redirectTo="/Login" />}
           >
-            <Route path="/Transfer" element={<Transfering />} />
+            <Route path="/Transfering" element={<Transfering />} />
           </Route>
           <Route
             path="/TransferPage"
@@ -76,8 +74,16 @@ const App: React.FC = () => {
             path="/Admin"
             element={<ProtectedRoute redirectTo="/AdminLogin" />}
           >
-            <Route path="/Admin" element={<Admin />} />
+            <Route path="/Admin" element={<AdminDataScreen />} />
           </Route>
+
+          <Route
+            path="/Logs"
+            element={<ProtectedRoute redirectTo="/AdminLogin" />}
+          >
+            <Route path="/Logs" element={<Logs />} />
+          </Route>
+
         </Routes>
       </Router>
       <ToastContainer />

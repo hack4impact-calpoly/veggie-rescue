@@ -7,18 +7,18 @@ interface Props {
     PickupDeliveryObject    : pickupDeliveryObjectSchema
     setForceNext            : Function
 }
-
-interface pickupDeliveryObjectSchema {
+    interface pickupDeliveryObjectSchema {
     pickupOrDelivery: number,
     id: String,
     date: String,
     driver: String,
     vehicle: String,
     name: String,
-    recipientEntityType: String,
-    demographic: String,
-    foodType: String,
-    area: String,
+    EntityType: String,
+    LocationType: String,
+    Demographic: String,
+    FoodType: String,
+    Area: String,
     lbsDroppedOff: number
 }
 

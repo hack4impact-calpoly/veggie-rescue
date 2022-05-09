@@ -4,11 +4,12 @@ import LocationItem from "./LocationItem";
 
 interface locale {
 	name: string,
-	donorLocationType: string,
-	donorEntityType: string,
-	foodType: string[],
-	area: string,
-	id: string,
+	LocationType: string,
+	EntityType: string,
+	FoodType: string,
+	CombinedAreaName: string,
+  DemographicName: string,
+	_id: string,
   }
 
 interface Props {
@@ -28,12 +29,13 @@ const Locations = ({locations, current, filtered, setCurrent, clearFilter, setCr
 
   //this is emptyLocation object which is passed into LocationItem if user wants to add a new location
   const emptyLocation = {
-    id: "",
+    _id: "",
     name: "Add New Location",
-    donorLocationType: "",
-    donorEntityType: "",
-    foodType: [],
-    area: "",
+    LocationType: "",
+    EntityType: "",
+    FoodType: "",
+    Demographic: "",
+    CombinedAreaName: "",
   }
   // 1. First we check if current object is null... if so then we will be displaying elements in either filtered or locations array.
   // if not, it means that we have already selected a location as current location and it is being displayed.
@@ -54,7 +56,7 @@ const Locations = ({locations, current, filtered, setCurrent, clearFilter, setCr
                       .map((location : locale) => (
                         <LocationItem
                           location={location}
-                          key={location.id}
+                          key={location._id}
                           setCurrent={setCurrent}
                           clearFilter={clearFilter}
                         />
@@ -76,7 +78,7 @@ const Locations = ({locations, current, filtered, setCurrent, clearFilter, setCr
                   .map((location : locale) => (
                     <LocationItem
                       location={location}
-                      key={location.id}
+                      key={location._id}
                       setCurrent={setCurrent}
                       clearFilter={clearFilter}
                     />
