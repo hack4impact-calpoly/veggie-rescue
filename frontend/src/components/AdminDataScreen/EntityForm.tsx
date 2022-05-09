@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import './EntityForm.css';
 import { useAppSelector, useAppDispatch } from '../../app/hooks';
 
@@ -34,7 +34,7 @@ const EntityForm = (props: any) => {
 
   const [donor, setDonor] = useState(true);
   const [recipient, setRecipient] = useState(false);
-  let foodTypes = ['Baked Goods','Packaged/Processed','Produce'];
+  let foodTypes = ['Baked','Packaged','Produce'];
   const [selectedFoods, setSelectedFoods] = useState(props.isUpdate ? props.whichEntity ? props.donor.foodType : props.recipient.foodType : []);
   // const [selectedFoods, setSelectedFoods] = useState([]);
 
@@ -162,14 +162,6 @@ const EntityForm = (props: any) => {
 
   function handleSubmit(e:any){
      e.preventDefault();
-    //  (!donor && !recipient) ? toast.error("Please select Donor or Recipient") :
-    //    ((donorName === "") ? toast.error("Missing Entity Name") :
-    //    ((entityType === "") ? toast.error("Missing Entity Type") :
-    //    ((selectedFoods.length <= 1) ? toast.error("Missing Food Type") :
-    //    ((areaName === "") ? toast.error("Missing Area Name") :
-    //    ((donor && (locationType === "")) ? toast.error("Missing Location Type") :
-    //    ((recipient && (demographicName === "")) ? toast.error("Missing Demographic Name") :
-      //  props.handleShow()))))))
       if (donorName === '')
         toast.error("Missing Entity Name")
       else if (entityType === '')
@@ -194,10 +186,10 @@ const EntityForm = (props: any) => {
       <div className="title-content"><button type="button" id="X-form" onClick={props.handleShow}>x</button></div>
     </div>
     <div className="entity-type">
-      <button className="type-button" type="button" onClick={handleDonor} style={{border: donor ? '2px solid #FF9C55' : ''}}>
+      <button className="type-button" type="button" onClick={handleDonor} style={{border: isDonor ? '2px solid #FF9C55' : ''}}>
         Donor
       </button>
-      <button className="type-button" type="button" onClick={handleRecipient} style={{border: recipient ? '2px solid #FF9C55' : ''}}>
+      <button className="type-button" type="button" onClick={handleRecipient} style={{border: !isDonor ? '2px solid #FF9C55' : ''}}>
         Recipient
       </button>
     </div>
@@ -206,7 +198,6 @@ const EntityForm = (props: any) => {
 
     <input
       className="input"
-      // placeholder="Donor Name"
       placeholder={
         (!props.isUpdate)
           ? "Name"
@@ -225,7 +216,6 @@ const EntityForm = (props: any) => {
     <h2>Entity Type</h2>
     <input
       className="input"
-      // placeholder="Entity Type"
       placeholder={
         (!props.isUpdate)
           ? "Entity Type"
@@ -244,11 +234,8 @@ const EntityForm = (props: any) => {
     <h4>Select all that apply</h4>
     <div className="food-type">
       {(foodTypes).map((v:any, index:any) => {
-        let val = <Button className="food-button" id={index} name={v} handleClick={handleFoodClick.bind(this,v)}/>
-
         return(
-          // <Button className="food-button" id={index} name={v} handleClick={handleFoodClick.bind(this,v)}/>
-          val
+          <Button className="food-button" id={index} name={v} handleClick={handleFoodClick.bind(this,v)}/>
       );
       })}
     </div>
@@ -323,7 +310,7 @@ const EntityForm = (props: any) => {
 /* button for food types */
 const Button = (props:any) => {
   const [color, setColors] = React.useState("");
-  const [active, setActive] = React.useState(false);
+  const [active, setActive] = React.useState(false)
   const handleClickButton = (name:'') => {
     setActive(true);
     setColors('2px solid #FF9C55');

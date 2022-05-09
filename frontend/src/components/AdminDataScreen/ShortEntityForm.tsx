@@ -25,7 +25,7 @@ const ShortEntityForm = (props: any) => {
   // const [volunteerName, setName] = useState('');
   const [volunteerName, setName] = useState(props.isUpdate ? props.whichEntity ? props.vehicle.name : props.volunteer.name : '');
   // const [volunteerPin, setPin] = useState('');
-  const [volunteerPin, setPin] = useState(props.isUpdate ? props.volunteer.pin : '');
+  const [volunteerPin, setPin] = useState(props.isUpdate ? props.whichEntity ? '' : props.volunteer.pin : '');
   const [volunteer, setVolunteer] = useState(true);
   const [vehicle, setVehicle] = useState(false);
   const [isVehicle, setIsVehicle] = useState(props.whichEntity);
@@ -165,11 +165,13 @@ const ShortEntityForm = (props: any) => {
         dispatchCreateNew();
     }
     else if (!isVehicle && props.isUpdate){
-      console.log("here")
+      // console.log("here")
       if (volunteerName === '')
         toast.error('Missing Name')
       else if (volunteerPin === '')
         toast.error('Missing Pin')
+      else if (volunteerPin.length !== 4)
+        toast.error('Pin must be 4 characters')
       else
         dispatchUpdate();
     }
@@ -178,6 +180,8 @@ const ShortEntityForm = (props: any) => {
         toast.error('Missing Name')
       else if (volunteerPin === '')
         toast.error('Missing Pin')
+      else if (volunteerPin.length !== 4)
+        toast.error('Pin must be 4 characters')
       else
         dispatchCreateNew();
     }
