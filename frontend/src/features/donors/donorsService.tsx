@@ -40,8 +40,44 @@ const createDonor = async (donorData: DonorObject, token: string) => {
     }
   };
   const response = await axios.post(API_URL, donorData, config);
+  //For delete/add
+  // const response = await axios.post(API_URL + donorData.id, donorData, config);
   return response.data;
 };
+
+const updateDonor = async (
+  donorData: DonorObject,
+  token: string
+) => {
+  const config = {
+    headers: {
+      Authorization: `Bearer ${token}`
+    }
+  };
+  //using rest operator to take just the id out.
+  const { id, ...rest } = donorData;
+
+  const response = await axios.put(
+    API_URL + id,
+    {
+      ...rest
+    },
+    config
+  );
+  return response.data;
+};
+
+const deleteDonor = async (donorID: string, token: string) => {
+  const config = {
+    headers: {
+      Authorization: `Bearer ${token}`
+    }
+  };
+
+  const response = await axios.delete(API_URL + donorID, config);
+  return response.data;
+};
+
 
 // Register admin
 // const register = async (admin: AdminData) => {
@@ -66,8 +102,10 @@ const createDonor = async (donorData: DonorObject, token: string) => {
 //const logout = () => localStorage.removeItem('admin');
 
 const donorsService = {
-  getDonors,
-  createDonor
+getDonors,
+createDonor,
+updateDonor,
+deleteDonor
 };
 
 export default donorsService;
