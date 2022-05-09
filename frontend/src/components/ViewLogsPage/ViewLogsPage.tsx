@@ -217,20 +217,20 @@ const columns: GridColDef[] = [
 
 export default function DataTable() {
 
-  const [pickupData, pickupDataSet] = useState<any>(null);
-  const dispatch = useAppDispatch();
+  // const [pickupData, pickupDataSet] = useState<any>(null);
+  // const dispatch = useAppDispatch();
 
-  useEffect(() => {
-    async function fetchMyAPI() {
-      let response = dispatch(getPickups());
-      pickupDataSet(await response);
-      console.log(response);
-    }
-    fetchMyAPI();
-  }, []);
+  // useEffect(() => {
+  //   async function fetchMyAPI() {
+  //     let response = dispatch(getPickups());
+  //     pickupDataSet(await response);
+  //     console.log(response);
+  //   }
+  //   fetchMyAPI();
+  // }, []);
 
   let i = 0;
-  const rows = pickupData?.map((log: { date: String; driver: String; vehicle: String; name: String; foodType: String; lbsPickedUp: Number; locationType: String; donorEntityType: String; area: String; }) => {
+  const rows = logs?.map((log: { date: String; driver: String; vehicle: String; name: String; foodType: String; lbsPickedUp: Number; locationType: String; donorEntityType: String; area: String; }) => {
   return {
       id: i++,
       date: log.date,
