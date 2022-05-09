@@ -4,7 +4,6 @@ const router = express.Router();
 const {
   getVehicles,
   deleteVehicle,
-  getVehicle,
   createVehicle,
   editVehicle,
   matchVehicle,

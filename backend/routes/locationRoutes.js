@@ -3,7 +3,6 @@ const router = express.Router()
 const {findDonor, findRecipient, createDonor, createRecipient, editDonor, editRecipient, deleteDonor, deleteRecipient} = require('../controllers/adminRequestsController')
 
 const {
-  protectDriver,
   protectAdmin,
   protectAdminOrDriver,
 } = require("../middleware/authMiddleware");
@@ -18,13 +17,11 @@ router.post('/recipient', protectAdmin,  createRecipient)
 
 //Edit
 router.put("/donor/:id", protectAdmin, editDonor);
-router.put("/recipient", protectAdmin, editRecipient);
+router.put("/recipient/:id", protectAdmin, editRecipient);
 
 //Delete
 router.delete("/donor/:id", protectAdmin, deleteDonor);
-router.delete("/recipient", protectAdmin, deleteRecipient);
-
-
+router.delete("/recipient/:id", protectAdmin, deleteRecipient);
 
 module.exports = router
 

@@ -1,13 +1,6 @@
 import axios from 'axios';
-const API_URL = '/api/location/donor/';
-interface DonorObject{
-  id: String,
-  name: String,
-  EntityType: String,
-  FoodType: String,
-  LocationType: String,
-  CombinedAreaName: String,
-}
+const SERVER_URL = process.env.REACT_APP_SERVER_URL || '';
+const API_URL = SERVER_URL + '/api/location/donor/';
 
 /////////////////////////////////////////
 //                                     //
@@ -18,6 +11,15 @@ interface DonorObject{
 //THIS IS WHERE YOU CAN DO YOUR API CALLS
 //THE CONFIG IS WHERE IT AUTHORIZES USER TOKEN WITH BACKEND
 //YOU CAN DO FULL CRUD OPS HERE
+
+interface DonorObject {
+  id: string;
+  name: string;
+  EntityType: string;
+  FoodType: string;
+  LocationType: string;
+  CombinedAreaName: string;
+}
 
 //  Get master log of donors
 const getDonors = async (token: string) => {
@@ -30,7 +32,7 @@ const getDonors = async (token: string) => {
   return response.data;
 };
 
-// //  Create new Donor (For admin only)
+// //  Create new donor (For admin only)
 const createDonor = async (donorData: DonorObject, token: string) => {
   const config = {
     headers: {
@@ -107,4 +109,3 @@ deleteDonor
 };
 
 export default donorsService;
-

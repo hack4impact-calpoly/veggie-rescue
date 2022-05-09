@@ -7,16 +7,17 @@ const {
   createDropoff,
   deletePickup,
   deleteDropoff,
+  pushPickups,
+  pushDropoffs,
 } = require("../controllers/logsController");
 
 const {
   protectDriver,
   protectAdmin,
-  protectAdminOrDriver,
 } = require("../middleware/authMiddleware");
 
 // Get all pickup logs
-router.get("/pickup", getPickups);
+router.get("/pickup", protectAdmin, getPickups);
 
 // Post to pickup log
 router.post("/pickup", protectDriver, createPickup);
@@ -24,6 +25,8 @@ router.post("/pickup", protectDriver, createPickup);
 // Delete a pickup log
 router.delete("/pickup", protectAdmin, deletePickup);
 
+// Post Multiple to dropoff log
+router.post("/pickup/batch", protectDriver, pushPickups);
 
 // Get all dropoff logs
 router.get("/dropoffs", protectAdmin, getDropoffs);
@@ -33,5 +36,8 @@ router.post("/dropoffs", protectDriver, createDropoff);
 
 // Delete a dropoff log
 router.delete("/dropoffs", protectAdmin, deleteDropoff);
+
+// Post Multiple to dropoff log
+router.post("/dropoffs/batch", protectDriver, pushDropoffs);
 
 module.exports = router;

@@ -4,11 +4,13 @@ const app = express(); // 2. initializes Express
 const mongoose = require("mongoose"); // Initializing Mongoose for DB
 const { errorHandler } = require("./middleware/errorMiddleware");
 const connectDatabase = require("./config/db");
+var cors = require('cors');
 
 require("dotenv").config(); // dotenv package to protect secrets
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
+app.use(cors());
 
 app.use(errorHandler);
 
@@ -17,6 +19,17 @@ connectDatabase();
 //mongoose.connect(connection_url)
 //.then(() => console.log(`Success`))
 //.catch((error) => console.error(`Could not connect due to ${error}`))
+
+app.use((req, res, next) => {
+  res.header("Access-Control-Allow-Origin", "*");
+  res.header("Access-Control-Allow-Credentials", true);
+  res.header(
+    "Access-Control-Allow-Headers",
+    "Origin, X-Requested-With, Content-Type, Accept"
+  );
+  res.header("Access-Control-Allow-Methods", "GET,POST,OPTIONS,DELETE,PUT");
+  next();
+});
 
 app.use("/api/drivers", require("./routes/driverRoutes"));
 app.use("/api/admin", require("./routes/adminRoutes"));
@@ -29,4 +42,9 @@ app.get("/", (req, res) => {
 });
 app.use(errorHandler);
 
-app.listen(port, () => console.log(`Server started on port ${port}`)); // 3. runs Express
+if (process.argv.includes("dev")) {
+  const PORT = process.env.PORT || 3001;
+  app.listen(PORT, () => console.log(`server running on port ${PORT}`));
+}
+
+module.exports = app;

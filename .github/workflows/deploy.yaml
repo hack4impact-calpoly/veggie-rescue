@@ -1,0 +1,30 @@
+on:
+  push:
+    branches:
+    - main
+
+jobs:
+  deploy:
+    name: Deployment
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: Configure AWS credentials
+      uses: aws-actions/configure-aws-credentials@v1
+      with:
+        aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        aws-region: us-west-1
+
+    - id: backend-deployment
+      uses: Zimboboys/express-deployment-aws@v0.1.0
+      with:
+        s3-bucket: 'veggie-rescue-api-deployment'
+        stack-name: 'veggie-rescue-api-deployment-stack'
+      env:
+        REACT_APP_SERVER_URL: ${{ secrets.REACT_APP_SERVER_URL }}
+        JWT_SECRET: ${{ secrets.JWT_SECRET }}
+
+    - run: echo API is at ${{ steps.backend-deployment.outputs.api-url }}
+      shell: bash

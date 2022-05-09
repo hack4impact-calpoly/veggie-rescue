@@ -5,14 +5,15 @@
   "main": "server.js",
   "scripts": {
     "test": "jest",
-    "start": "node server.ts",
-    "server": "nodemon server.ts"
+    "start": "node server.js",
+    "server": "nodemon server.js"
   },
   "author": "",
   "license": "ISC",
   "dependencies": {
     "bcryptjs": "^2.4.3",
     "body-parser": "^1.19.1",
+    "cors": "^2.8.5",
     "dotenv": "^14.3.2",
     "express": "^4.17.2",
     "express-async-handler": "^1.2.0",

@@ -2,16 +2,16 @@ import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import donorsService from './donorsService';
 import type { RootState } from '../../app/store';
 
-// Interface for donor items (This is what will be kept in store and what you will have access)
 
-interface DonorObject{
-  id: string,
-  name: string,
-  EntityType: string,
-  FoodType: string,
-  LocationType: string,
-  CombinedAreaName: string,
-}
+// Donor Object
+interface DonorObject   {
+    id: string,
+    name: string,
+    EntityType: string,
+    FoodType: string,
+    LocationType: string,
+    CombinedAreaName: string,
+  }
 
 // // Define a type for the slice state
 interface DonorState {
@@ -61,7 +61,6 @@ export const createDonor = createAsyncThunk(
     try {
       const state = thunkAPI.getState() as RootState;
       const token = state.adminAuth.admin.token;
-
       return await donorsService.createDonor(donorData, token);
     } catch (error: any) {
       const message =
@@ -127,7 +126,8 @@ export const donorsSlice = createSlice({
       state.isError = false;
       state.isSuccess = false;
       state.message = '';
-    }
+    },
+    clear: (state) => initialState
   },
   extraReducers: (builder) => {
     builder
@@ -187,5 +187,5 @@ export const donorsSlice = createSlice({
   }
 });
 
-export const { reset } = donorsSlice.actions;
+export const { reset, clear } = donorsSlice.actions;
 export default donorsSlice.reducer;
