@@ -28,8 +28,6 @@ const findDonor = asyncHandler(async (req, res) => {
   res.status(200).json(donor);
 })
 
-
-
 // @desc Get full recipient list
 // @route /api/location/recipient
 // @access Private Admin OR Driver

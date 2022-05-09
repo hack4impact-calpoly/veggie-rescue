@@ -129,7 +129,7 @@ if(vehicleIsLoading){
  return <Spinner />
 }
     return (
-        <div className='container'>
+        <div className='container pt-10 pl-5 pr-5'>
             <NavBar setWrapperCurrentPosition={setWrapperCurrentPosition} forceNext={forceNext} setForceNext={setForceNext}/>
             {wrapperCurrentPosition === 0 && 
                 <PickupDelivery setPickupDeliveryObject={setPickupDeliveryObject} 

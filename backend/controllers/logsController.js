@@ -181,7 +181,6 @@ const pushPickups = async (req, res) => {
   // Get array from request body
   const data = req.body;
   let counter = 0;
-    console.log("PICKUP -> " + data + " " + counter++);
   try {
     const response = await PickupLog.insertMany(data, { ordered: false });
      res.status(200).json(response);

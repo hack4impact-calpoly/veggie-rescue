@@ -10,11 +10,20 @@ const initialState: VehicleState = {
   isLoading: false,
   isLoggedOut: false,
   isLoggingOut: false,
-
+  isUpdateCount: 0,
   isUpdate: false,
   message: ''
 };
-
+interface PickupLog {
+  _id: string;
+  currentPickups: pickupObject[];
+  totalWeight: number;
+}
+interface DropoffLog {
+  _id: string;
+  currentDropoffs: dropoffObject[];
+  totalWeight: number;
+}
 interface pickupObject {
   //date: String;
   driver: String;
@@ -67,6 +76,7 @@ interface VehicleState {
   isLoggedOut: boolean;
   isLoggingOut: boolean;
   isUpdate: boolean;
+  isUpdateCount: number;
   message: any | [];
 }
 
@@ -213,7 +223,10 @@ export const updateVehicle = createAsyncThunk(
       | VehicleChoice
       | PickupSchema
       | DropoffSchema
-      | UpdateVehicle,
+      | UpdateVehicle
+      | VehicleWeightTransfer
+      | PickupLog
+      | DropoffLog,
     thunkAPI
   ) => {
     try {
@@ -224,6 +237,35 @@ export const updateVehicle = createAsyncThunk(
         token = state.adminAuth.admin.token;
       }
       return await vehicleService.update(vehicleData, token);
+    } catch (error: any) {
+      const message =
+        (error.response &&
+          error.response.data &&
+          error.response.data.message) ||
+        error.message ||
+        error.toString();
+
+      return thunkAPI.rejectWithValue(message);
+    }
+  }
+);
+
+// update a vehicle given its id as a parameter, this is special case for updating multiple vehicles... can be admin or driver
+export const updateTwo = createAsyncThunk(
+  'vehicles/update:id2',
+  async (
+    vehicleData:
+      | VehicleWeightTransfer,
+    thunkAPI
+  ) => {
+    try {
+      // Set up token for authenticating route
+      const state = thunkAPI.getState() as RootState;
+      let token = state.driverAuth.driver.token;
+      if (!token) {
+        token = state.adminAuth.admin.token;
+      }
+      return await vehicleService.updateTwo(vehicleData, token);
     } catch (error: any) {
       const message =
         (error.response &&
@@ -295,6 +337,7 @@ export const vehicleSlice = createSlice({
       state.isSuccess = false;
       state.isLoggedOut = false;
       state.isUpdate = false;
+      state.isUpdateCount = 0;
       state.message = '';
     },
     clear: (state) => {
@@ -309,6 +352,9 @@ export const vehicleSlice = createSlice({
     },
     setIsLoggingOut: (state) => {
       state.isLoggingOut = !state.isLoggingOut;
+    },
+    setIsUpdate: (state) => {
+      state.isUpdate = !state.isUpdate;
     }
   },
   extraReducers: (builder) => {
@@ -369,6 +415,21 @@ export const vehicleSlice = createSlice({
         state.message = action.payload;
         state.vehicles = [];
       })
+      .addCase(updateTwo.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(updateTwo.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.isSuccess = true;
+        state.isUpdate = true;
+        state.isUpdateCount = state.isUpdateCount+1;
+      })
+      .addCase(updateTwo.rejected, (state, action) => {
+        state.isLoading = false;
+        state.isError = true;
+        state.message = action.payload;
+        state.vehicles = [];
+      })
       .addCase(deleteVehicle.pending, (state) => {
         state.isLoading = true;
       })
@@ -398,5 +459,5 @@ export const vehicleSlice = createSlice({
   }
 });
 
-export const { reset, clear, setIsLoggingOut } = vehicleSlice.actions;
+export const { reset, clear, setIsLoggingOut, setIsUpdate } = vehicleSlice.actions;
 export default vehicleSlice.reducer;

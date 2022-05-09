@@ -1,7 +1,7 @@
 import axios from 'axios';
-const API_URL = '/api/vehicles/';
+const SERVER_URL = process.env.REACT_APP_SERVER_URL || '';
 
-
+const API_URL = SERVER_URL + '/api/vehicles/';
 
 //  Gets ALL vehicles ( Can be driver or admin to use this )
 const getVehicles = async (token: string) => {
@@ -15,7 +15,10 @@ const getVehicles = async (token: string) => {
 };
 
 // //  Create new vehicle (For admin only)
-const createVehicle = async (vehicleData: VehicleItem | NewVehicle , token: string) => {
+const createVehicle = async (
+  vehicleData: VehicleItem | NewVehicle,
+  token: string
+) => {
   const config = {
     headers: {
       Authorization: `Bearer ${token}`
@@ -36,12 +39,39 @@ const getVehicle = async (token: string) => {
   return response.data[0];
 };
 
-
 // update a vehicle given its id as a parameter... can be admin or driver
 const update = async (
-  vehicleData: VehicleItem | VehicleChoice | VehicleWeightTransfer | PickupSchema  | DropoffSchema | UpdateVehicle,
+  vehicleData:
+    | VehicleItem
+    | VehicleChoice
+    | VehicleWeightTransfer
+    | PickupSchema
+    | DropoffSchema
+    | UpdateVehicle
+    | VehicleWeightTransfer
+    | PickupLog
+    | DropoffLog,
   token: string
 ) => {
+  const config = {
+    headers: {
+      Authorization: `Bearer ${token}`
+    }
+  };
+  //using rest operator to take just the id out.
+  const { _id, ...rest } = vehicleData;
+  const response = await axios.put(
+    API_URL + _id,
+    {
+      ...rest
+    },
+    config
+  );
+  return response.data;
+};
+
+// update a vehicle given its id as a parameter(special case)... can be admin or driver
+const updateTwo = async (vehicleData: VehicleWeightTransfer, token: string) => {
   const config = {
     headers: {
       Authorization: `Bearer ${token}`
@@ -71,15 +101,15 @@ const deleteVehicle = async (vehicleID: string, token: string) => {
   return response.data;
 };
 
-const logout = async (VehicleLogout : VehicleLogout, token: string) => {
+const logout = async (VehicleLogout: VehicleLogout, token: string) => {
   const config = {
     headers: {
       Authorization: `Bearer ${token}`
     }
   };
-    //using rest operator to take just the id out.
+  //using rest operator to take just the id out.
   const { _id, ...rest } = VehicleLogout;
-    //const nameUpdate = (name === 'Personal Vehicle') ? id : '';
+  //const nameUpdate = (name === 'Personal Vehicle') ? id : '';
   const response = await axios.put(
     API_URL + _id,
     {
@@ -87,15 +117,11 @@ const logout = async (VehicleLogout : VehicleLogout, token: string) => {
     },
     config
   );
-  
+
   // Logout user
   localStorage.removeItem('driver');
   return response.data;
- 
 };
-
-
-
 
 interface Vehicle {
   _id: string;
@@ -128,7 +154,7 @@ interface VehicleItem {
 }
 interface NewVehicle {
   name: String;
-  img: String
+  img: String;
 }
 interface VehicleChoice {
   _id: string;
@@ -136,13 +162,12 @@ interface VehicleChoice {
   isLoggedIn: string;
 }
 interface VehicleWeightTransfer {
-  _id: string,
-  totalWeight: number
-
-}
-interface UpdateVehicle{
   _id: string;
-  name: string
+  totalWeight: number;
+}
+interface UpdateVehicle {
+  _id: string;
+  name: string;
 }
 interface VehicleLogout {
   _id: String;
@@ -151,8 +176,18 @@ interface VehicleLogout {
   currentPickups: pickupObject[];
   currentDropoffs: dropoffObject[];
 }
+interface PickupLog {
+  _id: string;
+  currentPickups: pickupObject[];
+  totalWeight: number;
+}
+interface DropoffLog {
+  _id: string;
+  currentDropoffs: dropoffObject[];
+  totalWeight: number;
+}
 interface pickupObject {
- // date: String;
+  //date: String;
   driver: String;
   vehicle: String;
   name: String;
@@ -174,35 +209,33 @@ interface dropoffObject {
   lbsDroppedOff: Number;
 }
 interface PickupSchema {
-    _id: String;
-    currentPickups: {
+  _id: String;
+  currentPickups: {
     //date: String,
-    driver: String,
-    vehicle: String,
-    name: String,
-    donorEntityType: String,
-    foodType: String,
-    area: String,
-    lbsPickedUp: number,
-    },
-    totalWeight: number
-
+    driver: String;
+    vehicle: String;
+    name: String;
+    donorEntityType: String;
+    foodType: String;
+    area: String;
+    lbsPickedUp: number;
+  };
+  totalWeight: number;
 }
 interface DropoffSchema {
-    _id: String;
-    currentDropoffs: {
-   // date: String,
-    driver: String,
-    vehicle: String,
-    name: String,
-    recipientEntityType: String,
-    foodType: String,
-    demographic: String,
-    area: String,
-    lbsDroppedOff: number,
-    }, 
-    totalWeight: number
-
+  _id: String;
+  currentDropoffs: {
+    // date: String,
+    driver: String;
+    vehicle: String;
+    name: String;
+    recipientEntityType: String;
+    foodType: String;
+    demographic: String;
+    area: String;
+    lbsDroppedOff: number;
+  };
+  totalWeight: number;
 }
 
 const vehicleService = {
@@ -212,6 +245,6 @@ const vehicleService = {
   getVehicle,
   createVehicle,
   deleteVehicle,
-
+  updateTwo
 };
 export default vehicleService;
