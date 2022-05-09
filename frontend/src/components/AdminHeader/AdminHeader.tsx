@@ -18,6 +18,9 @@ export default function AdminHeader() {
     function handleDataBtn(){
      navigate('/Admin')
     }
+    function handleLogsBtn(){
+      navigate('/Logs')
+    }
     const handleLogout = async () =>{
         await dispatch(clearAuth());
         navigate('/AdminLogin')
@@ -37,7 +40,7 @@ export default function AdminHeader() {
                     </div>
                     <div className="hidden md:flex space-x-1">
                         <button
-                            onClick={() => console.log('View Logs Clicked')}
+                            onClick={handleLogsBtn}
                             className="py-4 px-9 text-white text-lg font-jost font-semibold hover:text-orange-500 transition duration-300"
                             >View Logs
                         </button>
@@ -46,11 +49,7 @@ export default function AdminHeader() {
                             className="py-4 px-9 text-white text-lg font-jost font-semibold hover:text-orange-500 transition duration-300"
                             >Manage Data
                         </button>
-                        <button
-                            onClick={() => console.log('Upload Logs Clicked')}
-                            className="py-4 px-9 text-white text-lg font-jost font-semibold hover:text-orange-500 transition duration-300"
-                            >Upload Logs
-                        </button>
+
                     </div>
                 </div>
                 <div className='flex px-10  items-center'> 
