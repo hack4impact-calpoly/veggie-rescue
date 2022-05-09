@@ -3,7 +3,6 @@ const bcrypt = require("bcryptjs");
 const Admin = require("../models/adminModel");
 const jwt = require("jsonwebtoken");
 
-
 // @desc Get all admins
 // @route /api/admin
 // @access Private
@@ -15,11 +14,10 @@ const getAdmins = asyncHandler(async (req, res) => {
     res.status(401);
     throw new Error("Admin not found");
   }
- 
+
   const admins = await Admin.find();
   res.status(200).json(admins);
-})
-
+});
 
 // @desc Register a new admin; check if email exists
 // @route /api/admin
@@ -63,11 +61,10 @@ const registerAdmin = asyncHandler(async (req, res) => {
   }
 });
 
-
 // @desc    Edit admin
 // @route   PUT /api/admin/:id
 // @access  Private
-const editAdmin = asyncHandler (async (req,res) => {
+const editAdmin = asyncHandler(async (req, res) => {
   // Get user using the id in the JWT
   const admin = await Admin.findById(req.admin.id);
 
@@ -75,11 +72,11 @@ const editAdmin = asyncHandler (async (req,res) => {
     res.status(401);
     throw new Error("Admin not found");
   }
-  const { email, name, password} = req.body;
+  const { email, name, password } = req.body;
 
   // Build admin object
   const adminFields = {};
-  if(name) adminFields.name;
+  if (name) adminFields.name;
   if (email) {
     // Find if driver does not already exist
     const adminExists = await Admin.findOne({ email });
@@ -92,12 +89,10 @@ const editAdmin = asyncHandler (async (req,res) => {
   }
   if (password) adminFields.password = password;
 
- 
   try {
     let adminToUpdate = await Admin.findById(req.params.id);
 
-    if (!adminToUpdate)
-      return res.status(404).json({ msg: "Admin not found" });
+    if (!adminToUpdate) return res.status(404).json({ msg: "Admin not found" });
 
     adminToUpdate = await Admin.findByIdAndUpdate(req.params.id, {
       $set: adminFields,
@@ -108,7 +103,7 @@ const editAdmin = asyncHandler (async (req,res) => {
     console.error(err.message);
     res.status(500).send("Server Error");
   }
-})
+});
 
 // @desc    Delete admin
 // @route   DELETE /api/admin/:id
@@ -116,30 +111,29 @@ const editAdmin = asyncHandler (async (req,res) => {
 const deleteAdmin = asyncHandler(async (req, res) => {
   // Get admin using the id in the JWT
   // Takes token from local storage key and verifies authenticity
-      const admin = await Admin.findById(req.admin.id);
-      if (!admin) {
-        res.status(401);
-        throw new Error("Admin not found");
-      }
+  const admin = await Admin.findById(req.admin.id);
+  if (!admin) {
+    res.status(401);
+    throw new Error("Admin not found");
+  }
 
-
-  const adminToDelete = await Admin.findById(req.params.id)
+  const adminToDelete = await Admin.findById(req.params.id);
   if (!adminToDelete) {
     res.status(404);
     throw new Error("Driver not found");
   }
-    if (adminToDelete._id === admin._id) {
-      res.status(404);
-      throw new Error("Cannot delete yourself");
-    }
+  if (adminToDelete._id === admin._id) {
+    res.status(404);
+    throw new Error("Cannot delete yourself");
+  }
 
   await adminToDelete.remove();
 
-  res.status(200).json({ 
+  res.status(200).json({
     success: true,
-  msg: 'Successfully removed admin'})
-})
-
+    msg: "Successfully removed admin",
+  });
+});
 
 // @desc Login an admin
 // @route /api/admin
@@ -150,7 +144,7 @@ const loginAdmin = asyncHandler(async (req, res) => {
   //get email
   const foundAdmin = await Admin.findOne({ email });
 
-  if (foundAdmin && (await bycrpt.compare(password, foundAdmin.password))) {
+  if (foundAdmin && (await bcrypt.compare(password, foundAdmin.password))) {
     res.status(200).json({
       _id: foundAdmin._id,
       name: foundAdmin.name,
