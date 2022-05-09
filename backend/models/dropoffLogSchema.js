@@ -1,7 +1,11 @@
-const mongoose = require('mongoose')
+const mongoose = require("mongoose");
 
-const DropoffLogSchema = new mongoose.Schema({
-    date: String,
+const DropoffLogSchema = new mongoose.Schema(
+  {
+    date: {
+      type: Date,
+      default: Date.now(),
+    },
     driver: String,
     vehicle: String,
     name: String,
@@ -9,9 +13,11 @@ const DropoffLogSchema = new mongoose.Schema({
     demographic: String,
     foodType: String,
     area: String,
-    lbsDroppedOff: Number
-}, {collection: 'DropoffLog'});
+    lbsDroppedOff: Number,
+  },
+  { collection: "DropoffLog" }
+);
 
-const DropoffLog = mongoose.model('DropoffLog', DropoffLogSchema)
+const DropoffLog = mongoose.model("DropoffLog", DropoffLogSchema);
 
-module.exports = DropoffLog
+module.exports = DropoffLog;

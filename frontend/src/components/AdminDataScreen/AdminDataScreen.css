@@ -3,7 +3,7 @@
 }
 
 .data-title{
-  margin-top: 70px;
+  margin-top: 50px;
   color: #555555;
   font-weight: bold;
   font-size: 25px;
@@ -20,6 +20,7 @@
   margin: 0 auto;
   text-align: center;
   background-color: white;
+  min-height: 100vh;
 }
 
 .titles{
