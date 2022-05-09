@@ -1,5 +1,6 @@
 import axios from 'axios';
-const API_URL = '/api/location/recipient';
+const SERVER_URL = process.env.REACT_APP_SERVER_URL || '';
+const API_URL = SERVER_URL + '/api/location/recipient';
 /////////////////////////////////////////
 //                                     //
 //     LIST OF RECIPIENT LOCATIONS     //
