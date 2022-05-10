@@ -68,14 +68,14 @@ export default function TransferPage() {
       <div className="tPageString">{name} currently has</div>
       <div className="tPagePounds">{totalWeight} pounds</div>
       <button
-        className="transferButton flex items-center justify-center "
+        className="transferButton flex items-center justify-center transform active:translate-y-2"
         onClick={transfer}
       >
     
         Transfer it
       </button>
       <button
-        className="transferButton flex items-center justify-center"
+        className="transferButton flex items-center justify-center transform active:translate-y-2"
         onClick={leaveIt}
       >
       
