@@ -253,7 +253,7 @@ const EntityForm = (props: any) => {
     />
     <h2>Food Type</h2>
     <h4>Select all that apply</h4>
-    <div className="food-type">
+    <div className="food-type-admin">
       {(foodTypes).map((v:any, index:any) => {
         return(
           <Button className="food-button" id={index} name={v} handleClick={handleFoodClick.bind(this,v)}/>

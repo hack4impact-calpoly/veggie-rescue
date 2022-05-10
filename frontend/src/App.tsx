@@ -13,15 +13,14 @@ import AdminDataScreen from './components/AdminDataScreen/AdminDataScreen';
 import Logs from './components/Logs/Logs';
 import Transfering from './components/Transfering/Transfering';
 import Weight from './components/Weight/Weight';
-import ReduxExample from './components/REDUXEXAMPLE/ReduxExample';
 import NewLogWrapper from './components/NewLogWrapper/NewLogWrapper';
+import AdminLogs from './components/ViewLogsPage/ViewLogsPage';
 
 const App: React.FC = () => {
   return (
     <>
       <Router>
         <Routes>
-        <Route path="/REDUX" element={<ReduxExample />} />
 
           {/* (Unprotected routes) depending on the redirectTo Variable value it redirects to the corresponding page if user is not logged in */}
           <Route path="/Login" element={<LoginScreen />} />
@@ -77,7 +76,13 @@ const App: React.FC = () => {
             element={<ProtectedRoute redirectTo="/AdminLogin" />}
           >
             <Route path="/Admin" element={<AdminDataScreen />} />
-            
+          </Route>
+
+          <Route
+            path="/Logs"
+            element={<ProtectedRoute redirectTo="/AdminLogin" />}
+          >
+            <Route path="/Logs" element={<AdminLogs />} />
           </Route>
 
         </Routes>
