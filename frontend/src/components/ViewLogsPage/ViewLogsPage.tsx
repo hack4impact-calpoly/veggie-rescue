@@ -217,31 +217,31 @@ const columns: GridColDef[] = [
 
 export default function DataTable() {
 
-  // const [pickupData, pickupDataSet] = useState<any>(null);
-  // const dispatch = useAppDispatch();
+  // command for backend: npm start dev
 
-  // useEffect(() => {
-  //   async function fetchMyAPI() {
-  //     let response = dispatch(getPickups());
-  //     pickupDataSet(await response);
-  //     console.log(response);
-  //   }
-  //   fetchMyAPI();
-  // }, []);
+  const dispatch = useAppDispatch();
+  
+  const {
+    pickups,
+  } = useAppSelector((state) => state.pickups);
+
+  useEffect(() => {
+    dispatch(getPickups());
+  }, [dispatch]);
 
   let i = 0;
-  const rows = logs?.map((log: { date: String; driver: String; vehicle: String; name: String; foodType: String; lbsPickedUp: Number; locationType: String; donorEntityType: String; area: String; }) => {
+  const rows = pickups?.map((pickups: { date: String; driver: String; vehicle: String; name: String; foodType: String; lbsPickedUp: Number; locationType: String; donorEntityType: String; area: String; }) => {
   return {
       id: i++,
-      date: log.date,
-      driverName: log.driver,
-      vehicle: log.vehicle,
-      name: log.name,
-      foodType: log.foodType,
-      lbsPickedUp: log.lbsPickedUp,
-      locationType: log.locationType,
-      donorEntityType: log.donorEntityType,
-      area: log.area
+      date: pickups.date,
+      driverName: pickups.driver,
+      vehicle: pickups.vehicle,
+      name: pickups.name,
+      foodType: pickups.foodType,
+      lbsPickedUp: pickups.lbsPickedUp,
+      locationType: pickups.locationType,
+      donorEntityType: pickups.donorEntityType,
+      area: pickups.area
       } 
   }); 
 
