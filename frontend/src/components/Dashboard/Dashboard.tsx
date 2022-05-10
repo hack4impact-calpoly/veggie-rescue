@@ -157,8 +157,8 @@ if(loading){
       </div>
 
       <div className="weight">
-        <div className="current-weight">
-          <h3>Current Weight</h3>
+        <div className="current-weight mt-2 ml-3">
+          <h3>Current Weight:</h3>
         </div>
         <div className="lbs">
           <h2>{vehicle.totalWeight} lbs</h2>

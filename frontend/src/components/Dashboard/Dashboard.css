@@ -1,29 +1,17 @@
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap');
 
 .fa-icon{
-  color: #FF9C55;
+  color: #ff9c55;
 }
 
 .bgimg{
-  background-image: url('../../imgs/carrot-background.png');
-
-}
-/* .container{
-  background-image: url('../../imgs/carrot-background.png');
-  width: 100%;
-  height: 100vh;
-  display: flex;
-  align-items: center;
-  flex-direction: column;
-  font-family: 'Poppins', sans serif;
-} */
+  background-image: url('../../imgs/carrots.png');
+  }
 
 .greeting-box{
-  background-color: #F0F9F1;
+  background-color: rgba(255, 255, 255, 0.763);
   height: 175px;
-  border-radius: 0 0 2.5% 2.5% / 30px;
   width: 100%;
-  border-radius: 0 0 15px 15px;
   box-shadow: 0 2px 20px 2px rgba(0,0,0,0.2);
 }
 
@@ -35,7 +23,8 @@
 }
 
 .greeting h2{
-  color: #176C3E;
+  color: black;
+  /*color: #176C3E;*/
   font-size: 48px;
   font-weight: 600;
 }
@@ -46,14 +35,10 @@
   display: flex;
   width: 450px;
   border-radius: 15px;
-  height: 120px;
+  height: 125px;
   box-shadow: 0px 4px 10px rgba(0,0,0,.25);
   top: -30px;
-}
-
-.current-weight{
-  margin-right: auto;
-  margin-left: 20px;
+  z-index:10;
 }
 
 .lbs{
@@ -62,7 +47,7 @@
   left: 50%;
   transform: translateX(-50%);
   vertical-align: center;
-  margin-top: 30px;
+  margin-top: 40px;
 }
 
 .current-weight h3{
@@ -78,7 +63,7 @@
 }
 
 .action{
-  margin-top: -20px;
+  margin-top: -30px;
   display: flex;
   flex-direction: column;
   background-color: white;
