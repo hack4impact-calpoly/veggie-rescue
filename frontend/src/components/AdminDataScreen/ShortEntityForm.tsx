@@ -53,18 +53,18 @@ const ShortEntityForm = (props: any) => {
     dispatch(getDrivers());
   };
 
-  const dispatchDriver = () => {
-    props.handleShow();
-    dispatch(
-      createDriver({
-        _id: '0',
-        name: volunteerName,
-        // email: volunteerEmail,
-        pin: volunteerPin
-      })
-    );
-    window.location.reload();
-  };
+  // const dispatchDriver = () => {
+  //   props.handleShow();
+  //   dispatch(
+  //     createDriver({
+  //       _id: '0',
+  //       name: volunteerName,
+  //       // email: volunteerEmail,
+  //       pin: volunteerPin
+  //     })
+  //   );
+  //   window.location.reload();
+  // };
 
   // this function is called if we submit a new driver or vehicle
   const dispatchCreateNew = async () => {

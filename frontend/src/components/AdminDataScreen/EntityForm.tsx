@@ -37,6 +37,12 @@ const EntityForm = (props: any) => {
   const [isDonor, setIsDonor] = useState(props.whichEntity);
   const dispatch = useAppDispatch();
 
+  useEffect(() => {
+    if (props.whichEntity) {
+      handleDonor();
+    }
+  }, []);
+
   const dispatchGetDonors = () => {
     dispatch(getDonors());
   };
@@ -66,7 +72,7 @@ const EntityForm = (props: any) => {
           id: '0',
           name: donorName,
           EntityType: entityType,
-          FoodType: foodTypes.toString(), //this is weird
+          FoodType: selectedFoods.toString(), //this is weird
           LocationType: locationType,
           CombinedAreaName: areaName,
         })
@@ -81,7 +87,7 @@ const EntityForm = (props: any) => {
           id: '0',
           name: donorName,
           EntityType: entityType,
-          FoodType: foodTypes.toString(), //this is weird
+          FoodType: selectedFoods.toString(), //this is weird
           DemographicName: demographicName,
           CombinedAreaName: areaName,
         })
@@ -102,7 +108,7 @@ const EntityForm = (props: any) => {
           id: props.donor.id,
           name: donorName,
           EntityType: entityType,
-          FoodType: foodTypes.toString(), //this is weird
+          FoodType: selectedFoods.toString(), //this is weird
           LocationType: locationType,
           CombinedAreaName: areaName,
         })
@@ -115,7 +121,7 @@ const EntityForm = (props: any) => {
           id: props.recipient.id,
           name: donorName,
           EntityType: entityType,
-          FoodType: foodTypes.toString(), //this is weird
+          FoodType: selectedFoods.toString(), //this is weird
           DemographicName: demographicName,
           CombinedAreaName: areaName,
         })
