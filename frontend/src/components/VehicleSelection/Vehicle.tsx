@@ -78,7 +78,7 @@ function Vehicles() {
         {vehicles.filter(car => ((car.name === 'personal vehicle' && car.driver === driver.id) || (car.name !== 'personal vehicle' && !car.isLoggedIn) )
 ).map((car, index: any) => {        
             return (
-              <div className="flex items-center justify-center w-40 m-5 shadow-2xl rounded-3xl">
+              <div className="flex items-center justify-center w-40 m-5 shadow-xl rounded-3xl bg-white transform active:translate-y-2">
                 <VehicleItem car={car} onClick={onClick} key={index} index={undefined} />
               </div>
             );
