@@ -10,13 +10,13 @@
 
 .greeting-box{
   background-color: rgba(255, 255, 255, 0.763);
-  height: 175px;
+  height: 200px;
   width: 100%;
   box-shadow: 0 2px 20px 2px rgba(0,0,0,0.2);
 }
 
 .greeting{
-  padding-top: 60px;
+  padding-top: 80px;
   padding-bottom: 20px;
   padding-left: 10%;
   float: left;
@@ -24,7 +24,6 @@
 
 .greeting h2{
   color: black;
-  /*color: #176C3E;*/
   font-size: 48px;
   font-weight: 600;
 }

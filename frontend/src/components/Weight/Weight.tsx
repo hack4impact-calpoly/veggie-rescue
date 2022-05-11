@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 
 import NumPad from '../NumPad/NumPad';
-// import NavBar from '../NavBar/NavBar';
+
 
 import './Weight.css';
     interface pickupDeliveryObjectSchema {
