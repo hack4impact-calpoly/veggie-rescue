@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@emotion/styled": "^11.8.1",
     "@fortawesome/free-solid-svg-icons": "^6.0.0",
     "@fortawesome/react-fontawesome": "^0.1.17",
     "@mui/material": "^5.6.4",
@@ -40,6 +41,9 @@
     "workbox-routing": "^5.1.4",
     "workbox-strategies": "^5.1.4",
     "workbox-streams": "^5.1.4"
+  },
+  "optionalDependencies": {
+    "fsevents": "2.1.2"
   },
   "scripts": {
     "start": "react-scripts start",
