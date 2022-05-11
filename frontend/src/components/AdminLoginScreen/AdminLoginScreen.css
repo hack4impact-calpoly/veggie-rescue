@@ -1,7 +1,8 @@
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400&display=swap');
 
+/*
 .container2 {
-  background-image: url('../../imgs/carrot-background.png');
+  background-image: url('../../imgs/carrots.png');
   width: 100%;
   height: 100vh;
   font-family: 'Poppins', sans serif;
@@ -11,6 +12,7 @@
   justify-content: center;
   flex-direction: column;
 }
+*/
 
 .text-box {
   width: 460px;
