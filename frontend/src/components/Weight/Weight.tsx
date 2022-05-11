@@ -64,7 +64,7 @@ export default function Weight({PickupDeliveryObject, setPickupDeliveryObject, s
     <div className='container'>
       <main className="main">
         <div className="NumberForm">
-          <span className='test1'>{charNumToInt(charNum)}</span> <span className='test'>&nbsp; lbs</span>
+          <span className='text-4xl'>{charNumToInt(charNum)}</span> <span className='text-3xl text-emerald-700 font-semibold'>&nbsp; lbs</span>
         </div>
       </main>
       <NumPad

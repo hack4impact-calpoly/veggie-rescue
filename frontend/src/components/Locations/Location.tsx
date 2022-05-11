@@ -119,7 +119,7 @@ if(donorLoading || recipientLoading)
   // We display the location filter, followed by the locations returned from filter results.  If there is a current location in state, then we display LocationForm component
   // otherwise it will not be displayed
   return (
-    <div className="main">
+    <div className="">
 
       {!current && (
         <LocationFilter
