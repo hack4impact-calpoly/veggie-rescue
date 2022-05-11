@@ -216,9 +216,7 @@ const columns: GridColDef[] = [
 ];
 
 export default function DataTable() {
-
   // command for backend: npm start dev
-
   const dispatch = useAppDispatch();
   
   const {
