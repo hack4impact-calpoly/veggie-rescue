@@ -4,6 +4,8 @@ import { useAppSelector, useAppDispatch } from '../../app/hooks';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 
+import NavBarButton from '../../imgs/button_dark_left.svg';
+
 // import driverAuth, vehicles, batchDropoff and batchPickup slice
 import { clear as clearDrivers } from '../../features/driverAuth/driverAuthSlice';
 import {
@@ -37,6 +39,14 @@ export default function TransferPage() {
     }
   }, [dispatch, isLoggedOut, isLoggingOut, navigate]);
 
+  function back() {
+    if (isLoggingOut){
+      navigate("/Dashboard");
+    } else {
+      navigate('/Vehicles')
+    }
+  }
+
   function transfer() {
     dispatch(resetVehicles());
     navigate('/Transfering');
@@ -65,6 +75,9 @@ export default function TransferPage() {
 
   return (
     <div className="container">
+      <button className='border-none mr-auto ml-[15px] mt-[15px] mb-[10px] drop-shadow-sm active:translate-y-2' onClick={back}>
+          <img src={NavBarButton} alt='backButton'></img>
+      </button>
       <div className="tPageString">{name} currently has</div>
       <div className="tPagePounds">{totalWeight} pounds</div>
       <button
