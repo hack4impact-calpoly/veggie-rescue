@@ -5,7 +5,7 @@ const SERVER_URL = process.env.REACT_APP_SERVER_URL ||  '';
 interface DriverData {
   _id: string,
   name: string;
-  email: string;
+  // email: string;
   pin: string;
 }
 
@@ -69,7 +69,7 @@ const getDriver = async (token: string) => {
 };
 
 // update a driver given its id as a parameter... can be admin or driver
-const update = async (
+const updateDriver = async (
   driverData: DriverData,
   token: string
 ) => {
@@ -111,7 +111,7 @@ const driverAuthService = {
   getDrivers,
   createDriver,
   getDriver,
-  update,
+  updateDriver,
   deleteDriver
 };
 

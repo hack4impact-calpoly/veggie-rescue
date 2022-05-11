@@ -13,7 +13,7 @@ interface Driver {
 interface DriverData {
    _id: string,
   name: string;
-  email: string;
+  // email: string;
   pin: string;
 }
 
@@ -161,7 +161,7 @@ export const updateDriver = createAsyncThunk(
       if (!token) {
         token = state.driverAuth.driver.token;
       }
-      return await driverAuthService.update(driverData, token);
+      return await driverAuthService.updateDriver(driverData, token);
     } catch (error: any) {
       const message =
         (error.response &&

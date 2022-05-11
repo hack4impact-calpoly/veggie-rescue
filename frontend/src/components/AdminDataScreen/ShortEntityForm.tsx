@@ -5,22 +5,27 @@ import { useAppSelector, useAppDispatch } from '../../app/hooks';
 // import assets
 import Spinner from '../Spinner/Spinner';
 
-//import vehicle and driver slice
-import { createDriver } from '../../features/driverAuth/driverAuthSlice';
 import {
   getVehicles,
   updateVehicle,
   deleteVehicle,
   createVehicle
 } from '../../features/vehicles/VehiclesSlice';
+import {
+  getDrivers,
+  updateDriver,
+  deleteDriver,
+  createDriver
+} from '../../features/driverAuth/driverAuthSlice';
 import { toast } from 'react-toastify';
 
 /* Form to add driver or vehicle */
 const ShortEntityForm = (props: any) => {
   /* Driver and vehicle state data here */
-  const [volunteerName, setName] = useState('');
-  const [volunteerPin, setPin] = useState('');
-  const [volunteerEmail, setEmail] = useState('');
+  // const [volunteerName, setName] = useState('');
+  const [volunteerName, setName] = useState(props.isUpdate ? props.whichEntity ? props.vehicle.name : props.volunteer.name : '');
+  // const [volunteerPin, setPin] = useState('');
+  const [volunteerPin, setPin] = useState(props.isUpdate ? props.whichEntity ? '' : props.volunteer.pin : '');
   const [volunteer, setVolunteer] = useState(true);
   const [vehicle, setVehicle] = useState(false);
   const [isVehicle, setIsVehicle] = useState(props.whichEntity);
@@ -44,22 +49,26 @@ const ShortEntityForm = (props: any) => {
   const dispatchGetVehicles = () => {
     dispatch(getVehicles());
   };
-
-  const dispatchDriver = () => {
-    props.handleShow();
-    dispatch(
-      createDriver({
-        _id: '0',
-        name: volunteerName,
-        email: volunteerEmail,
-        pin: volunteerPin
-      })
-    );
-    window.location.reload();
+  const dispatchGetVolunteers = () => {
+    dispatch(getDrivers());
   };
+
+  // const dispatchDriver = () => {
+  //   props.handleShow();
+  //   dispatch(
+  //     createDriver({
+  //       _id: '0',
+  //       name: volunteerName,
+  //       // email: volunteerEmail,
+  //       pin: volunteerPin
+  //     })
+  //   );
+  //   window.location.reload();
+  // };
 
   // this function is called if we submit a new driver or vehicle
   const dispatchCreateNew = async () => {
+    console.log("CREATE")
     if (isVehicle) {
       await dispatch(
         createVehicle({
@@ -73,12 +82,23 @@ const ShortEntityForm = (props: any) => {
     } else {
       console.log('creation of a new Volunteer');
       // here we can put the call to create a new volunteer
+      await dispatch(
+        createDriver({
+          _id: '0',
+          name: volunteerName,
+          pin: volunteerPin
+        })
+      );
+      toast.success('Successfully created new volunteer.');
+
+      dispatchGetVolunteers();
     }
 
     props.handleShow();
   };
 
   const dispatchUpdate = async () => {
+    console.log("UPDAATE")    
     if (isVehicle) {
       await dispatch(
         updateVehicle({
@@ -89,12 +109,22 @@ const ShortEntityForm = (props: any) => {
       toast.success('Successfully updated vehicle.');
       dispatchGetVehicles();
     } else {
-      console.log('update of a volunteer');
+      console.log('update of a volunteer: ' + volunteerName + ", " + volunteerPin);
       // here we can put the call to update a volunteer
+      await dispatch(
+        updateDriver({
+          _id: props.volunteer._id,
+          name: volunteerName,
+          pin: volunteerPin
+        })
+      );
+      toast.success('Successfully updated volunteer.');
+      dispatchGetVolunteers();
     }
     props.handleShow();
   };
   const dispatchDelete = async (e: any) => {
+    console.log("DELETE")
     e.preventDefault();
     if (isVehicle) {
       await dispatch(deleteVehicle(props.vehicle._id));
@@ -102,7 +132,9 @@ const ShortEntityForm = (props: any) => {
       dispatchGetVehicles();
     } else {
       console.log('deletion of person');
-      // this is where we can delete a person
+      await dispatch(deleteDriver(props.volunteer._id));
+      toast.success('Successfully deleted volunteer.');
+      dispatchGetVolunteers();
     }
 
     props.handleShow();
@@ -119,19 +151,40 @@ const ShortEntityForm = (props: any) => {
   }
 
   function handleSubmit(e: any) {
-    // added check to see if it is a volunteer or a driver
     e.preventDefault();
-    !volunteer && !vehicle
-      ? toast.error('Please select Volunteer or Vehicle')
-      : volunteerName === ''
-      ? toast.error('Missing Name')
-      : volunteer && volunteerPin === ''
-      ? toast.error('Missing Pin')
-      : isVehicle
-      ? props.isUpdate
-        ? dispatchUpdate()
-        : dispatchCreateNew()
-      : dispatchDriver();
+    if (isVehicle && props.isUpdate){
+      if (volunteerName === '')
+        toast.error('Missing Name')
+      else
+        dispatchUpdate();
+    }
+    else if (isVehicle && !props.isUpdate){
+      if (volunteerName === '')
+        toast.error('Missing Name')
+      else
+        dispatchCreateNew();
+    }
+    else if (!isVehicle && props.isUpdate){
+      // console.log("here")
+      if (volunteerName === '')
+        toast.error('Missing Name')
+      else if (volunteerPin === '')
+        toast.error('Missing Pin')
+      else if (volunteerPin.length !== 4)
+        toast.error('Pin must be 4 characters')
+      else
+        dispatchUpdate();
+    }
+    else if (!isVehicle && !props.isUpdate){
+      if (volunteerName === '')
+        toast.error('Missing Name')
+      else if (volunteerPin === '')
+        toast.error('Missing Pin')
+      else if (volunteerPin.length !== 4)
+        toast.error('Pin must be 4 characters')
+      else
+        dispatchCreateNew();
+    }
   }
   if (vehicleIsLoading || driverIsLoading) {
     return <Spinner />;
@@ -174,34 +227,36 @@ const ShortEntityForm = (props: any) => {
         <h2>Name</h2>
         <input
           className="input"
-          placeholder={
-            props.isUpdate && isVehicle ? props.vehicle.name : 'Name'
-          }
+          defaultValue={
+            (props.isUpdate)
+              ? (isVehicle)
+                  ? props.vehicle.name 
+                  : props.volunteer.name
+              : ""
+              }
+            placeholder={
+              (!props.isUpdate) ? 'Name' : ''
+            }
           onChange={(e: any) => setName(e.target.value)}
         />
-        {volunteer && (
-          <div className="internal-div">
-            <h2>Email</h2>
-            <input
-              className="input"
-              placeholder="Email"
-              onChange={(e: any) => setEmail(e.target.value)}
-            />
-          </div>
-        )}
-        {volunteer && (
+        {!isVehicle && (
           <div className="internal-div">
             <h2>Pin</h2>
             <input
               className="input"
-              placeholder="Pin"
+              placeholder={
+                !props.isUpdate ? 'Pin' : ''
+              }
+              defaultValue={
+                props.isUpdate ? props.volunteer.pin : ''
+              }
               onChange={(e: any) => setPin(e.target.value)}
             />
           </div>
         )}
         <div className="flex flex-row w-full">
           <button type="submit" id="form-submit" onClick={handleSubmit}>
-            {props.isUpdate && isVehicle ? 'Update' : 'Done'}
+            {props.isUpdate ? 'Update' : 'Done'}
           </button>
           {props.isUpdate && (
             <button type="submit" id="form-submit" onClick={dispatchDelete}>
