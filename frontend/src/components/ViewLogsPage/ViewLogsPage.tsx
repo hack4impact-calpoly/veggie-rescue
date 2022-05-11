@@ -9,6 +9,7 @@ import Button from '@mui/material/Button';
 import { logs } from '../../data/dbMock';
 import { useAppDispatch, useAppSelector } from '../../app/hooks';
 import { getPickups } from '../../features/pickups/pickupsSlice';
+import { getDropoffs } from '../../features/dropoffs/dropoffsSlice';
 
 // props for expanding cell if too long
 interface GridCellExpandProps {
@@ -218,29 +219,86 @@ const columns: GridColDef[] = [
 export default function DataTable() {
   // command for backend: npm start dev
   const dispatch = useAppDispatch();
-  const {
-    pickups,
-  } = useAppSelector((state) => state.pickups);
+  const { pickups } = useAppSelector((state) => state.pickups);
+  const { dropoffs } = useAppSelector((state) => state.dropoffs);
 
   useEffect(() => {
     dispatch(getPickups());
-  }, [dispatch]);
+    dispatch(getDropoffs());
+  }, [dispatch, pickups, dropoffs]);
+
+  // const [rowData, setRowData] = useState(
+  //   { date: String,
+  //     driver: String,
+  //     vehicle: String,
+  //     name: String,
+  //     foodType: String,
+  //     lbsPickedUp: Number,
+  //     locationType: String,
+  //     donorEntityType: String,
+  //     area: String,
+  //   }[];
+  // );
+
+  //change button text on click
+  let temp = 0;
+  let data = pickups
+  const [buttonText, setButtonText] = React.useState('Dropoffs');
+  const handleClick = () => {
+    setButtonText(buttonText === 'Dropoffs' ? 'Pickups' : 'Dropoffs');
+    if (buttonText === 'Dropoffs') {
+      temp = 1;
+      console.log(temp);
+      data = dropoffs;
+    } else {
+      temp = 0;
+      console.log(temp);
+      data = pickups;
+    }
+  }
+
+//   function getRows() {
+//     if (temp === 1) {
+//       data = pickups
+//     } else {
+//       data = dropoffs
+//     }
+//     let i = 0;
+//     let rows = data?.map((data: { date: String; driver: String; vehicle: String; name: String; foodType: String; lbsPickedUp: Number; locationType: String; donorEntityType: String; area: String; }) => {
+//       return {
+//           id: i++,
+//           date: data.date,
+//           driverName: data.driver,
+//           vehicle: data.vehicle,
+//           name: data.name,
+//           foodType: data.foodType,
+//           lbsPickedUp: data.lbsPickedUp,
+//           locationType: data.name, // locationType is the same as name in the backend 
+//           donorEntityType: data.donorEntityType,
+//           area: data.area
+//           } 
+//     });
+//   return rows;
+// }
 
   let i = 0;
-  const rows = pickups?.map((pickups: { date: String; driver: String; vehicle: String; name: String; foodType: String; lbsPickedUp: Number; locationType: String; donorEntityType: String; area: String; }) => {
-  return {
-      id: i++,
-      date: pickups.date,
-      driverName: pickups.driver,
-      vehicle: pickups.vehicle,
-      name: pickups.name,
-      foodType: pickups.foodType,
-      lbsPickedUp: pickups.lbsPickedUp,
-      locationType: pickups.locationType,
-      donorEntityType: pickups.donorEntityType,
-      area: pickups.area
-      } 
-  }); 
+  let rows = data?.map((data: { date: String; driver: String; vehicle: String; name: String; foodType: String; lbsPickedUp: Number; locationType: String; donorEntityType: String; area: String; }) => {
+      return {
+          id: i++,
+          // id: newData.id,
+          date: data.date,
+          driverName: data.driver,
+          vehicle: data.vehicle,
+          name: data.name,
+          foodType: data.foodType,
+          lbsPickedUp: data.lbsPickedUp,
+          locationType: data.name, // locationType is the same as name in the backend 
+          donorEntityType: data.donorEntityType,
+          area: data.area
+          } 
+    });
+    // setRowData(rows);
+
 
   return (
       <div className='bg-green-50 w-screen h-screen'>
@@ -269,7 +327,8 @@ export default function DataTable() {
                   <Button
                     color="success"
                     variant="contained"
-                    onClick={() => console.log('clicked')}>Toggle Pickup/Dropoff
+                    onClick={handleClick}>
+                    {buttonText}
                   </Button>
               </div>
               </div>
