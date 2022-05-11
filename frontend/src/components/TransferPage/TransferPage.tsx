@@ -1,5 +1,4 @@
 import { useEffect } from 'react';
-import './TransferPage.css';
 import { useAppSelector, useAppDispatch } from '../../app/hooks';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
@@ -64,21 +63,22 @@ export default function TransferPage() {
   }
 
   return (
-    <div className="container">
-      <div className="tPageString">{name} currently has</div>
-      <div className="tPagePounds">{totalWeight} pounds</div>
-      <button
-        className="transferButton flex items-center justify-center transform active:translate-y-2"
-        onClick={transfer}
-      >
-    
+    <div className="container p-2">
+      <div className="mx-3 my-7 text-5xl font-semibold text-lime-900">{name} currently has</div>
+      <div className="my-4 text-5xl font-bold text-amber-600">{totalWeight} lbs</div>
+      <button className="
+          bg-white rounded-2xl w-3/5 h-1/5 drop-shadow-lg my-5
+          text-5xl font-semibold
+          flex items-center justify-center transform active:translate-y-2"
+        onClick={transfer}>
         Transfer it
       </button>
       <button
-        className="transferButton flex items-center justify-center transform active:translate-y-2"
-        onClick={leaveIt}
-      >
-      
+        className="
+          bg-white rounded-xl w-3/5 h-1/5 drop-shadow-lg my-5
+          text-5xl font-semibold
+          flex items-center justify-center transform active:translate-y-2"
+        onClick={leaveIt}>
         Leave it
       </button>
     </div>
