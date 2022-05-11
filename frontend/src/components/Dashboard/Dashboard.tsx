@@ -156,9 +156,9 @@ if(loading){
         </div>
       </div>
 
-      <div className="weight">
-        <div className="current-weight">
-          <h3>Current Weight</h3>
+      <div className="weight bg-amber-600">
+        <div className="current-weight mt-2 ml-3">
+          <h3>Current Weight:</h3>
         </div>
         <div className="lbs">
           <h2>{vehicle.totalWeight} lbs</h2>
@@ -168,20 +168,20 @@ if(loading){
       <div className="action">
         <button onClick={() => handleClick(0)}>
           <div className="action-item">
-            <FaPencilAlt className="fa-icon" />
+            <FaPencilAlt className="text-amber-600" />
             <div>Start a Log</div>
           </div>
         </button>
         <button onClick={() => handleClick(1)}>
           <div className="action-item">
-            <FaClipboardList className="fa-icon" />
+            <FaClipboardList className="text-amber-600" />
             <div>View All Logs</div>
           </div>
         </button>
         <div id="bottom-button">
           <button onClick={() => handleClick(2)}>
             <div className="action-item">
-              <FaHandPaper className="fa-icon" />
+              <FaHandPaper className="text-amber-600" />
               <div>Punch Out</div>
             </div>
           </button>

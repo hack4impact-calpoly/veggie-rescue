@@ -8,18 +8,25 @@ import NewVolunteersCard from '../../components/VolunteersCard/NewVolunteersCard
 import NewDonorsCard from '../../components/DonorsCard/NewDonorsCard';
 import EntityForm from './EntityForm';
 import ShortEntityForm from './ShortEntityForm';
-import { deliverySchema, pickupSchema } from '../../data/dbMock';
+// import { deliverySchema, pickupSchema, dnoo } from '../../data/dbMock';
 import { AiOutlineSearch } from 'react-icons/ai';
 import { useAppSelector, useAppDispatch } from '../../app/hooks';
 import {
   getDrivers,
-  deleteDriver
+  // deleteDriver
 } from '../../features/driverAuth/driverAuthSlice';
 import {
   getVehicles,
 } from '../../features/vehicles/VehiclesSlice';
+import { getDonors } from '../../features/donors/donorSlice';
+import { getRecipients } from '../../features/recipients/recipientsSlice';
 import AdminHeader from '../AdminHeader/AdminHeader';
 import Spinner from '../Spinner/Spinner';
+
+// import VehicleEditForm from './EditComponents/VehicleEditForm';
+// import VolunteerEditForm from './EditComponents/VolunteerEditForm';
+// import DonorEditForm from './EditComponents/DonorEditForm';
+// import RecipientEditForm from './EditComponents/RecipientEditForm';
 
 const AdminDataScreen = () => {
   const [loading, setLoading] = useState(false);
@@ -31,7 +38,6 @@ const AdminDataScreen = () => {
   const [q, setQ] = useState('');
   const [searchParam, setSearchParam] = useState(['name']);
   const [isUpdate, setUpdate] = useState(false);
-  const [currentVehicle, setCurrentVehicle] = useState(null);
   const dispatch = useAppDispatch();
   const { isLoading, drivers, isError, isSuccess, message } = useAppSelector(
     (state) => state.driverAuth
@@ -42,17 +48,36 @@ const AdminDataScreen = () => {
     isUpdate: vehicleIsUpdate,
   } = useAppSelector((state) => state.vehicle);
 
+  const {
+    donors: pickupSchema,
+    isSuccess: donorSuccess,
+  } = useAppSelector((state) => state.donors);
+
+  const {
+    recipients: deliverySchema,
+    isSuccess: recipientsSuccess,
+  } = useAppSelector((state) => state.recipients);
+
+  // const [edit, setEdit] = useState(false);
+  // const [dataToEdit, setDataToEdit] = useState({});
+  const [currentVehicle, setCurrentVehicle] = useState(null);
+  const [currentVolunteer, setCurrentVolunteer] = useState(null);
+  const [currentDonor, setCurrentDonor] = useState(null);
+  const [currentRecipient, setCurrentRecipient] = useState(null);
+
   
   useEffect(() => {
      dispatch(getDrivers());
-    dispatch(getVehicles());
+     dispatch(getVehicles());
+     dispatch(getDonors());
+     dispatch(getRecipients());
   }, [dispatch]);
 
-  const removeDriver = (id: string) => {
-    window.confirm('Are you sure you want to delete this driver?') &&
-      dispatch(deleteDriver(id));
-    window.location.reload();
-  };
+  // const removeDriver = (id: string) => {
+  //   window.confirm('Are you sure you want to delete this driver?') &&
+  //     dispatch(deleteDriver(id));
+  //   window.location.reload();
+  // };
 
   function handleVolunteers() {
     setVolunteers((prev) => !prev);
@@ -72,7 +97,19 @@ const AdminDataScreen = () => {
 
   function vehicleData(vehicle: any) {
     setCurrentVehicle(vehicle);
-    setUpdate(true)
+    setUpdate(true);
+  }
+  function volunteerData(volunteer: any){
+    setCurrentVolunteer(volunteer);
+    setUpdate(true);
+  }
+  function donorData(donor: any){
+    setCurrentDonor(donor);
+    setUpdate(true);
+  }
+  function recipientData(recipient: any){
+    setCurrentRecipient(recipient);
+    setUpdate(true);
   }
   function handleDonors() {
     setVolunteers(false);
@@ -134,6 +171,7 @@ const AdminDataScreen = () => {
         );
       });
     } else if (donors) {
+      console.log(pickupSchema)
       return pickupSchema.filter((item: any) => {
         return searchParam.some((newItem: any) => {
           return (
@@ -142,6 +180,7 @@ const AdminDataScreen = () => {
         });
       });
     } else {
+      console.log(deliverySchema)
       return deliverySchema.filter((item: any) => {
         return searchParam.some((newItem: any) => {
           return (
@@ -213,19 +252,26 @@ const AdminDataScreen = () => {
 
           {volunteers && (
             <div className="logs">
-              <button onClick={handleShowModal}>
+              <button onClick={()=>{handleShowModal(); setUpdate(false);}}>
                 <NewVolunteersCard />
               </button>
-              {showModal && <ShortEntityForm handleShow={handleShowModal} />}
+              {showModal && (
+                <ShortEntityForm
+                  handleShow={handleShowModal}
+                  whichEntity={false}
+                  isUpdate={isUpdate} 
+                  volunteer={currentVolunteer}
+                />
+              )}
               {search(q).map((item: any, index: any) => {
                 return (
-                  <VolunteersCard
-                    index={index}
-                    name={item.name}
-                    pin={item.pin}
-                    id={item._id}
-                    removeDriver={removeDriver}
-                  />
+                    <VolunteersCard
+                      index={index}
+                      handleShow={handleShowModal}
+                      volunteer = {item}
+                      // removeDriver={removeDriver}
+                      volunteerHandler={volunteerData}
+                    />
                 );
               })}
             </div>
@@ -259,19 +305,24 @@ const AdminDataScreen = () => {
 
           {donors && (
             <div className="logs long-log">
-              <button onClick={handleShowModal}>
+              {/* <button onClick={handleShowModal}> */}
+              <button onClick={()=>{handleShowModal(); setUpdate(false);}}>
                 <NewDonorsCard />
               </button>
-              {showModal && <EntityForm handleShow={handleShowModal} />}
+              {showModal && 
+                <EntityForm 
+                  handleShow={handleShowModal} 
+                  whichEntity={true}
+                  isUpdate={isUpdate} 
+                  donor={currentDonor}
+                  />}
               {search(q).map((item: any, index: any) => {
                 return (
                   <DonorsCard
-                    index={item.id}
-                    donor={item.name}
-                    entityType={item.donorEntityType}
-                    locationType={item.donorLocationType}
-                    foodType={item.foodType}
-                    areaName={item.area}
+                    index={index}
+                    donor={item}
+                    handleShow={handleShowModal}
+                    donorHandler={donorData}
                   />
                 );
               })}
@@ -280,19 +331,30 @@ const AdminDataScreen = () => {
 
           {recipients && (
             <div className="logs long-log">
-              <button onClick={handleShowModal}>
+              {/* <button onClick={handleShowModal}> */}
+              <button onClick={()=>{handleShowModal(); setUpdate(false);}}>
                 <NewDonorsCard />
               </button>
-              {showModal && <EntityForm handleShow={handleShowModal} />}
+              {showModal && 
+                <EntityForm 
+                  handleShow={handleShowModal} 
+                  whichEntity={false}
+                  isUpdate={isUpdate} 
+                  recipient={currentRecipient}
+                  />}
               {search(q).map((item: any, index: any) => {
                 return (
                   <RecipientsCard
-                    index={item.id}
-                    donor={item.name}
-                    entityType={item.recipientEntityType}
-                    demographicName={item.demographic}
-                    foodType={item.foodType}
-                    areaName={item.area}
+                    // index={item.id}
+                    // donor={item.name}
+                    // entityType={item.recipientEntityType}
+                    // demographicName={item.demographic}
+                    // foodType={item.foodType}
+                    // areaName={item.area}
+                    index={index}
+                    recipient={item}
+                    handleShow={handleShowModal}
+                    recipientHandler={recipientData}
                   />
                 );
               })}
