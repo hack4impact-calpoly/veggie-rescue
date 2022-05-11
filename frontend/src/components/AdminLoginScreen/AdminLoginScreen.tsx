@@ -73,7 +73,7 @@ if(isLoading){
 }
   return(
       
-    <div className="bg-[url('imgs/carrot-background.png')] font-Poppins w-full h-screen relative flex items-center justify-center flex-col">
+    <div className="bg-[url('imgs/carrots.png')] font-Poppins w-full h-screen relative flex items-center justify-center flex-col">
       <div className="bg-white w-[460px] h-[525px] rounded-[15px] shadow-[0_2px_20px_2px_rgba(0,0,0,0.2)] flex flex-col items-center justify-center">
         <div className="w-[350px] pt-[0px] pb-[15px]">
           <img src={logo} alt="veggie rescue logo" />
