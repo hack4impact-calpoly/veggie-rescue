@@ -45,11 +45,11 @@ const Locations = ({locations, current, filtered, setCurrent, clearFilter, setCr
   // if the filtered array is 0, that means our typing didn't return any results so an option to create a new location is presented to user.
   // we setCreateNew(true) so that an option to input a new location is given in root
   return (
-    <div className="locationParent">
+    <div className="">
           {current === undefined && (
             <div>
               {filtered !== undefined ? (
-                <div>
+                <div >
                   {filtered.length > 0 ? (
                     filtered
                       .slice(0, 3)
