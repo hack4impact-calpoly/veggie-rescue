@@ -8,14 +8,6 @@
   align-items: center;
 }
 
-.logs-container{
-  height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  margin-top: 50px;
-  background-color: #F0F9F1;
-}
 
 .logs{
   margin-top: 30px;
