@@ -84,7 +84,6 @@ const App: React.FC = () => {
           >
             <Route path="/Logs" element={<AdminLogs />} />
           </Route>
-
         </Routes>
       </Router>
       <ToastContainer />
