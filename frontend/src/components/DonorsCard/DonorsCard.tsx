@@ -14,25 +14,27 @@ const DonorsCard = (props: any) => {
         <div className="entry-container">
         <div className="donors-entry">
           <div className="donors-entry-title">Entity Type</div>
-          <div className="donors-entry-text">{ props.donor.donorEntityType }</div>
+          <div className="donors-entry-text">{ props.donor.EntityType }</div>
         </div>
         <div className="donors-entry">
           <div className="donors-entry-title">Location Type</div>
-          <div className="donors-entry-text">{ props.donor.donorLocationType }</div>
+          <div className="donors-entry-text">{ props.donor.LocationType }</div>
         </div>
         <div className="donors-entry">
           <div className="donors-entry-title">Food Type</div>
           <div className="donors-entry-text">
-            {(props.donor.foodType).map((v:any, index:any) => {
+            {/* {(props.donor.FoodType).map((v:any, index:any) => {
               return(
                 <div>{(index ? ', ' : '')}{v}</div>
               );
-            })}
+            })} */}
+             {/* <div className="donors-entry-title">Food Type</div> */}
+            <div className="donors-entry-text">{ props.donor.FoodType }</div>
           </div>
         </div>
         <div className="donors-entry">
           <div className="donors-entry-title">Combined Area Name</div>
-          <div className="donors-entry-text">{ props.donor.area }</div>
+          <div className="donors-entry-text">{ props.donor.CombinedAreaName }</div>
         </div>
         </div>
     </div>

@@ -8,7 +8,7 @@ import NewVolunteersCard from '../../components/VolunteersCard/NewVolunteersCard
 import NewDonorsCard from '../../components/DonorsCard/NewDonorsCard';
 import EntityForm from './EntityForm';
 import ShortEntityForm from './ShortEntityForm';
-import { deliverySchema, pickupSchema } from '../../data/dbMock';
+// import { deliverySchema, pickupSchema, dnoo } from '../../data/dbMock';
 import { AiOutlineSearch } from 'react-icons/ai';
 import { useAppSelector, useAppDispatch } from '../../app/hooks';
 import {
@@ -18,9 +18,10 @@ import {
 import {
   getVehicles,
 } from '../../features/vehicles/VehiclesSlice';
+import { getDonors } from '../../features/donors/donorSlice';
+import { getRecipients } from '../../features/recipients/recipientsSlice';
 import AdminHeader from '../AdminHeader/AdminHeader';
 import Spinner from '../Spinner/Spinner';
-import { getDonors } from '../../features/donors/donorSlice';
 
 // import VehicleEditForm from './EditComponents/VehicleEditForm';
 // import VolunteerEditForm from './EditComponents/VolunteerEditForm';
@@ -47,6 +48,16 @@ const AdminDataScreen = () => {
     isUpdate: vehicleIsUpdate,
   } = useAppSelector((state) => state.vehicle);
 
+  const {
+    donors: pickupSchema,
+    isSuccess: donorSuccess,
+  } = useAppSelector((state) => state.donors);
+
+  const {
+    recipients: deliverySchema,
+    isSuccess: recipientsSuccess,
+  } = useAppSelector((state) => state.recipients);
+
   // const [edit, setEdit] = useState(false);
   // const [dataToEdit, setDataToEdit] = useState({});
   const [currentVehicle, setCurrentVehicle] = useState(null);
@@ -59,6 +70,7 @@ const AdminDataScreen = () => {
      dispatch(getDrivers());
      dispatch(getVehicles());
      dispatch(getDonors());
+     dispatch(getRecipients());
   }, [dispatch]);
 
   // const removeDriver = (id: string) => {
@@ -159,6 +171,7 @@ const AdminDataScreen = () => {
         );
       });
     } else if (donors) {
+      console.log(pickupSchema)
       return pickupSchema.filter((item: any) => {
         return searchParam.some((newItem: any) => {
           return (
@@ -167,6 +180,7 @@ const AdminDataScreen = () => {
         });
       });
     } else {
+      console.log(deliverySchema)
       return deliverySchema.filter((item: any) => {
         return searchParam.some((newItem: any) => {
           return (

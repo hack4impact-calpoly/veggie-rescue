@@ -164,7 +164,7 @@ export const recipientsSlice = createSlice({
       .addCase(createRecipient.fulfilled, (state, action) => {
         state.isLoading = false;
         state.isSuccess = true;
-        state.recipients = action.payload;
+        state.message = action.payload;
       })
       .addCase(createRecipient.rejected, (state, action) => {
         state.isLoading = false;
@@ -177,7 +177,7 @@ export const recipientsSlice = createSlice({
       .addCase(updateRecipient.fulfilled, (state, action) => {
         state.isLoading = false;
         state.isSuccess = true;
-        state.recipients = action.payload;
+        state.message = action.payload;
       })
       .addCase(updateRecipient.rejected, (state, action) => {
         state.isLoading = false;
@@ -190,7 +190,7 @@ export const recipientsSlice = createSlice({
       .addCase(deleteRecipient.fulfilled, (state, action) => {
         state.isLoading = false;
         state.isSuccess = true;
-        state.recipients = action.payload;
+        state.message = action.payload;
       })
       .addCase(deleteRecipient.rejected, (state, action) => {
         state.isLoading = false;

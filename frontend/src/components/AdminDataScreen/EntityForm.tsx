@@ -22,17 +22,17 @@ import {
 const EntityForm = (props: any) => {
 
   /* Recipient and donor state data here */
-  const [entityType, setEntityType] = useState(props.isUpdate ? props.whichEntity ? props.donor.donorEntityType : props.recipient.recipientEntityType : '');
-  const [locationType, setLocationType] = useState(props.isUpdate ? props.whichEntity ? props.donor.donorLocationType : '' : '');
-  const [areaName, setAreaName] = useState(props.isUpdate ? props.whichEntity ? props.donor.area : props.recipient.area : '');
+  const [entityType, setEntityType] = useState(props.isUpdate ? props.whichEntity ? props.donor.EntityType : props.recipient.EntityType : '');
+  const [locationType, setLocationType] = useState(props.isUpdate ? props.whichEntity ? props.donor.LocationType : '' : '');
+  const [areaName, setAreaName] = useState(props.isUpdate ? props.whichEntity ? props.donor.CombinedAreaName : props.recipient.CombinedAreaName : '');
   const [donorName, setDonorName] = useState(props.isUpdate ? props.whichEntity ? props.donor.name : props.recipient.name : '');
-  const [demographicName, setDemographicName] = useState(props.isUpdate ? props.whichEntity ? '' : props.recipient.demographic : '');
+  const [demographicName, setDemographicName] = useState(props.isUpdate ? props.whichEntity ? '' : props.recipient.DemographicName : '');
 
   const [donor, setDonor] = useState(true);
   const [recipient, setRecipient] = useState(false);
   let foodTypes = ['Baked','Packaged','Produce'];
-  const [selectedFoods, setSelectedFoods] = useState(props.isUpdate ? props.whichEntity ? props.donor.foodType : props.recipient.foodType : []);
-  // const [selectedFoods, setSelectedFoods] = useState([]);
+  // const [selectedFoods, setSelectedFoods] = useState(props.isUpdate ? props.whichEntity ? props.donor.foodType : props.recipient.foodType : []);
+  const [selectedFoods, setSelectedFoods] = useState([]);
 
   const [isDonor, setIsDonor] = useState(props.whichEntity);
   const dispatch = useAppDispatch();
@@ -49,19 +49,6 @@ const EntityForm = (props: any) => {
   const dispatchGetRecipients = () => {
     dispatch(getRecipients());
   };
-
-  // const dispatchDriver = () => {
-  //   props.handleShow();
-  //   // dispatch(
-  //   //   createDriver({
-  //   //     _id: '0',
-  //   //     name: volunteerName,
-  //   //     // email: volunteerEmail,
-  //   //     pin: volunteerPin
-  //   //   })
-  //   // );
-  //   window.location.reload();
-  // };
 
   // this function is called if we submit a new driver or vehicle
   const dispatchCreateNew = async () => {
@@ -80,6 +67,7 @@ const EntityForm = (props: any) => {
       toast.success('Successfully created new donor.');
       dispatchGetDonors();
     } else {
+      console.log(selectedFoods.toString());
       // console.log('creation of a new Volunteer');
       // here we can put the call to create a new volunteer
       await dispatch(
@@ -105,7 +93,7 @@ const EntityForm = (props: any) => {
     if (isDonor) {
       await dispatch(
         updateDonor({
-          id: props.donor.id,
+          id: props.donor._id,
           name: donorName,
           EntityType: entityType,
           FoodType: selectedFoods.toString(), //this is weird
@@ -116,9 +104,10 @@ const EntityForm = (props: any) => {
       toast.success('Successfully updated donor.');
       dispatchGetDonors();
     } else {
+      console.log(selectedFoods.toString());
       await dispatch(
         updateRecipient({
-          id: props.recipient.id,
+          id: props.recipient._id,
           name: donorName,
           EntityType: entityType,
           FoodType: selectedFoods.toString(), //this is weird
@@ -135,12 +124,12 @@ const EntityForm = (props: any) => {
     console.log("DELETE")
     e.preventDefault();
     if (isDonor) {
-      await dispatch(deleteDonor(props.donor.id));
+      await dispatch(deleteDonor(props.donor._id));
       toast.success('Successfully deleted donor.');
       dispatchGetDonors();
     } else {
       console.log('deletion of person');
-      await dispatch(deleteRecipient(props.recipient.id));
+      await dispatch(deleteRecipient(props.recipient._id));
       toast.success('Successfully deleted recipient.');
       dispatchGetRecipients();
     }
@@ -251,8 +240,8 @@ const EntityForm = (props: any) => {
       defaultValue={
         (props.isUpdate)
           ? (isDonor)
-            ? props.donor.donorEntityType 
-            : props.recipient.recipientEntityType
+            ? props.donor.EntityType 
+            : props.recipient.EntityType
           : ""
       }
       onChange={(e:any) => setEntityType(e.target.value)}
@@ -278,7 +267,7 @@ const EntityForm = (props: any) => {
         }
         defaultValue={
           (props.isUpdate)
-              ? props.donor.donorLocationType 
+              ? props.donor.LocationType 
             : ""
         }
         onChange={(e:any) => setLocationType(e.target.value)}
@@ -295,7 +284,7 @@ const EntityForm = (props: any) => {
         }
         defaultValue={
           (props.isUpdate)
-              ? props.recipient.demographic 
+              ? props.recipient.DemographicName 
             : ""
         }
         onChange={(e:any) => setDemographicName(e.target.value)}
@@ -313,8 +302,8 @@ const EntityForm = (props: any) => {
       defaultValue={
         (props.isUpdate)
           ? (isDonor)
-            ? props.donor.area 
-            : props.recipient.area
+            ? props.donor.CombinedAreaName 
+            : props.recipient.CombinedAreaName
           : ""
       }
       onChange={(e:any) => setAreaName(e.target.value)}
