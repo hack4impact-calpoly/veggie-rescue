@@ -9,6 +9,7 @@ import Button from '@mui/material/Button';
 import { logs } from '../../data/dbMock';
 import { useAppDispatch, useAppSelector } from '../../app/hooks';
 import { getPickups } from '../../features/pickups/pickupsSlice';
+import AdminHeader from '../AdminHeader/AdminHeader';
 
 // props for expanding cell if too long
 interface GridCellExpandProps {
@@ -246,9 +247,10 @@ export default function DataTable() {
   }); 
 
   return (
-      <div className='bg-green-50 w-screen h-screen'>
+      <div className='bg-white w-screen h-[850px]'>
+          <AdminHeader />
           <div className='font-poppins flex items-center flex-col space-y-[30px]'>
-              <h4 className='mt-[50px] text-[50px] text-[#555555]'>
+              <h4 className='mt-[50px] text-[28px] text-[#555555] font-bold'>
                   Logs
               </h4>
               <div className='w-[1120px] h-[550px] mb-[1000px]'>
