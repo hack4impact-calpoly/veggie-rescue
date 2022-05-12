@@ -196,6 +196,7 @@ export default function Transferring() {
       }
     } else {
       toast.error('Cannot transfer more weight than is currently in vehicle.');
+      setLoading(false);
     }
   };
 
