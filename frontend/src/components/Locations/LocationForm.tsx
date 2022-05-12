@@ -169,30 +169,36 @@ const LocationForm = ({current, createNew, setLocation, PickupDeliveryObject, se
           <div className="existingLocation">
             <input className="bg-white text-4xl w-full italic py-4 px-4 mt-3 rounded-lg shadow w-full text-left" type="text" placeholder={name} name="name" disabled={true} />
             <div className="text-4xl font-semibold text-left pt-10">Food type:</div>
-            <div className="text-3xl text-left ml-20 m-4">
+            <div className="text-3xl text-left ml-20 m-4 py-4">
               {current &&
-                 <div>
-                      <input
-                      className='mx-3 my-5 '
-                        type="radio"
-                        name="foodType"
-                        value={current.FoodType}
-                        onClick={() => {
-                          setActive(current.FoodType);
-                          setIsClicked(true);
-                        }}
-                      />
-                      <b> {current.FoodType}</b>
-                    </div>
-                }
+                 <div className="flex items-center mr-4 mb-4">
+                      <input className='mx-3 my-5 hidden'
+                            id="radio1"
+                            type="radio"
+                            name="foodType"
+                            value={current.FoodType}
+                            onClick={() => {
+                              setActive(current.FoodType);
+                              setIsClicked(true);}}
+                            checked/>
+                        <label htmlFor="radio1" className="flex items-center cursor-pointer text-3xl">
+                        <span className="w-8 h-8 inline-block mr-2 bg-white rounded-full border border-grey flex-no-shrink"></span>
+                        {current.FoodType}</label>
+                  </div>
+              }
               {current && (
                 <div>
                   <input
-                    className='mx-3 my-5'
+                    className='mx-3 my-5 hidden'
+                    id="radio2"
                     type="radio"
                     name="foodType"
                     onClick={() => setIsClicked(false)}
-                  />{" Other"}
+                    checked
+                  />
+                  <label htmlFor="radio2" className="flex items-center cursor-pointer text-3xl">
+                        <span className="w-8 h-8 inline-block mr-2 bg-white rounded-full border border-grey flex-no-shrink"></span>
+                        {"Other"}</label>
                   <input className="bg-white ml-2 text-4xl w-full italic py-4 px-4 mt-2 rounded-lg shadow w-full text-left"
                     type="text"
                     disabled={isClicked}
