@@ -45,9 +45,9 @@ const LocationFilter = ({filterLocations, filtered, clearFilter, clearCurrent} :
 	// Display the text field only
 	return (
 		<div className=''>
-			<form className='bg-gray-100 border-2 border-grey-300 text-4xl w-full px-5 py-7 mt-6 shadow-lg'>
+			<form className='bg-gray-100 border-2 border-grey-300 text-4xl w-full px-5 py-7 mt-6 shadow-inner'>
 				<input
-					className='bg-gray-100 text-grey-800 italic'
+					className='bg-gray-100 text-grey-800 italic transform focus:outline-none'
 					id="filter-text"
 					type="text"
 					placeholder={'Filter Locations...'}

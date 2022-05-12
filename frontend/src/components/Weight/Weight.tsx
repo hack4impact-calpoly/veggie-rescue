@@ -61,7 +61,7 @@ export default function Weight({PickupDeliveryObject, setPickupDeliveryObject, s
   };
 
   return (
-    <div className='container'>
+    <div className='container mb-10'>
       <main className="main">
         <div className="NumberForm">
           <span className='text-4xl'>{charNumToInt(charNum)}</span> <span className='text-3xl text-emerald-700 font-semibold'>&nbsp; lbs</span>
@@ -72,8 +72,8 @@ export default function Weight({PickupDeliveryObject, setPickupDeliveryObject, s
         clearHandler={clearHandler}
         backSpaceHandler={backSpaceHandler}
       />
-      <main className="main">
-        <button className="submit_button" onClick={submitButton}>
+      <main className="w-1/2 mb-10 mt-5 ">
+        <button className="bg-amber-500 rounded-full mt-5 p-3 text-3xl text-white font-semibold shadow w-full" onClick={submitButton}>
           Submit
         </button>
       </main>
