@@ -38,6 +38,7 @@ const Logs = () => {
   }
   return (
     <div className="container pt-10">
+
       <div className="text-container">
         <div className="your-logs">
           <button
