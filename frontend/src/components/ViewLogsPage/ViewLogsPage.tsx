@@ -1,5 +1,5 @@
 
-import React, { useEffect, useState } from 'react';
+import React, { Component, useEffect, useState } from 'react';
 import { DataGrid, GridColDef, GridRenderCellParams, GridToolbarContainer, GridToolbarExport, GridCsvExportOptions, GridValueGetterParams, GridValueFormatterParams } from '@mui/x-data-grid';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
@@ -10,6 +10,7 @@ import { logs } from '../../data/dbMock';
 import { useAppDispatch, useAppSelector } from '../../app/hooks';
 import { getPickups } from '../../features/pickups/pickupsSlice';
 import { getDropoffs } from '../../features/dropoffs/dropoffsSlice';
+import { render } from '@testing-library/react';
 
 // props for expanding cell if too long
 interface GridCellExpandProps {
@@ -216,6 +217,8 @@ const columns: GridColDef[] = [
     },
 ];
 
+let temp = 0;
+
 export default function DataTable() {
   // command for backend: npm start dev
   const dispatch = useAppDispatch();
@@ -227,62 +230,26 @@ export default function DataTable() {
     dispatch(getDropoffs());
   }, [dispatch, pickups, dropoffs]);
 
-  // const [rowData, setRowData] = useState(
-  //   { date: String,
-  //     driver: String,
-  //     vehicle: String,
-  //     name: String,
-  //     foodType: String,
-  //     lbsPickedUp: Number,
-  //     locationType: String,
-  //     donorEntityType: String,
-  //     area: String,
-  //   }[];
-  // );
-
-  //change button text on click
-  let temp = 0;
-  let data = pickups
   const [buttonText, setButtonText] = React.useState('Dropoffs');
   const handleClick = () => {
     setButtonText(buttonText === 'Dropoffs' ? 'Pickups' : 'Dropoffs');
     if (buttonText === 'Dropoffs') {
       temp = 1;
-      console.log(temp);
-      data = dropoffs;
     } else {
       temp = 0;
-      console.log(temp);
-      data = pickups;
     }
   }
 
-//   function getRows() {
-//     if (temp === 1) {
-//       data = pickups
-//     } else {
-//       data = dropoffs
-//     }
-//     let i = 0;
-//     let rows = data?.map((data: { date: String; driver: String; vehicle: String; name: String; foodType: String; lbsPickedUp: Number; locationType: String; donorEntityType: String; area: String; }) => {
-//       return {
-//           id: i++,
-//           date: data.date,
-//           driverName: data.driver,
-//           vehicle: data.vehicle,
-//           name: data.name,
-//           foodType: data.foodType,
-//           lbsPickedUp: data.lbsPickedUp,
-//           locationType: data.name, // locationType is the same as name in the backend 
-//           donorEntityType: data.donorEntityType,
-//           area: data.area
-//           } 
-//     });
-//   return rows;
-// }
+  function getData() {
+    if (temp === 0) {
+      return pickups;
+    } else {
+      return dropoffs;
+    }
+  }
 
   let i = 0;
-  let rows = data?.map((data: { date: String; driver: String; vehicle: String; name: String; foodType: String; lbsPickedUp: Number; locationType: String; donorEntityType: String; area: String; }) => {
+  let rows = getData()?.map((data: { date: String; driver: String; vehicle: String; name: String; foodType: String; lbsPickedUp: Number; locationType: String; donorEntityType: String; area: String; }) => {
       return {
           id: i++,
           // id: newData.id,
@@ -297,8 +264,6 @@ export default function DataTable() {
           area: data.area
           } 
     });
-    // setRowData(rows);
-
 
   return (
       <div className='bg-green-50 w-screen h-screen'>
