@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import './Logs.css';
 import { IoIosArrowBack } from 'react-icons/io';
 import { useAppSelector, useAppDispatch } from '../../app/hooks';
+import NavBarButton_DARK from '../../imgs/button_dark_left.svg';
 
 import TripLog from '../../components/TripLog/TripLog';
 import { getVehicle } from '../../features/vehicles/VehiclesSlice';
@@ -47,7 +48,7 @@ const Logs = () => {
               navigate('/Dashboard');
             }}
           >
-            <img src="/static/media/button_dark_left.5f1879f147e0bda0ddd11d186ebf7eba.svg" alt="leftButton"/>
+            <img src={NavBarButton_DARK} alt="leftButton"/>
           </button>
           <h3 id="logs-text">Your Logs</h3>
           <button id="icon" />
