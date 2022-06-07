@@ -196,6 +196,7 @@ export default function Transferring() {
       }
     } else {
       toast.error('Cannot transfer more weight than is currently in vehicle.');
+      setLoading(false);
     }
   };
 
@@ -203,21 +204,21 @@ export default function Transferring() {
     return <Spinner />;
   }
   return (
-    <div className='flex flex-col items-center justify-center'>
+    <div className='my-10 mx-5 flex flex-col items-center justify-center'>
       <div className="flex flex-col items-center justify-center pb-10">
-        <div className="tPageString">
+        <div className="text-5xl text-emerald-800 font-bold my-5">
           How much weight do <br></br>you want to transfer?
         </div>
-        <p className="text-slate-800 text-3xl text-bold">
-          Weight to transfer: {currentWeight ? currentWeight : 0} lbs
+        <p className="text-slate-800 text-3xl font-semibold my-5">
+          Weight to transfer: <span className='text-amber-600 text-4xl'>{currentWeight ? currentWeight : 0} lbs </span>
         </p>
       </div>
 
-      <div>
+      <div className="flex flex-col justify-center items-center">
         {vehicleArray &&
           vehicleArray.map((vehicle: any, index: any) => {
             return (
-              <div className="flex flex-row w-full items-center justify-items-start">
+              <div className="flex w-full items-center ml-32 my-3">
               <TransferElement 
                 vehicle={vehicle}
                 index={index}
@@ -227,7 +228,7 @@ export default function Transferring() {
             );
           })}
       </div>
-          <div className='flex flex-row items-center justify-center w-full pt-16'>
+          <div className='flex items-center justify-center w-full pt-16'>
       <button className="bg-[#ff9c55] lg:w-1/4 md:w-1/2 p-3 rounded-3xl text-white text-3xl" onClick={submitWeight}>
         Submit
       </button>

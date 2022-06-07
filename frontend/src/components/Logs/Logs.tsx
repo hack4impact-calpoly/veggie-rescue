@@ -37,7 +37,8 @@ const Logs = () => {
     return <Spinner />
   }
   return (
-    <div className="container pt-10">
+    <div className="container pt-10 pl-5 pr-50">
+
       <div className="text-container">
         <div className="your-logs">
           <button
@@ -46,9 +47,10 @@ const Logs = () => {
               navigate('/Dashboard');
             }}
           >
-            <IoIosArrowBack style={{ color: 'FF9C55' }} />
+            <img src="/static/media/button_dark_left.5f1879f147e0bda0ddd11d186ebf7eba.svg" alt="leftButton"/>
           </button>
           <h3 id="logs-text">Your Logs</h3>
+          <button id="icon" />
         </div>
         <div className="subtitle">
           <h3>Trip</h3>

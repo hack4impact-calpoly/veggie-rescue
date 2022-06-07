@@ -13,14 +13,26 @@ import { toast } from 'react-toastify';
 export default function AdminHeader() {
     const navigate = useNavigate();
     const dispatch = useAppDispatch();
+    const [isLogs, setIsLogs] = useState(true);
+    const [isData, setIsData] = useState(true);
 
     const { admin } = useAppSelector((state)=> state.adminAuth)
     function handleDataBtn(){
-     navigate('/Admin')
+      setIsLogs(false)
+      setIsData(true)
+      navigate('/Admin')
     }
     function handleLogsBtn(){
+      setIsData(false)
+      setIsLogs(true)
       navigate('/Logs')
     }
+
+    useEffect(() => {
+      window.location.pathname === "/Logs" ? setIsLogs(true) : setIsLogs(false)
+      window.location.pathname === "/Admin" ? setIsData(true) : setIsData(false)
+    }, [])
+
     const handleLogout = async () =>{
         await dispatch(clearAuth());
         navigate('/AdminLogin')
@@ -40,13 +52,16 @@ export default function AdminHeader() {
                     </div>
                     <div className="hidden md:flex space-x-1">
                         <button
+
                             onClick={handleLogsBtn}
+                            style={{ color: isLogs ? 'rgb(249 115 22)' : '' }}
                             className="py-4 px-9 text-white text-lg font-jost font-semibold hover:text-orange-500 transition duration-300"
                             >View Logs
                         </button>
                         <button
                             onClick={handleDataBtn}
                             className="py-4 px-9 text-white text-lg font-jost font-semibold hover:text-orange-500 transition duration-300"
+                            style={{ color: isData ? 'rgb(249 115 22)' : '' }}
                             >Manage Data
                         </button>
 

@@ -30,7 +30,9 @@ const LocationItem = ({location, setCurrent, clearFilter, setCreateNew, isNew} :
   //  Filter is cleared so it isn't displayed below the text field.
 
   return (
-    <div className="locationItem" 
+    <div className="flex items-center justify-center
+      bg-white text-4xl font-medium py-7 my-4 drop-shadow-xl rounded-lg
+      transform active:translate-y-2" 
         onClick={() => {
           setCurrent(location);
           clearFilter();
