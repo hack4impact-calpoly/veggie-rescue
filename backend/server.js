@@ -16,9 +16,9 @@ app.use(errorHandler);
 
 const port = process.env.PORT || 3001;
 connectDatabase();
-//mongoose.connect(connection_url)
-//.then(() => console.log(`Success`))
-//.catch((error) => console.error(`Could not connect due to ${error}`))
+// mongoose.connect(connection_url)
+// .then(() => console.log(`Success`))
+// .catch((error) => console.error(`Could not connect due to ${error}`))
 
 app.use((req, res, next) => {
   res.header("Access-Control-Allow-Origin", "*");
@@ -46,5 +46,4 @@ if (process.argv.includes("dev")) {
   const PORT = process.env.PORT || 3001;
   app.listen(PORT, () => console.log(`server running on port ${PORT}`));
 }
-
 module.exports = app;
