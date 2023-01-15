@@ -4,6 +4,7 @@ Veggie Rescue collects fresh fruits, vegetables and prepared food from local far
 
 ## 🍅 Getting started: For developers 
 ### Clone the repository
+Open up a terminal (either in VSCode or just on your computer). Navigate to the directory you want this project to be in and run 
 ```
 git clone https://github.com/hack4impact-calpoly/veggie-rescue.git
 ```
@@ -11,12 +12,12 @@ git clone https://github.com/hack4impact-calpoly/veggie-rescue.git
 ### Running frontend 
 1. Make sure you're in the _frontend_ directory using `cd frontend`
 2. Make sure all packages are up to date with `npm i`
-3. `npm start`
+3. `npm run start`
 
 ### Running backend
 1. Make sure you're in the _backend_ directory using `cd backend`
 2. Make sure all packages are up to date with `npm i`
-3. `npm start`
+3. `npm start dev`
 
 ### Making Changes
 1. Before you make changes to the code, run `git pull`
