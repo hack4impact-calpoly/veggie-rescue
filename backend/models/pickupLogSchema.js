@@ -11,7 +11,10 @@ const PickupLogSchema = new mongoose.Schema(
     name: String,
     donorEntityType: String,
     area: String,
-    foodAllocation: {String, Number},
+    foodAllocation: {
+      type: Map,
+      of: Number,
+    },
   },
   { collection: "PickupLog" }
 );
