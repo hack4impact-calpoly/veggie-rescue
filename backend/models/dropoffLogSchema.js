@@ -12,7 +12,10 @@ const DropoffLogSchema = new mongoose.Schema(
     recipientEntityType: String,
     demographic: String,
     area: String,
-    foodAllocation: { String, Number },
+    foodAllocation: {
+      type: Map,
+      of: Number,
+    },
   },
   { collection: "DropoffLog" }
 );
