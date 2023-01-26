@@ -13,28 +13,20 @@ const RecipientsCard = (props: any) => {
         <div className="donor-name">{ props.recipient.name }</div>
         <div className="entry-container">
           <div className="donors-entry">
-            <div className="donors-entry-title">Entity Type</div>
+            <div className="donors-entry-title">Organizational Structure</div>
             <div className="donors-entry-text">{ props.recipient.EntityType }</div>
           </div>
           <div className="donors-entry">
-            <div className="donors-entry-title">Demographic Name</div>
+            <div className="donors-entry-title">Demographics Served</div>
             <div className="donors-entry-text">{ props.recipient.DemographicName }</div>
-          </div>
-          <div className="donors-entry">
-            <div className="donors-entry-title">Food Type</div>
-            <div className="donors-entry-text">
-            {/* {(props.recipient.foodType).map((v:any, index:any) => {
-              return(
-                <div>{(index ? ',' : '')}{v}</div>
-              );
-            })} */}
-              {/* <div className="donors-entry-title">Food Types</div> */}
-              <div className="donors-entry-text">{ props.recipient.FoodType }</div>
-            </div>
           </div>
           <div className="donors-entry">
             <div className="donors-entry-title">Combined Area Name</div>
             <div className="donors-entry-text">{ props.recipient.CombinedAreaName }</div>
+          </div>
+          <div className="donors-entry">
+            <div className="donors-entry-title">Food Distribution Model</div>
+            <div className="donors-entry-text">change to use props</div>
           </div>
         </div>
       </div>
