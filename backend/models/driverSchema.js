@@ -1,38 +1,34 @@
-const mongoose = require('mongoose')
+const mongoose = require("mongoose");
 
-const DriverSchema = new mongoose.Schema({
-
+const driverModel = mongoose.Schema(
+  {
     name: {
-        type: String,
-        required: [true, 'Please add a name']
-    },
-    email: {
-        type: String,
-        unique: true,
-    },
-    password: {
-        type: String,
-        required: [true, 'Please add a password'],
-        unique: true
+      type: String,
+      required: [true, "Please add a name"],
     },
     isLoggedIn: {
-        type: Boolean,
-        required: false,
-        default: false
+      type: Boolean,
+      required: false,
+      default: false,
     },
     clock_in: {
-        type: String,
-        required: false,
-        default: '0:00'
+      type: Date,
+      default: null,
     },
     clock_out: {
-        type: String,
-        required: false,
-        default: '0:00'
-    }
+      type: Date,
+      default: null,
+    },
+    pin: {
+      type: String,
+      required: [true, "Please add a 4 digit pin"],
+      unique: true,
+    },
+  },
+  {
+    timestamps: true,
+  },
+  { collection: "Driver" }
+);
 
-}, {collection: 'Drivers'});
-
-const Driver = mongoose.model('Driver', DriverSchema)
-
-module.exports = Driver
+module.exports = mongoose.model("Driver", driverModel);

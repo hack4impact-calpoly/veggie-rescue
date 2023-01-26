@@ -1,4 +1,4 @@
-const mongoose = require('mongoose')
+const mongoose = require("mongoose");
 
 const RecipientSchema = new mongoose.Schema(
   {
@@ -11,4 +11,4 @@ const RecipientSchema = new mongoose.Schema(
   { collection: "Recipients" }
 );
 
-module.exports = mongoose.model('RecipientSchema', RecipientSchema)
+module.exports = mongoose.model("RecipientSchema", RecipientSchema);
