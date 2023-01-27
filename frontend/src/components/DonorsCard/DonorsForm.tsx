@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import './EntityForm.css';
+import './DonorsForm.css';
 import { useAppSelector, useAppDispatch } from '../../app/hooks';
 import { toast } from 'react-toastify';
 
@@ -10,31 +10,21 @@ import {
   createDonor
 } from '../../features/donors/donorSlice';
 
-import {
-  getRecipients,
-  createRecipient,
-  updateRecipient,
-  deleteRecipient
-} from '../../features/recipients/recipientsSlice';
-
 
 /* Form to add recipient or donor */
-const EntityForm = (props: any) => {
+const DonorsForm = (props: any) => {
 
   /* Recipient and donor state data here */
   const [entityType, setEntityType] = useState(props.isUpdate ? props.whichEntity ? props.donor.EntityType : props.recipient.EntityType : '');
   const [locationType, setLocationType] = useState(props.isUpdate ? props.whichEntity ? props.donor.LocationType : '' : '');
   const [areaName, setAreaName] = useState(props.isUpdate ? props.whichEntity ? props.donor.CombinedAreaName : props.recipient.CombinedAreaName : '');
   const [donorName, setDonorName] = useState(props.isUpdate ? props.whichEntity ? props.donor.name : props.recipient.name : '');
-  const [demographicName, setDemographicName] = useState(props.isUpdate ? props.whichEntity ? '' : props.recipient.DemographicName : '');
-
+  
   const [donor, setDonor] = useState(true);
-  const [recipient, setRecipient] = useState(false);
   let foodTypes = ['Baked','Packaged','Produce'];
   // const [selectedFoods, setSelectedFoods] = useState(props.isUpdate ? props.whichEntity ? props.donor.foodType : props.recipient.foodType : []);
   const [selectedFoods, setSelectedFoods] = useState([]);
 
-  const [isDonor, setIsDonor] = useState(props.whichEntity);
   const dispatch = useAppDispatch();
 
   useEffect(() => {
@@ -46,107 +36,55 @@ const EntityForm = (props: any) => {
   const dispatchGetDonors = () => {
     dispatch(getDonors());
   };
-  const dispatchGetRecipients = () => {
-    dispatch(getRecipients());
-  };
 
   // this function is called if we submit a new driver or vehicle
   const dispatchCreateNew = async () => {
     console.log("CREATE")
-    if (isDonor) {
-      await dispatch(
-        createDonor({
-          id: '0',
-          name: donorName,
-          EntityType: entityType,
-          FoodType: selectedFoods.toString(), //this is weird
-          LocationType: locationType,
-          CombinedAreaName: areaName,
-        })
-      );
-      toast.success('Successfully created new donor.');
-      dispatchGetDonors();
-    } else {
-      console.log(selectedFoods.toString());
-      // console.log('creation of a new Volunteer');
-      // here we can put the call to create a new volunteer
-      await dispatch(
-        createRecipient({
-          id: '0',
-          name: donorName,
-          EntityType: entityType,
-          FoodType: selectedFoods.toString(), //this is weird
-          DemographicName: demographicName,
-          CombinedAreaName: areaName,
-        })
-      );
-      toast.success('Successfully created new recipient.');
-
-      dispatchGetRecipients();
-    }
-
+    await dispatch(
+      createDonor({
+        id: '0',
+        name: donorName,
+        EntityType: entityType,
+        FoodType: selectedFoods.toString(), //this is weird
+        LocationType: locationType,
+        CombinedAreaName: areaName,
+      })
+    );
+    toast.success('Successfully created new donor.');
+    dispatchGetDonors();
     props.handleShow();
   };
 
   const dispatchUpdate = async () => {
-    console.log("UPDAATE")    
-    if (isDonor) {
-      await dispatch(
-        updateDonor({
-          id: props.donor._id,
-          name: donorName,
-          EntityType: entityType,
-          FoodType: selectedFoods.toString(), //this is weird
-          LocationType: locationType,
-          CombinedAreaName: areaName,
-        })
-      );
-      toast.success('Successfully updated donor.');
-      dispatchGetDonors();
-    } else {
-      console.log(selectedFoods.toString());
-      await dispatch(
-        updateRecipient({
-          id: props.recipient._id,
-          name: donorName,
-          EntityType: entityType,
-          FoodType: selectedFoods.toString(), //this is weird
-          DemographicName: demographicName,
-          CombinedAreaName: areaName,
-        })
-      );
-      toast.success('Successfully updated recipient.');
-      dispatchGetRecipients();
-    }
+    console.log("UPDAATE")
+    await dispatch(
+      updateDonor({
+        id: props.donor._id,
+        name: donorName,
+        EntityType: entityType,
+        FoodType: selectedFoods.toString(), //this is weird
+        LocationType: locationType,
+        CombinedAreaName: areaName,
+      })
+    );
+    toast.success('Successfully updated donor.');
+    dispatchGetDonors();
     props.handleShow();
   };
+
   const dispatchDelete = async (e: any) => {
     console.log("DELETE")
     e.preventDefault();
-    if (isDonor) {
-      await dispatch(deleteDonor(props.donor._id));
-      toast.success('Successfully deleted donor.');
-      dispatchGetDonors();
-    } else {
-      console.log('deletion of person');
-      await dispatch(deleteRecipient(props.recipient._id));
-      toast.success('Successfully deleted recipient.');
-      dispatchGetRecipients();
-    }
+    await dispatch(deleteDonor(props.donor._id));
+    toast.success('Successfully deleted donor.');
+    dispatchGetDonors();
 
     props.handleShow();
   };
 
   function handleDonor(){
     setDonor((prev) => !prev);
-    setRecipient(false);
     // setIsDonor(true);
-  }
-
-  function handleRecipient(){
-    setRecipient((prev) => !prev);
-    setDonor(false);
-    // setIsDonor(false);
   }
 
   const handleFoodClick = (name:any) =>{
@@ -180,12 +118,8 @@ const EntityForm = (props: any) => {
         toast.error("Missing Area Name")
         return
       }
-      if (isDonor && locationType === ''){
+      if (locationType === ''){
         toast.error("Missing Location Type")
-        return
-      }
-      else if (!isDonor && demographicName === ''){
-        toast.error("Missing Demographic Type")
         return
       }
       if (props.isUpdate)
@@ -198,16 +132,8 @@ const EntityForm = (props: any) => {
   <form onSubmit={handleSubmit} className="modal-container">
     <div className="entity-card" id="modal">
     <div id="entity-title">
-      <div className="title-content">Add Entity</div>
+      <div className="title-content">Add or Edit Donor</div>
       <div className="title-content"><button type="button" id="X-form" onClick={props.handleShow}>x</button></div>
-    </div>
-    <div className="entity-type">
-      <button className="type-button" type="button" onClick={handleDonor} style={{border: isDonor ? '2px solid #FF9C55' : ''}}>
-        Donor
-      </button>
-      <button className="type-button" type="button" onClick={handleRecipient} style={{border: !isDonor ? '2px solid #FF9C55' : ''}}>
-        Recipient
-      </button>
     </div>
 
     <h2>Entity Name</h2>
@@ -221,9 +147,7 @@ const EntityForm = (props: any) => {
       }
       defaultValue={
         (props.isUpdate)
-          ? (isDonor)
-            ? props.donor.name 
-            : props.recipient.name
+          ? props.donor.name 
           : ""
       }
       onChange={(e:any) => setDonorName(e.target.value)}
@@ -239,9 +163,7 @@ const EntityForm = (props: any) => {
       }
       defaultValue={
         (props.isUpdate)
-          ? (isDonor)
-            ? props.donor.EntityType 
-            : props.recipient.EntityType
+          ? props.donor.EntityType
           : ""
       }
       onChange={(e:any) => setEntityType(e.target.value)}
@@ -255,41 +177,22 @@ const EntityForm = (props: any) => {
       );
       })}
     </div>
-    { isDonor ? (
-      <div className="internal-div"><h2>Location Type</h2>
-      <input
-        className="input"
-        // placeholder="Location Type"
-        placeholder={
-          (!props.isUpdate)
-            ? "Location Type"
-            : ""  
-        }
-        defaultValue={
-          (props.isUpdate)
-              ? props.donor.LocationType 
-            : ""
-        }
-        onChange={(e:any) => setLocationType(e.target.value)}
-      /></div>
-      ) : (
-      <div className="internal-div"><h2>Demographic Name</h2>
-      <input
-        className="input"
-        // placeholder="Demographic Name"
-        placeholder={
-          (!props.isUpdate)
-            ? "Demographic Name"
-            : ""  
-        }
-        defaultValue={
-          (props.isUpdate)
-              ? props.recipient.DemographicName 
-            : ""
-        }
-        onChange={(e:any) => setDemographicName(e.target.value)}
-      /></div>
-    )}
+    <div className="internal-div"><h2>Location Type</h2>
+    <input
+      className="input"
+      // placeholder="Location Type"
+      placeholder={
+        (!props.isUpdate)
+          ? "Location Type"
+          : ""  
+      }
+      defaultValue={
+        (props.isUpdate)
+          ? props.donor.LocationType 
+          : ""
+      }
+      onChange={(e:any) => setLocationType(e.target.value)}
+    /></div>
     <h2>Combined Area Name</h2>
     <input
       className="input"
@@ -301,9 +204,7 @@ const EntityForm = (props: any) => {
       }
       defaultValue={
         (props.isUpdate)
-          ? (isDonor)
-            ? props.donor.CombinedAreaName 
-            : props.recipient.CombinedAreaName
+          ? props.donor.CombinedAreaName
           : ""
       }
       onChange={(e:any) => setAreaName(e.target.value)}
@@ -349,4 +250,4 @@ const Button = (props:any) => {
   );
 };
 
-export default EntityForm;
+export default DonorsForm;

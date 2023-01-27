@@ -6,7 +6,6 @@ import VehiclesCard from '../../components/VehiclesCard/VehiclesCard';
 import VolunteersCard from '../../components/VolunteersCard/VolunteersCard';
 import NewVolunteersCard from '../../components/VolunteersCard/NewVolunteersCard';
 import NewDonorsCard from '../../components/DonorsCard/NewDonorsCard';
-import EntityForm from './EntityForm';
 import ShortEntityForm from './ShortEntityForm';
 // import { deliverySchema, pickupSchema, dnoo } from '../../data/dbMock';
 import { AiOutlineSearch } from 'react-icons/ai';
@@ -22,6 +21,8 @@ import { getDonors } from '../../features/donors/donorSlice';
 import { getRecipients } from '../../features/recipients/recipientsSlice';
 import AdminHeader from '../AdminHeader/AdminHeader';
 import Spinner from '../Spinner/Spinner';
+import DonorsForm from '../DonorsCard/DonorsForm';
+import RecipientsForm from '../RecipientsCard/RecipientsForm';
 
 // import VehicleEditForm from './EditComponents/VehicleEditForm';
 // import VolunteerEditForm from './EditComponents/VolunteerEditForm';
@@ -310,7 +311,7 @@ const AdminDataScreen = () => {
                 <NewDonorsCard />
               </button>
               {showModal && 
-                <EntityForm 
+                <DonorsForm 
                   handleShow={handleShowModal} 
                   whichEntity={true}
                   isUpdate={isUpdate} 
@@ -336,7 +337,7 @@ const AdminDataScreen = () => {
                 <NewDonorsCard />
               </button>
               {showModal && 
-                <EntityForm 
+                <RecipientsForm 
                   handleShow={handleShowModal} 
                   whichEntity={false}
                   isUpdate={isUpdate} 
