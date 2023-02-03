@@ -15,10 +15,10 @@ import {
 const RecipientsForm = (props: any) => {
 
   /* Recipient and donor state data here */
-  const [entityType, setEntityType] = useState(props.isUpdate ? props.whichEntity ? props.donor.EntityType : props.recipient.EntityType : '');
-  const [areaName, setAreaName] = useState(props.isUpdate ? props.whichEntity ? props.donor.CombinedAreaName : props.recipient.CombinedAreaName : '');
-  const [donorName, setDonorName] = useState(props.isUpdate ? props.whichEntity ? props.donor.name : props.recipient.name : '');
-  const [demographicName, setDemographicName] = useState(props.isUpdate ? props.whichEntity ? '' : props.recipient.DemographicName : '');
+  const [entityType, setEntityType] = useState(props.isUpdate ? props.recipient.EntityType : '');
+  const [areaName, setAreaName] = useState(props.isUpdate ? props.recipient.CombinedAreaName : '');
+  const [recipientName, setDonorName] = useState(props.isUpdate ? props.recipient.name : '');
+  const [demographicName, setDemographicName] = useState(props.isUpdate ? props.recipient.DemographicName : '');
 
   const [donor, setDonor] = useState(true);
   const [recipient, setRecipient] = useState(false);
@@ -28,12 +28,6 @@ const RecipientsForm = (props: any) => {
 
   const [isDonor, setIsDonor] = useState(props.whichEntity);
   const dispatch = useAppDispatch();
-
-  useEffect(() => {
-    if (props.whichEntity) {
-      handleRecipient();
-    }
-  }, []);
 
   const dispatchGetRecipients = () => {
     dispatch(getRecipients());
@@ -48,7 +42,7 @@ const RecipientsForm = (props: any) => {
     await dispatch(
       createRecipient({
         id: '0',
-        name: donorName,
+        name: recipientName,
         EntityType: entityType,
         FoodType: selectedFoods.toString(), //this is weird
         DemographicName: demographicName,
@@ -66,7 +60,7 @@ const RecipientsForm = (props: any) => {
     await dispatch(
       updateRecipient({
         id: props.recipient._id,
-        name: donorName,
+        name: recipientName,
         EntityType: entityType,
         FoodType: selectedFoods.toString(), //this is weird
         DemographicName: demographicName,
@@ -109,7 +103,7 @@ const RecipientsForm = (props: any) => {
 
   function handleSubmit(e:any){
      e.preventDefault();
-      if (donorName === ''){
+      if (recipientName === ''){
         toast.error("Missing Entity Name")
         return
       }
@@ -160,12 +154,12 @@ const RecipientsForm = (props: any) => {
       onChange={(e:any) => setDonorName(e.target.value)}
       />
 
-    <h2>Entity Type</h2>
+    <h2>Organizational Structure</h2>
     <input
       className="input"
       placeholder={
         (!props.isUpdate)
-          ? "Entity Type"
+          ? "Organizational Structure"
           : ""  
       }
       defaultValue={
@@ -186,13 +180,13 @@ const RecipientsForm = (props: any) => {
       );
       })}
     </div>
-    <div className="internal-div"><h2>Demographic Name</h2>
+    <div className="internal-div"><h2>Demographics Served</h2>
     <input
       className="input"
       // placeholder="Demographic Name"
       placeholder={
         (!props.isUpdate)
-          ? "Demographic Name"
+          ? "Demographics Served"
           : ""  
       }
       defaultValue={

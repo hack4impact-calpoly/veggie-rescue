@@ -15,10 +15,10 @@ import {
 const DonorsForm = (props: any) => {
 
   /* Recipient and donor state data here */
-  const [entityType, setEntityType] = useState(props.isUpdate ? props.whichEntity ? props.donor.EntityType : props.recipient.EntityType : '');
-  const [locationType, setLocationType] = useState(props.isUpdate ? props.whichEntity ? props.donor.LocationType : '' : '');
-  const [areaName, setAreaName] = useState(props.isUpdate ? props.whichEntity ? props.donor.CombinedAreaName : props.recipient.CombinedAreaName : '');
-  const [donorName, setDonorName] = useState(props.isUpdate ? props.whichEntity ? props.donor.name : props.recipient.name : '');
+  const [entityType, setEntityType] = useState(props.isUpdate ? props.donor.EntityType : '');
+  const [locationType, setLocationType] = useState(props.isUpdate ? props.donor.LocationType : '');
+  const [areaName, setAreaName] = useState(props.isUpdate ? props.donor.CombinedAreaName : '');
+  const [donorName, setDonorName] = useState(props.isUpdate ? props.donor.name : '');
   
   const [donor, setDonor] = useState(true);
   let foodTypes = ['Baked','Packaged','Produce'];
@@ -26,12 +26,6 @@ const DonorsForm = (props: any) => {
   const [selectedFoods, setSelectedFoods] = useState([]);
 
   const dispatch = useAppDispatch();
-
-  useEffect(() => {
-    if (props.whichEntity) {
-      handleDonor();
-    }
-  }, []);
 
   const dispatchGetDonors = () => {
     dispatch(getDonors());
@@ -81,11 +75,6 @@ const DonorsForm = (props: any) => {
 
     props.handleShow();
   };
-
-  function handleDonor(){
-    setDonor((prev) => !prev);
-    // setIsDonor(true);
-  }
 
   const handleFoodClick = (name:any) =>{
     // console.log("here: " + name)
@@ -153,12 +142,12 @@ const DonorsForm = (props: any) => {
       onChange={(e:any) => setDonorName(e.target.value)}
       />
 
-    <h2>Entity Type</h2>
+    <h2>Organizational Structure</h2>
     <input
       className="input"
       placeholder={
         (!props.isUpdate)
-          ? "Entity Type"
+          ? "Organizational Structure"
           : ""  
       }
       defaultValue={
