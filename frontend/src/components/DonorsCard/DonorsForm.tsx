@@ -142,12 +142,12 @@ const DonorsForm = (props: any) => {
       onChange={(e:any) => setDonorName(e.target.value)}
       />
 
-    <h2>Organizational Structure</h2>
+    <h2>Entity Type</h2>
     <input
       className="input"
       placeholder={
         (!props.isUpdate)
-          ? "Organizational Structure"
+          ? "Entity Type"
           : ""  
       }
       defaultValue={

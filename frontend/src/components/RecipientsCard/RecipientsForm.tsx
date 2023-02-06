@@ -17,7 +17,7 @@ const RecipientsForm = (props: any) => {
   /* Recipient and donor state data here */
   const [entityType, setEntityType] = useState(props.isUpdate ? props.recipient.EntityType : '');
   const [areaName, setAreaName] = useState(props.isUpdate ? props.recipient.CombinedAreaName : '');
-  const [recipientName, setDonorName] = useState(props.isUpdate ? props.recipient.name : '');
+  const [recipientName, setRecipientName] = useState(props.isUpdate ? props.recipient.name : '');
   const [demographicName, setDemographicName] = useState(props.isUpdate ? props.recipient.DemographicName : '');
 
   const [donor, setDonor] = useState(true);
@@ -151,7 +151,7 @@ const RecipientsForm = (props: any) => {
           ? props.recipient.name
           : ""
       }
-      onChange={(e:any) => setDonorName(e.target.value)}
+      onChange={(e:any) => setRecipientName(e.target.value)}
       />
 
     <h2>Organizational Structure</h2>
