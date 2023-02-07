@@ -29,6 +29,8 @@ import Spinner from '../Spinner/Spinner';
 // import RecipientEditForm from './EditComponents/RecipientEditForm';
 
 const AdminDataScreen = () => {
+
+
   const [loading, setLoading] = useState(false);
   const [vehiclesCard, setVehiclesCard] = useState(false);
   const [volunteers, setVolunteers] = useState(false);
@@ -65,6 +67,9 @@ const AdminDataScreen = () => {
   const [currentDonor, setCurrentDonor] = useState(null);
   const [currentRecipient, setCurrentRecipient] = useState(null);
 
+  const [showDonorButtons, toggleDonorButtons] = useState(false);
+  const [showRecipientButtons, toggleRecipientButtons] = useState(false);
+
   
   useEffect(() => {
      dispatch(getDrivers());
@@ -85,6 +90,9 @@ const AdminDataScreen = () => {
     setVehiclesCard(false);
     setDonors(false);
     setRecipients(false);
+    toggleDonorButtons(false);
+    toggleRecipientButtons(false);
+
   }
 
   function handleVehicles() {
@@ -93,6 +101,9 @@ const AdminDataScreen = () => {
     setSearchParam(['name']);
     setDonors(false);
     setRecipients(false);
+    toggleDonorButtons(false);
+    toggleRecipientButtons(false);
+
   }
 
   function vehicleData(vehicle: any) {
@@ -123,6 +134,9 @@ const AdminDataScreen = () => {
       'area'
     ]);
     setRecipients(false);
+    toggleDonorButtons(true);
+    toggleRecipientButtons(false);
+
   }
 
   function handleRecipients() {
@@ -137,6 +151,9 @@ const AdminDataScreen = () => {
       'foodType',
       'area'
     ]);
+    toggleDonorButtons(false);
+    toggleRecipientButtons(true);
+
   }
 
   function handleShowModal() {
@@ -149,6 +166,7 @@ const AdminDataScreen = () => {
   }, [volunteers, vehiclesCard, donors, recipients]);
 
   /* this function adds cards to query based on search */
+  
   function search(items: any) {
     if (volunteers) {
       return drivers.filter((item: any) => {
@@ -238,6 +256,64 @@ const AdminDataScreen = () => {
               </button>
             </div>
           </div>
+          
+          {/*recipient buttons*/}
+          <div className={showRecipientButtons ? "titles" : "hidden titles"}>  
+          <div>
+              <button
+              className="title"
+              >
+              Entity Type
+              </button>
+            </div>
+            <div>
+              <button
+              className="title">
+                Food Type
+              </button>
+            </div>
+            <div>
+              <button
+              className="title">
+                Demographic Name
+              </button>
+            </div>
+            <div>
+              <button
+              className="title">
+                Combined Area Name
+              </button>
+            </div>
+          </div>
+
+          {/*donor buttons*/}
+          <div className={showDonorButtons ? "titles" : "hidden titles"}>  
+          <div>
+              <button
+              className="title">
+                Entity Type
+              </button>
+            </div>
+            <div>
+              <button
+              className="title">
+                Food Type
+              </button>
+            </div>
+            <div>
+              <button
+              className="title">
+                Location Type
+              </button>
+            </div>
+            <div>
+              <button
+              className="title">
+                Combined Area Name
+              </button>
+            </div>
+          </div>
+          
           <div className="search">
             <input
               type="text"
@@ -249,6 +325,7 @@ const AdminDataScreen = () => {
             />
             <AiOutlineSearch id="search-icon" style={{ color: 'grey' }} />
           </div>
+          
 
           {volunteers && (
             <div className="logs">
