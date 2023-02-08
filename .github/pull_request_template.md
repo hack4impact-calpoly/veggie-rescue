@@ -7,6 +7,7 @@ Describe the purpose of your pull request and the steps you took to implement it
 ### Pull Request Checklist 
 (Acutally check off the boxes to make sure you've done everything) 
 
+- [ ] Link your issue
 - [ ] PR title is in the format `[issue #] type: description`
 - [ ] Code is neat, readable, and works
 - [ ] Comments are appropriate

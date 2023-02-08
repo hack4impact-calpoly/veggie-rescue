@@ -1,6 +1,6 @@
 const mongoose = require("mongoose");
 
-const driverModel = mongoose.Schema(
+const adminSchema = new mongoose.Schema(
   {
     name: {
       type: String,
@@ -11,24 +11,21 @@ const driverModel = mongoose.Schema(
       required: false,
       default: false,
     },
-    clock_in: {
-      type: Date,
-      default: null,
-    },
-    clock_out: {
-      type: Date,
-      default: null,
-    },
-    pin: {
+    email: {
       type: String,
-      required: [true, "Please add a 4 digit pin"],
+      required: [true, "Please add an email"],
+      unique: true,
+    },
+    password: {
+      type: String,
+      required: [true, "Please add a password"],
       unique: true,
     },
   },
   {
     timestamps: true,
   },
-  { collection: "Driver" }
+  { collection: "Admin" }
 );
 
-module.exports = mongoose.model("Driver", driverModel);
+module.exports = mongoose.model("Admin", adminSchema);
