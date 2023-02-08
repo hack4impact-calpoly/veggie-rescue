@@ -48,7 +48,6 @@ const DonorsForm = (props: any) => {
         id: '0',
         name: donorName,
         EntityType: entityType,
-        FoodType: selectedFoods.toString(), //this is weird
         LocationType: locationType,
         CombinedAreaName: areaName,
       })
@@ -65,7 +64,6 @@ const DonorsForm = (props: any) => {
         id: props.donor._id,
         name: donorName,
         EntityType: entityType,
-        FoodType: selectedFoods.toString(), //this is weird
         LocationType: locationType,
         CombinedAreaName: areaName,
       })
