@@ -23,9 +23,9 @@ import Select, { SelectChangeEvent } from '@mui/material/Select';
 const DonorsForm = (props: any) => {
 
   /* Recipient and donor state data here */
-  const [entityType, setEntityType] = React.useState(props.isUpdate ? props.whichEntity ? props.donor.EntityType : props.recipient.EntityType : '');
-  const [locationType, setLocationType] = React.useState(props.isUpdate ? props.whichEntity ? props.donor.LocationType : '' : '');
-  const [areaName, setAreaName] = React.useState(props.isUpdate ? props.whichEntity ? props.donor.CombinedAreaName : props.recipient.CombinedAreaName : '');
+  const [entityType, setEntityType] = useState(props.isUpdate ? props.donor.EntityType : '');
+  const [locationType, setLocationType] = useState(props.isUpdate ? props.donor.LocationType : '');
+  const [areaName, setAreaName] = useState(props.isUpdate ? props.donor.CombinedAreaName : '');
 
   const [donorName, setDonorName] = useState(props.isUpdate ? props.donor.name : '');
   
