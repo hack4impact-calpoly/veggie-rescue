@@ -1,4 +1,5 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
+import * as React from 'react';
 import './DonorsForm.css';
 import { useAppSelector, useAppDispatch } from '../../app/hooks';
 import { toast } from 'react-toastify';
@@ -10,14 +11,22 @@ import {
   createDonor
 } from '../../features/donors/donorSlice';
 
+/* Material UI import for dropdown menus */
+import Box from '@mui/material/Box';
+import InputLabel from '@mui/material/InputLabel';
+import MenuItem from '@mui/material/MenuItem';
+import FormControl from '@mui/material/FormControl';
+import Select, { SelectChangeEvent } from '@mui/material/Select';
+
 
 /* Form to add recipient or donor */
 const DonorsForm = (props: any) => {
 
   /* Recipient and donor state data here */
-  const [entityType, setEntityType] = useState(props.isUpdate ? props.donor.EntityType : '');
-  const [locationType, setLocationType] = useState(props.isUpdate ? props.donor.LocationType : '');
-  const [areaName, setAreaName] = useState(props.isUpdate ? props.donor.CombinedAreaName : '');
+  const [entityType, setEntityType] = React.useState('');
+  const [locationType, setLocationType] = React.useState('');
+  const [areaName, setAreaName] = React.useState('');
+
   const [donorName, setDonorName] = useState(props.isUpdate ? props.donor.name : '');
   
   const [donor, setDonor] = useState(true);
