@@ -23,9 +23,9 @@ import Select, { SelectChangeEvent } from '@mui/material/Select';
 const DonorsForm = (props: any) => {
 
   /* Recipient and donor state data here */
-  const [entityType, setEntityType] = React.useState('');
-  const [locationType, setLocationType] = React.useState('');
-  const [areaName, setAreaName] = React.useState('');
+  const [entityType, setEntityType] = React.useState(props.isUpdate ? props.whichEntity ? props.donor.EntityType : props.recipient.EntityType : '');
+  const [locationType, setLocationType] = React.useState(props.isUpdate ? props.whichEntity ? props.donor.LocationType : '' : '');
+  const [areaName, setAreaName] = React.useState(props.isUpdate ? props.whichEntity ? props.donor.CombinedAreaName : props.recipient.CombinedAreaName : '');
 
   const [donorName, setDonorName] = useState(props.isUpdate ? props.donor.name : '');
   
@@ -98,6 +98,18 @@ const DonorsForm = (props: any) => {
             selectedFoods.concat(name))))
   }
 
+  const handleEntityChange = (event: SelectChangeEvent) => {
+    setEntityType(event.target.value as string);
+  };
+
+  const handleLocationChange = (event: SelectChangeEvent) => {
+    setLocationType(event.target.value as string);
+  };
+
+  const handleAreaChange = (event: SelectChangeEvent) => {
+    setAreaName(event.target.value as string);
+  };
+
   function handleSubmit(e:any){
      e.preventDefault();
       if (donorName === ''){
@@ -106,10 +118,6 @@ const DonorsForm = (props: any) => {
       }
       else if (entityType === ''){
         toast.error("Missing Entity Type")
-        return
-      }
-      else if (selectedFoods.length < 1){
-        toast.error("Missing Food Type")
         return
       }
       else if (areaName === ''){
@@ -152,61 +160,65 @@ const DonorsForm = (props: any) => {
       />
 
     <h2>Entity Type</h2>
-    <input
-      className="input"
-      placeholder={
-        (!props.isUpdate)
-          ? "Entity Type"
-          : ""  
-      }
-      defaultValue={
-        (props.isUpdate)
-          ? props.donor.EntityType
-          : ""
-      }
-      onChange={(e:any) => setEntityType(e.target.value)}
-    />
-    <h2>Food Type</h2>
-    <h4>Select all that apply</h4>
-    <div className="food-type-admin">
-      {(foodTypes).map((v:any, index:any) => {
-        return(
-          <Button className="food-button" id={index} name={v} handleClick={handleFoodClick.bind(this,v)}/>
-      );
-      })}
-    </div>
+      <Box sx={{ minWidth: 120 }}>
+        <FormControl fullWidth>
+          <InputLabel id="demo-simple-select-label">Entity Type</InputLabel>
+          <Select
+            labelId="demo-simple-select-label"
+            id="demo-simple-select"
+            value={entityType}
+            label="EntityType"
+            onChange={handleEntityChange}
+          >
+            <MenuItem value={'Farm'}>Farm</MenuItem>
+            <MenuItem value={'Restaurant'}>Restaurant</MenuItem>
+            <MenuItem value={'Food Supply Company'}>Food Supply Company</MenuItem>
+            <MenuItem value={'Nonprofit'}>Nonprofit</MenuItem>
+            <MenuItem value={'Grocery'}>Grocery</MenuItem>
+            <MenuItem value={'Community Kitchen'}>Community Kitchen</MenuItem>
+          </Select>
+        </FormControl>
+      </Box>
+
     <div className="internal-div"><h2>Location Type</h2>
-    <input
-      className="input"
-      // placeholder="Location Type"
-      placeholder={
-        (!props.isUpdate)
-          ? "Location Type"
-          : ""  
-      }
-      defaultValue={
-        (props.isUpdate)
-          ? props.donor.LocationType 
-          : ""
-      }
-      onChange={(e:any) => setLocationType(e.target.value)}
-    /></div>
+      <Box sx={{ minWidth: 120 }}>
+        <FormControl fullWidth>
+          <InputLabel id="demo-simple-select-label">Location Type</InputLabel>
+          <Select
+            labelId="demo-simple-select-label"
+            id="demo-simple-select"
+            value={locationType}
+            label="locationType"
+            onChange={handleLocationChange}
+          >
+            <MenuItem value={'Farm'}>Farm</MenuItem>
+            <MenuItem value={'Farmers Market'}>Farmers Market</MenuItem>
+            <MenuItem value={'Warehouse'}>Warehouse</MenuItem>
+            <MenuItem value={'Restaurant'}>Restaurant</MenuItem>
+            <MenuItem value={'Community Kitchen'}>Community Kitchen</MenuItem>
+          </Select>
+        </FormControl>
+      </Box>
+    </div>
     <h2>Combined Area Name</h2>
-    <input
-      className="input"
-      // placeholder="Combined Area Name"
-      placeholder={
-        (!props.isUpdate)
-          ? "Combined Area Name"
-          : ""  
-      }
-      defaultValue={
-        (props.isUpdate)
-          ? props.donor.CombinedAreaName
-          : ""
-      }
-      onChange={(e:any) => setAreaName(e.target.value)}
-    />
+      <Box sx={{ minWidth: 120 }}>
+        <FormControl fullWidth>
+          <InputLabel id="demo-simple-select-label">Combined Area Name</InputLabel>
+          <Select
+            labelId="demo-simple-select-label"
+            id="demo-simple-select"
+            value={areaName}
+            label="combinedAreaName"
+            onChange={handleAreaChange}
+          >
+            <MenuItem value={'SB/Goleta'}>SB/Goleta</MenuItem>
+            <MenuItem value={'SYV'}>SYV</MenuItem>
+            <MenuItem value={'SM/Orcutt'}>SM/Orcutt</MenuItem>
+            <MenuItem value={'Cuyama'}>Cuyama</MenuItem>
+            <MenuItem value={'Lompoc'}>Lompoc</MenuItem>
+          </Select>
+        </FormControl>
+      </Box>
     <div className="flex flex-row w-full">
           <button type="submit" id="form-submit" onClick={handleSubmit}>
             {props.isUpdate ? 'Update' : 'Done'}
