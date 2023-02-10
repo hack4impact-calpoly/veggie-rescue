@@ -37,8 +37,10 @@ interface Props{
 }
 
 const LocationForm = ({current, createNew, setLocation, PickupDeliveryObject, setPickupDeliveryObject, setForceNext} : Props) =>{
-  const [active, setActive] = useState(""); // State for radio buttons
+  const [active, setActive] = useState<string[]>([]);
   const [isClicked, setIsClicked] = useState(true); // State for radio buttons
+  const [isOtherClicked, setOtherClicked] = useState(true);
+   // State for radio buttons
 
   // State for if user is adding a new location
   const [donorName, setName] = useState("");
@@ -51,7 +53,7 @@ const LocationForm = ({current, createNew, setLocation, PickupDeliveryObject, se
   const { name } = current;
 
   const submitPressed = () => {
-    if (createNew === false && active !== ""){
+    if (createNew === false && active .length!=0){
       setPickupDeliveryObject({
         ...PickupDeliveryObject,
         id : current._id,
@@ -59,7 +61,7 @@ const LocationForm = ({current, createNew, setLocation, PickupDeliveryObject, se
         EntityType : current.EntityType,
         LocationType : current.LocationType,
         Demographic : current.DemographicName,
-        FoodType : active.toLowerCase(),
+        FoodType : active,
         Area : current.CombinedAreaName
       })
       setForceNext(true);
@@ -72,7 +74,7 @@ const LocationForm = ({current, createNew, setLocation, PickupDeliveryObject, se
         EntityType : donorEntityType,
         LocationType : donorLocationType,
         Demographic : demographic,
-        FoodType : food,
+        FoodType : active,
         Area : area
       })
       setForceNext(true); 
@@ -95,14 +97,14 @@ const LocationForm = ({current, createNew, setLocation, PickupDeliveryObject, se
               type="text"
               placeholder="Donor name"
               name="name"
-              onChange={(e) => setName(e.target.value)}
+              onChange={(e: { target: { value: any; }; }) => setName(e.target.value)}
             />
             <input
               className="italic py-3 px-4 mt-3 rounded-lg shadow w-full text-left"
               type="text"
               placeholder="Donor Location Type"
               name="location"
-              onChange={(e) => setDonorLocationType(e.target.value)}
+              onChange={(e: { target: { value: any; }; }) => setDonorLocationType(e.target.value)}
             />
 
             <input
@@ -110,21 +112,21 @@ const LocationForm = ({current, createNew, setLocation, PickupDeliveryObject, se
               type="text"
               placeholder="Entity Type"
               name="location"
-              onChange={(e) => setDonorEntityType(e.target.value)}
+              onChange={(e: { target: { value: any; }; }) => setDonorEntityType(e.target.value)}
             />
             <input
               className="italic py-3 px-4 mt-3 rounded-lg shadow w-full text-left"
               type="text"
               placeholder="Food Type"
               name="type"
-              onChange={(e) => setFoodType(e.target.value)}
+              onChange={(e: { target: { value: any; }; }) => setFoodType(e.target.value)}
             />
             <input
               className="italic py-3 px-4 mt-3 rounded-lg shadow w-full text-left"
               type="text"
               placeholder="Area"
               name="type"
-              onChange={(e) => setArea(e.target.value)}
+              onChange={(e: { target: { value: any; }; }) => setArea(e.target.value)}
             />
           </div>
          ): ( <div className="newLocation">
@@ -133,7 +135,7 @@ const LocationForm = ({current, createNew, setLocation, PickupDeliveryObject, se
               type="text"
               placeholder="Recipient name"
               name="name"
-              onChange={(e) => setName(e.target.value)}
+              onChange={(e: { target: { value: any; }; }) => setName(e.target.value)}
             />
 
             <input
@@ -141,28 +143,28 @@ const LocationForm = ({current, createNew, setLocation, PickupDeliveryObject, se
               type="text"
               placeholder="Entity Type"
               name="location"
-              onChange={(e) => setDonorEntityType(e.target.value)}
+              onChange={(e: { target: { value: any; }; }) => setDonorEntityType(e.target.value)}
             />
             <input
               className="italic py-3 px-4 mt-3 rounded-lg shadow w-full text-left"
               type="text"
               placeholder="Food Type"
               name="type"
-              onChange={(e) => setFoodType(e.target.value)}
+              onChange={(e: { target: { value: any; }; }) => setFoodType(e.target.value)}
             />
             <input
               className="italic py-3 px-4 mt-3 rounded-lg shadow w-full text-left"
               type="text"
               placeholder="Demographic"
               name="location"
-              onChange={(e) => setDemographic(e.target.value)}
+              onChange={(e: { target: { value: any; }; }) => setDemographic(e.target.value)}
             />
             <input
               className="italic py-3 px-4 mt-3 rounded-lg shadow w-full text-left"
               type="text"
               placeholder="Area"
               name="type"
-              onChange={(e) => setArea(e.target.value)}
+              onChange={(e: { target: { value: any; }; }) => setArea(e.target.value)}
             />
           </div>)
         ) : (
@@ -171,38 +173,50 @@ const LocationForm = ({current, createNew, setLocation, PickupDeliveryObject, se
             <div className="text-4xl font-semibold text-left pt-10">Food type:</div>
             <div className="text-3xl text-left ml-20 m-4 py-4">
               {current &&
-                 <div className="flex items-center mr-4 mb-4">
-                      <input className='mx-3 my-5 hidden'
-                            id="radio1"
-                            type="radio"
-                            name="foodType"
-                            value={current.FoodType}
-                            onClick={() => {
-                              setActive(current.FoodType);
-                              setIsClicked(true);}}
-                            checked/>
-                        <label htmlFor="radio1" className="flex items-center cursor-pointer text-3xl">
-                        <span className="w-8 h-8 inline-block mr-2 bg-white rounded-full border border-grey flex-no-shrink"></span>
-                        {current.FoodType}</label>
-                  </div>
+                 <div className="flex items-center mb-4">
+                 <input 
+                       className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600 w-8 h-8 inline-block mr-2 bg-white border border-grey flex-no-shrink"
+                       id="checkbox"
+                       type="checkbox"
+                       name="foodType"
+                       value={current.FoodType}
+                       onClick={() => {
+                         active.push(current.FoodType);
+                         setActive(active);
+                         setIsClicked(true);}}
+                      />
+                   <label htmlFor="checkbox" className="flex items-center cursor-pointer text-3xl">
+                   
+                   
+                   {current.FoodType}</label>
+             </div>
               }
               {current && (
                 <div>
                   <input
-                    className='mx-3 my-5 hidden'
-                    id="radio2"
-                    type="radio"
+                    className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600  w-8 h-8 inline-block mr-2 bg-white border border-grey flex-no-shrink"
+                    id="checkbox2"
+                    type="checkbox"
                     name="foodType"
-                    onClick={() => setIsClicked(false)}
-                    checked
+                    value = {"Other"}
+                    onChange={() => {
+                      setIsClicked(!isClicked);
+                      setOtherClicked(!isOtherClicked);
+                      console.log(isOtherClicked)
+                      }}
                   />
-                  <label htmlFor="radio2" className="flex items-center cursor-pointer text-3xl">
-                        <span className="w-8 h-8 inline-block mr-2 bg-white rounded-full border border-grey flex-no-shrink"></span>
-                        {"Other"}</label>
+                  <label htmlFor="checkbox2" className="cursor-pointer text-3xl">
+                    {"Other"} </label>
+                       
                   <input className="bg-white ml-2 text-4xl w-full italic py-4 px-4 mt-2 rounded-lg shadow w-full text-left"
                     type="text"
-                    disabled={isClicked}
-                    onChange={(e) => setActive(e.target.value)}
+                    disabled= {isOtherClicked}
+                    onChange={(e) => 
+                      {
+                        active.push(e.target.value);
+                        setActive(active);
+                        setIsClicked(true);}
+                    }
                     placeholder='Please Specify'
                   />{" "}
                 </div>
@@ -212,7 +226,9 @@ const LocationForm = ({current, createNew, setLocation, PickupDeliveryObject, se
         )}
 
         <div>
-          <button className="bg-amber-500 rounded-full w-full mt-5 p-3 text-3xl text-white font-semibold shadow" onClick={() => submitPressed()}>Continue</button>
+          <button className="bg-amber-500 rounded-full w-full mt-5 p-3 text-3xl text-white font-semibold shadow"
+          disabled= {!isClicked}
+           onClick={() => submitPressed()}>Continue</button>
         </div>
       {/* </form> */}
     </div>
