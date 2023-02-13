@@ -134,7 +134,7 @@ const AdminDataScreen = () => {
       'area'
     ]);
     setRecipients(false);
-    toggleDonorButtons(true);
+    toggleDonorButtons((prev) => !prev);
     toggleRecipientButtons(false);
 
   }
@@ -152,7 +152,7 @@ const AdminDataScreen = () => {
       'area'
     ]);
     toggleDonorButtons(false);
-    toggleRecipientButtons(true);
+    toggleRecipientButtons((prev) => !prev);
 
   }
 
@@ -261,9 +261,14 @@ const AdminDataScreen = () => {
           <div className={showRecipientButtons ? "titles" : "hidden titles"}>  
           <div>
               <button
-              className="title"
-              >
-              Entity Type
+              className="title">
+                Organizational Structure
+              </button>
+            </div>
+            <div>
+              <button
+              className="title">
+                Food Distribution Model
               </button>
             </div>
             <div>
@@ -275,7 +280,7 @@ const AdminDataScreen = () => {
             <div>
               <button
               className="title">
-                Demographic Name
+                Demographic Served
               </button>
             </div>
             <div>
