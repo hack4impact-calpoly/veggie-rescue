@@ -1,14 +1,15 @@
-const mongoose = require('mongoose')
+const mongoose = require("mongoose");
 
 const RecipientSchema = new mongoose.Schema(
   {
     name: String,
     EntityType: String,
-    DemographicName: String,
+    DemographicType: String,
     FoodType: String,
     CombinedAreaName: String,
+    FoodDistributionModel: String,
   },
   { collection: "Recipients" }
 );
 
-module.exports = mongoose.model('RecipientSchema', RecipientSchema)
+module.exports = mongoose.model("RecipientSchema", RecipientSchema);
