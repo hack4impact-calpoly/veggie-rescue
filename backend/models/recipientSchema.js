@@ -3,11 +3,10 @@ const mongoose = require("mongoose");
 const RecipientSchema = new mongoose.Schema(
   {
     name: String,
-    EntityType: String,
-    DemographicType: String,
-    FoodType: String,
+    OrgStructure: String,
+    DemographicsServed: String,
     CombinedAreaName: String,
-    FoodDistributionModel: String,
+    FoodDistModel: String,
   },
   { collection: "Recipients" }
 );
