@@ -1,5 +1,5 @@
 
-import React, { useEffect, useState } from 'react';
+import React, { Component, useEffect, useState } from 'react';
 import { DataGrid, GridColDef, GridRenderCellParams, GridToolbarContainer, GridToolbarExport, GridCsvExportOptions, GridValueGetterParams, GridValueFormatterParams } from '@mui/x-data-grid';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
@@ -9,6 +9,7 @@ import Button from '@mui/material/Button';
 import { logs } from '../../data/dbMock';
 import { useAppDispatch, useAppSelector } from '../../app/hooks';
 import { getPickups } from '../../features/pickups/pickupsSlice';
+import { getDropoffs } from '../../features/dropoffs/dropoffsSlice';
 import AdminHeader from '../AdminHeader/AdminHeader';
 
 // props for expanding cell if too long
@@ -216,35 +217,53 @@ const columns: GridColDef[] = [
     },
 ];
 
+let temp = 0;
+
 export default function DataTable() {
+  // command for backend: npm start dev
+  const dispatch = useAppDispatch();
+  const { pickups } = useAppSelector((state) => state.pickups);
+  const { dropoffs } = useAppSelector((state) => state.dropoffs);
 
-  // const [pickupData, pickupDataSet] = useState<any>(null);
-  // const dispatch = useAppDispatch();
+  useEffect(() => {
+    dispatch(getPickups());
+    dispatch(getDropoffs());
+  }, [dispatch, pickups, dropoffs]);
 
-  // useEffect(() => {
-  //   async function fetchMyAPI() {
-  //     let response = dispatch(getPickups());
-  //     pickupDataSet(await response);
-  //     console.log(response);
-  //   }
-  //   fetchMyAPI();
-  // }, []);
+  const [buttonText, setButtonText] = React.useState('Dropoffs');
+  const handleClick = () => {
+    setButtonText(buttonText === 'Dropoffs' ? 'Pickups' : 'Dropoffs');
+    if (buttonText === 'Dropoffs') {
+      temp = 1;
+    } else {
+      temp = 0;
+    }
+  }
+
+  function getData() {
+    if (temp === 0) {
+      return pickups;
+    } else {
+      return dropoffs;
+    }
+  }
 
   let i = 0;
-  const rows = logs?.map((log: { date: String; driver: String; vehicle: String; name: String; foodType: String; lbsPickedUp: Number; locationType: String; donorEntityType: String; area: String; }) => {
-  return {
-      id: i++,
-      date: log.date,
-      driverName: log.driver,
-      vehicle: log.vehicle,
-      name: log.name,
-      foodType: log.foodType,
-      lbsPickedUp: log.lbsPickedUp,
-      locationType: log.locationType,
-      donorEntityType: log.donorEntityType,
-      area: log.area
-      } 
-  }); 
+  let rows = getData()?.map((data: { date: String; driver: String; vehicle: String; name: String; foodType: String; lbsPickedUp: Number; locationType: String; donorEntityType: String; area: String; }) => {
+      return {
+          id: i++,
+          // id: newData.id,
+          date: data.date,
+          driverName: data.driver,
+          vehicle: data.vehicle,
+          name: data.name,
+          foodType: data.foodType,
+          lbsPickedUp: data.lbsPickedUp,
+          locationType: data.name, // locationType is the same as name in the backend 
+          donorEntityType: data.donorEntityType,
+          area: data.area
+          } 
+    });
 
   return (
       <div className='bg-white w-screen h-[850px]'>
@@ -274,7 +293,8 @@ export default function DataTable() {
                   <Button
                     color="success"
                     variant="contained"
-                    onClick={() => console.log('clicked')}>Toggle Pickup/Dropoff
+                    onClick={handleClick}>
+                    {buttonText}
                   </Button>
               </div>
               </div>
