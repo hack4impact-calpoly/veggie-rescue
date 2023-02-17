@@ -1,4 +1,5 @@
-import React, { useEffect, useState } from 'react';
+/* eslint-disable react/destructuring-assignment */
+import React, { useState } from 'react';
 import './RecipientsForm.css';
 import { toast } from 'react-toastify';
 
@@ -14,12 +15,12 @@ import {
   updateRecipient,
   deleteRecipient
 } from '../../features/recipients/recipientsSlice';
-import { useAppSelector, useAppDispatch } from '../../app/hooks';
+import { useAppDispatch } from '../../app/hooks';
 
 /* Form to add recipient or donor */
 function RecipientsForm(props: any) {
   /* Recipient and donor state data here */
-  const [entityType, setOrgStruc] = useState(
+  const [orgStruc, setOrgStruc] = useState(
     props.isUpdate ? props.recipient.EntityType : ''
   );
   const [areaName, setAreaName] = useState(
@@ -36,21 +37,8 @@ function RecipientsForm(props: any) {
     props.isUpdate ? props.recipient.FoodDistrModel : ''
   );
 
-  const [donor, setDonor] = useState(true);
-  const [recipient, setRecipient] = useState(false);
-  // const orgStruc = [
-  //   'Church',
-  //   'Shelter',
-  //   'School',
-  //   'Senior Center',
-  //   'Food Pantry - Other',
-  //   'Temp Food Pantry - Other',
-  //   'Nonprofit - Other'
-  // ];
-  // const [selectedFoods, setSelectedFoods] = useState(props.isUpdate ? props.whichEntity ? props.donor.foodType : props.recipient.foodType : []);
-  const [selectedFoods, setSelectedFoods] = useState([]);
+  const [selectedFoods] = useState([]);
 
-  const [isDonor, setIsDonor] = useState(props.whichEntity);
   const dispatch = useAppDispatch();
 
   const dispatchGetRecipients = () => {
@@ -67,11 +55,11 @@ function RecipientsForm(props: any) {
       createRecipient({
         id: '0',
         name: recipientName,
-        EntityType: entityType,
+        EntityType: orgStruc,
         FoodType: selectedFoods.toString(), // this is weird
         DemographicName: demographicType,
         CombinedAreaName: areaName,
-        FoodDistributionModel: foodDistrModel
+        FoodDistrModel: foodDistrModel
       })
     );
     toast.success('Successfully created new recipient.');
@@ -86,11 +74,11 @@ function RecipientsForm(props: any) {
       updateRecipient({
         id: props.recipient._id,
         name: recipientName,
-        EntityType: entityType,
+        EntityType: orgStruc,
         FoodType: selectedFoods.toString(), // this is weird
         DemographicName: demographicType,
         CombinedAreaName: areaName,
-        FoodDistributionModel: foodDistrModel
+        FoodDistrModel: foodDistrModel
       })
     );
     toast.success('Successfully updated recipient.');
@@ -106,22 +94,6 @@ function RecipientsForm(props: any) {
     toast.success('Successfully deleted recipient.');
     dispatchGetRecipients();
     props.handleShow();
-  };
-
-  function handleRecipient() {
-    setRecipient((prev) => !prev);
-    setDonor(false);
-    // setIsDonor(false);
-  }
-
-  const handleFoodClick = (name: any) => {
-    // console.log("here: " + name)
-    const filtered = selectedFoods.filter((item: any) => item !== name);
-    // console.log(filtered);
-    // console.log(selectedFoods);
-    JSON.stringify(filtered) !== JSON.stringify(selectedFoods)
-      ? setSelectedFoods((selectedFoods: any) => filtered)
-      : setSelectedFoods((selectedFoods: any) => selectedFoods.concat(name));
   };
 
   const handleOrgStrucChange = (event: SelectChangeEvent) => {
@@ -143,10 +115,6 @@ function RecipientsForm(props: any) {
     e.preventDefault();
     if (recipientName === '') {
       toast.error('Missing Entity Name');
-      return;
-    }
-    if (entityType === '') {
-      toast.error('Missing Entity Type');
       return;
     }
     if (areaName === '') {
@@ -195,7 +163,7 @@ function RecipientsForm(props: any) {
             <Select
               labelId="demo-simple-select-label"
               id="demo-simple-select"
-              value={entityType}
+              value={orgStruc}
               label="OrganizationalStructure"
               onChange={handleOrgStrucChange}
             >
@@ -298,31 +266,5 @@ function RecipientsForm(props: any) {
     </form>
   );
 }
-
-/* button for food types */
-// function Button(props: any) {
-//   const [color, setColors] = React.useState('');
-//   const [active, setActive] = React.useState(false);
-//   const handleClickButton = (name: '') => {
-//     setActive(true);
-//     setColors('2px solid #FF9C55');
-//     if (active === true) {
-//       setActive(false);
-//       setColors('');
-//     }
-//     props.handleClick(props.name);
-//   };
-
-//   return (
-//     <button
-//       type="button"
-//       className="food-button"
-//       onClick={() => handleClickButton(props.name)}
-//       style={{ border: color }}
-//     >
-//       {props.name}
-//     </button>
-//   );
-// }
 
 export default RecipientsForm;
