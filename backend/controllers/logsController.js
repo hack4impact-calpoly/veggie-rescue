@@ -112,9 +112,11 @@ const createDropoff = async (req, res) => {
     name: name,
     recipientEntityType: recipientEntityType,
     demographic: demographic,
-    foodType: foodType,
     area: area,
-    lbsDroppedOff: lbsDroppedOff,
+    foodAllocation: {
+      type: Map,
+      of: Number
+    }
   });
   try {
     dropoff = await dropoff.save();
