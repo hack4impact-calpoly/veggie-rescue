@@ -1,7 +1,7 @@
 const asyncHandler = require("express-async-handler");
 const Vehicle = require("../models/vehiclesSchema.js");
-const Admin = require("../models/adminModel.js");
-const Driver = require("../models/driverModel.js");
+const Admin = require("../models/adminSchema.js");
+const Driver = require("../models/driverSchema.js");
 const DropoffLogSchema = require("../models/dropoffLogSchema.js");
 const PickupLogSchema = require("../models/pickupLogSchema.js");
 

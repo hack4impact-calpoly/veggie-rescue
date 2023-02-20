@@ -2,8 +2,8 @@ const asyncHandler = require('express-async-handler')
 const jwt = require("jsonwebtoken")
 const Donor = require('../models/donorSchema.js')
 const Recipient = require('../models/recipientSchema.js')
-const Admin = require('../models/adminModel.js')
-const Driver = require('../models/driverModel.js')
+const Admin = require('../models/adminSchema.js')
+const Driver = require('../models/driverSchema.js')
 
 // @desc Get full donor list
 // @route /api/location/donor
