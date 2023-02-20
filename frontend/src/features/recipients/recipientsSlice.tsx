@@ -31,10 +31,10 @@ const initialState: RecipientState = {
 interface RecipientObj{
   id: String,
   name: String,
-  EntityType: String,
-  DemographicName: String,
-  FoodType: String,
-  CombinedAreaName: String
+  OrgStructure: String,
+  DemographicsServed: String,
+  CombinedAreaName: String,
+  FoodDistModel: String
 }
 
 

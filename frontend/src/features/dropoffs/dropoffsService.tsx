@@ -18,9 +18,8 @@ interface dropoffObject {
   name: String;
   recipientEntityType: String;
   demographic: String;
-  foodType: String;
   area: String;
-  lbsDroppedOff: Number;
+  foodAllocation: Map<String, Number>;
 }
 
 //  Get master log of drop offs

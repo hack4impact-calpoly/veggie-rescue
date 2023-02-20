@@ -15,9 +15,8 @@ interface dropoffObject {
   name: String;
   recipientEntityType: String;
   demographic: String;
-  foodType: String;
   area: String;
-  lbsDroppedOff: Number;
+  foodAllocation: Map<String, Number>;
 }
 
 // // Define a type for the slice state

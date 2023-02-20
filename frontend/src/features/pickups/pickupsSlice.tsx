@@ -14,9 +14,8 @@ interface pickupObject {
   vehicle: String;
   name: String;
   donorEntityType: String;
-  foodType: String;
   area: String;
-  lbsPickedUp: Number;
+  foodAllocation: Map<String, Number>;
 }
 
 // Define a type for the pickup slice state
