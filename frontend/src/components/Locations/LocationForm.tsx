@@ -38,7 +38,7 @@ interface Props{
 
 const LocationForm = ({current, createNew, setLocation, PickupDeliveryObject, setPickupDeliveryObject, setForceNext} : Props) =>{
   const [active, setActive] = useState<string[]>([]);
-  const [isClicked, setIsClicked] = useState(true); // State for radio buttons
+  const [isValid, setIsValid] = useState(true); // State for checkbox buttons
   const [isOtherClicked, setOtherClicked] = useState(true);
    // State for radio buttons
 
@@ -49,10 +49,16 @@ const LocationForm = ({current, createNew, setLocation, PickupDeliveryObject, se
   const [food, setFoodType] = useState("");
   const [demographic, setDemographic] = useState("");
   const [area, setArea] = useState("");
+  const[input, setInput] = useState("");
 
   const { name } = current;
 
-  const submitPressed = () => {
+  const submitPressed = () => 
+  {
+    if(isOtherClicked)
+    {
+      active.push(input);
+    }
     if (createNew === false && active .length!=0){
       setPickupDeliveryObject({
         ...PickupDeliveryObject,
@@ -183,7 +189,7 @@ const LocationForm = ({current, createNew, setLocation, PickupDeliveryObject, se
                        onClick={() => {
                          active.push(current.FoodType);
                          setActive(active);
-                         setIsClicked(true);}}
+                         setIsValid(true);}}
                       />
                    <label htmlFor="checkbox" className="flex items-center cursor-pointer text-3xl">
                    
@@ -200,7 +206,7 @@ const LocationForm = ({current, createNew, setLocation, PickupDeliveryObject, se
                     name="foodType"
                     value = {"Other"}
                     onChange={() => {
-                      setIsClicked(!isClicked);
+                      setIsValid(!isValid);
                       setOtherClicked(!isOtherClicked);
                       console.log(isOtherClicked)
                       }}
@@ -213,9 +219,9 @@ const LocationForm = ({current, createNew, setLocation, PickupDeliveryObject, se
                     disabled= {isOtherClicked}
                     onChange={(e) => 
                       {
-                        active.push(e.target.value);
+                        setInput(e.target.value);
                         setActive(active);
-                        setIsClicked(true);}
+                        setIsValid(true);}
                     }
                     placeholder='Please Specify'
                   />{" "}
@@ -227,7 +233,7 @@ const LocationForm = ({current, createNew, setLocation, PickupDeliveryObject, se
 
         <div>
           <button className="bg-amber-500 rounded-full w-full mt-5 p-3 text-3xl text-white font-semibold shadow"
-          disabled= {!isClicked}
+          disabled= {!isValid && input!=""}
            onClick={() => submitPressed()}>Continue</button>
         </div>
       {/* </form> */}
