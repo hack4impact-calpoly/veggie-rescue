@@ -54,9 +54,8 @@ const createPickup = async (req, res) => {
     vehicle,
     name,
     donorEntityType,
-    foodType,
     area,
-    lbsPickedUp,
+    foodAllocation,
   } = req.body;
   
   let pickup = new PickupLog({
@@ -64,9 +63,8 @@ const createPickup = async (req, res) => {
     vehicle: vehicle,
     name: name,
     donorEntityType: donorEntityType,
-    foodType: foodType,
     area: area,
-    lbsPickedUp: lbsPickedUp,
+    foodAllocation: foodAllocation,
   });
   try {
     pickup = await pickup.save();
@@ -102,9 +100,8 @@ const createDropoff = async (req, res) => {
     name,
     recipientEntityType,
     demographic,
-    foodType,
     area,
-    lbsDroppedOff,
+    foodAllocation,
   } = req.body;
   let dropoff = new DropoffLog({
     driver: driver,
@@ -113,10 +110,7 @@ const createDropoff = async (req, res) => {
     recipientEntityType: recipientEntityType,
     demographic: demographic,
     area: area,
-    foodAllocation: {
-      type: Map,
-      of: Number
-    }
+    foodAllocation: foodAllocation,
   });
   try {
     dropoff = await dropoff.save();
