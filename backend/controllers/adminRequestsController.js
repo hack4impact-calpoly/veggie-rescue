@@ -63,10 +63,10 @@ const createDonor = asyncHandler(async (req, res) => {
       res.status(401);
       throw new Error("Admin not found");
     }
-  const { name, EntityType, FoodType, LocationType, CombinedAreaName } =
+  const { name, EntityType, LocationType, CombinedAreaName } =
     req.body;
 
-  if (!name || !EntityType || !FoodType || !LocationType || !CombinedAreaName) {
+  if (!name || !EntityType || !LocationType || !CombinedAreaName) {
     res.status(400);
     throw new Error("Please include all fields");
   }
@@ -83,7 +83,6 @@ const createDonor = asyncHandler(async (req, res) => {
   const donor = await Donor.create({
     name,
     EntityType,
-    FoodType,
     LocationType,
     CombinedAreaName,
   });
@@ -92,7 +91,6 @@ const createDonor = asyncHandler(async (req, res) => {
     res.status(201).json({
       name: donor.name,
       EntityType: donor.EntityType,
-      FoodType: donor.FoodType,
       LocationType: donor.LocationType,
       CombinedAreaName: donor.CombinedAreaName,
     });
@@ -112,9 +110,9 @@ const createRecipient = asyncHandler(async (req, res) => {
     res.status(401);
     throw new Error("Admin not found");
   }
-  const { name, EntityType, FoodType,  DemographicName, CombinedAreaName } = req.body;
+  const { name, EntityType, DemographicName, CombinedAreaName } = req.body;
 
-  if (!name || !EntityType || !FoodType || !DemographicName || !CombinedAreaName) {
+  if (!name || !EntityType || !DemographicName || !CombinedAreaName) {
     res.status(400);
     throw new Error("Please include all fields");
   }
@@ -131,7 +129,6 @@ const createRecipient = asyncHandler(async (req, res) => {
   const recipient = await Recipient.create({
     name,
     EntityType,
-    FoodType,
     DemographicName,
     CombinedAreaName,
   });
@@ -141,7 +138,6 @@ const createRecipient = asyncHandler(async (req, res) => {
       _id: recipient._id,
       name: recipient.name,
       EntityType: recipient.EntityType,
-      FoodType: recipient.FoodType,
       DemographicName: recipient.DemographicName,
       CombinedAreaName: recipient.CombinedAreaName,
     });
@@ -171,7 +167,6 @@ const editDonor = asyncHandler(async (req, res) => {
 
   if (body.name) donor.name = body.name;
   if (body.EntityType) donor.EntityType = body.EntityType;
-  if (body.FoodType) donor.FoodType = body.FoodType;
   if (body.LocationType) donor.LocationType = body.LocationType;
   if (body.CombinedAreaName) donor.CombinedAreaName = body.CombinedAreaName;
 
@@ -198,7 +193,6 @@ const editRecipient = asyncHandler(async (req, res) => {
   const body = req.body;
   if (body.name) recipient.name = body.name;
   if (body.EntityType) recipient.EntityType = body.EntityType;
-  if (body.FoodType) recipient.FoodType = body.FoodType;
   if (body.DemographicName) recipient.DemographicName = body.DemographicName;
   if (body.CombinedAreaName) recipient.CombinedAreaName = body.CombinedAreaName;
 
