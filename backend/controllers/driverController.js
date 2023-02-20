@@ -69,7 +69,7 @@ const registerDriver = asyncHandler(async (req, res) => {
     img: "no image",
     currentPickups: [],
     currentDropoffs: [],
-    totalWeight: 0,
+    totalFoodAllocation: new Map(),
   });
 
   if (driver) {

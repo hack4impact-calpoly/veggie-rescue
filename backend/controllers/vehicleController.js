@@ -84,7 +84,7 @@ const createVehicle = asyncHandler(async (req, res) => {
     img,
     currentPickups: [],
     currentDropoffs: [],
-    totalWeight: 0,
+    totalFoodAllocation: new Map(),
   });
 
   if (vehicle) {
@@ -96,7 +96,7 @@ const createVehicle = asyncHandler(async (req, res) => {
       img: vehicle.img,
       currentPickups: vehicle.currentPickups,
       currentDropoffs: vehicle.currentDropoffs,
-      totalWeight: vehicle.totalWeight,
+      totalFoodAllocation: vehicle.totalFoodAllocation,
     });
   } else {
     res.status(400);
@@ -113,7 +113,7 @@ const createVehicle = asyncHandler(async (req, res) => {
     img: String,
     currentPickups: Array,
     currentDropoffs: Array,
-    totalWeight: Number
+    totalFoodAllocation: Map
 */
 const editVehicle = asyncHandler(async (req, res) => {
   // Check and verifity that this this is driver or admin accessing data
@@ -191,8 +191,8 @@ const editVehicle = asyncHandler(async (req, res) => {
       ];
     }
   }
-  if (body.totalWeight === 0 || body.totalWeight) {
-    vehicleInDB.totalWeight = body.totalWeight;
+  if (body.totalFoodAllocation === 0 || body.totalFoodAllocation) {
+    vehicleInDB.totalFoodAllocation = body.totalFoodAllocation;
   }
   const updatedVehicle = await Vehicle.findByIdAndUpdate(
     req.params.id,
