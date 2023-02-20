@@ -110,9 +110,9 @@ const createRecipient = asyncHandler(async (req, res) => {
     res.status(401);
     throw new Error("Admin not found");
   }
-  const { name, EntityType, DemographicName, CombinedAreaName } = req.body;
+  const { name, OrgStructure, DemographicsServed, CombinedAreaName, FoodDistModel } = req.body;
 
-  if (!name || !EntityType || !DemographicName || !CombinedAreaName) {
+  if (!name || !OrgStructure || !DemographicsServed || !CombinedAreaName || !FoodDistModel) {
     res.status(400);
     throw new Error("Please include all fields");
   }
@@ -128,18 +128,20 @@ const createRecipient = asyncHandler(async (req, res) => {
   // Create donor
   const recipient = await Recipient.create({
     name,
-    EntityType,
-    DemographicName,
+    OrgStructure,
+    DemographicsServed,
     CombinedAreaName,
+    FoodDistModel,
   });
 
   if (recipient) {
     res.status(201).json({
       _id: recipient._id,
       name: recipient.name,
-      EntityType: recipient.EntityType,
-      DemographicName: recipient.DemographicName,
+      OrgStructure: recipient.OrgStructure,
+      DemographicsServed: recipient.DemographicsServed,
       CombinedAreaName: recipient.CombinedAreaName,
+      FoodDistModel: recipient.FoodDistModel,
     });
   } else {
     res.status(400);
@@ -192,9 +194,10 @@ const editRecipient = asyncHandler(async (req, res) => {
   }
   const body = req.body;
   if (body.name) recipient.name = body.name;
-  if (body.EntityType) recipient.EntityType = body.EntityType;
-  if (body.DemographicName) recipient.DemographicName = body.DemographicName;
+  if (body.OrgStructure) recipient.OrgStructure = body.OrgStructure;
+  if (body.DemographicsServed) recipient.DemographicsServed = body.DemographicsServed;
   if (body.CombinedAreaName) recipient.CombinedAreaName = body.CombinedAreaName;
+  if (body.FoodDistModel) recipient.FoodDistModel = body.FoodDistModel;
 
   await Recipient.findByIdAndUpdate(req.params.id, recipient);
   return res.status(201).json(recipient);
