@@ -1,5 +1,4 @@
-/* eslint-disable react/destructuring-assignment */
-import React, { useState } from 'react';
+import { useState } from 'react';
 import './RecipientsForm.css';
 import { toast } from 'react-toastify';
 
@@ -17,24 +16,25 @@ import {
 } from '../../features/recipients/recipientsSlice';
 import { useAppDispatch } from '../../app/hooks';
 
-/* Form to add recipient or donor */
+/* Form to add recipient */
 function RecipientsForm(props: any) {
-  /* Recipient and donor state data here */
+  const { handleShow, isUpdate, recipient } = props;
+
   const [orgStruc, setOrgStruc] = useState(
-    props.isUpdate ? props.recipient.EntityType : ''
+    isUpdate ? recipient.EntityType : ''
   );
   const [areaName, setAreaName] = useState(
-    props.isUpdate ? props.recipient.CombinedAreaName : ''
+    isUpdate ? recipient.CombinedAreaName : ''
   );
   const [recipientName, setRecipientName] = useState(
-    props.isUpdate ? props.recipient.name : ''
+    isUpdate ? recipient.name : ''
   );
   const [demographicType, setDemographicType] = useState(
-    props.isUpdate ? props.recipient.DemographicType : ''
+    isUpdate ? recipient.DemographicType : ''
   );
 
   const [foodDistrModel, setFoodDistrModel] = useState(
-    props.isUpdate ? props.recipient.FoodDistrModel : ''
+    isUpdate ? recipient.FoodDistrModel : ''
   );
 
   const [selectedFoods] = useState([]);
@@ -49,14 +49,13 @@ function RecipientsForm(props: any) {
   const dispatchCreateNew = async () => {
     console.log('CREATE');
     console.log(selectedFoods.toString());
-    // console.log('creation of a new Volunteer');
     // here we can put the call to create a new volunteer
     await dispatch(
       createRecipient({
         id: '0',
         name: recipientName,
         EntityType: orgStruc,
-        FoodType: selectedFoods.toString(), // this is weird
+        FoodType: selectedFoods.toString(),
         DemographicName: demographicType,
         CombinedAreaName: areaName,
         FoodDistrModel: foodDistrModel
@@ -64,7 +63,7 @@ function RecipientsForm(props: any) {
     );
     toast.success('Successfully created new recipient.');
     dispatchGetRecipients();
-    props.handleShow();
+    handleShow();
   };
 
   const dispatchUpdate = async () => {
@@ -72,7 +71,7 @@ function RecipientsForm(props: any) {
     console.log(selectedFoods.toString());
     await dispatch(
       updateRecipient({
-        id: props.recipient._id,
+        id: recipient._id,
         name: recipientName,
         EntityType: orgStruc,
         FoodType: selectedFoods.toString(), // this is weird
@@ -83,17 +82,17 @@ function RecipientsForm(props: any) {
     );
     toast.success('Successfully updated recipient.');
     dispatchGetRecipients();
-    props.handleShow();
+    handleShow();
   };
 
   const dispatchDelete = async (e: any) => {
     console.log('DELETE');
     e.preventDefault();
     console.log('deletion of person');
-    await dispatch(deleteRecipient(props.recipient._id));
+    await dispatch(deleteRecipient(recipient._id));
     toast.success('Successfully deleted recipient.');
     dispatchGetRecipients();
-    props.handleShow();
+    handleShow();
   };
 
   const handleOrgStrucChange = (event: SelectChangeEvent) => {
@@ -129,7 +128,7 @@ function RecipientsForm(props: any) {
       toast.error('Missing Food Distribution Model');
       return;
     }
-    if (props.isUpdate) dispatchUpdate();
+    if (isUpdate) dispatchUpdate();
     else dispatchCreateNew();
   }
 
@@ -139,7 +138,7 @@ function RecipientsForm(props: any) {
         <div id="entity-title">
           <div className="title-content">Add or Edit Recipient</div>
           <div className="title-content">
-            <button type="button" id="X-form" onClick={props.handleShow}>
+            <button type="button" id="X-form" onClick={handleShow}>
               x
             </button>
           </div>
@@ -149,8 +148,8 @@ function RecipientsForm(props: any) {
 
         <input
           className="input"
-          placeholder={!props.isUpdate ? 'Name' : ''}
-          defaultValue={props.isUpdate ? props.recipient.name : ''}
+          placeholder={!isUpdate ? 'Name' : ''}
+          defaultValue={isUpdate ? recipient.name : ''}
           onChange={(e: any) => setRecipientName(e.target.value)}
         />
 
@@ -254,9 +253,9 @@ function RecipientsForm(props: any) {
 
         <div className="flex flex-row w-full">
           <button type="submit" id="form-submit" onClick={handleSubmit}>
-            {props.isUpdate ? 'Update' : 'Done'}
+            {isUpdate ? 'Update' : 'Done'}
           </button>
-          {props.isUpdate && (
+          {isUpdate && (
             <button type="submit" id="form-submit" onClick={dispatchDelete}>
               Delete
             </button>
