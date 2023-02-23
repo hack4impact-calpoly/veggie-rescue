@@ -16,7 +16,6 @@ interface DonorObject {
   id: string;
   name: string;
   EntityType: string;
-  FoodType: string;
   LocationType: string;
   CombinedAreaName: string;
 }
