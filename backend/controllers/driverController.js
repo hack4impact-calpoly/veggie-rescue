@@ -5,11 +5,10 @@ const Admin = require("../models/adminSchema");
 const Vehicle = require("../models/vehiclesSchema");
 
 // Generate token
-const generateToken = (id) => {
-  return jwt.sign({ id }, process.env.JWT_SECRET, {
+const generateToken = (id) =>
+  jwt.sign({ id }, process.env.JWT_SECRET, {
     expiresIn: "30d",
   });
-};
 
 // @desc Get all drivers
 // @route /api/drivers
@@ -39,7 +38,7 @@ const registerDriver = asyncHandler(async (req, res) => {
   }
 
   // We have to see if the password already exists
-  const foundDrivers = await Driver.find({ pin: pin });
+  const foundDrivers = await Driver.find({ pin });
 
   // Check if pin matched
   if (foundDrivers === []) {
@@ -111,7 +110,7 @@ const editDriver = asyncHandler(async (req, res) => {
   }
   if (pin) {
     // We have to see if the password already exists
-    const foundDrivers = await Driver.find({ pin: pin });
+    const foundDrivers = await Driver.find({ pin });
     // Check if pin matched
     if (foundDrivers.length !== 0) {
       res.status(401);
@@ -129,10 +128,10 @@ const editDriver = asyncHandler(async (req, res) => {
       $set: driverFields,
     });
 
-    res.json({ updated: driver, new: driverFields });
+    return res.json({ updated: driver, new: driverFields });
   } catch (err) {
     console.error(err.message);
-    res.status(500).send("Server Error");
+    return res.status(500).send("Server Error");
   }
 });
 

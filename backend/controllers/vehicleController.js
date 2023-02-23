@@ -1,9 +1,7 @@
 const asyncHandler = require("express-async-handler");
-const Vehicle = require("../models/vehiclesSchema.js");
-const Admin = require("../models/adminSchema.js");
-const Driver = require("../models/driverSchema.js");
-const DropoffLogSchema = require("../models/dropoffLogSchema.js");
-const PickupLogSchema = require("../models/pickupLogSchema.js");
+const Vehicle = require("../models/vehiclesSchema");
+const Admin = require("../models/adminSchema");
+const Driver = require("../models/driverSchema");
 
 // @desc GET all vehicles
 // @route  GET /api/vehicles
@@ -33,7 +31,7 @@ const getVehicles = asyncHandler(async (req, res) => {
 // @route GET /api/vehicles/match
 // @access Private to driver
 const matchVehicle = asyncHandler(async (req, res) => {
-  //Get user using the id in the JWT.  This is passed in through authMiddleware.
+  // Get user using the id in the JWT.  This is passed in through authMiddleware.
   const driver = await Driver.findById(req.driver.id);
   if (!driver) {
     res.status(401);
@@ -131,7 +129,7 @@ const editVehicle = asyncHandler(async (req, res) => {
     }
   }
   const vehicleInDB = await Vehicle.findById(req.params.id);
-  const body = req.body;
+  const { body } = req;
   if (!vehicleInDB) {
     res.status(404);
     throw new Error("Vehicle paired to given ID not found");
@@ -146,7 +144,6 @@ const editVehicle = asyncHandler(async (req, res) => {
   if (body.isLoggedIn) {
     vehicleInDB.isLoggedIn = body.isLoggedIn;
   }
-
   if (body.name) {
     vehicleInDB.name = body.name;
   }
@@ -155,7 +152,7 @@ const editVehicle = asyncHandler(async (req, res) => {
   }
   if (body.currentPickups) {
     // First check if it is an array
-    if (body.currentPickups.constructor == Array) {
+    if (Array.isArray(body.currentPickups.constructor)) {
       // this is for update logs section
       vehicleInDB.currentPickups = body.currentPickups;
     } else if (Object.keys(body.currentPickups).length === 0) {
@@ -165,7 +162,7 @@ const editVehicle = asyncHandler(async (req, res) => {
     } else {
       // Otherwise...
       // Create a pickup object and push it into the array
-      //const pickup = await PickupLogSchema.create(body.currentPickups);
+      // const pickup = await PickupLogSchema.create(body.currentPickups);
       vehicleInDB.currentPickups = [
         ...vehicleInDB.currentPickups,
         body.currentPickups,
@@ -174,7 +171,7 @@ const editVehicle = asyncHandler(async (req, res) => {
   }
   if (body.currentDropoffs) {
     // First check if it is an array
-    if (body.currentDropoffs.constructor == Array) {
+    if (Array.isArray(body.currentDropoffs.constructor)) {
       // this is for update logs section
       vehicleInDB.currentDropoffs = body.currentDropoffs;
     } else if (Object.keys(body.currentDropoffs).length === 0) {
@@ -184,7 +181,7 @@ const editVehicle = asyncHandler(async (req, res) => {
     } else {
       // Otherwise...
       // Create a dropoff object and push it into the array
-      //const dropoff = await DropoffLogSchema.create(body.currentDropoffs);
+      // const dropoff = await DropoffLogSchema.create(body.currentDropoffs);
       vehicleInDB.currentDropoffs = [
         ...vehicleInDB.currentDropoffs,
         body.currentDropoffs,
@@ -199,7 +196,7 @@ const editVehicle = asyncHandler(async (req, res) => {
     vehicleInDB
   );
   const update = await Vehicle.findById(updatedVehicle._id);
-  res.status(201).json(update);
+  return res.status(201).json(update);
 });
 
 // @desc    Delete vehicle
