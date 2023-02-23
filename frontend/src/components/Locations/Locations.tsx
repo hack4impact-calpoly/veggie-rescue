@@ -11,7 +11,7 @@ interface locale {
   DemographicName: string,
 	_id: string,
   }
-
+ 
 interface Props {
   locations : locale[],
   current? : locale,
