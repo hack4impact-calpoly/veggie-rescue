@@ -102,13 +102,7 @@ function AdminDataScreen() {
     setVolunteers(false);
     setVehiclesCard(false);
     setDonors((prev) => !prev);
-    setSearchParam([
-      'name',
-      'donorLocationType',
-      'donorEntityType',
-      'foodType',
-      'area'
-    ]);
+    setSearchParam(['name', 'donorLocationType', 'donorEntityType', 'area']);
     setRecipients(false);
   }
 
@@ -119,9 +113,9 @@ function AdminDataScreen() {
     setRecipients((prev) => !prev);
     setSearchParam([
       'name',
-      'recipientEntityType',
+      'recipientOrgStructure',
       'demographic',
-      'foodType',
+      'foodDistModel',
       'area'
     ]);
   }
@@ -254,6 +248,7 @@ function AdminDataScreen() {
                   whichEntity={false}
                   isUpdate={isUpdate}
                   volunteer={currentVolunteer}
+                  vehicle={currentVehicle}
                 />
               )}
               {search(q).map((item: any, index: any) => (
@@ -261,7 +256,6 @@ function AdminDataScreen() {
                   index={index}
                   handleShow={handleShowModal}
                   volunteer={item}
-                  // removeDriver={removeDriver}
                   volunteerHandler={volunteerData}
                 />
               ))}
@@ -312,7 +306,6 @@ function AdminDataScreen() {
               {showModal && (
                 <DonorsForm
                   handleShow={handleShowModal}
-                  whichEntity
                   isUpdate={isUpdate}
                   donor={currentDonor}
                 />
@@ -342,7 +335,6 @@ function AdminDataScreen() {
               {showModal && (
                 <RecipientsForm
                   handleShow={handleShowModal}
-                  whichEntity={false}
                   isUpdate={isUpdate}
                   recipient={currentRecipient}
                 />
