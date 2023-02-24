@@ -21,6 +21,8 @@ import { getDonors } from '../../features/donors/donorSlice';
 import { getRecipients } from '../../features/recipients/recipientsSlice';
 import AdminHeader from '../AdminHeader/AdminHeader';
 import Spinner from '../Spinner/Spinner';
+import DonorsForm from '../DonorsCard/DonorsForm';
+import RecipientsForm from '../RecipientsCard/RecipientsForm';
 
 // import VehicleEditForm from './EditComponents/VehicleEditForm';
 // import VolunteerEditForm from './EditComponents/VolunteerEditForm';
