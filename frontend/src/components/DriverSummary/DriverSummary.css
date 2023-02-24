@@ -1,12 +1,18 @@
 .all-page{
-    padding-bottom: 133px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    margin: auto;
+    text-align: center;
 }
 
 .punchOutHeader{
     width: 166px;
     height: 48px;
+    position: absolute;
     margin-top: 50px;
-    margin-left: 344px;
+
 
     font: 'Poppins';
     font-weight: 400;
@@ -15,6 +21,12 @@
     white-space: nowrap;
 
     color: #9BA3AC;
+}
+
+.backButton{    
+    margin-left: 344px;
+    position: absolute;
+    margin-top: 50px;
 
 }
 
@@ -27,7 +39,7 @@
 
     width: 357px;
     height: 96px;
-    left: 97px;
+    left: 435px;
     top: 154px;
     position: absolute;
 }
@@ -36,7 +48,7 @@
     position: absolute;
     width: 600px;
     height: 78px;
-    left: 117px;
+    left: 503px;
     top: 306px;
 
     font: 'Poppins';
@@ -46,7 +58,7 @@
 
     display: flex;
     align-items: center;
-    text-align: center;
+
 
     color: #176C3E;
 }
@@ -61,7 +73,7 @@
     position: absolute;
     width: 200px;
     height: 100px;
-    left: 177px;
+    left: 503px;
     top: 440px;
 
     background: #FFFFFF;
@@ -96,11 +108,27 @@
     color: #000000;
 }
 
+.droppedOff{
+    position: absolute;
+    width: 239px;
+    height: 54px;
+    left: 743px;
+    top: 463px;
+
+    font: 'Open Sans';
+    font-weight: 700;
+    font-size: 40px;
+    line-height: 54px;
+    white-space: nowrap;
+
+    color: #000000;
+}
+
 .discrepancy{
     position: absolute;
     width: 227px;
     height: 48px;
-    left: 97px;
+    left: 435px;
     top: 597px;
 
     font-family: 'Poppins';
@@ -111,20 +139,6 @@
 
     color: #555555;
 
-    /* display: flex;
-    flex-direction: row;
-    align-items: center;
-    padding: 10px 40px;
-
-    position: relative;
-    width: 620px;
-    height: 218px;
-    left: 97px;
-    top: 665px;
-
-    background: #FFFFFF;
-    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.25);
-    border-radius: 10px; */
 }
 
 .discrepancy-container{
@@ -153,22 +167,6 @@
 }
 
 
-.droppedOff{
-    position: absolute;
-    width: 239px;
-    height: 54px;
-    left: 417px;
-    top: 463px;
-
-    font: 'Open Sans';
-    font-weight: 700;
-    font-size: 40px;
-    line-height: 54px;
-    white-space: nowrap;
-
-    color: #000000;
-}
-
 .signOutButton {
     font:'Open Sans';
     font-style: normal;
@@ -185,10 +183,10 @@
     justify-content: center;
     align-items: center;
 
-    position: absolute;
+    position: relative;
     width: 290px;
     height: 84px;
-    left: 272px;
+    /* left: 272px; */
     top: 977px;
 
     border-radius: 30px;
