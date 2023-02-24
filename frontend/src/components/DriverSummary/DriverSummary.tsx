@@ -1,54 +1,37 @@
 import React from 'react';
 import "./DriverSummary.css"
-// import { Input } from '@syncfusion/ej2-inputs';
-// import * as ReactDOM from "react-dom";
+import NavBarButton_DARK from '../../imgs/button_dark_left.svg';
 
 function DriverSummary() {
   return <div className = "all-page">
-      <p className = "punchOutHeader">Punch Out</p>
-      <p className = "goodbyeMessage">Bye Diana!</p>
-      <p className = "summary">Today's Summary</p>
+    <button id="icon">
+      <img className='backButton' src={NavBarButton_DARK} alt="Back Button"/>
+    </button>
 
-      <div className = "weight-container"> 
-        <p className = "weight">100</p>
-        <p className = "units">lbs</p>
-      </div>
+    <p className = "punchOutHeader">Punch Out</p>
 
-      <h3 className = "droppedOff">Dropped off</h3>
+    <h1 className = "goodbyeMessage">Bye Diana!</h1>
+    <h2 className = "summary">Today's Summary</h2>
 
-      {/* info about input: https://reactjs.org/docs/forms.html */}
-      <p className = "discrepancy">
-        Discrepancies
-        <label >
-          {/* <input type="text" discrepancy-container="discrepancy-container" /> */}
-            <textarea className = "discrepancy-container">
+    <div className = "weight-container"> 
+      <p className = "weight">100</p>
+      <p className = "units">lbs</p>
+    </div>
+
+    <h3 className = "droppedOff">Dropped off</h3>
+
+    <div className = "discrepancy">
+      Discrepancies
+      <label>
+          <textarea className = "discrepancy-container">
             The Los Alamos Foundation
-            </textarea>
-        </label>
-      </p>
+          </textarea>
+      </label>
+    </div>
 
-      <button className = "signOutButton">Sign Out</button>
+    <button className = "signOutButton">Sign Out</button>
 
   </div>
-
 }
-
-// class Default extends React.Component {
-//   input1;
-//   render() {
-//       return (<div className="inner-container">
-//               <input id="input-01" type="text" ref={e1 => this.input1 = e1}/>
-//           </div>);
-//   }
-//   componentDidMount() {
-//       Input.createInput({
-//           element: this.input1,
-//           properties: {
-//               placeholder: 'Discrepancies'
-//           }
-//       });
-//   }
-// }
-// ReactDOM.render(<Default />, document.getElementById('input-container'));
 
 export default DriverSummary;
