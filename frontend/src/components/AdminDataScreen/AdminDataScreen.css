@@ -81,3 +81,8 @@
   font-size: 20px;
   background: white;
 }
+
+.hidden{
+  visibility: hidden;
+  display: none;
+}

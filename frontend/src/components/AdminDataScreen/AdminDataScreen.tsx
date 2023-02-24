@@ -55,6 +55,9 @@ function AdminDataScreen() {
   const [currentDonor, setCurrentDonor] = useState(null);
   const [currentRecipient, setCurrentRecipient] = useState(null);
 
+  const [showDonorButtons, toggleDonorButtons] = useState(false);
+  const [showRecipientButtons, toggleRecipientButtons] = useState(false);
+
   useEffect(() => {
     dispatch(getDrivers());
     dispatch(getVehicles());
@@ -68,6 +71,8 @@ function AdminDataScreen() {
     setVehiclesCard(false);
     setDonors(false);
     setRecipients(false);
+    toggleDonorButtons(false);
+    toggleRecipientButtons(false);
   }, []);
 
   const handleVehicles = useCallback(() => {
@@ -76,6 +81,8 @@ function AdminDataScreen() {
     setSearchParam(['name']);
     setDonors(false);
     setRecipients(false);
+    toggleDonorButtons(false);
+    toggleRecipientButtons(false);
   }, []);
 
   const vehicleData = useCallback((vehicle: any) => {
@@ -104,6 +111,8 @@ function AdminDataScreen() {
     setDonors((prev) => !prev);
     setSearchParam(['name', 'donorLocationType', 'donorEntityType', 'area']);
     setRecipients(false);
+    toggleDonorButtons((prev) => !prev);
+    toggleRecipientButtons(false);
   }
 
   function handleRecipients() {
@@ -118,6 +127,8 @@ function AdminDataScreen() {
       'foodDistModel',
       'area'
     ]);
+    toggleDonorButtons(false);
+    toggleRecipientButtons((prev) => !prev);
   }
 
   const handleShowModal = useCallback(() => {
@@ -219,6 +230,60 @@ function AdminDataScreen() {
               </button>
             </div>
           </div>
+
+          {/* recipient buttons */}
+          <div className={showRecipientButtons ? 'titles' : 'hidden titles'}>
+            <div>
+              <button type="button" className="title">
+                Organizational Structure
+              </button>
+            </div>
+            <div>
+              <button type="button" className="title">
+                Food Distribution Model
+              </button>
+            </div>
+            <div>
+              <button type="button" className="title">
+                Food Type
+              </button>
+            </div>
+            <div>
+              <button type="button" className="title">
+                Demographic Served
+              </button>
+            </div>
+            <div>
+              <button type="button" className="title">
+                Combined Area Name
+              </button>
+            </div>
+          </div>
+
+          {/* donor buttons */}
+          <div className={showDonorButtons ? 'titles' : 'hidden titles'}>
+            <div>
+              <button type="button" className="title">
+                Entity Type
+              </button>
+            </div>
+            <div>
+              <button type="button" className="title">
+                Food Type
+              </button>
+            </div>
+            <div>
+              <button type="button" className="title">
+                Location Type
+              </button>
+            </div>
+            <div>
+              <button type="button" className="title">
+                Combined Area Name
+              </button>
+            </div>
+          </div>
+
           <div className="search">
             <input
               type="text"
