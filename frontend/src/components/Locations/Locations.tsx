@@ -1,42 +1,50 @@
-import LocationItem from "./LocationItem";
+/* eslint-disable react/require-default-props */
+import LocationItem from './LocationItem';
 
 // The goal of this component is to map through either the filtered array OR the location array and display the individual elements as LocationItems
 
-interface locale {
-	name: string,
-	LocationType: string,
-	EntityType: string,
-	FoodType: string,
-	CombinedAreaName: string,
-  DemographicName: string,
-	_id: string,
-  }
-
-interface Props {
-  locations : locale[],
-  current? : locale,
-  filtered? : locale[],
-  setCurrent : Function,
-  clearFilter : Function,
-  setCreateNew : Function
+interface Locale {
+  name: string;
+  LocationType: string;
+  EntityType: string;
+  FoodType: string;
+  CombinedAreaName: string;
+  DemographicName: string;
+  _id: string;
 }
 
-const Locations = ({locations, current, filtered, setCurrent, clearFilter, setCreateNew} : Props) =>{
+interface Props {
+  locations: Locale[];
+  current?: Locale;
+  filtered?: Locale[];
+  setCurrent: Function;
+  clearFilter: Function;
+  setCreateNew: Function;
+}
+
+function Locations({
+  locations,
+  current,
+  filtered,
+  setCurrent,
+  clearFilter,
+  setCreateNew
+}: Props) {
   // If locations array is empty... we have nothing in our database
   if (locations !== null && locations.length === 0) {
     return <h4>Please add a location</h4>;
   }
 
-  //this is emptyLocation object which is passed into LocationItem if user wants to add a new location
+  // this is emptyLocation object which is passed into LocationItem if user wants to add a new location
   const emptyLocation = {
-    _id: "",
-    name: "Add New Location",
-    LocationType: "",
-    EntityType: "",
-    FoodType: "",
-    Demographic: "",
-    CombinedAreaName: "",
-  }
+    _id: '',
+    name: 'Add New Location',
+    LocationType: '',
+    EntityType: '',
+    FoodType: '',
+    Demographic: '',
+    CombinedAreaName: ''
+  };
   // 1. First we check if current object is null... if so then we will be displaying elements in either filtered or locations array.
   // if not, it means that we have already selected a location as current location and it is being displayed.
   // 2. If filtered isn't null, that means we have a filtered array and will display that, otherwise we will display a few elements from the locations array
@@ -46,36 +54,14 @@ const Locations = ({locations, current, filtered, setCurrent, clearFilter, setCr
   // we setCreateNew(true) so that an option to input a new location is given in root
   return (
     <div className="">
-          {current === undefined && (
+      {current === undefined && (
+        <div>
+          {filtered !== undefined ? (
             <div>
-              {filtered !== undefined ? (
-                <div >
-                  {filtered.length > 0 ? (
-                    filtered
-                      .slice(0, 3)
-                      .map((location : locale) => (
-                        <LocationItem
-                          location={location}
-                          key={location._id}
-                          setCurrent={setCurrent}
-                          clearFilter={clearFilter}
-                        />
-                      ))
-                  ) : (<div>
-                    <LocationItem
-                    location={emptyLocation}
-                    setCurrent={setCurrent}
-                    clearFilter={clearFilter}
-                    isNew={true}
-                    setCreateNew={setCreateNew}
-                  />
-                    </div>
-                  )}
-                </div>
-              ) : (
-                locations
-                  .slice(0, 6)
-                  .map((location : locale) => (
+              {filtered.length > 0 ? (
+                filtered
+                  .slice(0, 3)
+                  .map((location: locale) => (
                     <LocationItem
                       location={location}
                       key={location._id}
@@ -83,11 +69,34 @@ const Locations = ({locations, current, filtered, setCurrent, clearFilter, setCr
                       clearFilter={clearFilter}
                     />
                   ))
+              ) : (
+                <div>
+                  <LocationItem
+                    location={emptyLocation}
+                    setCurrent={setCurrent}
+                    clearFilter={clearFilter}
+                    isNew
+                    setCreateNew={setCreateNew}
+                  />
+                </div>
               )}
             </div>
+          ) : (
+            locations
+              .slice(0, 6)
+              .map((location: locale) => (
+                <LocationItem
+                  location={location}
+                  key={location._id}
+                  setCurrent={setCurrent}
+                  clearFilter={clearFilter}
+                />
+              ))
           )}
         </div>
+      )}
+    </div>
   );
-};
+}
 
 export default Locations;

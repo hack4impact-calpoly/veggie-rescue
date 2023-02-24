@@ -8,7 +8,7 @@ const VehicleSchema = new mongoose.Schema(
     img: String,
     currentPickups: Array,
     currentDropoffs: Array,
-    totalFoodAllocation: {
+    foodAllocation: {
       type: Map,
       of: Number,
     },

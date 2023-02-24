@@ -310,9 +310,8 @@ function AdminDataScreen() {
                   donor={currentDonor}
                 />
               )}
-              {search(q).map((item: any, index: any) => (
+              {search(q).map((item: any) => (
                 <DonorsCard
-                  index={index}
                   donor={item}
                   handleShow={handleShowModal}
                   donorHandler={donorData}
