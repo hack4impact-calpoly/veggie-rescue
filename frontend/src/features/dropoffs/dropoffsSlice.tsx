@@ -2,6 +2,7 @@ import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import dropoffsService from './dropoffsService';
 import type { RootState } from '../../app/store';
 
+
 // Interface for dropoff items (This is what will be kept in store and what you will have access)
 interface Dropoff {
   _id: string;
