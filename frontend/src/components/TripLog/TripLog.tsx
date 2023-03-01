@@ -82,12 +82,12 @@ function TripLog(props: any) {
           );
           setPounds(pounds);
         } else {
-          const updatedd: dropoffObject[] = vehicle.currentDropoffs.map((v) => {
+          const updatedd: DropoffObject[] = vehicle.currentDropoffs.map((v) => {
             if (v.name === name && v.lbsDroppedOff === pounds) {
               return {
                 ...v,
                 lbsDroppedOff: pounds
-              } as unknown as dropoffObject;
+              } as unknown as DropoffObject;
             }
             return v;
           });
