@@ -1,7 +1,7 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import React, { useState, useEffect } from 'react';
-import { useAppSelector, useAppDispatch } from '../../app/hooks';
 import { useNavigate } from 'react-router-dom';
-import { toast } from 'react-toastify';
+import { useAppSelector, useAppDispatch } from '../../app/hooks';
 
 // Components and assets
 import VehicleItem from './VehicleItem';
@@ -12,7 +12,7 @@ import {
   getVehicles,
   updateVehicle,
   reset
-} from '../../features/vehicles/VehiclesSlice'
+} from '../../features/vehicles/VehiclesSlice';
 
 function Vehicles() {
   const [loading, setLoading] = useState(false);
@@ -31,7 +31,6 @@ function Vehicles() {
   } = useAppSelector((state) => state.vehicle);
   const { driver } = useAppSelector((state) => state.driverAuth);
 
-
   // On component load
   useEffect(() => {
     // If the vehicles array is empty; dispatch to retrieve them
@@ -39,14 +38,14 @@ function Vehicles() {
       setLoading(true);
       dispatch(getVehicles());
     }
-    if(isSuccess){
-      setLoading(false)
+    if (isSuccess) {
+      setLoading(false);
     }
     // After we click a vehicle and vehicle object is updated
     if (isUpdate && Object.keys(vehicle).length !== 0) {
       setLoading(false);
       dispatch(reset());
-      
+
       // NOW depending on if there is currently weight in the vehicle or not we either go to Dashboard or Transfer page
       if (vehicle.totalWeight !== 0) {
         navigate('/Transfer');
@@ -74,16 +73,23 @@ function Vehicles() {
         Choose your vehicle
       </p>
       <div className="grid grid-cols-2 gap-4">
-        {/* Takes vehicle array and filters.  Personal vehicles where driver id matches the personal vehicle id OR the names dont match, but car is not logged into.*/}
-        {vehicles.filter(car => ((car.name === 'personal vehicle' && car.driver === driver.id) || (car.name !== 'personal vehicle' && !car.isLoggedIn) )
-).map((car, index: any) => {        
-            return (
-              <div className="flex items-center justify-center w-40 m-5 shadow-xl rounded-3xl bg-white transform active:translate-y-2">
-                <VehicleItem car={car} onClick={onClick} key={index} index={undefined} />
-              </div>
-            );
-          
-        })}
+        {/* Takes vehicle array and filters.  Personal vehicles where driver id matches the personal vehicle id OR the names dont match, but car is not logged into. */}
+        {vehicles
+          .filter(
+            (car) =>
+              (car.name === 'personal vehicle' && car.driver === driver.id) ||
+              (car.name !== 'personal vehicle' && !car.isLoggedIn)
+          )
+          .map((car, index: any) => (
+            <div className="flex items-center justify-center w-40 m-5 shadow-xl rounded-3xl bg-white transform active:translate-y-2">
+              <VehicleItem
+                car={car}
+                onClick={onClick}
+                key={car._id}
+                index={undefined}
+              />
+            </div>
+          ))}
       </div>
     </div>
   );
@@ -98,11 +104,11 @@ interface Vehicle {
   name: string;
   isLoggedIn: boolean;
   img: string;
-  currentPickups: locale[];
-  currentDropoffs: locale[];
+  currentPickups: Locale[];
+  currentDropoffs: Locale[];
   totalWeight: number;
 }
-interface locale {
+interface Locale {
   name: string;
   donorLocationType: string;
   donorEntityType: string;

@@ -1,33 +1,29 @@
-import React, { useLayoutEffect, useState } from 'react';
 import './RecipientsCard.css';
 
-const RecipientsCard = (props: any) => {
+function RecipientsCard(props: any) {
+  const { recipient, handleShow, recipientHandler } = props;
   const sendData = () => {
-    console.log(props.recipient);
-    props.handleShow();
-    props.recipientHandler(props.recipient);
+    console.log(recipient);
+    handleShow();
+    recipientHandler(recipient);
   };
   return (
-    <button onClick={sendData}>
+    <button type="submit" onClick={sendData}>
       <div className="donors-card">
-        <div className="donor-name">{props.recipient.name}</div>
+        <div className="donor-name">{recipient.name}</div>
         <div className="entry-container">
           <div className="donors-entry">
             <div className="donors-entry-title">Organizational Structure</div>
-            <div className="donors-entry-text">
-              {props.recipient.EntityType}
-            </div>
+            <div className="donors-entry-text">{recipient.EntityType}</div>
           </div>
           <div className="donors-entry">
             <div className="donors-entry-title">Demographics Served</div>
-            <div className="donors-entry-text">
-              {props.recipient.DemographicName}
-            </div>
+            <div className="donors-entry-text">{recipient.DemographicName}</div>
           </div>
           <div className="donors-entry">
             <div className="donors-entry-title">Combined Area Name</div>
             <div className="donors-entry-text">
-              {props.recipient.CombinedAreaName}
+              {recipient.CombinedAreaName}
             </div>
           </div>
           <div className="donors-entry">
@@ -38,6 +34,6 @@ const RecipientsCard = (props: any) => {
       </div>
     </button>
   );
-};
+}
 
 export default RecipientsCard;

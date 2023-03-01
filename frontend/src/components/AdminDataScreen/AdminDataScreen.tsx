@@ -403,9 +403,8 @@ function AdminDataScreen() {
                   recipient={currentRecipient}
                 />
               )}
-              {search(q).map((item: any, index: any) => (
+              {search(q).map((item: any) => (
                 <RecipientsCard
-                  index={index}
                   recipient={item}
                   handleShow={handleShowModal}
                   recipientHandler={recipientData}

@@ -1,35 +1,28 @@
-import React, {
-  useLayoutEffect,
-  useEffect,
-  useState,
-  ChangeEvent
-} from 'react';
+/* eslint-disable @typescript-eslint/naming-convention */
+import { useLayoutEffect, useEffect, useState } from 'react';
 import './TripLog.css';
-import Select from 'react-select';
 import { BiPencil, BiTrash } from 'react-icons/bi';
 import { toast } from 'react-toastify';
 
 import { useAppSelector, useAppDispatch } from '../../app/hooks';
-
-// import components
-import Spinner from '../Spinner/Spinner';
 
 // import features
 import {
   getVehicle,
   updateTwo,
   reset as resetVehicles,
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   clear as clearVehicles
 } from '../../features/vehicles/VehiclesSlice';
 
-const TripLog = (props: any) => {
+function TripLog(props: any) {
+  const { trip: propsTrip, name: propsName, _id } = props;
   const dispatch = useAppDispatch();
 
   // global state
-  const {
-    vehicle,
-    isSuccess: vehicleIsSuccess,
-  } = useAppSelector((state) => state.vehicle);
+  const { vehicle, isSuccess: vehicleIsSuccess } = useAppSelector(
+    (state) => state.vehicle
+  );
 
   const [fontColor, setFontColor] = useState('');
   const [name, setName] = useState('');
@@ -37,36 +30,25 @@ const TripLog = (props: any) => {
   const [pounds, setPounds] = useState<number>(0);
   const [editBtn, setEditBtn] = useState(false);
 
-  const options = [
-    { value: 'Dropoff', label: 'Dropoff' },
-    { value: 'Pickup', label: 'Pickup' }
-  ];
-
-  function handleTripChange(e: any) {
-    setTrip(e.value);
-    trip === 'Dropoff'
-      ? setFontColor('#3FB551')
-      : trip === 'Pickup'
-        ? setFontColor('#D23434')
-        : setFontColor('black');
-  }
   useEffect(() => {
     if (vehicleIsSuccess) {
       dispatch(resetVehicles());
     }
   }, [vehicleIsSuccess]);
   useLayoutEffect(() => {
-    setName(props.name);
-    setTrip(props.trip);
-    setPounds(props.pounds);
+    setName(propsName);
+    setTrip(propsTrip);
+    setPounds(pounds);
   }, []);
 
   useLayoutEffect(() => {
-    trip === 'Pickup'
-      ? setFontColor('#3FB551')
-      : trip === 'Dropoff'
-        ? setFontColor('#D23434')
-        : setFontColor('black');
+    if (trip === 'Pickup') {
+      setFontColor('#3FB551');
+    } else if (trip === 'Dropoff') {
+      setFontColor('#D23434');
+    } else {
+      setFontColor('black');
+    }
   }, [fontColor]);
 
   function handleClick() {
@@ -77,59 +59,61 @@ const TripLog = (props: any) => {
     let newWeight = vehicle.totalWeight;
     if (Object.keys(vehicle).length !== 0) {
       if (trip === 'Pickup') {
-        newWeight -= +props.pounds;
+        newWeight -= +pounds;
         const updatedp: pickupObject[] = vehicle.currentPickups.map((v) => {
-          if (v.name === props.name && v.lbsPickedUp === props.pounds) {
+          if (v.name === name && v.lbsPickedUp === pounds) {
             return { ...v, lbsPickedUp: pounds } as unknown as pickupObject;
-          } else {
-            return v;
           }
+          return v;
         });
         await dispatch(
           updateTwo({
-            _id: props._id,
+            _id,
             currentPickups: updatedp,
             totalWeight: newWeight + +pounds
           } as PickupLog)
         );
         dispatch(getVehicle());
       } else {
-        newWeight += props.pounds;
-        if((newWeight - +pounds) < 0){
-          toast.error('Cannot drop off more weight than vehicle currently has.')
-          setPounds(props.pounds)
-        }
-        else{
-        const updatedd: dropoffObject[] = vehicle.currentDropoffs.map((v) => {
-          if (v.name === props.name && v.lbsDroppedOff === props.pounds) {
-            return { ...v, lbsDroppedOff: pounds } as unknown as dropoffObject;
-          } else {
+        newWeight += pounds;
+        if (newWeight - +pounds < 0) {
+          toast.error(
+            'Cannot drop off more weight than vehicle currently has.'
+          );
+          setPounds(pounds);
+        } else {
+          const updatedd: dropoffObject[] = vehicle.currentDropoffs.map((v) => {
+            if (v.name === name && v.lbsDroppedOff === pounds) {
+              return {
+                ...v,
+                lbsDroppedOff: pounds
+              } as unknown as dropoffObject;
+            }
             return v;
-          }
-        });
-        
-        await dispatch(
-          updateTwo({
-            _id: props._id,
-            currentDropoffs: updatedd,
-            totalWeight: newWeight - +pounds
-          } as DropoffLog)
-        );
-        dispatch(getVehicle());
+          });
+
+          await dispatch(
+            updateTwo({
+              _id,
+              currentDropoffs: updatedd,
+              totalWeight: newWeight - +pounds
+            } as DropoffLog)
+          );
+          dispatch(getVehicle());
+        }
       }
-    }
     }
   };
   const handleDelete = async () => {
     if (vehicle) {
       if (trip === 'Pickup') {
         const updatedp: pickupObject[] = vehicle.currentPickups.filter(
-          (v) => v.name !== props.name && v.lbsPickedUp !== props.pounds
+          (v) => v.name !== name && v.lbsPickedUp !== pounds
         );
 
         await dispatch(
           updateTwo({
-            _id: props._id,
+            _id,
             currentPickups: updatedp,
             totalWeight: vehicle.totalWeight - +pounds
           } as PickupLog)
@@ -137,12 +121,12 @@ const TripLog = (props: any) => {
         dispatch(getVehicle());
       } else {
         const updatedd: dropoffObject[] = vehicle.currentDropoffs.filter(
-          (v) => v.name !== props.name && v.lbsDroppedOff !== props.pounds
+          (v) => v.name !== name && v.lbsDroppedOff !== pounds
         );
 
         await dispatch(
           updateTwo({
-            _id: props._id,
+            _id,
             currentDropoffs: updatedd,
             totalWeight: vehicle.totalWeight + +pounds
           } as DropoffLog)
@@ -152,19 +136,12 @@ const TripLog = (props: any) => {
     }
   };
   function handlePoundsChange(e: any) {
-    {
-      isNaN(e) || e === '-'
-        ? alert('Please enter a numerical value for pounds.')
-        : setPounds(+e);
+    if (Number.isNaN(e) || e === '-') {
+      // eslint-disable-next-line no-alert
+      alert('Please enter a numerical value for pounds.');
+    } else {
+      setPounds(+e);
     }
-  }
-
-  function changeFontColor() {
-    trip === 'Dropoff'
-      ? setFontColor('#3FB551')
-      : trip === 'Pickup'
-        ? setFontColor('#D23434')
-        : setFontColor('black');
   }
 
   return (
@@ -191,12 +168,12 @@ const TripLog = (props: any) => {
         </div>
 
         <div id="pencil">
-          <button onClick={handleClick}>
+          <button type="button" onClick={handleClick}>
             <BiPencil id="bipencil" />
           </button>
         </div>
         <div className=" ">
-          <button onClick={handleDelete}>
+          <button type="button" onClick={handleDelete}>
             <BiTrash className=" text-2xl" />
           </button>
         </div>
@@ -205,6 +182,7 @@ const TripLog = (props: any) => {
         {' '}
         {editBtn && (
           <button
+            type="button"
             className="bg-[#FF9C55] w-full rounded-xl p-2 mb-4"
             onClick={handleSubmit}
           >
@@ -214,18 +192,19 @@ const TripLog = (props: any) => {
       </div>
     </div>
   );
+
   interface PickupLog {
     _id: string;
-    currentPickups: pickupObject[];
-    totalWeight: number;
+    currentPickups: PickupObject[];
+    totalFoodAllocation: Map<String, Number>;
   }
   interface DropoffLog {
     _id: string;
-    currentDropoffs: dropoffObject[];
-    totalWeight: number;
+    currentDropoffs: DropoffObject[];
+    totalFoodAllocation: Map<String, Number>;
   }
-  interface pickupObject {
-    //date: String;
+  interface PickupObject {
+    // date: String;
     driver: String;
     vehicle: String;
     name: String;
@@ -235,8 +214,8 @@ const TripLog = (props: any) => {
     lbsPickedUp: Number;
   }
 
-  interface dropoffObject {
-    //date: String;
+  interface DropoffObject {
+    // date: String;
     driver: String;
     vehicle: String;
     name: String;
@@ -248,14 +227,14 @@ const TripLog = (props: any) => {
   }
   interface PickupLog {
     _id: string;
-    currentPickups: pickupObject[];
-    totalWeight: number;
+    currentPickups: PickupObject[];
+    totalFoodAllocation: Map<String, Number>;
   }
   interface DropoffLog {
     _id: string;
-    currentDropoffs: dropoffObject[];
-    totalWeight: number;
+    currentDropoffs: DropoffObject[];
+    totalFoodAllocation: Map<String, Number>;
   }
-};
+}
 
 export default TripLog;
