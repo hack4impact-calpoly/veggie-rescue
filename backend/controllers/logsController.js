@@ -49,24 +49,16 @@ const createPickup = async (req, res) => {
     }
   }
 
-  const {
+  const { driver, vehicle, name, donorEntityType, area, foodAllocation } =
+    req.body;
+
+  let pickup = new PickupLog({
     driver,
     vehicle,
     name,
     donorEntityType,
-    foodType,
     area,
-    lbsPickedUp,
-  } = req.body;
-  
-  let pickup = new PickupLog({
-    driver: driver,
-    vehicle: vehicle,
-    name: name,
-    donorEntityType: donorEntityType,
-    foodType: foodType,
-    area: area,
-    lbsPickedUp: lbsPickedUp,
+    foodAllocation,
   });
   try {
     pickup = await pickup.save();
@@ -102,19 +94,17 @@ const createDropoff = async (req, res) => {
     name,
     recipientEntityType,
     demographic,
-    foodType,
     area,
-    lbsDroppedOff,
+    foodAllocation,
   } = req.body;
   let dropoff = new DropoffLog({
-    driver: driver,
-    vehicle: vehicle,
-    name: name,
-    recipientEntityType: recipientEntityType,
-    demographic: demographic,
-    foodType: foodType,
-    area: area,
-    lbsDroppedOff: lbsDroppedOff,
+    driver,
+    vehicle,
+    name,
+    recipientEntityType,
+    demographic,
+    area,
+    foodAllocation,
   });
   try {
     dropoff = await dropoff.save();
@@ -125,15 +115,15 @@ const createDropoff = async (req, res) => {
   }
 };
 
-
 // @desc Delete a specific pickup
 // @route DELETE : /api/pickup
 // @access Private
 const deletePickup = async (req, res) => {
+  // eslint-disable-next-line @typescript-eslint/naming-convention
   const { _id } = req.body;
   try {
     await PickupLog.findOneAndRemove({
-      _id: _id,
+      _id,
     });
     res.send(`Pickup with id ${_id} was successfully deleted`);
   } catch (error) {
@@ -146,10 +136,11 @@ const deletePickup = async (req, res) => {
 // @route DELETE : /api/dropoffs
 // @access Private
 const deleteDropoff = async (req, res) => {
+  // eslint-disable-next-line @typescript-eslint/naming-convention
   const { _id } = req.body;
   try {
     await DropoffLog.findOneAndRemove({
-      _id: _id,
+      _id,
     });
     res.send(`Dropoff with id ${_id} was successfully deleted`);
   } catch (error) {
@@ -183,8 +174,7 @@ const pushPickups = async (req, res) => {
 
   try {
     const response = await PickupLog.insertMany(data, { ordered: false });
-     res.status(200).json(response);
-
+    res.status(200).json(response);
   } catch (err) {
     console.error(err.message);
     res.status(500).send("Server Error");
@@ -213,15 +203,14 @@ const pushDropoffs = async (req, res) => {
   }
   // Get array from request body
   const data = req.body;
-    try{
-  const response = await DropoffLog.insertMany(data, { ordered: false });
-  res.status(200).json(response);
+  try {
+    const response = await DropoffLog.insertMany(data, { ordered: false });
+    res.status(200).json(response);
   } catch (err) {
     console.error(err.message);
     res.status(500).send("Server Error");
   }
 };
-
 
 module.exports = {
   getPickups,
