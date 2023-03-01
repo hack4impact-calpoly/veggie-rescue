@@ -33,9 +33,8 @@ export default function NewLogWrapper() {
       EntityType: '',
       LocationType: '',
       Demographic: '',
-      FoodType: '',
       Area: '',
-      lbsDroppedOff: 0
+      foodAllocation: new Map<string, number>()
     });
 
   // setup navigation and services
@@ -68,20 +67,19 @@ export default function NewLogWrapper() {
           vehicle: vehicle.name,
           name: pickupDeliveryObject.name,
           donorEntityType: pickupDeliveryObject.EntityType,
-          foodType: pickupDeliveryObject.FoodType,
           area: pickupDeliveryObject.Area,
-          lbsPickedUp: pickupDeliveryObject.lbsDroppedOff
+          foodAllocation: pickupDeliveryObject.foodAllocation
         };
 
         const weightCalc =
-          vehicle.totalWeight + pickupDeliveryObject.lbsDroppedOff;
-        if (pickupDeliveryObject.lbsDroppedOff === 0) {
+          vehicle.totalFoodAllocation + pickupDeliveryObject.foodAllocation;
+        if (pickupDeliveryObject.foodAllocation === 0) {
           toast.error('Log must have weight');
         } else {
           const addPickupToVehicle: PickupSchema = {
             _id: vehicle._id,
             currentPickups: newPickup,
-            totalWeight: weightCalc
+            totalFoodAllocation: weightCalc
           };
 
           // here we can dispatch the object
@@ -95,23 +93,22 @@ export default function NewLogWrapper() {
           name: pickupDeliveryObject.name,
           recipientEntityType: pickupDeliveryObject.EntityType,
           demographic: pickupDeliveryObject.Demographic,
-          foodType: pickupDeliveryObject.FoodType,
           area: pickupDeliveryObject.Area,
-          lbsDroppedOff: pickupDeliveryObject.lbsDroppedOff
+          foodAllocation: pickupDeliveryObject.foodAllocation
         };
 
         // error checking for dropoff log
         const weightCalc =
-          vehicle.totalWeight - pickupDeliveryObject.lbsDroppedOff;
+          vehicle.totalFoodAllocation - pickupDeliveryObject.foodAllocation;
         if (weightCalc < 0) {
           toast.error('Not enough produce in vehicle.');
-        } else if (pickupDeliveryObject.lbsDroppedOff === 0) {
+        } else if (pickupDeliveryObject.foodAllocation === 0) {
           toast.error('Must enter some weight.!!');
         } else {
           const addDropOffToVehicle: DropoffSchema = {
             _id: vehicle._id,
             currentDropoffs: newDropoff,
-            totalWeight: weightCalc
+            totalFoodAllocation: weightCalc
           };
 
           // here we can dispatch the object
@@ -188,10 +185,10 @@ export default function NewLogWrapper() {
     EntityType: String;
     LocationType: String;
     Demographic: String;
-    FoodType: String;
     Area: String;
-    lbsDroppedOff: number;
+    foodAllocation: Map<string, number>;
   }
+
   interface PickupSchema {
     _id: String;
     currentPickups: {
@@ -200,11 +197,10 @@ export default function NewLogWrapper() {
       vehicle: String;
       name: String;
       donorEntityType: String;
-      foodType: String;
       area: String;
-      lbsPickedUp: number;
+      foodAllocation: Map<string, number>;
     };
-    totalWeight: number;
+    totalFoodAllocation: Map<string, number>;
   }
 
   interface DropoffSchema {
@@ -215,12 +211,11 @@ export default function NewLogWrapper() {
       vehicle: String;
       name: String;
       recipientEntityType: String;
-      foodType: String;
       demographic: String;
       area: String;
-      lbsDroppedOff: number;
+      foodAllocation: Map<string, number>;
     };
-    totalWeight: number;
+    totalFoodAllocation: Map<string, number>;
   }
   interface Dropoff {
     date: String;
@@ -228,10 +223,9 @@ export default function NewLogWrapper() {
     vehicle: String;
     name: String;
     recipientEntityType: String;
-    foodType: String;
     demographic: String;
     area: String;
-    lbsDroppedOff: number;
+    foodAllocation: Map<string, number>;
   }
   interface Pickup {
     date: String;
@@ -239,8 +233,7 @@ export default function NewLogWrapper() {
     vehicle: String;
     name: String;
     donorEntityType: String;
-    foodType: String;
     area: String;
-    lbsPickedUp: number;
+    foodAllocation: Map<string, number>;
   }
 }
