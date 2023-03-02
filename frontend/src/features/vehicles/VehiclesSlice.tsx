@@ -16,16 +16,16 @@ const initialState: VehicleState = {
 };
 interface PickupLog {
   _id: string;
-  currentPickups: pickupObject[];
+  currentPickups: PickupObject[];
   totalFoodAllocation: Map<String, Number>;
 }
 interface DropoffLog {
   _id: string;
-  currentDropoffs: dropoffObject[];
+  currentDropoffs: DropoffObject[];
   totalFoodAllocation: Map<String, Number>;
 }
-interface pickupObject {
-  //date: String;
+interface PickupObject {
+  // date: String;
   driver: String;
   vehicle: String;
   name: String;
@@ -34,8 +34,8 @@ interface pickupObject {
   foodAllocation: Map<String, Number>;
 }
 
-interface dropoffObject {
-  //date: String;
+interface DropoffObject {
+  // date: String;
   driver: String;
   vehicle: String;
   name: String;
@@ -44,13 +44,6 @@ interface dropoffObject {
   area: String;
   foodAllocation: Map<String, Number>;
 }
-interface locale {
-  name: string;
-  donorLocationType: string;
-  donorEntityType: string;
-  area: string;
-  id: string;
-}
 // Interface for vehicles object
 interface Vehicle {
   _id: string;
@@ -58,8 +51,8 @@ interface Vehicle {
   name: string;
   isLoggedIn: boolean;
   img: string;
-  currentPickups: pickupObject[];
-  currentDropoffs: dropoffObject[];
+  currentPickups: PickupObject[];
+  currentDropoffs: DropoffObject[];
   totalFoodAllocation: Map<String, Number>;
 }
 
@@ -111,13 +104,13 @@ interface VehicleLogout {
   _id: String;
   driver: String;
   isLoggedIn: string;
-  currentPickups: pickupObject[];
-  currentDropoffs: dropoffObject[];
+  currentPickups: PickupObject[];
+  currentDropoffs: DropoffObject[];
 }
 interface PickupSchema {
   _id: String;
   currentPickups: {
-    //date: String,
+    // date: String,
     driver: String;
     vehicle: String;
     name: String;
@@ -130,7 +123,7 @@ interface PickupSchema {
 interface DropoffSchema {
   _id: String;
   currentDropoffs: {
-    //date: String,
+    // date: String,
     driver: String;
     vehicle: String;
     name: String;
@@ -148,7 +141,7 @@ export const getVehicles = createAsyncThunk(
   async (_, thunkAPI) => {
     try {
       const state = thunkAPI.getState() as RootState;
-      let token = state.driverAuth.driver.token;
+      let { token } = state.driverAuth.driver;
       if (!token) {
         token = state.adminAuth.admin.token;
       }
@@ -170,10 +163,10 @@ export const getVehicles = createAsyncThunk(
 // Create new vehicle (admin only)
 export const createVehicle = createAsyncThunk(
   'api/createVehicles',
-  async (vehicleData: VehicleItem | NewVehicle , thunkAPI) => {
+  async (vehicleData: VehicleItem | NewVehicle, thunkAPI) => {
     try {
       const state = thunkAPI.getState() as RootState;
-      const token = state.adminAuth.admin.token;
+      const { token } = state.adminAuth.admin;
 
       return await vehicleService.createVehicle(vehicleData, token);
     } catch (error: any) {
@@ -194,7 +187,7 @@ export const getVehicle = createAsyncThunk(
   async (_, thunkAPI) => {
     try {
       const state = thunkAPI.getState() as RootState;
-      const token = state.driverAuth.driver.token;
+      const { token } = state.driverAuth.driver;
       return await vehicleService.getVehicle(token);
     } catch (error: any) {
       const message =
@@ -227,7 +220,7 @@ export const updateVehicle = createAsyncThunk(
     try {
       // Set up token for authenticating route
       const state = thunkAPI.getState() as RootState;
-      let token = state.driverAuth.driver.token;
+      let { token } = state.driverAuth.driver;
       if (!token) {
         token = state.adminAuth.admin.token;
       }
@@ -248,15 +241,11 @@ export const updateVehicle = createAsyncThunk(
 // update a vehicle given its id as a parameter, this is special case for updating multiple vehicles... can be admin or driver
 export const updateTwo = createAsyncThunk(
   'vehicles/update:id2',
-  async (
-    vehicleData:
-      | VehicleWeightTransfer,
-    thunkAPI
-  ) => {
+  async (vehicleData: VehicleWeightTransfer, thunkAPI) => {
     try {
       // Set up token for authenticating route
       const state = thunkAPI.getState() as RootState;
-      let token = state.driverAuth.driver.token;
+      let { token } = state.driverAuth.driver;
       if (!token) {
         token = state.adminAuth.admin.token;
       }
@@ -281,7 +270,7 @@ export const deleteVehicle = createAsyncThunk(
     try {
       // Set up token for authenticating route
       const state = thunkAPI.getState() as RootState;
-      let token = state.adminAuth.admin.token;
+      let { token } = state.adminAuth.admin;
 
       return await vehicleService.deleteVehicle(vehicleID, token);
     } catch (error: any) {
@@ -297,14 +286,14 @@ export const deleteVehicle = createAsyncThunk(
   }
 );
 
-//it will also clear the vehicle logs and update the weight
+// it will also clear the vehicle logs and update the weight
 export const logoutVehicle = createAsyncThunk(
   'vehicles/logout',
   async (vehicleData: VehicleLogout, thunkAPI) => {
     try {
       // Set up token for authenticating route
       const state = thunkAPI.getState() as RootState;
-      let token = state.driverAuth.driver.token;
+      let { token } = state.driverAuth.driver;
       if (!token) {
         token = state.adminAuth.admin.token;
       }
@@ -371,7 +360,7 @@ export const vehicleSlice = createSlice({
       .addCase(createVehicle.pending, (state) => {
         state.isLoading = true;
       })
-      .addCase(createVehicle.fulfilled, (state, action) => {
+      .addCase(createVehicle.fulfilled, (state) => {
         state.isLoading = false;
         state.isUpdate = true;
         state.isSuccess = true;
@@ -413,11 +402,11 @@ export const vehicleSlice = createSlice({
       .addCase(updateTwo.pending, (state) => {
         state.isLoading = true;
       })
-      .addCase(updateTwo.fulfilled, (state, action) => {
+      .addCase(updateTwo.fulfilled, (state) => {
         state.isLoading = false;
         state.isSuccess = true;
         state.isUpdate = true;
-        state.isUpdateCount = state.isUpdateCount+1;
+        state.isUpdateCount += 1;
       })
       .addCase(updateTwo.rejected, (state, action) => {
         state.isLoading = false;
@@ -454,5 +443,6 @@ export const vehicleSlice = createSlice({
   }
 });
 
-export const { reset, clear, setIsLoggingOut, setIsUpdate } = vehicleSlice.actions;
+export const { reset, clear, setIsLoggingOut, setIsUpdate } =
+  vehicleSlice.actions;
 export default vehicleSlice.reducer;

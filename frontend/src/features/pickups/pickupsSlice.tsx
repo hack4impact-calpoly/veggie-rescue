@@ -2,15 +2,8 @@ import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import pickupsService from './pickupsService';
 import type { RootState } from '../../app/store';
 
-// Interface for pickup items (This is what will be kept in store and what you will have access)
-interface Pickup {
-  _id: string;
-  name: string;
-}
-
-// eslint-disable-next-line @typescript-eslint/naming-convention
-interface pickupObject {
-  //date: String;
+interface PickupObject {
+  // date: String;
   driver: String;
   vehicle: String;
   name: String;
@@ -36,13 +29,12 @@ const initialState: PickupState = {
   message: ''
 };
 
-
 export const getPickups = createAsyncThunk(
   'api/pickups',
   async (_, thunkAPI) => {
     try {
       const state = thunkAPI.getState() as RootState;
-      let token = state.driverAuth.driver.token;
+      let { token } = state.driverAuth.driver;
       if (!token) {
         token = state.adminAuth.admin.token;
       }
@@ -63,7 +55,7 @@ export const getPickups = createAsyncThunk(
 
 export const createPickup = createAsyncThunk(
   'api/createPickups',
-  async (pickup: pickupObject, thunkAPI) => {
+  async (pickup: PickupObject, thunkAPI) => {
     try {
       return await pickupsService.createPickup(pickup);
     } catch (error: any) {
@@ -81,12 +73,11 @@ export const createPickup = createAsyncThunk(
 
 export const createBatchPickup = createAsyncThunk(
   'api/createBatchPickups/batch',
-  async (pickup: pickupObject[], thunkAPI) => {
+  async (pickup: PickupObject[], thunkAPI) => {
     try {
-
-       // Set up token for authenticating route
+      // Set up token for authenticating route
       const state = thunkAPI.getState() as RootState;
-      const token = state.driverAuth.driver.token;
+      const { token } = state.driverAuth.driver;
       return await pickupsService.createBatchPickup(pickup, token);
     } catch (error: any) {
       const message =
@@ -110,7 +101,7 @@ export const pickupsSlice = createSlice({
       state.isError = false;
       state.isSuccess = false;
       state.message = '';
-    }, 
+    },
     setSuccess: (state) => {
       state.isSuccess = !state.isSuccess;
     }
@@ -143,7 +134,7 @@ export const pickupsSlice = createSlice({
         state.isError = true;
         state.message = action.payload;
       })
-            .addCase(createBatchPickup.pending, (state) => {
+      .addCase(createBatchPickup.pending, (state) => {
         state.isLoading = true;
       })
       .addCase(createBatchPickup.fulfilled, (state) => {
@@ -158,5 +149,5 @@ export const pickupsSlice = createSlice({
   }
 });
 
-export const { reset, setSuccess  } = pickupsSlice.actions;
+export const { reset, setSuccess } = pickupsSlice.actions;
 export default pickupsSlice.reducer;

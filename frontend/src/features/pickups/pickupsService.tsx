@@ -1,20 +1,16 @@
 import axios from 'axios';
+
 const SERVER_URL = process.env.REACT_APP_SERVER_URL || '';
-const API_URL = SERVER_URL + '/api/pickup/';
+const API_URL = `${SERVER_URL}/api/pickup/`;
 
-/////////////////////////////////////////
-//                                     //
-//         MASTER PICKUP LOG           //
-//                                     //
-/////////////////////////////////////////
+// MASTER PICKUP LOG
 
-//THIS IS WHERE YOU CAN DO YOUR API CALLS
-//THE CONFIG IS WHERE IT AUTHORIZES USER TOKEN WITH BACKEND
-//YOU CAN DO FULL CRUD OPS HERE
+// THIS IS WHERE YOU CAN DO YOUR API CALLS
+// THE CONFIG IS WHERE IT AUTHORIZES USER TOKEN WITH BACKEND
+// YOU CAN DO FULL CRUD OPS HERE
 
-// eslint-disable-next-line @typescript-eslint/naming-convention
-interface pickupObject {
-  //date: String;
+interface PickupObject {
+  // date: String;
   driver: String;
   vehicle: String;
   name: String;
@@ -35,27 +31,19 @@ const getPickups = async (token: string) => {
 };
 
 //  Add a new pickup
-const createPickup = async (pickup: pickupObject) => {
+const createPickup = async (pickup: PickupObject) => {
   const response = await axios.post(API_URL, pickup);
   return response.data;
 };
 
-
 // create a batch pickup log
-const createBatchPickup = async (
-  pickups: pickupObject[],
-  token: string
-) => {
+const createBatchPickup = async (pickups: PickupObject[], token: string) => {
   const config = {
     headers: {
       Authorization: `Bearer ${token}`
     }
   };
-  const response = await axios.post(
-    API_URL + 'batch',
-   pickups,
-    config
-  );
+  const response = await axios.post(`${API_URL}batch`, pickups, config);
   return response.data;
 };
 

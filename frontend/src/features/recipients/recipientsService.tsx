@@ -1,16 +1,13 @@
 import axios from 'axios';
+
 const SERVER_URL = process.env.REACT_APP_SERVER_URL || '';
-const API_URL = SERVER_URL + '/api/location/recipient/';
-/////////////////////////////////////////
-//                                     //
-//     LIST OF RECIPIENT LOCATIONS     //
-//                                     //
-/////////////////////////////////////////
+const API_URL = `${SERVER_URL}/api/location/recipient/`;
 
+// LIST OF RECIPIENT LOCATIONS
 
-//THIS IS WHERE YOU CAN DO YOUR API CALLS
-//THE CONFIG IS WHERE IT AUTHORIZES USER TOKEN WITH BACKEND
-//YOU CAN DO FULL CRUD OPS HERE
+// THIS IS WHERE YOU CAN DO YOUR API CALLS
+// THE CONFIG IS WHERE IT AUTHORIZES USER TOKEN WITH BACKEND
+// YOU CAN DO FULL CRUD OPS HERE
 
 // Define a type for a recipient object
 
@@ -47,22 +44,21 @@ const createRecipient = async (recipientData: RecipientObj, token: string) => {
 };
 
 // Update recipients
-const updateRecipient = async (
-  recipientData: RecipientObj, 
-  token: string
-  ) => {
+const updateRecipient = async (recipientData: RecipientObj, token: string) => {
   const config = {
     headers: {
       Authorization: `Bearer ${token}`
     }
   };
 
-  const {id, ...rest} = recipientData;
+  const { id, ...rest } = recipientData;
   const response = await axios.put(
-    API_URL + id, 
+    API_URL + id,
     {
       ...rest
-    }, config);
+    },
+    config
+  );
   return response.data;
 };
 
@@ -76,7 +72,6 @@ const deleteRecipient = async (recipientID: string, token: string) => {
   const response = await axios.delete(API_URL + recipientID, config);
   return response.data;
 };
-
 
 // Register admin
 // const register = async (admin: AdminData) => {
@@ -98,9 +93,7 @@ const deleteRecipient = async (recipientID: string, token: string) => {
 // };
 
 // Logout admin
-//const logout = () => localStorage.removeItem('admin');
-
-
+// const logout = () => localStorage.removeItem('admin');
 
 const recipientsService = {
   getRecipients,

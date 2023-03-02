@@ -11,7 +11,7 @@ interface Driver {
 
 // Interface for object when registering new driver
 interface DriverData {
-   _id: string,
+  _id: string;
   name: string;
   // email: string;
   pin: string;
@@ -20,7 +20,7 @@ interface DriverData {
 // Define a type for the slice state
 interface DriverAuthState {
   driver: Driver;
-  drivers: [],
+  drivers: [];
   isError: boolean;
   isSuccess: boolean;
   isLoading: boolean;
@@ -88,7 +88,7 @@ export const getDrivers = createAsyncThunk(
   async (_, thunkAPI) => {
     try {
       const state = thunkAPI.getState() as RootState;
-      let token = state.adminAuth.admin.token;
+      let { token } = state.adminAuth.admin;
       if (!token) {
         token = state.driverAuth.driver.token;
       }
@@ -113,7 +113,7 @@ export const createDriver = createAsyncThunk(
   async (driverData: DriverData, thunkAPI) => {
     try {
       const state = thunkAPI.getState() as RootState;
-      const token = state.adminAuth.admin.token;
+      const { token } = state.adminAuth.admin;
 
       return await driverAuthService.createDriver(driverData, token);
     } catch (error: any) {
@@ -135,7 +135,7 @@ export const getDriver = createAsyncThunk(
   async (_, thunkAPI) => {
     try {
       const state = thunkAPI.getState() as RootState;
-      const token = state.adminAuth.admin.token;
+      const { token } = state.adminAuth.admin;
       return await driverAuthService.getDriver(token);
     } catch (error: any) {
       const message =
@@ -157,7 +157,7 @@ export const updateDriver = createAsyncThunk(
     try {
       // Set up token for authenticating route
       const state = thunkAPI.getState() as RootState;
-      let token = state.adminAuth.admin.token;
+      let { token } = state.adminAuth.admin;
       if (!token) {
         token = state.driverAuth.driver.token;
       }
@@ -182,7 +182,7 @@ export const deleteDriver = createAsyncThunk(
     try {
       // Set up token for authenticating route
       const state = thunkAPI.getState() as RootState;
-      let token = state.adminAuth.admin.token;
+      const { token } = state.adminAuth.admin;
       return await driverAuthService.deleteDriver(driverID, token);
     } catch (error: any) {
       const message =
@@ -309,9 +309,9 @@ export const authSlice = createSlice({
         state.isError = true;
         state.message = action.payload;
         state.drivers = [];
-      })
+      });
   }
 });
 
-export const { reset, clear  } = authSlice.actions;
+export const { reset, clear } = authSlice.actions;
 export default authSlice.reducer;

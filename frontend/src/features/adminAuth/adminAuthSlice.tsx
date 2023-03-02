@@ -16,8 +16,8 @@ interface AdminData {
   password: string;
 }
 interface AdminObject {
-    email: string;
-    password: string;
+  email: string;
+  password: string;
 }
 
 // Define a type for the slice state

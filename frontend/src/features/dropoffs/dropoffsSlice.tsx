@@ -2,15 +2,8 @@ import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import dropoffsService from './dropoffsService';
 import type { RootState } from '../../app/store';
 
-// Interface for dropoff items (This is what will be kept in store and what you will have access)
-interface Dropoff {
-  _id: string;
-  name: string;
-  token: string;
-}
-// eslint-disable-next-line @typescript-eslint/naming-convention
-interface dropoffObject {
-  //date: String;
+interface DropoffObject {
+  // date: String;
   driver: String;
   vehicle: String;
   name: String;
@@ -45,7 +38,7 @@ export const getDropoffs = createAsyncThunk(
   async (_, thunkAPI) => {
     try {
       const state = thunkAPI.getState() as RootState;
-      let token = state.driverAuth.driver.token;
+      let { token } = state.driverAuth.driver;
       if (!token) {
         token = state.adminAuth.admin.token;
       }
@@ -66,7 +59,7 @@ export const getDropoffs = createAsyncThunk(
 
 export const createDropoff = createAsyncThunk(
   'api/createDropoff',
-  async (dropoff: dropoffObject, thunkAPI) => {
+  async (dropoff: DropoffObject, thunkAPI) => {
     try {
       return await dropoffsService.createDropoff(dropoff);
     } catch (error: any) {
@@ -84,12 +77,11 @@ export const createDropoff = createAsyncThunk(
 
 export const createBatchDropoff = createAsyncThunk(
   'api/createBatchDropoff/batch',
-  async (dropoff: dropoffObject[], thunkAPI) => {
+  async (dropoff: DropoffObject[], thunkAPI) => {
     try {
-
-       // Set up token for authenticating route
+      // Set up token for authenticating route
       const state = thunkAPI.getState() as RootState;
-      const token = state.driverAuth.driver.token;
+      const { token } = state.driverAuth.driver;
       return await dropoffsService.createBatchDropoff(dropoff, token);
     } catch (error: any) {
       const message =
@@ -132,7 +124,7 @@ export const dropoffsSlice = createSlice({
         state.isError = true;
         state.message = action.payload;
       })
-            .addCase(createDropoff.pending, (state) => {
+      .addCase(createDropoff.pending, (state) => {
         state.isLoading = true;
       })
       .addCase(createDropoff.fulfilled, (state, action) => {
