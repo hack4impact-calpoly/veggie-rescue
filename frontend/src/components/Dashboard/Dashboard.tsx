@@ -192,6 +192,7 @@ if(loading){
   );
 };
 
+// eslint-disable-next-line @typescript-eslint/naming-convention
 interface pickupObject {
   //date: String;
   driver: String;
@@ -202,6 +203,7 @@ interface pickupObject {
   area: String;
   lbsPickedUp: Number;
 }
+// eslint-disable-next-line @typescript-eslint/naming-convention
 interface dropoffObject {
  // date: String;
   driver: String;

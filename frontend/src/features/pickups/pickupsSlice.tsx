@@ -8,15 +8,15 @@ interface Pickup {
   name: string;
 }
 
+// eslint-disable-next-line @typescript-eslint/naming-convention
 interface pickupObject {
   //date: String;
   driver: String;
   vehicle: String;
   name: String;
   donorEntityType: String;
-  foodType: String;
   area: String;
-  lbsPickedUp: Number;
+  foodAllocation: Map<String, Number>;
 }
 
 // Define a type for the pickup slice state

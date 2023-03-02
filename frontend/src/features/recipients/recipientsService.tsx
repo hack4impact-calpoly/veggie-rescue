@@ -14,18 +14,16 @@ const API_URL = SERVER_URL + '/api/location/recipient/';
 
 // Define a type for a recipient object
 
-interface RecipientObj{
-  id: String,
-  name: String,
-  EntityType: String,
-  DemographicName: String,
-  FoodType: String,
-  CombinedAreaName: String
+interface RecipientObj {
+  id: String;
+  name: String;
+  OrgStructure: String;
+  DemographicsServed: String;
+  CombinedAreaName: String;
+  FoodDistModel: String;
 }
 
-
-
-//  Get  log of ALL recipients 
+//  Get  log of ALL recipients
 //  DONE
 const getRecipients = async (token: string) => {
   const config = {
@@ -109,7 +107,6 @@ const recipientsService = {
   createRecipient,
   updateRecipient,
   deleteRecipient
-
 };
 
 export default recipientsService;

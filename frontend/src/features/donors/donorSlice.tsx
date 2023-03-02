@@ -2,15 +2,14 @@ import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import donorsService from './donorsService';
 import type { RootState } from '../../app/store';
 
-
 // Donor Object
-interface DonorObject   {
-    id: string,
-    name: string,
-    EntityType: string,
-    LocationType: string,
-    CombinedAreaName: string,
-  }
+interface DonorObject {
+  id: string;
+  name: string;
+  EntityType: string;
+  LocationType: string;
+  CombinedAreaName: string;
+}
 
 // // Define a type for the slice state
 interface DonorState {

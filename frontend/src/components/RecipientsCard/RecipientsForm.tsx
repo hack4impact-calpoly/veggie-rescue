@@ -54,11 +54,10 @@ function RecipientsForm(props: any) {
       createRecipient({
         id: '0',
         name: recipientName,
-        EntityType: orgStruc,
-        FoodType: selectedFoods.toString(),
-        DemographicName: demographicType,
+        OrgStructure: orgStruc,
+        DemographicsServed: demographicType,
         CombinedAreaName: areaName,
-        FoodDistrModel: foodDistrModel
+        FoodDistModel: foodDistrModel
       })
     );
     toast.success('Successfully created new recipient.');

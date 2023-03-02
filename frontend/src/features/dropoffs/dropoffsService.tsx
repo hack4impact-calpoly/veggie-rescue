@@ -11,6 +11,7 @@ const API_URL = SERVER_URL + '/api/dropoffs/';
 //THIS IS WHERE YOU CAN DO YOUR API CALLS
 //THE CONFIG IS WHERE IT AUTHORIZES USER TOKEN WITH BACKEND
 //YOU CAN DO FULL CRUD OPS HERE
+// eslint-disable-next-line @typescript-eslint/naming-convention
 interface dropoffObject {
  // date: String;
   driver: String;
@@ -18,9 +19,8 @@ interface dropoffObject {
   name: String;
   recipientEntityType: String;
   demographic: String;
-  foodType: String;
   area: String;
-  lbsDroppedOff: Number;
+  foodAllocation: Map<String, Number>;
 }
 
 //  Get master log of drop offs

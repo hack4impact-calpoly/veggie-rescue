@@ -8,7 +8,6 @@ import VehiclesCard from '../VehiclesCard/VehiclesCard';
 import VolunteersCard from '../VolunteersCard/VolunteersCard';
 import NewVolunteersCard from '../VolunteersCard/NewVolunteersCard';
 import NewDonorsCard from '../DonorsCard/NewDonorsCard';
-import EntityForm from './EntityForm';
 import ShortEntityForm from './ShortEntityForm';
 // import { deliverySchema, pickupSchema, dnoo } from '../../data/dbMock';
 import { useAppSelector, useAppDispatch } from '../../app/hooks';
@@ -381,7 +380,7 @@ function AdminDataScreen() {
                 <NewDonorsCard />
               </button>
               {showModal && (
-                <EntityForm
+                <DonorsForm
                   handleShow={handleShowModal}
                   whichEntity
                   isUpdate={isUpdate}
@@ -412,7 +411,7 @@ function AdminDataScreen() {
                 <NewDonorsCard />
               </button>
               {showModal && (
-                <EntityForm
+                <RecipientsForm
                   handleShow={handleShowModal}
                   whichEntity={false}
                   isUpdate={isUpdate}

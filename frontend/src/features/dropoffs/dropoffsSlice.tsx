@@ -8,6 +8,7 @@ interface Dropoff {
   name: string;
   token: string;
 }
+// eslint-disable-next-line @typescript-eslint/naming-convention
 interface dropoffObject {
   //date: String;
   driver: String;
@@ -15,9 +16,8 @@ interface dropoffObject {
   name: String;
   recipientEntityType: String;
   demographic: String;
-  foodType: String;
   area: String;
-  lbsDroppedOff: Number;
+  foodAllocation: Map<String, Number>;
 }
 
 // // Define a type for the slice state
@@ -26,7 +26,7 @@ interface DropoffState {
   isError: boolean;
   isSuccess: boolean;
   isLoading: boolean;
-    isChecked: boolean;
+  isChecked: boolean;
   message: any | null;
 }
 

@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/naming-convention */
 import axios from 'axios';
 const SERVER_URL = process.env.REACT_APP_SERVER_URL || '';
 
@@ -131,13 +132,12 @@ interface Vehicle {
   img: string;
   currentPickups: locale[];
   currentDropoffs: locale[];
-  totalWeight: number;
+  totalFoodAllocation: Map<String, Number>;
 }
 interface locale {
   name: string;
   donorLocationType: string;
   donorEntityType: string;
-  foodType: string[];
   area: string;
   id: string;
 }
@@ -150,7 +150,7 @@ interface VehicleItem {
   img: String;
   currentPickups: [];
   currentDropoffs: [];
-  totalWeight: Number;
+  totalFoodAllocation: Map<String, Number>;
 }
 interface NewVehicle {
   name: String;
@@ -163,7 +163,7 @@ interface VehicleChoice {
 }
 interface VehicleWeightTransfer {
   _id: string;
-  totalWeight: number;
+  totalFoodAllocation: Map<String, Number>;
 }
 interface UpdateVehicle {
   _id: string;
@@ -179,12 +179,12 @@ interface VehicleLogout {
 interface PickupLog {
   _id: string;
   currentPickups: pickupObject[];
-  totalWeight: number;
+  totalFoodAllocation: Map<String, Number>;
 }
 interface DropoffLog {
   _id: string;
   currentDropoffs: dropoffObject[];
-  totalWeight: number;
+  totalFoodAllocation: Map<String, Number>;
 }
 interface pickupObject {
   //date: String;
@@ -192,9 +192,8 @@ interface pickupObject {
   vehicle: String;
   name: String;
   donorEntityType: String;
-  foodType: String;
   area: String;
-  lbsPickedUp: Number;
+  foodAllocation: Map<String, Number>;
 }
 
 interface dropoffObject {
@@ -204,9 +203,8 @@ interface dropoffObject {
   name: String;
   recipientEntityType: String;
   demographic: String;
-  foodType: String;
   area: String;
-  lbsDroppedOff: Number;
+  foodAllocation: Map<String, Number>;
 }
 interface PickupSchema {
   _id: String;
@@ -216,11 +214,10 @@ interface PickupSchema {
     vehicle: String;
     name: String;
     donorEntityType: String;
-    foodType: String;
     area: String;
-    lbsPickedUp: number;
+    foodAllocation: Map<String, Number>;
   };
-  totalWeight: number;
+  totalFoodAllocation: Map<String, Number>;
 }
 interface DropoffSchema {
   _id: String;
@@ -230,12 +227,11 @@ interface DropoffSchema {
     vehicle: String;
     name: String;
     recipientEntityType: String;
-    foodType: String;
     demographic: String;
     area: String;
-    lbsDroppedOff: number;
+    foodAllocation: Map<String, Number>;
   };
-  totalWeight: number;
+  totalFoodAllocation: Map<String, Number>;
 }
 
 const vehicleService = {
