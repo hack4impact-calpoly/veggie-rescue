@@ -12,9 +12,7 @@ import AdminLoginScreen from './components/AdminLoginScreen/AdminLoginScreen';
 import AdminDataScreen from './components/AdminDataScreen/AdminDataScreen';
 import Logs from './components/Logs/Logs';
 import Transfering from './components/Transfering/Transfering';
-import Weight from './components/Weight/Weight';
 import NewLogWrapper from './components/NewLogWrapper/NewLogWrapper';
-import AdminLogs from './components/ViewLogsPage/ViewLogsPage';
 import ViewLogsPage from './components/ViewLogsPage/ViewLogsPage';
 
 const App: React.FC = () => {
