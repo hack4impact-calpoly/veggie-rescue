@@ -46,6 +46,8 @@ const LocationForm = ({
   const [active, setActive] = useState<string[]>([]);
   const [isValid, setIsValid] = useState(true); // State for checkbox buttons
   const [isOtherClicked, setOtherClicked] = useState(false);
+  const [isProduceClicked, setProduceClicked] = useState(false);
+  const [currentFoodType, setCurrentFoodType] = useState('');
   // State for checkbox buttons
 
   // State for if user is adding a new location
@@ -61,14 +63,22 @@ const LocationForm = ({
     console.log(isOtherClicked);
   }, [isOtherClicked]);
 
+  useEffect(() => {
+    console.log(isProduceClicked);
+  }, [isProduceClicked]);
+
   const { name } = current;
 
   const submitPressed = () => {
     if (isOtherClicked) {
       active.push(input);
       setActive(active);
-      console.log({ active });
     }
+    if (isProduceClicked) {
+      active.push(currentFoodType);
+      setActive(active);
+    }
+    console.log({ active });
     if (createNew === false && active.length != 0) {
       setPickupDeliveryObject({
         ...PickupDeliveryObject,
@@ -229,8 +239,8 @@ const LocationForm = ({
                   name="foodType"
                   value={current.FoodType}
                   onClick={() => {
-                    active.push(current.FoodType);
-                    setActive(active);
+                    setProduceClicked(!isProduceClicked);
+                    setCurrentFoodType(current.FoodType);
                     setIsValid(true);
                   }}
                 />
