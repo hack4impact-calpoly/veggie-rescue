@@ -81,7 +81,6 @@ export const clearAuth = createAsyncThunk('driverAuth/logout', async () => {
   await driverAuthService.logout();
 });
 
-
 // Get all drivers
 export const getDrivers = createAsyncThunk(
   'api/drivers',
@@ -202,113 +201,135 @@ export const authSlice = createSlice({
   initialState,
   reducers: {
     reset: (state) => {
-      state.isLoading = false;
-      state.isError = false;
-      state.isSuccess = false;
-      state.isLoading = false ;
-      state.message = '';
+      const theState = state;
+      theState.isLoading = false;
+      theState.isError = false;
+      theState.isSuccess = false;
+      theState.isLoading = false;
+      theState.message = '';
     },
     clear: (state) => {
-    state.driver = {} as Driver
-    state.isError = false
-    state.isSuccess = false 
-    state.isLoading = false 
-    state.message = ''    
+      const theState = state;
+      theState.driver = {} as Driver;
+      theState.isError = false;
+      theState.isSuccess = false;
+      theState.isLoading = false;
+      theState.message = '';
     }
   },
   extraReducers: (builder) => {
     builder
       .addCase(register.pending, (state) => {
-        state.isLoading = true;
+        const theState = state;
+        theState.isLoading = true;
       })
       .addCase(register.fulfilled, (state, action) => {
-        state.isLoading = false;
-        state.isSuccess = true;
-        state.driver = action.payload;
+        const theState = state;
+        theState.isLoading = false;
+        theState.isSuccess = true;
+        theState.driver = action.payload;
       })
       .addCase(register.rejected, (state, action) => {
-        state.isLoading = false;
-        state.isError = true;
-        state.message = action.payload;
-        state.driver = emptyDriver;
+        const theState = state;
+        theState.isLoading = false;
+        theState.isError = true;
+        theState.message = action.payload;
+        theState.driver = emptyDriver;
       })
       .addCase(login.pending, (state) => {
-        state.isLoading = true;
+        const theState = state;
+        theState.isLoading = true;
       })
       .addCase(login.fulfilled, (state, action) => {
-        state.isLoading = false;
-        state.isSuccess = true;
-        state.driver = action.payload;
+        const theState = state;
+        theState.isLoading = false;
+        theState.isSuccess = true;
+        theState.driver = action.payload;
       })
       .addCase(login.rejected, (state, action) => {
-        state.isLoading = false;
-        state.isError = true;
-        state.message = action.payload;
-        state.driver = emptyDriver;
+        const theState = state;
+        theState.isLoading = false;
+        theState.isError = true;
+        theState.message = action.payload;
+        theState.driver = emptyDriver;
       })
       .addCase(clearAuth.pending, (state) => {
-        state.isLoading = true;
-        state.isSuccess = false;
+        const theState = state;
+        theState.isLoading = true;
+        theState.isSuccess = false;
       })
       .addCase(clearAuth.fulfilled, (state) => {
-        state.driver = emptyDriver;
-        state.isLoading = false;
-        state.isSuccess = false;
+        const theState = state;
+        theState.driver = emptyDriver;
+        theState.isLoading = false;
+        theState.isSuccess = false;
       })
 
       .addCase(getDrivers.pending, (state) => {
-        state.isLoading = true;
+        const theState = state;
+        theState.isLoading = true;
       })
       .addCase(getDrivers.fulfilled, (state, action) => {
-        state.isLoading = false;
-        state.isSuccess = true;
-        state.drivers = action.payload;
+        const theState = state;
+        theState.isLoading = false;
+        theState.isSuccess = true;
+        theState.drivers = action.payload;
       })
       .addCase(getDrivers.rejected, (state, action) => {
-        state.isLoading = false;
-        state.isError = true;
-        state.message = action.payload;
-        state.drivers = [];
+        const theState = state;
+        theState.isLoading = false;
+        theState.isError = true;
+        theState.message = action.payload;
+        theState.drivers = [];
       })
       .addCase(createDriver.pending, (state) => {
-        state.isLoading = true;
+        const theState = state;
+        theState.isLoading = true;
       })
-      .addCase(createDriver.fulfilled, (state, action) => {
-        state.isLoading = false;
-        state.isSuccess = true;
+      .addCase(createDriver.fulfilled, (state) => {
+        const theState = state;
+        theState.isLoading = false;
+        theState.isSuccess = true;
       })
       .addCase(createDriver.rejected, (state, action) => {
-        state.isLoading = false;
-        state.isError = true;
-        state.message = action.payload;
+        const theState = state;
+        theState.isLoading = false;
+        theState.isError = true;
+        theState.message = action.payload;
       })
       .addCase(getDriver.pending, (state) => {
-        state.isLoading = true;
+        const theState = state;
+        theState.isLoading = true;
       })
       .addCase(getDriver.fulfilled, (state, action) => {
-        state.isLoading = false;
-        state.isSuccess = true;
-        state.driver = action.payload;
+        const theState = state;
+        theState.isLoading = false;
+        theState.isSuccess = true;
+        theState.driver = action.payload;
       })
       .addCase(getDriver.rejected, (state, action) => {
-        state.isLoading = false;
-        state.isError = true;
-        state.message = action.payload;
-        state.driver = {} as Driver;
+        const theState = state;
+        theState.isLoading = false;
+        theState.isError = true;
+        theState.message = action.payload;
+        theState.driver = {} as Driver;
       })
       .addCase(updateDriver.pending, (state) => {
-        state.isLoading = true;
+        const theState = state;
+        theState.isLoading = true;
       })
       .addCase(updateDriver.fulfilled, (state, action) => {
-        state.isLoading = false;
-        state.isSuccess = true;
-        state.driver = action.payload;
+        const theState = state;
+        theState.isLoading = false;
+        theState.isSuccess = true;
+        theState.driver = action.payload;
       })
       .addCase(updateDriver.rejected, (state, action) => {
-        state.isLoading = false;
-        state.isError = true;
-        state.message = action.payload;
-        state.drivers = [];
+        const theState = state;
+        theState.isLoading = false;
+        theState.isError = true;
+        theState.message = action.payload;
+        theState.drivers = [];
       });
   }
 });

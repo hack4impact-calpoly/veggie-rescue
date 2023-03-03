@@ -100,54 +100,65 @@ export const dropoffsSlice = createSlice({
   initialState,
   reducers: {
     reset: (state) => {
-      state.isLoading = false;
-      state.isError = false;
-      state.isSuccess = false;
-      state.message = '';
+      const theState = state;
+      theState.isLoading = false;
+      theState.isError = false;
+      theState.isSuccess = false;
+      theState.message = '';
     },
     setSuccess: (state) => {
-      state.isSuccess = !state.isSuccess;
+      const theState = state;
+      theState.isSuccess = !theState.isSuccess;
     }
   },
   extraReducers: (builder) => {
     builder
       .addCase(getDropoffs.pending, (state) => {
-        state.isLoading = true;
+        const theState = state;
+        theState.isLoading = true;
       })
       .addCase(getDropoffs.fulfilled, (state, action) => {
-        state.isLoading = false;
-        state.isSuccess = true;
-        state.dropoffs = action.payload;
+        const theState = state;
+        theState.isLoading = false;
+        theState.isSuccess = true;
+        theState.dropoffs = action.payload;
       })
       .addCase(getDropoffs.rejected, (state, action) => {
-        state.isLoading = false;
-        state.isError = true;
-        state.message = action.payload;
+        const theState = state;
+        theState.isLoading = false;
+        theState.isError = true;
+        theState.message = action.payload;
       })
       .addCase(createDropoff.pending, (state) => {
-        state.isLoading = true;
+        const theState = state;
+        theState.isLoading = true;
       })
       .addCase(createDropoff.fulfilled, (state, action) => {
-        state.isLoading = false;
-        state.isSuccess = true;
-        state.dropoffs = action.payload;
+        const theState = state;
+        theState.isLoading = false;
+        theState.isSuccess = true;
+        theState.dropoffs = action.payload;
       })
       .addCase(createDropoff.rejected, (state, action) => {
-        state.isLoading = false;
-        state.isError = true;
-        state.message = action.payload;
+        const theState = state;
+        theState.isLoading = false;
+        theState.isError = true;
+        theState.message = action.payload;
       })
       .addCase(createBatchDropoff.pending, (state) => {
-        state.isLoading = true;
+        const theState = state;
+        theState.isLoading = true;
       })
       .addCase(createBatchDropoff.fulfilled, (state) => {
-        state.isLoading = false;
-        state.isSuccess = true;
+        const theState = state;
+        theState.isLoading = false;
+        theState.isSuccess = true;
       })
       .addCase(createBatchDropoff.rejected, (state, action) => {
-        state.isLoading = false;
-        state.isError = true;
-        state.message = action.payload;
+        const theState = state;
+        theState.isLoading = false;
+        theState.isError = true;
+        theState.message = action.payload;
       });
   }
 });

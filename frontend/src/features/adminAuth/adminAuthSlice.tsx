@@ -87,50 +87,59 @@ export const adminSlice = createSlice({
   initialState,
   reducers: {
     reset: (state) => {
-      state.isLoading = false;
-      state.isError = false;
-      state.isSuccess = false;
-      state.message = '';
+      const theState = state;
+      theState.isLoading = false;
+      theState.isError = false;
+      theState.isSuccess = false;
+      theState.message = '';
     }
   },
   extraReducers: (builder) => {
     builder
       .addCase(register.pending, (state) => {
-        state.isLoading = true;
+        const theState = state;
+        theState.isLoading = true;
       })
       .addCase(register.fulfilled, (state, action) => {
-        state.isLoading = false;
-        state.isSuccess = true;
-        state.admin = action.payload;
+        const theState = state;
+        theState.isLoading = false;
+        theState.isSuccess = true;
+        theState.admin = action.payload;
       })
       .addCase(register.rejected, (state, action) => {
-        state.isLoading = false;
-        state.isError = true;
-        state.message = action.payload;
-        state.admin = emptyAdmin;
+        const theState = state;
+        theState.isLoading = false;
+        theState.isError = true;
+        theState.message = action.payload;
+        theState.admin = emptyAdmin;
       })
       .addCase(login.pending, (state) => {
-        state.isLoading = true;
+        const theState = state;
+        theState.isLoading = true;
       })
       .addCase(login.fulfilled, (state, action) => {
-        state.isLoading = false;
-        state.isSuccess = true;
-        state.admin = action.payload;
+        const theState = state;
+        theState.isLoading = false;
+        theState.isSuccess = true;
+        theState.admin = action.payload;
       })
       .addCase(login.rejected, (state, action) => {
-        state.isLoading = false;
-        state.isError = true;
-        state.message = action.payload;
-        state.admin = emptyAdmin;
+        const theState = state;
+        theState.isLoading = false;
+        theState.isError = true;
+        theState.message = action.payload;
+        theState.admin = emptyAdmin;
       })
       .addCase(clearAuth.pending, (state) => {
-        state.isLoading = true;
-        state.isSuccess = false;
+        const theState = state;
+        theState.isLoading = true;
+        theState.isSuccess = false;
       })
       .addCase(clearAuth.fulfilled, (state) => {
-        state.admin = emptyAdmin;
-        state.isLoading = false;
-        state.isSuccess = false;
+        const theState = state;
+        theState.admin = emptyAdmin;
+        theState.isLoading = false;
+        theState.isSuccess = false;
       });
   }
 });

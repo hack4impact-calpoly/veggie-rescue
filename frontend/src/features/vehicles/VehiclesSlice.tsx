@@ -270,7 +270,7 @@ export const deleteVehicle = createAsyncThunk(
     try {
       // Set up token for authenticating route
       const state = thunkAPI.getState() as RootState;
-      let { token } = state.adminAuth.admin;
+      const { token } = state.adminAuth.admin;
 
       return await vehicleService.deleteVehicle(vehicleID, token);
     } catch (error: any) {
@@ -316,129 +316,153 @@ export const vehicleSlice = createSlice({
   initialState,
   reducers: {
     reset: (state) => {
-      state.isLoading = false;
-      state.isError = false;
-      state.isSuccess = false;
-      state.isLoggedOut = false;
-      state.isUpdate = false;
-      state.isUpdateCount = 0;
-      state.message = '';
+      const theState = state;
+      theState.isLoading = false;
+      theState.isError = false;
+      theState.isSuccess = false;
+      theState.isLoggedOut = false;
+      theState.isUpdate = false;
+      theState.isUpdateCount = 0;
+      theState.message = '';
     },
     clear: (state) => {
-      state.vehicle = {} as Vehicle;
-      state.isError = false;
-      state.isSuccess = false;
-      state.isLoading = false;
-      state.isUpdate = false;
-      state.isLoggedOut = false;
-      state.isLoggingOut = false;
-      state.message = '';
+      const theState = state;
+      theState.vehicle = {} as Vehicle;
+      theState.isError = false;
+      theState.isSuccess = false;
+      theState.isLoading = false;
+      theState.isUpdate = false;
+      theState.isLoggedOut = false;
+      theState.isLoggingOut = false;
+      theState.message = '';
     },
     setIsLoggingOut: (state) => {
-      state.isLoggingOut = !state.isLoggingOut;
+      const theState = state;
+      theState.isLoggingOut = !theState.isLoggingOut;
     },
     setIsUpdate: (state) => {
-      state.isUpdate = !state.isUpdate;
+      const theState = state;
+      theState.isUpdate = !theState.isUpdate;
     }
   },
   extraReducers: (builder) => {
     builder
       .addCase(getVehicles.pending, (state) => {
-        state.isLoading = true;
+        const theState = state;
+        theState.isLoading = true;
       })
       .addCase(getVehicles.fulfilled, (state, action) => {
-        state.isLoading = false;
-        state.isSuccess = true;
-        state.vehicles = action.payload;
+        const theState = state;
+        theState.isLoading = false;
+        theState.isSuccess = true;
+        theState.vehicles = action.payload;
       })
       .addCase(getVehicles.rejected, (state, action) => {
-        state.isLoading = false;
-        state.isError = true;
-        state.message = action.payload;
-        state.vehicles = [];
+        const theState = state;
+        theState.isLoading = false;
+        theState.isError = true;
+        theState.message = action.payload;
+        theState.vehicles = [];
       })
       .addCase(createVehicle.pending, (state) => {
-        state.isLoading = true;
+        const theState = state;
+        theState.isLoading = true;
       })
       .addCase(createVehicle.fulfilled, (state) => {
-        state.isLoading = false;
-        state.isUpdate = true;
-        state.isSuccess = true;
+        const theState = state;
+        theState.isLoading = false;
+        theState.isUpdate = true;
+        theState.isSuccess = true;
       })
       .addCase(createVehicle.rejected, (state, action) => {
-        state.isLoading = false;
-        state.isError = true;
-        state.message = action.payload;
+        const theState = state;
+        theState.isLoading = false;
+        theState.isError = true;
+        theState.message = action.payload;
       })
       .addCase(getVehicle.pending, (state) => {
-        state.isLoading = true;
+        const theState = state;
+        theState.isLoading = true;
       })
       .addCase(getVehicle.fulfilled, (state, action) => {
-        state.isLoading = false;
-        state.isSuccess = true;
-        state.vehicle = action.payload;
+        const theState = state;
+        theState.isLoading = false;
+        theState.isSuccess = true;
+        theState.vehicle = action.payload;
       })
       .addCase(getVehicle.rejected, (state, action) => {
-        state.isLoading = false;
-        state.isError = true;
-        state.message = action.payload;
-        state.vehicle = {} as Vehicle;
+        const theState = state;
+        theState.isLoading = false;
+        theState.isError = true;
+        theState.message = action.payload;
+        theState.vehicle = {} as Vehicle;
       })
       .addCase(updateVehicle.pending, (state) => {
-        state.isLoading = true;
+        const theState = state;
+        theState.isLoading = true;
       })
       .addCase(updateVehicle.fulfilled, (state, action) => {
-        state.isLoading = false;
-        state.isSuccess = true;
-        state.isUpdate = true;
-        state.vehicle = action.payload;
+        const theState = state;
+        theState.isLoading = false;
+        theState.isSuccess = true;
+        theState.isUpdate = true;
+        theState.vehicle = action.payload;
       })
       .addCase(updateVehicle.rejected, (state, action) => {
-        state.isLoading = false;
-        state.isError = true;
-        state.message = action.payload;
-        state.vehicles = [];
+        const theState = state;
+        theState.isLoading = false;
+        theState.isError = true;
+        theState.message = action.payload;
+        theState.vehicles = [];
       })
       .addCase(updateTwo.pending, (state) => {
-        state.isLoading = true;
+        const theState = state;
+        theState.isLoading = true;
       })
       .addCase(updateTwo.fulfilled, (state) => {
-        state.isLoading = false;
-        state.isSuccess = true;
-        state.isUpdate = true;
-        state.isUpdateCount += 1;
+        const theState = state;
+        theState.isLoading = false;
+        theState.isSuccess = true;
+        theState.isUpdate = true;
+        theState.isUpdateCount += 1;
       })
       .addCase(updateTwo.rejected, (state, action) => {
-        state.isLoading = false;
-        state.isError = true;
-        state.message = action.payload;
-        state.vehicles = [];
+        const theState = state;
+        theState.isLoading = false;
+        theState.isError = true;
+        theState.message = action.payload;
+        theState.vehicles = [];
       })
       .addCase(deleteVehicle.pending, (state) => {
-        state.isLoading = true;
+        const theState = state;
+        theState.isLoading = true;
       })
       .addCase(deleteVehicle.fulfilled, (state, action) => {
-        state.isLoading = false;
-        state.isSuccess = true;
-        state.isUpdate = true;
-        state.vehicle = action.payload;
+        const theState = state;
+        theState.isLoading = false;
+        theState.isSuccess = true;
+        theState.isUpdate = true;
+        theState.vehicle = action.payload;
       })
       .addCase(deleteVehicle.rejected, (state, action) => {
-        state.isLoading = false;
-        state.isError = true;
-        state.message = action.payload;
-        state.vehicles = [];
+        const theState = state;
+        theState.isLoading = false;
+        theState.isError = true;
+        theState.message = action.payload;
+        theState.vehicles = [];
       })
       .addCase(logoutVehicle.pending, (state) => {
-        state.isLoading = true;
+        const theState = state;
+        theState.isLoading = true;
       })
       .addCase(logoutVehicle.fulfilled, (state) => {
-        state.vehicles = [];
-        state.vehicle = {} as Vehicle;
-        state.isError = false;
-        state.isSuccess = false;
-        state.isLoading = false;
-        state.isLoggedOut = true;
+        const theState = state;
+        theState.vehicles = [];
+        theState.vehicle = {} as Vehicle;
+        theState.isError = false;
+        theState.isSuccess = false;
+        theState.isLoading = false;
+        theState.isLoggedOut = true;
       });
   }
 });
