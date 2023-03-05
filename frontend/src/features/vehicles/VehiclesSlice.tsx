@@ -315,155 +315,155 @@ export const vehicleSlice = createSlice({
   name: 'vehicle',
   initialState,
   reducers: {
-    reset: (state) => {
-      const theState = state;
-      theState.isLoading = false;
-      theState.isError = false;
-      theState.isSuccess = false;
-      theState.isLoggedOut = false;
-      theState.isUpdate = false;
-      theState.isUpdateCount = 0;
-      theState.message = '';
-    },
-    clear: (state) => {
-      const theState = state;
-      theState.vehicle = {} as Vehicle;
-      theState.isError = false;
-      theState.isSuccess = false;
-      theState.isLoading = false;
-      theState.isUpdate = false;
-      theState.isLoggedOut = false;
-      theState.isLoggingOut = false;
-      theState.message = '';
-    },
-    setIsLoggingOut: (state) => {
-      const theState = state;
-      theState.isLoggingOut = !theState.isLoggingOut;
-    },
-    setIsUpdate: (state) => {
-      const theState = state;
-      theState.isUpdate = !theState.isUpdate;
-    }
+    reset: (state) => ({
+      ...state,
+      isLoading: false,
+      isError: false,
+      isSuccess: false,
+      isLoggedOut: false,
+      isUpdate: false,
+      isUpdateCount: 0,
+      message: ''
+    }),
+    clear: (state) => ({
+      ...state,
+      vehicle: {} as Vehicle,
+      isError: false,
+      isSuccess: false,
+      isLoading: false,
+      isUpdate: false,
+      isLoggedOut: false,
+      isLoggingOut: false,
+      message: ''
+    }),
+    setIsLoggingOut: (state) => ({
+      ...state,
+      isLoggingOut: !state.isLoggingOut
+    }),
+    setIsUpdate: (state) => ({
+      ...state,
+      isUpdate: !state.isUpdate
+    })
   },
   extraReducers: (builder) => {
     builder
-      .addCase(getVehicles.pending, (state) => {
-        const theState = state;
-        theState.isLoading = true;
-      })
-      .addCase(getVehicles.fulfilled, (state, action) => {
-        const theState = state;
-        theState.isLoading = false;
-        theState.isSuccess = true;
-        theState.vehicles = action.payload;
-      })
-      .addCase(getVehicles.rejected, (state, action) => {
-        const theState = state;
-        theState.isLoading = false;
-        theState.isError = true;
-        theState.message = action.payload;
-        theState.vehicles = [];
-      })
-      .addCase(createVehicle.pending, (state) => {
-        const theState = state;
-        theState.isLoading = true;
-      })
-      .addCase(createVehicle.fulfilled, (state) => {
-        const theState = state;
-        theState.isLoading = false;
-        theState.isUpdate = true;
-        theState.isSuccess = true;
-      })
-      .addCase(createVehicle.rejected, (state, action) => {
-        const theState = state;
-        theState.isLoading = false;
-        theState.isError = true;
-        theState.message = action.payload;
-      })
-      .addCase(getVehicle.pending, (state) => {
-        const theState = state;
-        theState.isLoading = true;
-      })
-      .addCase(getVehicle.fulfilled, (state, action) => {
-        const theState = state;
-        theState.isLoading = false;
-        theState.isSuccess = true;
-        theState.vehicle = action.payload;
-      })
-      .addCase(getVehicle.rejected, (state, action) => {
-        const theState = state;
-        theState.isLoading = false;
-        theState.isError = true;
-        theState.message = action.payload;
-        theState.vehicle = {} as Vehicle;
-      })
-      .addCase(updateVehicle.pending, (state) => {
-        const theState = state;
-        theState.isLoading = true;
-      })
-      .addCase(updateVehicle.fulfilled, (state, action) => {
-        const theState = state;
-        theState.isLoading = false;
-        theState.isSuccess = true;
-        theState.isUpdate = true;
-        theState.vehicle = action.payload;
-      })
-      .addCase(updateVehicle.rejected, (state, action) => {
-        const theState = state;
-        theState.isLoading = false;
-        theState.isError = true;
-        theState.message = action.payload;
-        theState.vehicles = [];
-      })
-      .addCase(updateTwo.pending, (state) => {
-        const theState = state;
-        theState.isLoading = true;
-      })
-      .addCase(updateTwo.fulfilled, (state) => {
-        const theState = state;
-        theState.isLoading = false;
-        theState.isSuccess = true;
-        theState.isUpdate = true;
-        theState.isUpdateCount += 1;
-      })
-      .addCase(updateTwo.rejected, (state, action) => {
-        const theState = state;
-        theState.isLoading = false;
-        theState.isError = true;
-        theState.message = action.payload;
-        theState.vehicles = [];
-      })
-      .addCase(deleteVehicle.pending, (state) => {
-        const theState = state;
-        theState.isLoading = true;
-      })
-      .addCase(deleteVehicle.fulfilled, (state, action) => {
-        const theState = state;
-        theState.isLoading = false;
-        theState.isSuccess = true;
-        theState.isUpdate = true;
-        theState.vehicle = action.payload;
-      })
-      .addCase(deleteVehicle.rejected, (state, action) => {
-        const theState = state;
-        theState.isLoading = false;
-        theState.isError = true;
-        theState.message = action.payload;
-        theState.vehicles = [];
-      })
-      .addCase(logoutVehicle.pending, (state) => {
-        const theState = state;
-        theState.isLoading = true;
-      })
-      .addCase(logoutVehicle.fulfilled, (state) => {
-        const theState = state;
-        theState.vehicles = [];
-        theState.vehicle = {} as Vehicle;
-        theState.isError = false;
-        theState.isSuccess = false;
-        theState.isLoading = false;
-        theState.isLoggedOut = true;
-      });
+      .addCase(getVehicles.pending, (state) => ({
+        ...state,
+        isLoading: true
+      }))
+      .addCase(getVehicles.fulfilled, (state, action) => ({
+        ...state,
+        isLoading: false,
+        isSuccess: true,
+        vehicles: action.payload
+      }))
+      .addCase(getVehicles.rejected, (state, action) => ({
+        ...state,
+        isLoading: false,
+        isError: true,
+        message: action.payload,
+        vehicles: []
+      }))
+      .addCase(createVehicle.pending, (state) => ({
+        ...state,
+        isLoading: true
+      }))
+      .addCase(createVehicle.fulfilled, (state) => ({
+        ...state,
+        isLoading: false,
+        isUpdate: true,
+        isSuccess: true
+      }))
+      .addCase(createVehicle.rejected, (state, action) => ({
+        ...state,
+        isLoading: false,
+        isError: true,
+        message: action.payload
+      }))
+      .addCase(getVehicle.pending, (state) => ({
+        ...state,
+        isLoading: true
+      }))
+      .addCase(getVehicle.fulfilled, (state, action) => ({
+        ...state,
+        isLoading: false,
+        isSuccess: true,
+        vehicle: action.payload
+      }))
+      .addCase(getVehicle.rejected, (state, action) => ({
+        ...state,
+        isLoading: false,
+        isError: true,
+        message: action.payload,
+        vehicle: {} as Vehicle
+      }))
+      .addCase(updateVehicle.pending, (state) => ({
+        ...state,
+        isLoading: true
+      }))
+      .addCase(updateVehicle.fulfilled, (state, action) => ({
+        ...state,
+        isLoading: false,
+        isSuccess: true,
+        isUpdate: true,
+        vehicle: action.payload
+      }))
+      .addCase(updateVehicle.rejected, (state, action) => ({
+        ...state,
+        isLoading: false,
+        isError: true,
+        message: action.payload,
+        vehicles: []
+      }))
+      .addCase(updateTwo.pending, (state) => ({
+        ...state,
+        isLoading: true
+      }))
+      .addCase(updateTwo.fulfilled, (state) => ({
+        ...state,
+        isLoading: false,
+        isSuccess: true,
+        isUpdate: true,
+        isUpdateCount: state.isUpdateCount + 1
+      }))
+      .addCase(updateTwo.rejected, (state, action) => ({
+        ...state,
+        isLoading: false,
+        isError: true,
+        message: action.payload,
+        vehicles: []
+      }))
+      .addCase(deleteVehicle.pending, (state) => ({
+        ...state,
+        isLoading: true
+      }))
+      .addCase(deleteVehicle.fulfilled, (state, action) => ({
+        ...state,
+        isLoading: false,
+        isSuccess: true,
+        isUpdate: true,
+        vehicle: action.payload
+      }))
+      .addCase(deleteVehicle.rejected, (state, action) => ({
+        ...state,
+        isLoading: false,
+        isError: true,
+        message: action.payload,
+        vehicles: []
+      }))
+      .addCase(logoutVehicle.pending, (state) => ({
+        ...state,
+        isLoading: true
+      }))
+      .addCase(logoutVehicle.fulfilled, (state) => ({
+        ...state,
+        vehicles: [],
+        vehicle: {} as Vehicle,
+        isError: false,
+        isSuccess: false,
+        isLoading: false,
+        isLoggedOut: true
+      }));
   }
 });
 

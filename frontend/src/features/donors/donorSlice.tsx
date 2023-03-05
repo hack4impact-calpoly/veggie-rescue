@@ -118,68 +118,81 @@ export const donorsSlice = createSlice({
   name: 'donors',
   initialState,
   reducers: {
-    reset: (state) => {
-      state.isLoading = false;
-      state.isError = false;
-      state.isSuccess = false;
-      state.message = '';
-    },
-    clear: (state) => initialState
+    reset: (state) => ({
+      ...state,
+      isLoading: false,
+      isError: false,
+      isSuccess: false,
+      message: ''
+    }),
+    clear: () => initialState
   },
   extraReducers: (builder) => {
     builder
-      .addCase(getDonors.pending, (state) => {
-        state.isLoading = true;
-      })
-      .addCase(getDonors.fulfilled, (state, action) => {
-        state.isLoading = false;
-        state.isSuccess = true;
-        state.donors = action.payload;
-      })
-      .addCase(getDonors.rejected, (state, action) => {
-        state.isLoading = false;
-        state.isError = true;
-        state.message = action.payload;
-      })
-      .addCase(createDonor.pending, (state) => {
-        state.isLoading = true;
-      })
-      .addCase(createDonor.fulfilled, (state, action) => {
-        state.isLoading = false;
-        state.isSuccess = true;
-        state.message = action.payload;
-      })
-      .addCase(createDonor.rejected, (state, action) => {
-        state.isLoading = false;
-        state.isError = true;
-        state.message = action.payload;
-      })
-      .addCase(updateDonor.pending, (state) => {
-        state.isLoading = true;
-      })
-      .addCase(updateDonor.fulfilled, (state, action) => {
-        state.isLoading = false;
-        state.isSuccess = true;
-        state.message = action.payload;
-      })
-      .addCase(updateDonor.rejected, (state, action) => {
-        state.isLoading = false;
-        state.isError = true;
-        state.message = action.payload;
-      })
-      .addCase(deleteDonor.pending, (state) => {
-        state.isLoading = true;
-      })
-      .addCase(deleteDonor.fulfilled, (state, action) => {
-        state.isLoading = false;
-        state.isSuccess = true;
-        state.message = action.payload;
-      })
-      .addCase(deleteDonor.rejected, (state, action) => {
-        state.isLoading = false;
-        state.isError = true;
-        state.message = action.payload;
-      });
+      .addCase(getDonors.pending, (state) => ({
+        ...state,
+        isLoading: true
+      }))
+      .addCase(getDonors.fulfilled, (state, action) => ({
+        ...state,
+        isLoading: false,
+        isSuccess: true,
+        donors: action.payload
+      }))
+      .addCase(getDonors.rejected, (state, action) => ({
+        ...state,
+        isLoading: false,
+        isError: true,
+        message: action.payload
+      }))
+      .addCase(createDonor.pending, (state) => ({
+        ...state,
+        isLoading: true
+      }))
+      .addCase(createDonor.fulfilled, (state, action) => ({
+        ...state,
+        isLoading: false,
+        isSuccess: true,
+        message: action.payload
+      }))
+      .addCase(createDonor.rejected, (state, action) => ({
+        ...state,
+        isLoading: false,
+        isError: true,
+        message: action.payload
+      }))
+      .addCase(updateDonor.pending, (state) => ({
+        ...state,
+        isLoading: true
+      }))
+      .addCase(updateDonor.fulfilled, (state, action) => ({
+        ...state,
+        isLoading: false,
+        isSuccess: true,
+        message: action.payload
+      }))
+      .addCase(updateDonor.rejected, (state, action) => ({
+        ...state,
+        isLoading: false,
+        isError: true,
+        message: action.payload
+      }))
+      .addCase(deleteDonor.pending, (state) => ({
+        ...state,
+        isLoading: true
+      }))
+      .addCase(deleteDonor.fulfilled, (state, action) => ({
+        ...state,
+        isLoading: false,
+        isSuccess: true,
+        message: action.payload
+      }))
+      .addCase(deleteDonor.rejected, (state, action) => ({
+        ...state,
+        isLoading: false,
+        isError: true,
+        message: action.payload
+      }));
   }
 });
 

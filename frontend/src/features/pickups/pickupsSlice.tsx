@@ -96,67 +96,67 @@ export const pickupsSlice = createSlice({
   name: 'pickup',
   initialState,
   reducers: {
-    reset: (state) => {
-      const theState = state;
-      theState.isLoading = false;
-      theState.isError = false;
-      theState.isSuccess = false;
-      theState.message = '';
-    },
-    setSuccess: (state) => {
-      const theState = state;
-      theState.isSuccess = !theState.isSuccess;
-    }
+    reset: (state) => ({
+      ...state,
+      isLoading: false,
+      isError: false,
+      isSuccess: false,
+      message: ''
+    }),
+    setSuccess: (state) => ({
+      ...state,
+      isSuccess: !state.isSuccess
+    })
   },
   extraReducers: (builder) => {
     builder
-      .addCase(getPickups.pending, (state) => {
-        const theState = state;
-        theState.isLoading = true;
-      })
-      .addCase(getPickups.fulfilled, (state, action) => {
-        const theState = state;
-        theState.isLoading = false;
-        theState.isSuccess = true;
-        theState.pickups = action.payload;
-      })
-      .addCase(getPickups.rejected, (state, action) => {
-        const theState = state;
-        theState.isLoading = false;
-        theState.isError = true;
-        theState.message = action.payload;
-      })
-      .addCase(createPickup.pending, (state) => {
-        const theState = state;
-        theState.isLoading = true;
-      })
-      .addCase(createPickup.fulfilled, (state, action) => {
-        const theState = state;
-        theState.isLoading = false;
-        theState.isSuccess = true;
-        theState.pickups = action.payload;
-      })
-      .addCase(createPickup.rejected, (state, action) => {
-        const theState = state;
-        theState.isLoading = false;
-        theState.isError = true;
-        theState.message = action.payload;
-      })
-      .addCase(createBatchPickup.pending, (state) => {
-        const theState = state;
-        theState.isLoading = true;
-      })
-      .addCase(createBatchPickup.fulfilled, (state) => {
-        const theState = state;
-        theState.isLoading = false;
-        theState.isSuccess = true;
-      })
-      .addCase(createBatchPickup.rejected, (state, action) => {
-        const theState = state;
-        theState.isLoading = false;
-        theState.isError = true;
-        theState.message = action.payload;
-      });
+      .addCase(getPickups.pending, (state) => ({
+        ...state,
+        isLoading: true
+      }))
+      .addCase(getPickups.fulfilled, (state, action) => ({
+        ...state,
+        isLoading: false,
+        isSuccess: true,
+        pickups: action.payload
+      }))
+      .addCase(getPickups.rejected, (state, action) => ({
+        ...state,
+        isLoading: false,
+        isError: true,
+        message: action.payload
+      }))
+      .addCase(createPickup.pending, (state) => ({
+        ...state,
+        isLoading: true
+      }))
+      .addCase(createPickup.fulfilled, (state, action) => ({
+        ...state,
+        isLoading: false,
+        isSuccess: true,
+        pickups: action.payload
+      }))
+      .addCase(createPickup.rejected, (state, action) => ({
+        ...state,
+        isLoading: false,
+        isError: true,
+        message: action.payload
+      }))
+      .addCase(createBatchPickup.pending, (state) => ({
+        ...state,
+        isLoading: true
+      }))
+      .addCase(createBatchPickup.fulfilled, (state) => ({
+        ...state,
+        isLoading: false,
+        isSuccess: true
+      }))
+      .addCase(createBatchPickup.rejected, (state, action) => ({
+        ...state,
+        isLoading: false,
+        isError: true,
+        message: action.payload
+      }));
   }
 });
 

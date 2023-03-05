@@ -130,81 +130,81 @@ export const recipientsSlice = createSlice({
   name: 'recipients',
   initialState,
   reducers: {
-    reset: (state) => {
-      const theState = state;
-      theState.isLoading = false;
-      theState.isError = false;
-      theState.isSuccess = false;
-      theState.message = '';
-    },
+    reset: (state) => ({
+      ...state,
+      isLoading: false,
+      isError: false,
+      isSuccess: false,
+      message: ''
+    }),
     clear: () => initialState
   },
   extraReducers: (builder) => {
     builder
-      .addCase(getRecipients.pending, (state) => {
-        const theState = state;
-        theState.isLoading = true;
-      })
-      .addCase(getRecipients.fulfilled, (state, action) => {
-        const theState = state;
-        theState.isLoading = false;
-        theState.isSuccess = true;
-        theState.recipients = action.payload;
-      })
-      .addCase(getRecipients.rejected, (state, action) => {
-        const theState = state;
-        theState.isLoading = false;
-        theState.isError = true;
-        theState.message = action.payload;
-      })
-      .addCase(createRecipient.pending, (state) => {
-        const theState = state;
-        theState.isLoading = true;
-      })
-      .addCase(createRecipient.fulfilled, (state, action) => {
-        const theState = state;
-        theState.isLoading = false;
-        theState.isSuccess = true;
-        theState.message = action.payload;
-      })
-      .addCase(createRecipient.rejected, (state, action) => {
-        const theState = state;
-        theState.isLoading = false;
-        theState.isError = true;
-        theState.message = action.payload;
-      })
-      .addCase(updateRecipient.pending, (state) => {
-        const theState = state;
-        theState.isLoading = true;
-      })
-      .addCase(updateRecipient.fulfilled, (state, action) => {
-        const theState = state;
-        theState.isLoading = false;
-        theState.isSuccess = true;
-        theState.message = action.payload;
-      })
-      .addCase(updateRecipient.rejected, (state, action) => {
-        const theState = state;
-        theState.isLoading = false;
-        theState.isError = true;
-        theState.message = action.payload;
-      })
-      .addCase(deleteRecipient.pending, (state) => {
-        const theState = state;
-        theState.isLoading = true;
-      })
-      .addCase(deleteRecipient.fulfilled, (state, action) => {
-        const theState = state;
-        theState.isLoading = false;
-        theState.isSuccess = true;
-        theState.message = action.payload;
-      })
-      .addCase(deleteRecipient.rejected, (state, action) => {
-        const theState = state;
-        theState.isLoading = false;
-        theState.isError = true;
-        theState.message = action.payload;
-      });
+      .addCase(getRecipients.pending, (state) => ({
+        ...state,
+        isLoading: true
+      }))
+      .addCase(getRecipients.fulfilled, (state, action) => ({
+        ...state,
+        isLoading: false,
+        isSuccess: true,
+        recipients: action.payload
+      }))
+      .addCase(getRecipients.rejected, (state, action) => ({
+        ...state,
+        isLoading: false,
+        isError: true,
+        message: action.payload
+      }))
+      .addCase(createRecipient.pending, (state) => ({
+        ...state,
+        isLoading: true
+      }))
+      .addCase(createRecipient.fulfilled, (state, action) => ({
+        ...state,
+        isLoading: false,
+        isSuccess: true,
+        message: action.payload
+      }))
+      .addCase(createRecipient.rejected, (state, action) => ({
+        ...state,
+        isLoading: false,
+        isError: true,
+        message: action.payload
+      }))
+      .addCase(updateRecipient.pending, (state) => ({
+        ...state,
+        isLoading: true
+      }))
+      .addCase(updateRecipient.fulfilled, (state, action) => ({
+        ...state,
+        isLoading: false,
+        isSuccess: true,
+        message: action.payload
+      }))
+      .addCase(updateRecipient.rejected, (state, action) => ({
+        ...state,
+        isLoading: false,
+        isError: true,
+        message: action.payload
+      }))
+      .addCase(deleteRecipient.pending, (state) => ({
+        ...state,
+        isLoading: true
+      }))
+      .addCase(deleteRecipient.fulfilled, (state, action) => ({
+        ...state,
+        isLoading: false,
+        isSuccess: true,
+        message: action.payload
+      }))
+      .addCase(deleteRecipient.rejected, (state, action) => ({
+        ...state,
+        isLoading: false,
+        isError: true,
+        message: action.payload
+      }));
   }
 });
 

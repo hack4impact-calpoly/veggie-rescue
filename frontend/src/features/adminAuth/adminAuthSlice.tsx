@@ -86,61 +86,61 @@ export const adminSlice = createSlice({
   name: 'adminAuth',
   initialState,
   reducers: {
-    reset: (state) => {
-      const theState = state;
-      theState.isLoading = false;
-      theState.isError = false;
-      theState.isSuccess = false;
-      theState.message = '';
-    }
+    reset: (state) => ({
+      ...state,
+      isLoading: false,
+      isError: false,
+      isSuccess: false,
+      message: ''
+    })
   },
   extraReducers: (builder) => {
     builder
-      .addCase(register.pending, (state) => {
-        const theState = state;
-        theState.isLoading = true;
-      })
-      .addCase(register.fulfilled, (state, action) => {
-        const theState = state;
-        theState.isLoading = false;
-        theState.isSuccess = true;
-        theState.admin = action.payload;
-      })
-      .addCase(register.rejected, (state, action) => {
-        const theState = state;
-        theState.isLoading = false;
-        theState.isError = true;
-        theState.message = action.payload;
-        theState.admin = emptyAdmin;
-      })
-      .addCase(login.pending, (state) => {
-        const theState = state;
-        theState.isLoading = true;
-      })
-      .addCase(login.fulfilled, (state, action) => {
-        const theState = state;
-        theState.isLoading = false;
-        theState.isSuccess = true;
-        theState.admin = action.payload;
-      })
-      .addCase(login.rejected, (state, action) => {
-        const theState = state;
-        theState.isLoading = false;
-        theState.isError = true;
-        theState.message = action.payload;
-        theState.admin = emptyAdmin;
-      })
-      .addCase(clearAuth.pending, (state) => {
-        const theState = state;
-        theState.isLoading = true;
-        theState.isSuccess = false;
-      })
-      .addCase(clearAuth.fulfilled, (state) => {
-        const theState = state;
-        theState.admin = emptyAdmin;
-        theState.isLoading = false;
-        theState.isSuccess = false;
-      });
+      .addCase(register.pending, (state) => ({
+        ...state,
+        isLoading: true
+      }))
+      .addCase(register.fulfilled, (state, action) => ({
+        ...state,
+        isLoading: false,
+        isSuccess: true,
+        admin: action.payload
+      }))
+      .addCase(register.rejected, (state, action) => ({
+        ...state,
+        isLoading: false,
+        isError: true,
+        message: action.payload,
+        admin: emptyAdmin
+      }))
+      .addCase(login.pending, (state) => ({
+        ...state,
+        isLoading: true
+      }))
+      .addCase(login.fulfilled, (state, action) => ({
+        ...state,
+        isLoading: false,
+        isSuccess: true,
+        admin: action.payload
+      }))
+      .addCase(login.rejected, (state, action) => ({
+        ...state,
+        isLoading: false,
+        isError: true,
+        message: action.payload,
+        admin: emptyAdmin
+      }))
+      .addCase(clearAuth.pending, (state) => ({
+        ...state,
+        isLoading: true,
+        isSuccess: false
+      }))
+      .addCase(clearAuth.fulfilled, (state) => ({
+        ...state,
+        admin: emptyAdmin,
+        isLoading: false,
+        isSuccess: false
+      }));
   }
 });
 
