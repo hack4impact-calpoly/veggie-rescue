@@ -71,9 +71,12 @@ const LocationForm = ({
 
   const submitPressed = () => {
     if (isOtherClicked) {
-      active.push(input);
-      setActive(active);
+      if (input.length != 0 && input != ' ') {
+        active.push(input);
+        setActive(active);
+      }
     }
+
     if (isProduceClicked) {
       active.push(currentFoodType);
       setActive(active);
@@ -103,6 +106,8 @@ const LocationForm = ({
         Area: area
       });
       setForceNext(true);
+    } else if (isOtherClicked && input.length == 0) {
+      toast.error('Please enter value for Other.');
     } else {
       toast.error('Please enter a food type.');
     }
@@ -288,7 +293,6 @@ const LocationForm = ({
       <div>
         <button
           className="bg-amber-500 rounded-full w-full mt-5 p-3 text-3xl text-white font-semibold shadow"
-          disabled={!isValid}
           onClick={() => {
             console.log(isOtherClicked);
             submitPressed();
