@@ -12,6 +12,9 @@ import { getPickups } from '../../features/pickups/pickupsSlice';
 import { getDropoffs } from '../../features/dropoffs/dropoffsSlice';
 import AdminHeader from '../AdminHeader/AdminHeader';
 
+// import pickupLogSchema from '/backend/models/pickupLogSchema';
+// import dropoffLogSchema from '/backend/models/dropoffLogSchema';
+
 // props for expanding cell if too long
 interface GridCellExpandProps {
     value: string;
@@ -220,6 +223,10 @@ const columns: GridColDef[] = [
 let temp = 0;
 
 export default function DataTable() {
+  const [pickupSelected, setPickupSelected] = useState(true);
+  const [dropoffSelected, setDropoffSelected] = useState(false);
+  
+
   // command for backend: npm start dev
   const dispatch = useAppDispatch();
   const { pickups } = useAppSelector((state) => state.pickups);
@@ -232,19 +239,26 @@ export default function DataTable() {
 
 
   function handlePickups() {
-    // empty
+    console.log('pickups')
+    setPickupSelected((prev) => true);
+    setDropoffSelected((prev) => false);
   }
 
   function handleDropoffs() {
-    // empty
+    console.log('dropoffs')
+    setPickupSelected((prev) => false);
+    setDropoffSelected((prev) => true);
   }
+
 
   const [buttonText, setButtonText] = React.useState('Dropoffs');
   const handleClick = () => {
     setButtonText(buttonText === 'Dropoffs' ? 'Pickups' : 'Dropoffs');
     if (buttonText === 'Dropoffs') {
+      handleDropoffs()
       temp = 1;
     } else {
+      handlePickups()
       temp = 0;
     }
   }
@@ -258,19 +272,19 @@ export default function DataTable() {
   }
 
   let i = 0;
-  let rows = getData()?.map((data: { date: String; driver: String; vehicle: String; name: String; foodType: String; lbsPickedUp: Number; locationType: String; donorEntityType: String; area: String; }) => {
+  let rows = getData()?.map((data: { date: String; driver: String; vehicle: String; name: String; donorEntityType: String; demographic: String; area: String; foodAllocation: Map<string, number>; }) => {
       return {
           id: i++,
           // id: newData.id,
+          //
           date: data.date,
-          driverName: data.driver,
+          driver: data.driver,
           vehicle: data.vehicle,
           name: data.name,
-          foodType: data.foodType,
-          lbsPickedUp: data.lbsPickedUp,
-          locationType: data.name, // locationType is the same as name in the backend 
           donorEntityType: data.donorEntityType,
-          area: data.area
+          demographic: data.demographic,
+          area: data.area,
+          foodAllocation: data.foodAllocation
           } 
     });
 
