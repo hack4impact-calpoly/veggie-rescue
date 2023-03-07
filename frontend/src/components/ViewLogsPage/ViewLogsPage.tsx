@@ -226,7 +226,6 @@ export default function DataTable() {
   const [pickupSelected, setPickupSelected] = useState(true);
   const [dropoffSelected, setDropoffSelected] = useState(false);
   
-
   // command for backend: npm start dev
   const dispatch = useAppDispatch();
   const { pickups } = useAppSelector((state) => state.pickups);
@@ -239,13 +238,13 @@ export default function DataTable() {
 
 
   function handlePickups() {
-    console.log('pickups')
+    console.log('Pickups')
     setPickupSelected((prev) => true);
     setDropoffSelected((prev) => false);
   }
 
   function handleDropoffs() {
-    console.log('dropoffs')
+    console.log('Dropoffs')
     setPickupSelected((prev) => false);
     setDropoffSelected((prev) => true);
   }
