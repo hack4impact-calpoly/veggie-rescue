@@ -220,7 +220,6 @@ const columns: GridColDef[] = [
     },
 ];
 
-let temp = 0;
 
 export default function DataTable() {
   const [pickupSelected, setPickupSelected] = useState(true);
@@ -255,15 +254,13 @@ export default function DataTable() {
     setButtonText(buttonText === 'Dropoffs' ? 'Pickups' : 'Dropoffs');
     if (buttonText === 'Dropoffs') {
       handleDropoffs()
-      temp = 1;
     } else {
       handlePickups()
-      temp = 0;
     }
   }
 
   function getData() {
-    if (temp === 0) {
+    if (pickupSelected) {
       return pickups;
     } else {
       return dropoffs;
