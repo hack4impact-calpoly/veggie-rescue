@@ -1,7 +1,8 @@
+/* eslint-disable no-nested-ternary */
 import React, { useEffect, useState } from 'react';
 import { toast } from 'react-toastify';
 
-interface locale {
+interface Locale {
   name: string;
   LocationType: string;
   EntityType: string;
@@ -11,7 +12,7 @@ interface locale {
   _id: string;
 }
 
-interface pickupDeliveryObjectSchema {
+interface PickupDeliveryObjectSchema {
   pickupOrDelivery: number;
   id: string;
   date: string;
@@ -27,22 +28,23 @@ interface pickupDeliveryObjectSchema {
 }
 
 interface Props {
-  current: locale;
+  current: Locale;
   createNew: boolean;
   setLocation: Function;
-  PickupDeliveryObject: pickupDeliveryObjectSchema;
+  PickupDeliveryObject: PickupDeliveryObjectSchema;
   setPickupDeliveryObject: Function;
   setForceNext: Function;
 }
 
-const LocationForm = ({
+function LocationForm({
   current,
   createNew,
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   setLocation,
   PickupDeliveryObject,
   setPickupDeliveryObject,
   setForceNext
-}: Props) => {
+}: Props) {
   const [active, setActive] = useState<string[]>([]);
   const [isValid, setIsValid] = useState(true); // State for checkbox buttons
   const [isOtherClicked, setOtherClicked] = useState(false);
@@ -54,6 +56,7 @@ const LocationForm = ({
   const [donorName, setName] = useState('');
   const [donorLocationType, setDonorLocationType] = useState('');
   const [donorEntityType, setDonorEntityType] = useState('');
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [food, setFoodType] = useState('');
   const [demographic, setDemographic] = useState('');
   const [area, setArea] = useState('');
@@ -71,7 +74,7 @@ const LocationForm = ({
 
   const submitPressed = () => {
     if (isOtherClicked) {
-      if (input.length != 0 && input != ' ') {
+      if (input.length !== 0 && input !== ' ') {
         active.push(input);
         setActive(active);
       }
@@ -82,7 +85,7 @@ const LocationForm = ({
       setActive(active);
     }
     console.log({ active });
-    if (createNew === false && active.length != 0) {
+    if (createNew === false && active.length !== 0) {
       setPickupDeliveryObject({
         ...PickupDeliveryObject,
         id: current._id,
@@ -106,7 +109,7 @@ const LocationForm = ({
         Area: area
       });
       setForceNext(true);
-    } else if (isOtherClicked && input.length == 0) {
+    } else if (isOtherClicked && input.length === 0) {
       toast.error('Please enter value for Other.');
     } else {
       toast.error('Please enter a food type.');
@@ -229,7 +232,7 @@ const LocationForm = ({
             type="text"
             placeholder={name}
             name="name"
-            disabled={true}
+            disabled
           />
           <div className="text-4xl font-semibold text-left pt-10">
             Food type:
@@ -264,7 +267,7 @@ const LocationForm = ({
                   id="checkbox2"
                   type="checkbox"
                   name="foodType"
-                  value={'Other'}
+                  value="Other"
                   onClick={() => {
                     setIsValid(!isValid);
                     setOtherClicked(!isOtherClicked);
@@ -292,6 +295,7 @@ const LocationForm = ({
 
       <div>
         <button
+          type="submit"
           className="bg-amber-500 rounded-full w-full mt-5 p-3 text-3xl text-white font-semibold shadow"
           onClick={() => {
             console.log(isOtherClicked);
@@ -304,6 +308,6 @@ const LocationForm = ({
       {/* </form> */}
     </div>
   );
-};
+}
 
 export default LocationForm;
