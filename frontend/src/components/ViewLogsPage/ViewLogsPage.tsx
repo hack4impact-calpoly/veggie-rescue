@@ -12,6 +12,10 @@ import { getPickups } from '../../features/pickups/pickupsSlice';
 import { getDropoffs } from '../../features/dropoffs/dropoffsSlice';
 import AdminHeader from '../AdminHeader/AdminHeader';
 
+// toggle button MUI 
+import ToggleButton from '@mui/material/ToggleButton';
+import ToggleButtonGroup from '@mui/material/ToggleButtonGroup';
+
 // import pickupLogSchema from '/backend/models/pickupLogSchema';
 // import dropoffLogSchema from '/backend/models/dropoffLogSchema';
 
@@ -147,6 +151,7 @@ function CustomToolbar() {
     );
 }
 
+
 // Formatting the column headers, its data types, and sorting of the column headers
 const columns: GridColDef[] = [
     { 
@@ -224,6 +229,8 @@ const columns: GridColDef[] = [
 export default function DataTable() {
   const [pickupSelected, setPickupSelected] = useState(true);
   const [dropoffSelected, setDropoffSelected] = useState(false);
+
+  const [alignment, setAlignment] = React.useState('web');
   
   // command for backend: npm start dev
   const dispatch = useAppDispatch();
@@ -284,6 +291,7 @@ export default function DataTable() {
           } 
     });
 
+
   return (
       <div className='bg-white w-screen h-[850px]'>
           <AdminHeader />
@@ -308,14 +316,17 @@ export default function DataTable() {
                       pageSize={10}
                       rowsPerPageOptions={[10]}
                   />
-              <div className='mt-[10px]'>
-                  <Button
-                    color="success"
-                    variant="contained"
-                    onClick={handleClick}>
-                    {buttonText}
-                  </Button>
-              </div>
+              <ToggleButtonGroup
+                color="primary"
+                value={alignment}
+                exclusive
+                onChange={handleClick}
+                aria-label="Platform"
+              >
+                <ToggleButton value="Pickups">Pickups</ToggleButton>
+                <ToggleButton value="Dropoffs">Dropoffs</ToggleButton>
+              </ToggleButtonGroup>
+
               </div>
           </div>
       </div>
