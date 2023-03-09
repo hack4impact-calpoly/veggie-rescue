@@ -229,8 +229,6 @@ const columns: GridColDef[] = [
 export default function DataTable() {
   const [pickupSelected, setPickupSelected] = useState(true);
   const [dropoffSelected, setDropoffSelected] = useState(false);
-
-  const [alignment, setAlignment] = React.useState('web');
   
   // command for backend: npm start dev
   const dispatch = useAppDispatch();
@@ -255,9 +253,21 @@ export default function DataTable() {
     setDropoffSelected((prev) => true);
   }
 
+  // MUI state
+  const [alignment, setAlignment] = React.useState('web');
+
+  const handleChange = (event: React.MouseEvent<HTMLElement>, newAlignment: string,) => {
+    setAlignment(newAlignment);
+
+    if (newAlignment === 'Pickups') {
+      handlePickups()
+    } else if (newAlignment === 'Dropoffs') {
+      handleDropoffs()
+    }
+  };
 
   const [buttonText, setButtonText] = React.useState('Dropoffs');
-  const handleClick = () => {
+  const handleClick = () => { 
     setButtonText(buttonText === 'Dropoffs' ? 'Pickups' : 'Dropoffs');
     if (buttonText === 'Dropoffs') {
       handleDropoffs()
@@ -320,7 +330,7 @@ export default function DataTable() {
                 color="primary"
                 value={alignment}
                 exclusive
-                onChange={handleClick}
+                onChange={handleChange}
                 aria-label="Platform"
               >
                 <ToggleButton value="Pickups">Pickups</ToggleButton>
