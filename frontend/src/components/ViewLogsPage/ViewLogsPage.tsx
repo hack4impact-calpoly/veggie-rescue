@@ -266,16 +266,6 @@ export default function DataTable() {
     }
   };
 
-  const [buttonText, setButtonText] = React.useState('Dropoffs');
-  const handleClick = () => { 
-    setButtonText(buttonText === 'Dropoffs' ? 'Pickups' : 'Dropoffs');
-    if (buttonText === 'Dropoffs') {
-      handleDropoffs()
-    } else {
-      handlePickups()
-    }
-  }
-
   function getData() {
     if (pickupSelected) {
       return pickups;
