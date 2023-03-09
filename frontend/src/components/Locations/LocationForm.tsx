@@ -1,3 +1,4 @@
+import { check } from 'prettier';
 import React, { useEffect, useState } from 'react';
 import { toast } from 'react-toastify';
 
@@ -46,7 +47,7 @@ const LocationForm = ({
   const [active, setActive] = useState<string[]>([]);
   const [isValid, setIsValid] = useState(true); // State for checkbox buttons
   const [isOtherClicked, setOtherClicked] = useState(false);
-  const [isProduceClicked, setProduceClicked] = useState(false);
+  const [checked, setChecked] = useState<string[]>([]);
   const [currentFoodType, setCurrentFoodType] = useState('');
   // State for checkbox buttons
 
@@ -63,11 +64,13 @@ const LocationForm = ({
     console.log(isOtherClicked);
   }, [isOtherClicked]);
 
+
   useEffect(() => {
-    console.log(isProduceClicked);
-  }, [isProduceClicked]);
+    console.log("checked",checked);
+  }, [checked]);
 
   const { name } = current;
+
 
   const submitPressed = () => {
     if (isOtherClicked) {
@@ -76,12 +79,15 @@ const LocationForm = ({
         setActive(active);
       }
     }
-
-    if (isProduceClicked) {
-      active.push(currentFoodType);
-      setActive(active);
+    
+    for(let i=0; i<checked.length;i++)
+    {
+      active.push(checked[i]);
     }
-    console.log({ active });
+  
+    setActive(active);
+    // adds all the elements of the checked array into active
+    console.log(active);
     if (createNew === false && active.length != 0) {
       setPickupDeliveryObject({
         ...PickupDeliveryObject,
@@ -244,7 +250,20 @@ const LocationForm = ({
                   name="foodType"
                   value={current.FoodType}
                   onClick={() => {
-                    setProduceClicked(!isProduceClicked);
+
+                    var updatedList = [...checked];
+                    
+                    if(updatedList.indexOf(current.FoodType)!=-1)
+                    {
+                      // if currentFoodtype is in the checked array, remove it
+                      updatedList.splice(updatedList.indexOf(current.FoodType), 1);
+
+                    }
+                    else
+                    {
+                      updatedList = [...checked, current.FoodType];
+                    }
+                    setChecked(updatedList);
                     setCurrentFoodType(current.FoodType);
                     setIsValid(true);
                   }}
