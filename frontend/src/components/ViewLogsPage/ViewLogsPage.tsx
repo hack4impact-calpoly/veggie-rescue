@@ -274,6 +274,15 @@ export default function DataTable() {
     }
   }
 
+  // function to display pickups/dropoffs header
+  function getLogsText(pickupSelected: boolean) {
+    if (pickupSelected) {
+      return 'Pickups'
+    } else {
+      return 'Dropoffs'
+    }
+  }
+
   let i = 0;
   let rows = getData()?.map((data: { date: String; driver: String; vehicle: String; name: String; donorEntityType: String; demographic: String; area: String; foodAllocation: Map<string, number>; }) => {
       return {
@@ -299,6 +308,9 @@ export default function DataTable() {
               <h4 className='mt-[50px] text-[28px] text-[#555555] font-bold'>
                   Logs
               </h4>
+              <p className='text-[#555555]'>
+                {getLogsText(pickupSelected)}
+              </p>
               <div className='w-[1120px] h-[550px] mb-[1000px]'>
                   <DataGrid
                       components={{
