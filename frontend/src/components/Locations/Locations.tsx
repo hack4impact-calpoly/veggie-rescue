@@ -14,7 +14,9 @@ interface Locale {
 
 interface Props {
   locations: Locale[];
+  // eslint-disable-next-line react/require-default-props
   current?: Locale;
+  // eslint-disable-next-line react/require-default-props
   filtered?: Locale[];
   setCurrent: Function;
   clearFilter: Function;
@@ -83,8 +85,5 @@ function Locations({
     </div>
   );
 }
-Locations.defaultProps = {
-  current: null,
-  filtered: null
-};
+
 export default Locations;
