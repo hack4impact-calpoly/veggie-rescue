@@ -85,8 +85,8 @@ const Dashboard = () => {
 
     if(batchPickupSuccess && batchDropoffSuccess){
       // We need to check and see if driver is currently using personal vehicle, in that case we don't clear the vehicle name.
-      const currentPickups : pickupObject[] = []
-      const currentDropoffs : dropoffObject[] = []
+      const currentPickups : PickupObject[] = []
+      const currentDropoffs : DropoffObject[] = []
       let resetVehicle = { _id: vehicle._id, driver: vehicle.name  === 'personal vehicle' ? driver.id : " " , currentPickups , currentDropoffs, isLoggedIn: "false" };
 
       // This means we were successful in posting both logs... now lets see if there is a total weight left unresolved.
@@ -192,7 +192,7 @@ if(loading){
   );
 };
 
-interface pickupObject {
+interface PickupObject {
   //date: String;
   driver: String;
   vehicle: String;
@@ -202,8 +202,9 @@ interface pickupObject {
   area: String;
   lbsPickedUp: Number;
 }
-interface dropoffObject {
- // date: String;
+
+interface DropoffObject {
+  // date: String;
   driver: String;
   vehicle: String;
   name: String;
