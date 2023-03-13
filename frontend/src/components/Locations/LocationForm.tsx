@@ -1,5 +1,5 @@
 /* eslint-disable no-nested-ternary */
-import React, { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { toast } from 'react-toastify';
 
 interface Locale {
@@ -45,11 +45,8 @@ function LocationForm({
   setPickupDeliveryObject,
   setForceNext
 }: Props) {
-  const [active, setActive] = useState<string[]>([]);
-  const [isValid, setIsValid] = useState(true); // State for checkbox buttons
   const [isOtherClicked, setOtherClicked] = useState(false);
   const [checked, setChecked] = useState<string[]>([]);
-  const [currentFoodType, setCurrentFoodType] = useState('');
   // State for checkbox buttons
 
   // State for if user is adding a new location
@@ -62,62 +59,64 @@ function LocationForm({
   const [area, setArea] = useState('');
   const [input, setInput] = useState('');
 
-  useEffect(() => {
-    console.log(isOtherClicked);
-  }, [isOtherClicked]);
-
-  useEffect(() => {
-    console.log("checked",checked);
-  }, [checked]);
-
-
   const { name } = current;
 
   const submitPressed = () => {
+    let foodTypes = checked;
+    let isValid = checked.length > 0;
+
     if (isOtherClicked) {
-      if (input.length !== 0 && input !== ' ') {
-        active.push(input);
-        setActive(active);
+      if (input.trim().length === 0) {
+        isValid = false;
+      } else {
+        setChecked([...checked, input]);
+        // react updates state variables asynchronously so this is to get most recent food list
+        foodTypes = [...checked, input];
       }
     }
 
-    for(let i=0; i<checked.length;i++)
-    {
-      active.push(checked[i]);
-    }
-  
-    setActive(active);
-
-    console.log({ active });
-    if (createNew === false && active.length !== 0) {
-      setPickupDeliveryObject({
-        ...PickupDeliveryObject,
-        id: current._id,
-        name: current.name,
-        EntityType: current.EntityType,
-        LocationType: current.LocationType,
-        Demographic: current.DemographicName,
-        FoodType: active,
-        Area: current.CombinedAreaName
-      });
-      setForceNext(true);
-    } else if (createNew === true) {
-      setPickupDeliveryObject({
-        ...PickupDeliveryObject,
-        // id : ID?,
-        name: donorName,
-        EntityType: donorEntityType,
-        LocationType: donorLocationType,
-        Demographic: demographic,
-        FoodType: active,
-        Area: area
-      });
-      setForceNext(true);
-    } else if (isOtherClicked && input.length === 0) {
-      toast.error('Please enter value for Other.');
+    if (isValid) {
+      console.log(`submitting form with data: ${foodTypes}`);
+      if (createNew === false) {
+        setPickupDeliveryObject({
+          ...PickupDeliveryObject,
+          id: current._id,
+          name: current.name,
+          EntityType: current.EntityType,
+          LocationType: current.LocationType,
+          Demographic: current.DemographicName,
+          FoodType: foodTypes,
+          Area: current.CombinedAreaName
+        });
+        setForceNext(true);
+      } else if (createNew === true) {
+        setPickupDeliveryObject({
+          ...PickupDeliveryObject,
+          // id : ID?,
+          name: donorName,
+          EntityType: donorEntityType,
+          LocationType: donorLocationType,
+          Demographic: demographic,
+          FoodType: foodTypes,
+          Area: area
+        });
+        setForceNext(true);
+      }
     } else {
-      toast.error('Please enter a food type.');
+      toast.error('Please enter value for Other.');
     }
+  };
+
+  const handleClick = () => {
+    let updatedList = [...checked];
+
+    if (updatedList.indexOf(current.FoodType) !== -1) {
+      // if currentFoodtype is in the checked array, remove it
+      updatedList.splice(updatedList.indexOf(current.FoodType), 1);
+    } else {
+      updatedList = [...checked, current.FoodType];
+    }
+    setChecked(updatedList);
   };
 
   return (
@@ -250,25 +249,7 @@ function LocationForm({
                   type="checkbox"
                   name="foodType"
                   value={current.FoodType}
-                  onClick={() => {
-
-                    var updatedList = [...checked];
-                    
-                    if(updatedList.indexOf(current.FoodType)!=-1)
-                    {
-                      // if currentFoodtype is in the checked array, remove it
-                      updatedList.splice(updatedList.indexOf(current.FoodType), 1);
-
-                    }
-                    else
-                    {
-                      updatedList = [...checked, current.FoodType];
-                    }
-                    setChecked(updatedList);
-                    setCurrentFoodType(current.FoodType);
-                    setIsValid(true);
-                  }}
-
+                  onClick={handleClick}
                 />
                 <label
                   htmlFor="checkbox"
@@ -287,7 +268,6 @@ function LocationForm({
                   name="foodType"
                   value="Other"
                   onClick={() => {
-                    setIsValid(!isValid);
                     setOtherClicked(!isOtherClicked);
                   }}
                 />
@@ -299,9 +279,7 @@ function LocationForm({
                   type="text"
                   disabled={!isOtherClicked}
                   onChange={(e) => {
-                    setOtherClicked(true);
                     setInput(e.target.value);
-                    setIsValid(true);
                   }}
                   placeholder="Please Specify"
                 />{' '}
@@ -314,9 +292,11 @@ function LocationForm({
       <div>
         <button
           type="submit"
+          disabled={
+            checked.length === 0 && !isOtherClicked
+          } /* disable if nothing is clicked */
           className="bg-amber-500 rounded-full w-full mt-5 p-3 text-3xl text-white font-semibold shadow"
           onClick={() => {
-            console.log(isOtherClicked);
             submitPressed();
           }}
         >
