@@ -244,7 +244,12 @@ function AdminDataScreen() {
           {/* recipient buttons */}
           <div className={showRecipientButtons ? 'titles' : 'hidden titles'}>
             <div>
-              <button type="button" className="title">
+              <button 
+                type="button" 
+                className="title"
+                onClick={handleVehicles}
+                style={{ border: vehiclesCard ? '2px solid #FF9C55' : '' }}
+                >
                 Organizational Structure
               </button>
             </div>
