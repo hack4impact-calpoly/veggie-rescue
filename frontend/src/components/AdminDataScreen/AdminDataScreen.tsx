@@ -9,6 +9,8 @@ import VolunteersCard from '../VolunteersCard/VolunteersCard';
 import NewVolunteersCard from '../VolunteersCard/NewVolunteersCard';
 import NewDonorsCard from '../DonorsCard/NewDonorsCard';
 import ShortEntityForm from './ShortEntityForm';
+// import FieldPage from './FieldPage';
+
 // import { deliverySchema, pickupSchema, dnoo } from '../../data/dbMock';
 import { useAppSelector, useAppDispatch } from '../../app/hooks';
 import {
@@ -22,6 +24,8 @@ import AdminHeader from '../AdminHeader/AdminHeader';
 import Spinner from '../Spinner/Spinner';
 import DonorsForm from '../DonorsCard/DonorsForm';
 import RecipientsForm from '../RecipientsCard/RecipientsForm';
+import { BiCurrentLocation } from 'react-icons/bi';
+import FieldPage from '../FieldPage/FieldPage';
 
 // import VehicleEditForm from './EditComponents/VehicleEditForm';
 // import VolunteerEditForm from './EditComponents/VolunteerEditForm';
@@ -34,6 +38,18 @@ function AdminDataScreen() {
   const [volunteers, setVolunteers] = useState(false);
   const [donors, setDonors] = useState(false);
   const [recipients, setRecipients] = useState(false);
+
+  const [entityType, setEntityType] = useState(false);
+  const [donorsFoodType, setDonorsFoodType] = useState(false);
+  const [locationType, setLocationType] = useState(false);
+  const [donorsAreaName, setDonorsAreaName] = useState(false);
+
+  const [orgStrucCard, setOrgStrucCard] = useState(false);
+  const [foodDistrModel, setFoodDistrModel] = useState(false);
+  const [recipFoodType, setRecipFoodType] = useState(false);
+  const [demographic, setDemographic] = useState(false);
+  const [areaName, setAreaName] = useState(false);
+
   const [showModal, setShowModal] = useState(false);
   const [q, setQ] = useState('');
   const [searchParam, setSearchParam] = useState(['name']);
@@ -48,12 +64,32 @@ function AdminDataScreen() {
     (state) => state.recipients
   );
 
+  const donorsEntityTypes = [
+    'Farm',
+    'Restaurant',
+    'Food Supply Company',
+    'Nonprofit',
+    'Grocery',
+    'Community Kitchen'
+  ];
+
   // const [edit, setEdit] = useState(false);
   // const [dataToEdit, setDataToEdit] = useState({});
   const [currentVehicle, setCurrentVehicle] = useState(null);
   const [currentVolunteer, setCurrentVolunteer] = useState(null);
   const [currentDonor, setCurrentDonor] = useState(null);
   const [currentRecipient, setCurrentRecipient] = useState(null);
+
+  const [currentEntityType, setCurrentEntityType] = useState(null);
+  const [currentDonorsFoodType, setCurrentDonorsFoodType] = useState(null);
+  const [currentLocType, setCurrentLocType] = useState(null);
+  const [currentDonorsAreaName, setCurrentDonorsAreaName] = useState(null);
+
+  const [currentOrgStruc, setCurrentOrgStruc] = useState(null);
+  const [currentFoodDistr, setCurrentFoodDistr] = useState(null);
+  const [currentRecipFoodType, setCurrentRecipFoodType] = useState(null);
+  const [currentDemographic, setCurrentDemographic] = useState(null);
+  const [currentRecipAreaName, setCurrentRecipAreaName] = useState(null);
 
   const [showDonorButtons, toggleDonorButtons] = useState(false);
   const [showRecipientButtons, toggleRecipientButtons] = useState(false);
@@ -119,8 +155,68 @@ function AdminDataScreen() {
       'area'
     ]);
     setRecipients(false);
-    toggleDonorButtons((prev) => !prev);
+    toggleDonorButtons(true);
     toggleRecipientButtons(false);
+    setEntityType(false);
+    setDonorsFoodType(false);
+    setLocationType(false);
+    setDonorsAreaName(false);
+  }
+
+  function handleEntityType() {
+    setVolunteers(false);
+    setVehiclesCard(false);
+    setDonors(false);
+    setSearchParam(['name']);
+    setRecipients(false);
+    toggleDonorButtons(true);
+    toggleRecipientButtons(false);
+    setEntityType(true);
+    setDonorsFoodType(false);
+    setLocationType(false);
+    setDonorsAreaName(false);
+  }
+
+  function handleDonorsFoodType() {
+    setVolunteers(false);
+    setVehiclesCard(false);
+    setDonors(false);
+    setSearchParam(['name']);
+    setRecipients(false);
+    toggleDonorButtons(true);
+    toggleRecipientButtons(false);
+    setEntityType(false);
+    setDonorsFoodType(true);
+    setLocationType(false);
+    setDonorsAreaName(false);
+  }
+
+  function handleLocationType() {
+    setVolunteers(false);
+    setVehiclesCard(false);
+    setDonors(false);
+    setSearchParam(['name']);
+    setRecipients(false);
+    toggleDonorButtons(true);
+    toggleRecipientButtons(false);
+    setEntityType(false);
+    setDonorsFoodType(false);
+    setLocationType(true);
+    setDonorsAreaName(false);
+  }
+
+  function handleDonorsAreaName() {
+    setVolunteers(false);
+    setVehiclesCard(false);
+    setDonors(false);
+    setSearchParam(['name']);
+    setRecipients(false);
+    toggleDonorButtons(true);
+    toggleRecipientButtons(false);
+    setEntityType(false);
+    setDonorsFoodType(false);
+    setLocationType(false);
+    setDonorsAreaName(true);
   }
 
   function handleRecipients() {
@@ -136,7 +232,88 @@ function AdminDataScreen() {
       'area'
     ]);
     toggleDonorButtons(false);
-    toggleRecipientButtons((prev) => !prev);
+    toggleRecipientButtons(true);
+    setOrgStrucCard(false);
+    setOrgStrucCard(false);
+    setFoodDistrModel(false);
+    setRecipFoodType(false);
+    setDemographic(false);
+    setAreaName(false);
+  }
+
+  function handleOrgStruc() {
+    setVolunteers(false);
+    setVehiclesCard(false);
+    setDonors(false);
+    setRecipients(false);
+    setSearchParam(['name']);
+    toggleDonorButtons(false);
+    toggleRecipientButtons(true);
+    setOrgStrucCard(true);
+    setFoodDistrModel(false);
+    setRecipFoodType(false);
+    setDemographic(false);
+    setAreaName(false);
+  }
+
+  function handleFoodDistrModel() {
+    setVolunteers(false);
+    setVehiclesCard(false);
+    setDonors(false);
+    setRecipients(false);
+    setSearchParam(['name']);
+    toggleDonorButtons(false);
+    toggleRecipientButtons(true);
+    setOrgStrucCard(false);
+    setFoodDistrModel(true);
+    setRecipFoodType(false);
+    setDemographic(false);
+    setAreaName(false);
+  }
+
+  function handleFoodType() {
+    setVolunteers(false);
+    setVehiclesCard(false);
+    setDonors(false);
+    setRecipients(false);
+    setSearchParam(['name']);
+    toggleDonorButtons(false);
+    toggleRecipientButtons(true);
+    setOrgStrucCard(false);
+    setFoodDistrModel(false);
+    setRecipFoodType(true);
+    setDemographic(false);
+    setAreaName(false);
+  }
+
+  function handleDemographics() {
+    setVolunteers(false);
+    setVehiclesCard(false);
+    setDonors(false);
+    setRecipients(false);
+    setSearchParam(['name']);
+    toggleDonorButtons(false);
+    toggleRecipientButtons(true);
+    setOrgStrucCard(false);
+    setFoodDistrModel(false);
+    setRecipFoodType(false);
+    setDemographic(true);
+    setAreaName(false);
+  }
+
+  function handleAreaName() {
+    setVolunteers(false);
+    setVehiclesCard(false);
+    setDonors(false);
+    setRecipients(false);
+    setSearchParam(['name']);
+    toggleDonorButtons(false);
+    toggleRecipientButtons(true);
+    setOrgStrucCard(false);
+    setFoodDistrModel(false);
+    setRecipFoodType(false);
+    setDemographic(false);
+    setAreaName(true);
   }
 
   function handleShowModal() {
@@ -244,32 +421,52 @@ function AdminDataScreen() {
           {/* recipient buttons */}
           <div className={showRecipientButtons ? 'titles' : 'hidden titles'}>
             <div>
-              <button 
-                type="button" 
+              <button
+                type="button"
                 className="title"
-                onClick={handleVehicles}
-                style={{ border: vehiclesCard ? '2px solid #FF9C55' : '' }}
-                >
+                onClick={handleOrgStruc}
+                style={{ border: orgStrucCard ? '2px solid #FF9C55' : '' }}
+              >
                 Organizational Structure
               </button>
             </div>
             <div>
-              <button type="button" className="title">
+              <button
+                type="button"
+                className="title"
+                onClick={handleFoodDistrModel}
+                style={{ border: foodDistrModel ? '2px solid #FF9C55' : '' }}
+              >
                 Food Distribution Model
               </button>
             </div>
             <div>
-              <button type="button" className="title">
+              <button
+                type="button"
+                className="title"
+                onClick={handleFoodType}
+                style={{ border: recipFoodType ? '2px solid #FF9C55' : '' }}
+              >
                 Food Type
               </button>
             </div>
             <div>
-              <button type="button" className="title">
+              <button
+                type="button"
+                className="title"
+                onClick={handleDemographics}
+                style={{ border: demographic ? '2px solid #FF9C55' : '' }}
+              >
                 Demographic Served
               </button>
             </div>
             <div>
-              <button type="button" className="title">
+              <button
+                type="button"
+                className="title"
+                onClick={handleAreaName}
+                style={{ border: areaName ? '2px solid #FF9C55' : '' }}
+              >
                 Combined Area Name
               </button>
             </div>
@@ -278,22 +475,42 @@ function AdminDataScreen() {
           {/* donor buttons */}
           <div className={showDonorButtons ? 'titles' : 'hidden titles'}>
             <div>
-              <button type="button" className="title">
+              <button
+                type="button"
+                className="title"
+                onClick={handleEntityType}
+                style={{ border: entityType ? '2px solid #FF9C55' : '' }}
+              >
                 Entity Type
               </button>
             </div>
             <div>
-              <button type="button" className="title">
+              <button
+                type="button"
+                className="title"
+                onClick={handleDonorsFoodType}
+                style={{ border: donorsFoodType ? '2px solid #FF9C55' : '' }}
+              >
                 Food Type
               </button>
             </div>
             <div>
-              <button type="button" className="title">
+              <button
+                type="button"
+                className="title"
+                onClick={handleLocationType}
+                style={{ border: locationType ? '2px solid #FF9C55' : '' }}
+              >
                 Location Type
               </button>
             </div>
             <div>
-              <button type="button" className="title">
+              <button
+                type="button"
+                className="title"
+                onClick={handleDonorsAreaName}
+                style={{ border: donorsAreaName ? '2px solid #FF9C55' : '' }}
+              >
                 Combined Area Name
               </button>
             </div>
@@ -437,6 +654,212 @@ function AdminDataScreen() {
                   recipientHandler={recipientData}
                 />
               ))}
+            </div>
+          )}
+
+          {entityType && (
+            <div className="logs">
+              <button
+                type="button"
+                onClick={() => {
+                  handleShowModal();
+                  setUpdate(false);
+                }}
+              >
+                <NewVolunteersCard isUpdate={isUpdate} />
+              </button>
+              {showModal && (
+                <ShortEntityForm
+                  handleShow={handleShowModal}
+                  whichEntity
+                  isUpdate={isUpdate}
+                  vehicle={currentEntityType}
+                />
+              )}
+              {search(q).map((item: any, index: any) => (
+                <FieldPage
+                  index={index}
+                  field={item}
+                  handleShow={handleShowModal}
+                  fieldHandler={donorsEntityTypes}
+                />
+              ))}
+            </div>
+          )}
+
+          {donorsFoodType && (
+            <div className="logs">
+              <button
+                type="button"
+                onClick={() => {
+                  handleShowModal();
+                  setUpdate(false);
+                }}
+              >
+                <NewVolunteersCard isUpdate={isUpdate} />
+              </button>
+              {showModal && (
+                <ShortEntityForm
+                  handleShow={handleShowModal}
+                  whichEntity
+                  isUpdate={isUpdate}
+                  vehicle={currentDonorsFoodType}
+                />
+              )}
+            </div>
+          )}
+
+          {locationType && (
+            <div className="logs">
+              <button
+                type="button"
+                onClick={() => {
+                  handleShowModal();
+                  setUpdate(false);
+                }}
+              >
+                <NewVolunteersCard isUpdate={isUpdate} />
+              </button>
+              {showModal && (
+                <ShortEntityForm
+                  handleShow={handleShowModal}
+                  whichEntity
+                  isUpdate={isUpdate}
+                  vehicle={currentLocType}
+                />
+              )}
+            </div>
+          )}
+
+          {donorsAreaName && (
+            <div className="logs">
+              <button
+                type="button"
+                onClick={() => {
+                  handleShowModal();
+                  setUpdate(false);
+                }}
+              >
+                <NewVolunteersCard isUpdate={isUpdate} />
+              </button>
+              {showModal && (
+                <ShortEntityForm
+                  handleShow={handleShowModal}
+                  whichEntity
+                  isUpdate={isUpdate}
+                  vehicle={currentDonorsAreaName}
+                />
+              )}
+            </div>
+          )}
+
+          {orgStrucCard && (
+            <div className="logs">
+              <button
+                type="button"
+                onClick={() => {
+                  handleShowModal();
+                  setUpdate(false);
+                }}
+              >
+                <NewVolunteersCard isUpdate={isUpdate} />
+              </button>
+              {showModal && (
+                <ShortEntityForm
+                  handleShow={handleShowModal}
+                  whichEntity
+                  isUpdate={isUpdate}
+                  vehicle={currentOrgStruc}
+                />
+              )}
+            </div>
+          )}
+
+          {foodDistrModel && (
+            <div className="logs">
+              <button
+                type="button"
+                onClick={() => {
+                  handleShowModal();
+                  setUpdate(false);
+                }}
+              >
+                <NewVolunteersCard isUpdate={isUpdate} />
+              </button>
+              {showModal && (
+                <ShortEntityForm
+                  handleShow={handleShowModal}
+                  whichEntity
+                  isUpdate={isUpdate}
+                  vehicle={currentFoodDistr}
+                />
+              )}
+            </div>
+          )}
+
+          {recipFoodType && (
+            <div className="logs">
+              <button
+                type="button"
+                onClick={() => {
+                  handleShowModal();
+                  setUpdate(false);
+                }}
+              >
+                <NewVolunteersCard isUpdate={isUpdate} />
+              </button>
+              {showModal && (
+                <ShortEntityForm
+                  handleShow={handleShowModal}
+                  whichEntity
+                  isUpdate={isUpdate}
+                  vehicle={currentRecipFoodType}
+                />
+              )}
+            </div>
+          )}
+
+          {demographic && (
+            <div className="logs">
+              <button
+                type="button"
+                onClick={() => {
+                  handleShowModal();
+                  setUpdate(false);
+                }}
+              >
+                <NewVolunteersCard isUpdate={isUpdate} />
+              </button>
+              {showModal && (
+                <ShortEntityForm
+                  handleShow={handleShowModal}
+                  whichEntity
+                  isUpdate={isUpdate}
+                  vehicle={currentDemographic}
+                />
+              )}
+            </div>
+          )}
+
+          {areaName && (
+            <div className="logs">
+              <button
+                type="button"
+                onClick={() => {
+                  handleShowModal();
+                  setUpdate(false);
+                }}
+              >
+                <NewVolunteersCard isUpdate={isUpdate} />
+              </button>
+              {showModal && (
+                <ShortEntityForm
+                  handleShow={handleShowModal}
+                  whichEntity
+                  isUpdate={isUpdate}
+                  vehicle={currentRecipAreaName}
+                />
+              )}
             </div>
           )}
         </div>
