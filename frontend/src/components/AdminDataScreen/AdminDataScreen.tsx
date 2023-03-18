@@ -24,7 +24,6 @@ import AdminHeader from '../AdminHeader/AdminHeader';
 import Spinner from '../Spinner/Spinner';
 import DonorsForm from '../DonorsCard/DonorsForm';
 import RecipientsForm from '../RecipientsCard/RecipientsForm';
-import { BiCurrentLocation } from 'react-icons/bi';
 import FieldPage from '../FieldPage/FieldPage';
 
 // import VehicleEditForm from './EditComponents/VehicleEditForm';
@@ -80,15 +79,24 @@ function AdminDataScreen() {
   const [currentDonor, setCurrentDonor] = useState(null);
   const [currentRecipient, setCurrentRecipient] = useState(null);
 
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [currentEntityType, setCurrentEntityType] = useState(null);
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [currentDonorsFoodType, setCurrentDonorsFoodType] = useState(null);
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [currentLocType, setCurrentLocType] = useState(null);
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [currentDonorsAreaName, setCurrentDonorsAreaName] = useState(null);
 
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [currentOrgStruc, setCurrentOrgStruc] = useState(null);
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [currentFoodDistr, setCurrentFoodDistr] = useState(null);
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [currentRecipFoodType, setCurrentRecipFoodType] = useState(null);
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [currentDemographic, setCurrentDemographic] = useState(null);
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [currentRecipAreaName, setCurrentRecipAreaName] = useState(null);
 
   const [showDonorButtons, toggleDonorButtons] = useState(false);
@@ -167,7 +175,7 @@ function AdminDataScreen() {
     setVolunteers(false);
     setVehiclesCard(false);
     setDonors(false);
-    setSearchParam(['name']);
+    setSearchParam(['EntityType']);
     setRecipients(false);
     toggleDonorButtons(true);
     toggleRecipientButtons(false);
@@ -334,6 +342,16 @@ function AdminDataScreen() {
         searchParam.some(
           (newItem: any) =>
             item[newItem].toString().toLowerCase().indexOf(q.toLowerCase()) > -1
+        )
+      );
+    }
+    if (entityType) {
+      console.log(searchParam);
+      console.log(q);
+
+      return donorsEntityTypes.filter((item: any) =>
+        searchParam.some(
+          () => item.toString().toLowerCase().indexOf(q.toLowerCase()) > -1
         )
       );
     }
