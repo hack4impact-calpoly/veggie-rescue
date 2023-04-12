@@ -1,7 +1,7 @@
 const Field = require('../models/FieldSchema');
 const { validationResult } = require('express-validator');
 const asyncHandler = require('express-async-handler');
-const Admin = require('../models/adminModel.js')
+const Admin = require("../models/adminSchema");
 
 // @desc Get all fields
 // @route GET /api/fields
@@ -25,12 +25,13 @@ const getFieldByName = asyncHandler(async (req, res) => {
     throw new Error("Admin not found");
   }
 
-  const field = await Field.findOne({ name: req.params.name });
+  constfieldName = req.params.name;
+  const field = await Field.findOne({ [fieldName]: { $exists: true } });
   if (!field) {
     return res.status(404).json({ message: "No field found" });
   }
 
-  res.json(field);
+  res.json({ [fieldName]: field[fieldName] });
 });
 
 // @desc Add item to field
