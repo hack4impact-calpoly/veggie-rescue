@@ -1,10 +1,11 @@
 const Field = require('../models/FieldSchema');
 const { validationResult } = require('express-validator');
+const asyncHandler = require('express-async-handler');
 
 // @desc Get all fields
 // @route GET /api/fields
 // @access Private -> Admin only
-const getFields = async (req, res) => {
+const getFields = asyncHandler(async (req, res) => {
   try {
     const fields = await Field.findOne();
     if (!fields) {
@@ -15,12 +16,12 @@ const getFields = async (req, res) => {
     console.error(err.message);
     res.status(500).send('Server Error');
   }
-};
+});
 
 // @desc Get field by name
 // @route GET /api/fields/:name
 // @access Private -> Admin only
-const getFieldByName = async (req, res) => {
+const getFieldByName = asyncHandler(async (req, res) => {
   try {
     const { name } = req.params;
     const field = await Field.findOne({ [name]: { $exists: true } });
@@ -32,12 +33,12 @@ const getFieldByName = async (req, res) => {
     console.error(err.message);
     res.status(500).send('Server Error');
   }
-};
+});
 
 // @desc Add item to field
 // @route POST /api/fields
 // @access Private -> Admin only
-const createField = async (req, res) => {
+const createField = asyncHandler(async (req, res) => {
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
     return res.status(400).json({ errors: errors.array() });
@@ -56,12 +57,12 @@ const createField = async (req, res) => {
     console.error(err.message);
     res.status(500).send('Server Error');
   }
-};
+});
 
 // @desc Edit field item
 // @route PUT /api/fields/:name
 // @access Private -> Admin only
-const editField = async (req, res) => {
+const editField = asyncHandler(async (req, res) => {
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
     return res.status(400).json({ errors: errors.array() });
@@ -82,12 +83,12 @@ const editField = async (req, res) => {
     console.error(err.message);
     res.status(500).send('Server Error');
   }
-};
+});
 
 // @desc Delete field item
 // @route DELETE /api/fields/:name
 // @access Private -> Admin only
-const deleteField = async (req, res) => {
+const deleteField = asyncHandler(async (req, res) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
       return res.status(400).json({ errors: errors.array() });
@@ -109,5 +110,5 @@ const deleteField = async (req, res) => {
       console.error(err.message);
       res.status(500).send('Server Error');
     }
-  };
+  });
   
