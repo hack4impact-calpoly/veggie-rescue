@@ -18,17 +18,18 @@ const getFields = asyncHandler(async (req, res) => {
 // @route GET /api/fields/:name
 // @access Private -> Admin only
 const getFieldByName = asyncHandler(async (req, res) => {
-  try {
-    const { name } = req.params;
-    const field = await Field.findOne({ [name]: { $exists: true } });
-    if (!field) {
-      return res.status(404).json({ msg: 'Field not found' });
-    }
-    res.json(field);
-  } catch (err) {
-    console.error(err.message);
-    res.status(500).send('Server Error');
+  const admin = await Admin.findById(req.admin.id);
+  if (!admin) {
+    res.status(401);
+    throw new Error("Admin not found");
   }
+
+  const field = await Field.findOne({ name: req.params.name });
+  if (!field) {
+    return res.status(404).json({ message: "No field found" });
+  }
+
+  res.json(field);
 });
 
 // @desc Add item to field
@@ -73,7 +74,7 @@ const editField = asyncHandler(async (req, res) => {
   const field = await Field.findOne({ name: req.params.name });
   if (!field) {
     res.status(404);
-    throw new Error("No donor found");
+    throw new Error("No field found");
   }
   
   const body = req.body;
