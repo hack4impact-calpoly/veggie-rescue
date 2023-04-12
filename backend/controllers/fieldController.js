@@ -1,6 +1,7 @@
 const Field = require('../models/FieldSchema');
 const { validationResult } = require('express-validator');
 const asyncHandler = require('express-async-handler');
+const Admin = require('../models/adminModel.js')
 
 // @desc Get all fields
 // @route GET /api/fields
