@@ -6,16 +6,12 @@ const asyncHandler = require('express-async-handler');
 // @route GET /api/fields
 // @access Private -> Admin only
 const getFields = asyncHandler(async (req, res) => {
-  try {
-    const fields = await Field.findOne();
-    if (!fields) {
-      return res.status(404).json({ msg: 'Fields not found' });
-    }
-    res.json(fields);
-  } catch (err) {
-    console.error(err.message);
-    res.status(500).send('Server Error');
+  const admin = await Admin.findById(req.admin.id);
+  if (!admin) {
+    res.status(401);
+    throw new Error("Admin not found");
   }
+  res.send(await Field.find({}));
 });
 
 // @desc Get field by name
@@ -39,23 +35,28 @@ const getFieldByName = asyncHandler(async (req, res) => {
 // @route POST /api/fields
 // @access Private -> Admin only
 const createField = asyncHandler(async (req, res) => {
-  const errors = validationResult(req);
-  if (!errors.isEmpty()) {
-    return res.status(400).json({ errors: errors.array() });
+  const admin = await Admin.findById(req.admin.id);
+  if (!admin) {
+    res.status(401);
+    throw new Error("Admin not found");
   }
 
-  const { name, items } = req.body;
-  try {
-    const field = await Field.findOneAndUpdate(
-      { [name]: { $exists: true } },
-      { $addToSet: { [name]: { $each: items } } },
-      { new: true, upsert: true }
-    );
+  const {
+    name, 
+    item,
+  } = req.body;
 
-    res.json(field);
+  let field = new Field({
+    name: name,
+    item: item,
+  });
+
+  try {
+    field = await field.save();
+    res.send(`Success\n${field}`);
   } catch (err) {
-    console.error(err.message);
-    res.status(500).send('Server Error');
+    res.status(500).send(error.messaeg);
+    console.log(`error is ${error.message}`);
   }
 });
 
