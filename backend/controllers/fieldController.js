@@ -53,10 +53,10 @@ const createField = asyncHandler(async (req, res) => {
 
   try {
     field = await field.save();
-    res.send(`Success\n${field}`);
+    res.json(field);
   } catch (err) {
-    res.status(500).send(error.messaeg);
-    console.log(`error is ${error.message}`);
+    res.status(500).send(err.message);
+    console.log(`error is ${err.message}`);
   }
 });
 
@@ -69,13 +69,20 @@ const editField = asyncHandler(async (req, res) => {
     res.status(401);
     throw new Error("Admin not found");
   }
+
+  const field = await Field.findOne({ name: req.params.name });
+  if (!field) {
+    res.status(404);
+    throw new Error("No donor found");
+  }
+  
   const body = req.body;
 
-  if (body.name) Field.name = body.name;
-  if (body.item) Field.item = body.item;
+  if (body.name) field.name = body.name;
+  if (body.item) field.item = body.item;
 
-  await Field.findByIdAndUpdate(req.params.id, Field);
-  return res.status(201).json(Field);
+  await field.save();
+  return res.status(201).json(field);
 });
 
 // @desc Delete field item
@@ -88,7 +95,7 @@ const deleteField = asyncHandler(async (req, res) => {
       throw new Error("Admin not found");
     }
 
-    const field = await Donor.findById(req.params.id);
+    const field = await Field.findById(req.params.id);
 
     if (!field) {
       res.status(404);
