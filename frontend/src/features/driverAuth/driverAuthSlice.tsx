@@ -11,7 +11,7 @@ interface Driver {
 
 // Interface for object when registering new driver
 interface DriverData {
-   _id: string,
+  _id: string;
   name: string;
   // email: string;
   pin: string;
@@ -20,7 +20,7 @@ interface DriverData {
 // Define a type for the slice state
 interface DriverAuthState {
   driver: Driver;
-  drivers: [],
+  drivers: [];
   isError: boolean;
   isSuccess: boolean;
   isLoading: boolean;
@@ -81,14 +81,13 @@ export const clearAuth = createAsyncThunk('driverAuth/logout', async () => {
   await driverAuthService.logout();
 });
 
-
 // Get all drivers
 export const getDrivers = createAsyncThunk(
   'api/drivers',
   async (_, thunkAPI) => {
     try {
       const state = thunkAPI.getState() as RootState;
-      let token = state.adminAuth.admin.token;
+      let { token } = state.adminAuth.admin;
       if (!token) {
         token = state.driverAuth.driver.token;
       }
@@ -113,7 +112,7 @@ export const createDriver = createAsyncThunk(
   async (driverData: DriverData, thunkAPI) => {
     try {
       const state = thunkAPI.getState() as RootState;
-      const token = state.adminAuth.admin.token;
+      const { token } = state.adminAuth.admin;
 
       return await driverAuthService.createDriver(driverData, token);
     } catch (error: any) {
@@ -135,7 +134,7 @@ export const getDriver = createAsyncThunk(
   async (_, thunkAPI) => {
     try {
       const state = thunkAPI.getState() as RootState;
-      const token = state.adminAuth.admin.token;
+      const { token } = state.adminAuth.admin;
       return await driverAuthService.getDriver(token);
     } catch (error: any) {
       const message =
@@ -157,7 +156,7 @@ export const updateDriver = createAsyncThunk(
     try {
       // Set up token for authenticating route
       const state = thunkAPI.getState() as RootState;
-      let token = state.adminAuth.admin.token;
+      let { token } = state.adminAuth.admin;
       if (!token) {
         token = state.driverAuth.driver.token;
       }
@@ -182,7 +181,7 @@ export const deleteDriver = createAsyncThunk(
     try {
       // Set up token for authenticating route
       const state = thunkAPI.getState() as RootState;
-      let token = state.adminAuth.admin.token;
+      const { token } = state.adminAuth.admin;
       return await driverAuthService.deleteDriver(driverID, token);
     } catch (error: any) {
       const message =
@@ -201,117 +200,137 @@ export const authSlice = createSlice({
   name: 'driverAuth',
   initialState,
   reducers: {
-    reset: (state) => {
-      state.isLoading = false;
-      state.isError = false;
-      state.isSuccess = false;
-      state.isLoading = false ;
-      state.message = '';
-    },
-    clear: (state) => {
-    state.driver = {} as Driver
-    state.isError = false
-    state.isSuccess = false 
-    state.isLoading = false 
-    state.message = ''    
-    }
+    reset: (state) => ({
+      ...state,
+      isLoading: false,
+      isError: false,
+      isSuccess: false,
+      message: ''
+    }),
+    clear: (state) => ({
+      ...state,
+      driver: {} as Driver,
+      isError: false,
+      isSuccess: false,
+      isLoading: false,
+      message: ''
+    })
   },
   extraReducers: (builder) => {
     builder
-      .addCase(register.pending, (state) => {
-        state.isLoading = true;
-      })
-      .addCase(register.fulfilled, (state, action) => {
-        state.isLoading = false;
-        state.isSuccess = true;
-        state.driver = action.payload;
-      })
-      .addCase(register.rejected, (state, action) => {
-        state.isLoading = false;
-        state.isError = true;
-        state.message = action.payload;
-        state.driver = emptyDriver;
-      })
-      .addCase(login.pending, (state) => {
-        state.isLoading = true;
-      })
-      .addCase(login.fulfilled, (state, action) => {
-        state.isLoading = false;
-        state.isSuccess = true;
-        state.driver = action.payload;
-      })
-      .addCase(login.rejected, (state, action) => {
-        state.isLoading = false;
-        state.isError = true;
-        state.message = action.payload;
-        state.driver = emptyDriver;
-      })
-      .addCase(clearAuth.pending, (state) => {
-        state.isLoading = true;
-        state.isSuccess = false;
-      })
-      .addCase(clearAuth.fulfilled, (state) => {
-        state.driver = emptyDriver;
-        state.isLoading = false;
-        state.isSuccess = false;
-      })
-
-      .addCase(getDrivers.pending, (state) => {
-        state.isLoading = true;
-      })
-      .addCase(getDrivers.fulfilled, (state, action) => {
-        state.isLoading = false;
-        state.isSuccess = true;
-        state.drivers = action.payload;
-      })
-      .addCase(getDrivers.rejected, (state, action) => {
-        state.isLoading = false;
-        state.isError = true;
-        state.message = action.payload;
-        state.drivers = [];
-      })
-      .addCase(createDriver.pending, (state) => {
-        state.isLoading = true;
-      })
-      .addCase(createDriver.fulfilled, (state, action) => {
-        state.isLoading = false;
-        state.isSuccess = true;
-      })
-      .addCase(createDriver.rejected, (state, action) => {
-        state.isLoading = false;
-        state.isError = true;
-        state.message = action.payload;
-      })
-      .addCase(getDriver.pending, (state) => {
-        state.isLoading = true;
-      })
-      .addCase(getDriver.fulfilled, (state, action) => {
-        state.isLoading = false;
-        state.isSuccess = true;
-        state.driver = action.payload;
-      })
-      .addCase(getDriver.rejected, (state, action) => {
-        state.isLoading = false;
-        state.isError = true;
-        state.message = action.payload;
-        state.driver = {} as Driver;
-      })
-      .addCase(updateDriver.pending, (state) => {
-        state.isLoading = true;
-      })
-      .addCase(updateDriver.fulfilled, (state, action) => {
-        state.isLoading = false;
-        state.isSuccess = true;
-        state.driver = action.payload;
-      })
-      .addCase(updateDriver.rejected, (state, action) => {
-        state.isLoading = false;
-        state.isError = true;
-        state.message = action.payload;
-        state.drivers = [];
-      })
+      .addCase(register.pending, (state) => ({
+        ...state,
+        isLoading: true
+      }))
+      .addCase(register.fulfilled, (state, action) => ({
+        ...state,
+        isLoading: false,
+        isSuccess: true,
+        driver: action.payload
+      }))
+      .addCase(register.rejected, (state, action) => ({
+        ...state,
+        isLoading: false,
+        isError: true,
+        message: action.payload,
+        driver: emptyDriver
+      }))
+      .addCase(login.pending, (state) => ({
+        ...state,
+        isLoading: true
+      }))
+      .addCase(login.fulfilled, (state, action) => ({
+        ...state,
+        isLoading: false,
+        isSuccess: true,
+        driver: action.payload
+      }))
+      .addCase(login.rejected, (state, action) => ({
+        ...state,
+        isLoading: false,
+        isError: true,
+        message: action.payload,
+        driver: emptyDriver
+      }))
+      .addCase(clearAuth.pending, (state) => ({
+        ...state,
+        isLoading: true,
+        isSuccess: false
+      }))
+      .addCase(clearAuth.fulfilled, (state) => ({
+        ...state,
+        driver: emptyDriver,
+        isLoading: false,
+        isSuccess: false
+      }))
+      .addCase(getDrivers.pending, (state) => ({
+        ...state,
+        isLoading: true
+      }))
+      .addCase(getDrivers.fulfilled, (state, action) => ({
+        ...state,
+        isLoading: false,
+        isSuccess: true,
+        drivers: action.payload
+      }))
+      .addCase(getDrivers.rejected, (state, action) => ({
+        ...state,
+        isLoading: false,
+        isError: true,
+        message: action.payload,
+        drivers: []
+      }))
+      .addCase(createDriver.pending, (state) => ({
+        ...state,
+        isLoading: true
+      }))
+      .addCase(createDriver.fulfilled, (state) => ({
+        ...state,
+        isLoading: false,
+        isSuccess: true
+      }))
+      .addCase(createDriver.rejected, (state, action) => ({
+        ...state,
+        isLoading: false,
+        isError: true,
+        message: action.payload
+      }))
+      .addCase(getDriver.pending, (state) => ({
+        ...state,
+        isLoading: true
+      }))
+      .addCase(getDriver.fulfilled, (state, action) => ({
+        ...state,
+        isLoading: false,
+        isSuccess: true,
+        driver: action.payload
+      }))
+      .addCase(getDriver.rejected, (state, action) => ({
+        ...state,
+        isLoading: false,
+        isError: true,
+        message: action.payload,
+        driver: {} as Driver
+      }))
+      .addCase(updateDriver.pending, (state) => ({
+        ...state,
+        isLoading: true
+      }))
+      .addCase(updateDriver.fulfilled, (state, action) => ({
+        ...state,
+        isLoading: false,
+        isSuccess: true,
+        driver: action.payload
+      }))
+      .addCase(updateDriver.rejected, (state, action) => ({
+        ...state,
+        isLoading: false,
+        isError: true,
+        message: action.payload,
+        drivers: []
+      }));
   }
 });
 
-export const { reset, clear  } = authSlice.actions;
+export const { reset, clear } = authSlice.actions;
 export default authSlice.reducer;

@@ -16,8 +16,8 @@ interface AdminData {
   password: string;
 }
 interface AdminObject {
-    email: string;
-    password: string;
+  email: string;
+  password: string;
 }
 
 // Define a type for the slice state
@@ -86,52 +86,61 @@ export const adminSlice = createSlice({
   name: 'adminAuth',
   initialState,
   reducers: {
-    reset: (state) => {
-      state.isLoading = false;
-      state.isError = false;
-      state.isSuccess = false;
-      state.message = '';
-    }
+    reset: (state) => ({
+      ...state,
+      isLoading: false,
+      isError: false,
+      isSuccess: false,
+      message: ''
+    })
   },
   extraReducers: (builder) => {
     builder
-      .addCase(register.pending, (state) => {
-        state.isLoading = true;
-      })
-      .addCase(register.fulfilled, (state, action) => {
-        state.isLoading = false;
-        state.isSuccess = true;
-        state.admin = action.payload;
-      })
-      .addCase(register.rejected, (state, action) => {
-        state.isLoading = false;
-        state.isError = true;
-        state.message = action.payload;
-        state.admin = emptyAdmin;
-      })
-      .addCase(login.pending, (state) => {
-        state.isLoading = true;
-      })
-      .addCase(login.fulfilled, (state, action) => {
-        state.isLoading = false;
-        state.isSuccess = true;
-        state.admin = action.payload;
-      })
-      .addCase(login.rejected, (state, action) => {
-        state.isLoading = false;
-        state.isError = true;
-        state.message = action.payload;
-        state.admin = emptyAdmin;
-      })
-      .addCase(clearAuth.pending, (state) => {
-        state.isLoading = true;
-        state.isSuccess = false;
-      })
-      .addCase(clearAuth.fulfilled, (state) => {
-        state.admin = emptyAdmin;
-        state.isLoading = false;
-        state.isSuccess = false;
-      });
+      .addCase(register.pending, (state) => ({
+        ...state,
+        isLoading: true
+      }))
+      .addCase(register.fulfilled, (state, action) => ({
+        ...state,
+        isLoading: false,
+        isSuccess: true,
+        admin: action.payload
+      }))
+      .addCase(register.rejected, (state, action) => ({
+        ...state,
+        isLoading: false,
+        isError: true,
+        message: action.payload,
+        admin: emptyAdmin
+      }))
+      .addCase(login.pending, (state) => ({
+        ...state,
+        isLoading: true
+      }))
+      .addCase(login.fulfilled, (state, action) => ({
+        ...state,
+        isLoading: false,
+        isSuccess: true,
+        admin: action.payload
+      }))
+      .addCase(login.rejected, (state, action) => ({
+        ...state,
+        isLoading: false,
+        isError: true,
+        message: action.payload,
+        admin: emptyAdmin
+      }))
+      .addCase(clearAuth.pending, (state) => ({
+        ...state,
+        isLoading: true,
+        isSuccess: false
+      }))
+      .addCase(clearAuth.fulfilled, (state) => ({
+        ...state,
+        admin: emptyAdmin,
+        isLoading: false,
+        isSuccess: false
+      }));
   }
 });
 

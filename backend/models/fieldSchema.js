@@ -1,12 +1,16 @@
-const mongoose = require('mongoose')
+const mongoose = require("mongoose");
 
-const fieldSchema = new mongoose.Schema(
+const FieldSchema = new mongoose.Schema(
   {
-    name: String,
-    options: [String],
+    EntityType: [String],
+    LocationType: [String],
+    CombinedAreaName: [String],
+    OrgStructure: [String],
+    DemographicsServed: [String],
+    FoodDistModel: [String],
+    FoodTypes: [String],
   },
   { collection: "Field" }
 );
 
-module.exports = mongoose.model('FieldSchema', fieldSchema)
-
+module.exports = mongoose.model("FieldSchema", FieldSchema);

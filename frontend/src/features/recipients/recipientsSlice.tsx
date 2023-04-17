@@ -2,10 +2,10 @@ import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import recipientsService from './recipientsService';
 import type { RootState } from '../../app/store';
 
-//RUN BACKEND USING NPM RUN SERVER
+// RUN BACKEND USING NPM RUN SERVER
 
-// Interface for recipient items (This is what will be kept in store and 
-//what you will have access)  
+// Interface for recipient items (This is what will be kept in store and
+// what you will have access)
 
 // // Define a type for the slice state
 interface RecipientState {
@@ -24,19 +24,16 @@ const initialState: RecipientState = {
   message: ''
 };
 
-
-
 // Define a type for a recipient object
 
-interface RecipientObj{
-  id: String,
-  name: String,
-  EntityType: String,
-  DemographicName: String,
-  FoodType: String,
-  CombinedAreaName: String
+interface RecipientObj {
+  id: String;
+  name: String;
+  OrgStructure: String;
+  DemographicsServed: String;
+  CombinedAreaName: String;
+  FoodDistModel: String;
 }
-
 
 // Get list of all recipients in DB
 export const getRecipients = createAsyncThunk(
@@ -44,7 +41,7 @@ export const getRecipients = createAsyncThunk(
   async (_, thunkAPI) => {
     try {
       const state = thunkAPI.getState() as RootState;
-      let token = state.driverAuth.driver.token;
+      let { token } = state.driverAuth.driver;
       if (!token) {
         token = state.adminAuth.admin.token;
       }
@@ -63,14 +60,13 @@ export const getRecipients = createAsyncThunk(
   }
 );
 
-
 // ADD: Accessible only by Admin via line 94
 export const createRecipient = createAsyncThunk(
   'api/location/addRecipients',
   async (recipientData: RecipientObj, thunkAPI) => {
     try {
       const state = thunkAPI.getState() as RootState;
-      const token = state.adminAuth.admin.token;
+      const { token } = state.adminAuth.admin;
 
       return await recipientsService.createRecipient(recipientData, token);
     } catch (error: any) {
@@ -92,7 +88,7 @@ export const updateRecipient = createAsyncThunk(
   async (recipientData: RecipientObj, thunkAPI) => {
     try {
       const state = thunkAPI.getState() as RootState;
-      const token = state.adminAuth.admin.token;
+      const { token } = state.adminAuth.admin;
 
       return await recipientsService.updateRecipient(recipientData, token);
     } catch (error: any) {
@@ -114,7 +110,7 @@ export const deleteRecipient = createAsyncThunk(
   async (recipientId: string, thunkAPI) => {
     try {
       const state = thunkAPI.getState() as RootState;
-      const token = state.adminAuth.admin.token;
+      const { token } = state.adminAuth.admin;
 
       return await recipientsService.deleteRecipient(recipientId, token);
     } catch (error: any) {
@@ -134,71 +130,83 @@ export const recipientsSlice = createSlice({
   name: 'recipients',
   initialState,
   reducers: {
-    reset: (state) => {
-      state.isLoading = false;
-      state.isError = false;
-      state.isSuccess = false;
-      state.message = '';
-    },
-      clear: (state) => initialState
-
+    reset: (state) => ({
+      ...state,
+      isLoading: false,
+      isError: false,
+      isSuccess: false,
+      message: ''
+    }),
+    clear: () => initialState
   },
   extraReducers: (builder) => {
     builder
-      .addCase(getRecipients.pending, (state) => {
-        state.isLoading = true;
-      })
-      .addCase(getRecipients.fulfilled, (state, action) => {
-        state.isLoading = false;
-        state.isSuccess = true;
-        state.recipients = action.payload;
-      })
-      .addCase(getRecipients.rejected, (state, action) => {
-        state.isLoading = false;
-        state.isError = true;
-        state.message = action.payload;
-      })
-      .addCase(createRecipient.pending, (state) => {
-        state.isLoading = true;
-      })
-      .addCase(createRecipient.fulfilled, (state, action) => {
-        state.isLoading = false;
-        state.isSuccess = true;
-        state.message = action.payload;
-      })
-      .addCase(createRecipient.rejected, (state, action) => {
-        state.isLoading = false;
-        state.isError = true;
-        state.message = action.payload;
-      })
-      .addCase(updateRecipient.pending, (state) => {
-        state.isLoading = true;
-      })
-      .addCase(updateRecipient.fulfilled, (state, action) => {
-        state.isLoading = false;
-        state.isSuccess = true;
-        state.message = action.payload;
-      })
-      .addCase(updateRecipient.rejected, (state, action) => {
-        state.isLoading = false;
-        state.isError = true;
-        state.message = action.payload;
-      })
-      .addCase(deleteRecipient.pending, (state) => {
-        state.isLoading = true;
-      })
-      .addCase(deleteRecipient.fulfilled, (state, action) => {
-        state.isLoading = false;
-        state.isSuccess = true;
-        state.message = action.payload;
-      })
-      .addCase(deleteRecipient.rejected, (state, action) => {
-        state.isLoading = false;
-        state.isError = true;
-        state.message = action.payload;
-      });
+      .addCase(getRecipients.pending, (state) => ({
+        ...state,
+        isLoading: true
+      }))
+      .addCase(getRecipients.fulfilled, (state, action) => ({
+        ...state,
+        isLoading: false,
+        isSuccess: true,
+        recipients: action.payload
+      }))
+      .addCase(getRecipients.rejected, (state, action) => ({
+        ...state,
+        isLoading: false,
+        isError: true,
+        message: action.payload
+      }))
+      .addCase(createRecipient.pending, (state) => ({
+        ...state,
+        isLoading: true
+      }))
+      .addCase(createRecipient.fulfilled, (state, action) => ({
+        ...state,
+        isLoading: false,
+        isSuccess: true,
+        message: action.payload
+      }))
+      .addCase(createRecipient.rejected, (state, action) => ({
+        ...state,
+        isLoading: false,
+        isError: true,
+        message: action.payload
+      }))
+      .addCase(updateRecipient.pending, (state) => ({
+        ...state,
+        isLoading: true
+      }))
+      .addCase(updateRecipient.fulfilled, (state, action) => ({
+        ...state,
+        isLoading: false,
+        isSuccess: true,
+        message: action.payload
+      }))
+      .addCase(updateRecipient.rejected, (state, action) => ({
+        ...state,
+        isLoading: false,
+        isError: true,
+        message: action.payload
+      }))
+      .addCase(deleteRecipient.pending, (state) => ({
+        ...state,
+        isLoading: true
+      }))
+      .addCase(deleteRecipient.fulfilled, (state, action) => ({
+        ...state,
+        isLoading: false,
+        isSuccess: true,
+        message: action.payload
+      }))
+      .addCase(deleteRecipient.rejected, (state, action) => ({
+        ...state,
+        isLoading: false,
+        isError: true,
+        message: action.payload
+      }));
   }
 });
 
-export const { reset, clear } =recipientsSlice.actions;
+export const { reset, clear } = recipientsSlice.actions;
 export default recipientsSlice.reducer;

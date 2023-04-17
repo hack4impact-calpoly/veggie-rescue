@@ -4,7 +4,8 @@ const jwt = require("jsonwebtoken");
 const Admin = require("../models/adminSchema");
 
 // Generate Token
-const generateToken = (id) => jwt.sign({ id }, process.env.JWT_SECRET, {
+const generateToken = (id) =>
+  jwt.sign({ id }, process.env.JWT_SECRET, {
     expiresIn: "30d",
   });
 
@@ -81,7 +82,7 @@ const editAdmin = asyncHandler(async (req, res) => {
 
   // Build admin object
   const adminFields = {};
-  if (name) adminFields.name;
+  if (name) adminFields.name = name;
   if (email) {
     // Find if driver does not already exist
     const adminExists = await Admin.findOne({ email });
@@ -103,10 +104,10 @@ const editAdmin = asyncHandler(async (req, res) => {
       $set: adminFields,
     });
 
-    res.json(adminToUpdate);
+    return res.json(adminToUpdate);
   } catch (err) {
     console.error(err.message);
-    res.status(500).send("Server Error");
+    return res.status(500).send("Server Error");
   }
 });
 
