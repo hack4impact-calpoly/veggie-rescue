@@ -46,6 +46,10 @@ function LocationForm({
   setForceNext
 }: Props) {
   const [isOtherClicked, setOtherClicked] = useState(false);
+  const [isProduceClicked, setProduceClicked] = useState(false);
+  const [firstProduce, setFirstProduce] = useState(true);
+  const [firstOther, setFirstOther] = useState(true);
+
   const [checked, setChecked] = useState<string[]>([]);
   // State for checkbox buttons
 
@@ -55,6 +59,8 @@ function LocationForm({
   const [donorEntityType, setDonorEntityType] = useState('');
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [food, setFoodType] = useState('');
+
+  
   const [demographic, setDemographic] = useState('');
   const [area, setArea] = useState('');
   const [input, setInput] = useState('');
@@ -107,13 +113,61 @@ function LocationForm({
     }
   };
 
+
+  const handleTextBox = () => {
+    if (!isOtherClicked)
+    {
+      const inputVal = document.getElementById("other_lbsTextBox");
+        if (inputVal !== null)
+        {
+          inputVal.style.display = 'block'
+        }
+    }
+    if(isOtherClicked)
+    {
+      const inputVal = document.getElementById("other_lbsTextBox");
+        if (inputVal !== null)
+        {
+          inputVal.style.display = 'none'
+        }
+    }
+
+    }
+
+    const handleTextBox2 = () => {
+      if (!isProduceClicked)
+      {
+        const inputVal = document.getElementById("produce_lbsTextBox");
+          if (inputVal !== null)
+          {
+            inputVal.style.display = 'block'
+          }
+      }
+      if(isProduceClicked)
+      {
+        const inputVal = document.getElementById("produce_lbsTextBox");
+          if (inputVal !== null)
+          {
+            inputVal.style.display = 'none'
+          }
+      }
+  
+      }
+
   const handleClick = () => {
     let updatedList = [...checked];
 
-    if (updatedList.indexOf(current.FoodType) !== -1) {
+
+    console.log('checked array', checked)
+
+    if (updatedList.indexOf(current.FoodType) !== -1) 
+    {
       // if currentFoodtype is in the checked array, remove it
+      // remove text box as well
       updatedList.splice(updatedList.indexOf(current.FoodType), 1);
-    } else {
+    } 
+    else 
+    {
       updatedList = [...checked, current.FoodType];
     }
     setChecked(updatedList);
@@ -249,7 +303,12 @@ function LocationForm({
                   type="checkbox"
                   name="foodType"
                   value={current.FoodType}
-                  onClick={handleClick}
+                  onClick={() => {
+                    setFirstProduce(false)
+                    handleTextBox2();
+                    setProduceClicked(!isProduceClicked);
+                    handleClick();
+                  }}
                 />
                 <label
                   htmlFor="checkbox"
@@ -257,6 +316,14 @@ function LocationForm({
                 >
                   {current.FoodType}
                 </label>
+
+
+                <input
+                    className="bg-white ml-2 text-2xl w-20 h-10 italic py-4 px-4 mt-2 rounded-lg shadow text-left"
+                    id = "produce_lbsTextBox"
+                    type="text"
+                    style={{ display: 'none' }}
+                    placeholder="lbs" />
               </div>
             )}
             {current && (
@@ -268,12 +335,25 @@ function LocationForm({
                   name="foodType"
                   value="Other"
                   onClick={() => {
+                    setFirstOther(false)
+                    handleTextBox();
                     setOtherClicked(!isOtherClicked);
+                    
+                    handleClick();
                   }}
                 />
                 <label htmlFor="checkbox2" className="cursor-pointer text-3xl">
                   {'Other'}{' '}
+
+                  <input
+                    className="bg-white ml-2 text-2xl w-20 h-10 italic py-4 px-4 mt-2 rounded-lg shadow text-left"
+                    id = "other_lbsTextBox"
+                    type="text"
+                    style={{ display: 'none' }}
+                    placeholder="lbs" />
                 </label>
+
+                
                 <input
                   className="bg-white ml-2 text-4xl w-full italic py-4 px-4 mt-2 rounded-lg shadow w-full text-left"
                   type="text"
