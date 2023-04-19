@@ -9,7 +9,6 @@ import VolunteersCard from '../VolunteersCard/VolunteersCard';
 import NewVolunteersCard from '../VolunteersCard/NewVolunteersCard';
 import NewDonorsCard from '../DonorsCard/NewDonorsCard';
 import ShortEntityForm from './ShortEntityForm';
-// import FieldPage from './FieldPage';
 
 // import { deliverySchema, pickupSchema, dnoo } from '../../data/dbMock';
 import { useAppSelector, useAppDispatch } from '../../app/hooks';
@@ -39,7 +38,7 @@ function AdminDataScreen() {
   const [donors, setDonors] = useState(false);
   const [recipients, setRecipients] = useState(false);
 
-  const [entityType, setEntityType] = useState(false);
+  const [entityTypeCard, setEntityTypeCard] = useState(false);
   const [donorsFoodType, setDonorsFoodType] = useState(false);
   const [locationType, setLocationType] = useState(false);
   const [donorsAreaName, setDonorsAreaName] = useState(false);
@@ -123,7 +122,6 @@ function AdminDataScreen() {
     'Landfill'
   ];
 
-
   // const [edit, setEdit] = useState(false);
   // const [dataToEdit, setDataToEdit] = useState({});
   const [currentVehicle, setCurrentVehicle] = useState(null);
@@ -175,7 +173,7 @@ function AdminDataScreen() {
     setRecipients(false);
     toggleDonorButtons(false);
     toggleRecipientButtons(false);
-    setEntityType(false);
+    setEntityTypeCard(false);
     setDonorsFoodType(false);
     setLocationType(false);
     setDonorsAreaName(false);
@@ -194,7 +192,7 @@ function AdminDataScreen() {
     setRecipients(false);
     toggleDonorButtons(false);
     toggleRecipientButtons(false);
-    setEntityType(false);
+    setEntityTypeCard(false);
     setDonorsFoodType(false);
     setLocationType(false);
     setDonorsAreaName(false);
@@ -209,6 +207,13 @@ function AdminDataScreen() {
     setCurrentVehicle(vehicle);
     setUpdate(true);
   }
+
+  // TODO create handlers for each field type
+  function entityTypeData(entityType: any) {
+    setCurrentEntityType(entityType);
+    setUpdate(true);
+  }
+
   function volunteerData(volunteer: any) {
     setCurrentVolunteer(volunteer);
     setUpdate(true);
@@ -235,7 +240,7 @@ function AdminDataScreen() {
     setRecipients(false);
     toggleDonorButtons(true);
     toggleRecipientButtons(false);
-    setEntityType(false);
+    setEntityTypeCard(false);
     setDonorsFoodType(false);
     setLocationType(false);
     setDonorsAreaName(false);
@@ -254,7 +259,7 @@ function AdminDataScreen() {
     setRecipients(false);
     toggleDonorButtons(true);
     toggleRecipientButtons(false);
-    setEntityType(true);
+    setEntityTypeCard(true);
     setDonorsFoodType(false);
     setLocationType(false);
     setDonorsAreaName(false);
@@ -273,7 +278,7 @@ function AdminDataScreen() {
     setRecipients(false);
     toggleDonorButtons(true);
     toggleRecipientButtons(false);
-    setEntityType(false);
+    setEntityTypeCard(false);
     setDonorsFoodType(true);
     setLocationType(false);
     setDonorsAreaName(false);
@@ -292,7 +297,7 @@ function AdminDataScreen() {
     setRecipients(false);
     toggleDonorButtons(true);
     toggleRecipientButtons(false);
-    setEntityType(false);
+    setEntityTypeCard(false);
     setDonorsFoodType(false);
     setLocationType(true);
     setDonorsAreaName(false);
@@ -311,7 +316,7 @@ function AdminDataScreen() {
     setRecipients(false);
     toggleDonorButtons(true);
     toggleRecipientButtons(false);
-    setEntityType(false);
+    setEntityTypeCard(false);
     setDonorsFoodType(false);
     setLocationType(false);
     setDonorsAreaName(true);
@@ -336,7 +341,7 @@ function AdminDataScreen() {
     ]);
     toggleDonorButtons(false);
     toggleRecipientButtons(true);
-    setEntityType(false);
+    setEntityTypeCard(false);
     setDonorsFoodType(false);
     setLocationType(false);
     setDonorsAreaName(false);
@@ -355,7 +360,7 @@ function AdminDataScreen() {
     setSearchParam(['name']);
     toggleDonorButtons(false);
     toggleRecipientButtons(true);
-    setEntityType(false);
+    setEntityTypeCard(false);
     setDonorsFoodType(false);
     setLocationType(false);
     setDonorsAreaName(false);
@@ -374,7 +379,7 @@ function AdminDataScreen() {
     setSearchParam(['name']);
     toggleDonorButtons(false);
     toggleRecipientButtons(true);
-    setEntityType(false);
+    setEntityTypeCard(false);
     setDonorsFoodType(false);
     setLocationType(false);
     setDonorsAreaName(false);
@@ -393,7 +398,7 @@ function AdminDataScreen() {
     setSearchParam(['name']);
     toggleDonorButtons(false);
     toggleRecipientButtons(true);
-    setEntityType(false);
+    setEntityTypeCard(false);
     setDonorsFoodType(false);
     setLocationType(false);
     setDonorsAreaName(false);
@@ -412,7 +417,7 @@ function AdminDataScreen() {
     setSearchParam(['name']);
     toggleDonorButtons(false);
     toggleRecipientButtons(true);
-    setEntityType(false);
+    setEntityTypeCard(false);
     setDonorsFoodType(false);
     setLocationType(false);
     setDonorsAreaName(false);
@@ -431,7 +436,7 @@ function AdminDataScreen() {
     setSearchParam(['name']);
     toggleDonorButtons(false);
     toggleRecipientButtons(true);
-    setEntityType(false);
+    setEntityTypeCard(false);
     setDonorsFoodType(false);
     setLocationType(false);
     setDonorsAreaName(false);
@@ -463,7 +468,7 @@ function AdminDataScreen() {
         )
       );
     }
-    if (entityType) {
+    if (entityTypeCard) {
       console.log(searchParam);
       console.log(q);
 
@@ -680,7 +685,7 @@ function AdminDataScreen() {
                 type="button"
                 className="title"
                 onClick={handleEntityType}
-                style={{ border: entityType ? '2px solid #FF9C55' : '' }}
+                style={{ border: entityTypeCard ? '2px solid #FF9C55' : '' }}
               >
                 Entity Type
               </button>
@@ -858,7 +863,7 @@ function AdminDataScreen() {
             </div>
           )}
 
-          {entityType && (
+          {entityTypeCard && (
             <div className="logs">
               <button
                 type="button"
@@ -872,9 +877,9 @@ function AdminDataScreen() {
               {showModal && (
                 <FieldForm
                   handleShow={handleShowModal}
-                  whichEntity
+                  whichField="Entity Type" // choose between entitytype, foodtype, etc
                   isUpdate={isUpdate}
-                  vehicle={currentEntityType}
+                  fieldName={currentEntityType} // the actual field, i.e. church, school, etc
                 />
               )}
               {search(q).map((item: any, index: any) => (
@@ -882,12 +887,12 @@ function AdminDataScreen() {
                   index={index}
                   field={item}
                   handleShow={handleShowModal}
-                  fieldHandler={donorsEntityTypes}
+                  fieldHandler={entityTypeData}
                 />
               ))}
             </div>
           )}
-
+          {/* TODO change the props of subsequent FieldForms to match above */}
           {donorsFoodType && (
             <div className="logs">
               <button
