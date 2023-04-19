@@ -25,6 +25,7 @@ import Spinner from '../Spinner/Spinner';
 import DonorsForm from '../DonorsCard/DonorsForm';
 import RecipientsForm from '../RecipientsCard/RecipientsForm';
 import FieldPage from '../FieldPage/FieldPage';
+import FieldForm from './FieldForm';
 
 // import VehicleEditForm from './EditComponents/VehicleEditForm';
 // import VolunteerEditForm from './EditComponents/VolunteerEditForm';
@@ -174,6 +175,15 @@ function AdminDataScreen() {
     setRecipients(false);
     toggleDonorButtons(false);
     toggleRecipientButtons(false);
+    setEntityType(false);
+    setDonorsFoodType(false);
+    setLocationType(false);
+    setDonorsAreaName(false);
+    setOrgStrucCard(false);
+    setFoodDistrModel(false);
+    setRecipFoodType(false);
+    setDemographic(false);
+    setRecipAreaName(false);
   }
 
   function handleVehicles() {
@@ -184,6 +194,15 @@ function AdminDataScreen() {
     setRecipients(false);
     toggleDonorButtons(false);
     toggleRecipientButtons(false);
+    setEntityType(false);
+    setDonorsFoodType(false);
+    setLocationType(false);
+    setDonorsAreaName(false);
+    setOrgStrucCard(false);
+    setFoodDistrModel(false);
+    setRecipFoodType(false);
+    setDemographic(false);
+    setRecipAreaName(false);
   }
 
   function vehicleData(vehicle: any) {
@@ -220,6 +239,11 @@ function AdminDataScreen() {
     setDonorsFoodType(false);
     setLocationType(false);
     setDonorsAreaName(false);
+    setOrgStrucCard(false);
+    setFoodDistrModel(false);
+    setRecipFoodType(false);
+    setDemographic(false);
+    setRecipAreaName(false);
   }
 
   function handleEntityType() {
@@ -846,7 +870,7 @@ function AdminDataScreen() {
                 <NewVolunteersCard isUpdate={isUpdate} />
               </button>
               {showModal && (
-                <ShortEntityForm
+                <FieldForm
                   handleShow={handleShowModal}
                   whichEntity
                   isUpdate={isUpdate}
@@ -876,11 +900,11 @@ function AdminDataScreen() {
                 <NewVolunteersCard isUpdate={isUpdate} />
               </button>
               {showModal && (
-                <ShortEntityForm
+                <FieldForm
                   handleShow={handleShowModal}
                   whichEntity
                   isUpdate={isUpdate}
-                  vehicle={currentFoodType}
+                  vehicle={currentDonorsFoodType}
                 />
               )}
               {search(q).map((item: any, index: any) => (
@@ -906,7 +930,7 @@ function AdminDataScreen() {
                 <NewVolunteersCard isUpdate={isUpdate} />
               </button>
               {showModal && (
-                <ShortEntityForm
+                <FieldForm
                   handleShow={handleShowModal}
                   whichEntity
                   isUpdate={isUpdate}
@@ -936,7 +960,7 @@ function AdminDataScreen() {
                 <NewVolunteersCard isUpdate={isUpdate} />
               </button>
               {showModal && (
-                <ShortEntityForm
+                <FieldForm
                   handleShow={handleShowModal}
                   whichEntity
                   isUpdate={isUpdate}
@@ -967,7 +991,7 @@ function AdminDataScreen() {
                 <NewVolunteersCard isUpdate={isUpdate} />
               </button>
               {showModal && (
-                <ShortEntityForm
+                <FieldForm
                   handleShow={handleShowModal}
                   whichEntity
                   isUpdate={isUpdate}
@@ -997,7 +1021,7 @@ function AdminDataScreen() {
                 <NewVolunteersCard isUpdate={isUpdate} />
               </button>
               {showModal && (
-                <ShortEntityForm
+                <FieldForm
                   handleShow={handleShowModal}
                   whichEntity
                   isUpdate={isUpdate}
@@ -1027,7 +1051,7 @@ function AdminDataScreen() {
                 <NewVolunteersCard isUpdate={isUpdate} />
               </button>
               {showModal && (
-                <ShortEntityForm
+                <FieldForm
                   handleShow={handleShowModal}
                   whichEntity
                   isUpdate={isUpdate}
@@ -1057,7 +1081,7 @@ function AdminDataScreen() {
                 <NewVolunteersCard isUpdate={isUpdate} />
               </button>
               {showModal && (
-                <ShortEntityForm
+                <FieldForm
                   handleShow={handleShowModal}
                   whichEntity
                   isUpdate={isUpdate}
@@ -1087,7 +1111,7 @@ function AdminDataScreen() {
                 <NewVolunteersCard isUpdate={isUpdate} />
               </button>
               {showModal && (
-                <ShortEntityForm
+                <FieldForm
                   handleShow={handleShowModal}
                   whichEntity
                   isUpdate={isUpdate}

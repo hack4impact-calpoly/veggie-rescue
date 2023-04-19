@@ -21,7 +21,7 @@ import { toast } from 'react-toastify';
 
 /* Form to add driver or vehicle */
 // eslint-disable-next-line react/function-component-definition
-const ShortEntityForm = (props: any) => {
+const FieldForm = (props: any) => {
   /* Driver and vehicle state data here */
   // const [volunteerName, setName] = useState('');
   const [volunteerName, setName] = useState(props.isUpdate ? props.whichEntity ? props.vehicle.name : props.volunteer.name : '');
@@ -204,28 +204,6 @@ const ShortEntityForm = (props: any) => {
             </button>
           </div>
         </div>
-        
-        <div className="entity-type">
-        {!isVehicle ?
-          <button
-            className="type-button"
-            type="button"
-            onClick={handleVolunteer}
-            style={{ border: volunteer ? '2px solid #FF9C55' : '' }}
-          >
-            Volunteer
-          </button>
-        :
-          <button
-            className="type-button"
-            type="button"
-            onClick={handleVehicle}
-            style={{ border: vehicle ? '2px solid #FF9C55' : '' }}
-          >
-            Vehicle
-          </button>
-        }
-        </div>
 
         <h2>Name</h2>
         <input
@@ -242,21 +220,7 @@ const ShortEntityForm = (props: any) => {
             }
           onChange={(e: any) => setName(e.target.value)}
         />
-        {!isVehicle && (
-          <div className="internal-div">
-            <h2>Pin</h2>
-            <input
-              className="input"
-              placeholder={
-                !props.isUpdate ? 'Pin' : ''
-              }
-              defaultValue={
-                props.isUpdate ? props.volunteer.pin : ''
-              }
-              onChange={(e: any) => setPin(e.target.value)}
-            />
-          </div>
-        )}
+        
         <div className="flex flex-row w-full">
           <button type="submit" id="form-submit" onClick={handleSubmit}>
             {props.isUpdate ? 'Update' : 'Done'}
@@ -272,4 +236,4 @@ const ShortEntityForm = (props: any) => {
   );
 };
 
-export default ShortEntityForm;
+export default FieldForm;
