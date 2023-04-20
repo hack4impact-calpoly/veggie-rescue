@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import './EntityForm.css';
 import { toast } from 'react-toastify';
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { useAppSelector, useAppDispatch } from '../../app/hooks';
 
 // import assets
@@ -11,8 +12,10 @@ import { useAppSelector, useAppDispatch } from '../../app/hooks';
 const FieldForm = (props: any) => {
   /* Driver and vehicle state data here */
   const { handleShow, whichField, isUpdate, fieldName } = props;
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [fieldType, setFieldType] = useState(whichField); // one of Entity Type, Food Type, etc
   const [field, setField] = useState(fieldName);
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const dispatch = useAppDispatch();
 
   // global state
@@ -28,10 +31,8 @@ const FieldForm = (props: any) => {
   //   dispatch(getEntityTypes());
   // }
 
-
   // this function is called if we submit a new field type
-  // @TODO add new cases for other fields
-  // add actual dispatch logic
+  // @TODO add actual dispatch logic
   const dispatchCreateNew = async () => {
     console.log('CREATE');
     switch (fieldType) {
@@ -42,8 +43,88 @@ const FieldForm = (props: any) => {
         //   })
         // );
         toast.success('Successfully created new entity type.');
-
         // dispatchGetEntityTypes();
+        break;
+
+      case 'Donors Food Type':
+        // await dispatch(
+        //   createDonorsFoodType({
+        //     /* donorsfoodtype params */
+        //   })
+        // );
+        toast.success('Successfully created new food type.');
+        // dispatchGetDonorsFoodTypes();
+        break;
+
+      case 'Location Type':
+        // await dispatch(
+        //   createLocType({
+        //     /* location params */
+        //   })
+        // );
+        toast.success('Successfully created new location type.');
+        // dispatchGetDonorsFoodTypes();
+        break;
+
+      case 'Donors Combined Area Name':
+        // await dispatch(
+        //   createDonorsCombinedAreaName({
+        //     /* combined area name params */
+        //   })
+        // );
+        toast.success('Successfully created new combined area name.');
+        // dispatchGetDonorsCombinedAreaName();
+        break;
+
+      // recipients
+      case 'Organizational Structure':
+        // await dispatch(
+        //   createOrgstruc({
+        //     /* org struc params */
+        //   })
+        // );
+        toast.success('Successfully created new organizational structure.');
+        // dispatchGetOrgStruc();
+        break;
+
+      case 'Food Distribution Model':
+        // await dispatch(
+        //   creatFoodDistrModel({
+        //     /* food distr model params */
+        //   })
+        // );
+        toast.success('Successfully created new food distribution model.');
+        // dispatchGetFoodDistrModel();
+        break;
+
+      case 'Recipients Food Type':
+        // await dispatch(
+        //   createRecipFoodType({
+        //     /* food type params */
+        //   })
+        // );
+        toast.success('Successfully created new food type.');
+        // dispatchGetRecipFoodType();
+        break;
+
+      case 'Demographics Served':
+        // await dispatch(
+        //   createDemographicServed({
+        //     /* demographic served params */
+        //   })
+        // );
+        toast.success('Successfully created new demographic served.');
+        // dispatchGetDemographicServed();
+        break;
+
+      case 'Recipients Combined Area Name':
+        // await dispatch(
+        //   createRecipeAreaName({
+        //     /* recipient area name params */
+        //   })
+        // );
+        toast.success('Successfully created new combined area name.');
+        // dispatchGetRecipAreaName();
         break;
 
       default:
@@ -61,9 +142,88 @@ const FieldForm = (props: any) => {
         //     /* entity params */
         //   })
         // );
-        toast.success('Successfully created new entity type.');
-
+        toast.success('Successfully updated entity type.');
         // dispatchGetEntityTypes();
+        break;
+      case 'Donors Food Type':
+        // await dispatch(
+        //   updateDonorsFoodType({
+        //     /* donorsfoodtype params */
+        //   })
+        // );
+        toast.success('Successfully updated food type.');
+        // dispatchGetDonorsFoodTypes();
+        break;
+
+      case 'Location Type':
+        // await dispatch(
+        //   updateLocType({
+        //     /* location params */
+        //   })
+        // );
+        toast.success('Successfully updated location type.');
+        // dispatchGetDonorsFoodTypes();
+        break;
+
+      case 'Donors Combined Area Name':
+        // await dispatch(
+        //   updateDonorsCombinedAreaName({
+        //     /* combined area name params */
+        //   })
+        // );
+        toast.success('Successfully updated combined area name.');
+        // dispatchGetDonorsCombinedAreaName();
+        break;
+
+      // recipients
+      case 'Organizational Structure':
+        // await dispatch(
+        //   updateOrgstruc({
+        //     /* org struc params */
+        //   })
+        // );
+        toast.success('Successfully updated organizational structure.');
+        // dispatchGetOrgStruc();
+        break;
+
+      case 'Food Distribution Model':
+        // await dispatch(
+        //   updateFoodDistrModel({
+        //     /* food distr model params */
+        //   })
+        // );
+        toast.success('Successfully updated food distribution model.');
+        // dispatchGetFoodDistrModel();
+        break;
+
+      case 'Recipients Food Type':
+        // await dispatch(
+        //   updateRecipFoodType({
+        //     /* food type params */
+        //   })
+        // );
+        toast.success('Successfully updated food type.');
+        // dispatchGetRecipFoodType();
+        break;
+
+      case 'Demographics Served':
+        // await dispatch(
+        //   updateDemographicServed({
+        //     /* demographic served params */
+        //   })
+        // );
+        toast.success('Successfully updated demographic served.');
+        // dispatchGetDemographicServed();
+        break;
+
+      case 'Recipients Combined Area Name':
+        // await dispatch(
+        //   updateRecipeAreaName({
+        //     /* recipient area name params */
+        //   })
+        // );
+        toast.success('Successfully updated combined area name.');
+        // dispatchGetRecipAreaName();
         break;
 
       default:
@@ -80,6 +240,55 @@ const FieldForm = (props: any) => {
         toast.success('Successfully deleted entity type.');
         // dispatchGetEntityTypes();
         break;
+      case 'Donors Food Type':
+        // await dispatch(deleteDonorsfoodType(/*field name or id*/));
+        toast.success('Successfully deleted food type.');
+        // dispatchGetDonorsFoodTypes();
+        break;
+
+      case 'Location Type':
+        // await dispatch(deleteLocType(/*field name or id*/));
+        toast.success('Successfully deleted location type.');
+        // dispatchGetLocationTypes();
+        break;
+
+      case 'Donors Combined Area Name':
+        // await dispatch(deleteDonorsAreaName(/*field name or id*/));
+        toast.success('Successfully deleted area name.');
+        // dispatchGetDonorsCombinedAreaName();
+        break;
+
+      // recipients
+      case 'Organizational Structure':
+        // await dispatch(deleteOrgStruc(/*field name or id*/));
+        toast.success('Successfully deleted organizational structure.');
+        // dispatchGetOrgStruc();
+        break;
+
+      case 'Food Distribution Model':
+        // await dispatch(deleteFoodDistrModel(/*field name or id*/));
+        toast.success('Successfully deleted food distrubtion model.');
+        // dispatchGetFoodDistrModel();
+        break;
+
+      case 'Recipients Food Type':
+        // await dispatch(deleteRecipFoodType(/*field name or id*/));
+        toast.success('Successfully deleted food type.');
+        // dispatchGetRecipFoodType();
+        break;
+
+      case 'Demographics Served':
+        // await dispatch(deleteDemographicServed(/*field name or id*/));
+        toast.success('Successfully deleted demographic served.');
+        // dispatchGetDemographicServed();
+        break;
+
+      case 'Recipients Combined Area Name':
+        // await dispatch(deleteRecipAreaName(/*field name or id*/));
+        toast.success('Successfully deleted area name.');
+        // dispatchGetRecipAreaName();
+        break;
+
       default:
         toast.error('Not a field type');
     }
