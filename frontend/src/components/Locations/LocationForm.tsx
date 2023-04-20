@@ -36,6 +36,14 @@ interface Props {
   setForceNext: Function;
 }
 
+
+
+
+
+interface Foods {
+  [key: string]: number;
+}
+
 function LocationForm({
   current,
   createNew,
@@ -50,6 +58,8 @@ function LocationForm({
   const [firstProduce, setFirstProduce] = useState(true);
   const [firstOther, setFirstOther] = useState(true);
 
+  const [isWeightValid, setIsWeightValid] = useState(true);
+
   const [checked, setChecked] = useState<string[]>([]);
   // State for checkbox buttons
 
@@ -59,6 +69,29 @@ function LocationForm({
   const [donorEntityType, setDonorEntityType] = useState('');
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [food, setFoodType] = useState('');
+
+  const [weight, setWeight] = useState(0);
+
+
+
+  const [foods, setFoods] = useState<Foods>({});
+
+  const addFood = (name: string, weight: number) => {
+    setFoods((prevDict) => ({ ...prevDict, [name]: weight }));
+  };
+
+
+
+  
+
+
+  const removeFood = (name: string) => {
+    setFoods((prevDict) => {
+      const newDict = { ...prevDict };
+      delete newDict[name];
+      return newDict;
+    });
+  };
 
   
   const [demographic, setDemographic] = useState('');
@@ -75,6 +108,7 @@ function LocationForm({
       if (input.trim().length === 0) {
         isValid = false;
       } else {
+        isValid = true;
         setChecked([...checked, input]);
         // react updates state variables asynchronously so this is to get most recent food list
         foodTypes = [...checked, input];
@@ -122,6 +156,7 @@ function LocationForm({
         {
           inputVal.style.display = 'block'
         }
+      
     }
     if(isOtherClicked)
     {
@@ -130,6 +165,11 @@ function LocationForm({
         {
           inputVal.style.display = 'none'
         }
+        // unchecked
+        if (input in foods)
+          {
+             removeFood(input)
+          }
     }
 
     }
@@ -142,6 +182,7 @@ function LocationForm({
           {
             inputVal.style.display = 'block'
           }
+          
       }
       if(isProduceClicked)
       {
@@ -150,6 +191,12 @@ function LocationForm({
           {
             inputVal.style.display = 'none'
           }
+          // unchecked
+          if ("Produce" in foods)
+          {
+             removeFood("Produce")
+          }
+
       }
   
       }
@@ -172,6 +219,9 @@ function LocationForm({
     }
     setChecked(updatedList);
   };
+
+
+  
 
   return (
     <div className="Form-main m-5 mb-10 flex justify-center flex-col">
@@ -304,11 +354,11 @@ function LocationForm({
                   name="foodType"
                   value={current.FoodType}
                   onClick={() => {
-                    setFirstProduce(false)
                     handleTextBox2();
                     setProduceClicked(!isProduceClicked);
                     handleClick();
                   }}
+                  
                 />
                 <label
                   htmlFor="checkbox"
@@ -323,7 +373,30 @@ function LocationForm({
                     id = "produce_lbsTextBox"
                     type="text"
                     style={{ display: 'none' }}
-                    placeholder="lbs" />
+                    placeholder="lbs" 
+                    onChange={(e) => {
+                      
+                        setWeight(parseInt(e.target.value));
+                      
+                    
+                    }}
+                    onBlur={(e) => {
+                      if (isNaN(weight))
+                      {
+                        setIsWeightValid(false)
+                        toast.error("Please enter a valid number for weight")
+                      }
+                      else
+                      {
+                        setIsWeightValid(true)
+                        addFood("Produce", weight)
+                      }
+                      
+                      
+                    }}
+                    
+
+                    />
               </div>
             )}
             {current && (
@@ -335,7 +408,6 @@ function LocationForm({
                   name="foodType"
                   value="Other"
                   onClick={() => {
-                    setFirstOther(false)
                     handleTextBox();
                     setOtherClicked(!isOtherClicked);
                     
@@ -350,6 +422,10 @@ function LocationForm({
                     id = "other_lbsTextBox"
                     type="text"
                     style={{ display: 'none' }}
+                    onChange={(e) => {
+                        
+                        setWeight(parseInt(e.target.value));
+                    }}
                     placeholder="lbs" />
                 </label>
 
@@ -360,6 +436,18 @@ function LocationForm({
                   disabled={!isOtherClicked}
                   onChange={(e) => {
                     setInput(e.target.value);
+                  }}
+                  onBlur={(e) => {
+                    if (isNaN(weight))
+                      {
+                        setIsWeightValid(false)
+                        toast.error("Please enter a valid number for weight")
+                      }
+                      else
+                      {
+                        setIsWeightValid(true)
+                        addFood(input, weight)
+                      }
                   }}
                   placeholder="Please Specify"
                 />{' '}
@@ -373,11 +461,12 @@ function LocationForm({
         <button
           type="submit"
           disabled={
-            checked.length === 0 && !isOtherClicked
+            (checked.length === 0 && !isOtherClicked) || !isWeightValid
           } /* disable if nothing is clicked */
           className="bg-amber-500 rounded-full w-full mt-5 p-3 text-3xl text-white font-semibold shadow"
           onClick={() => {
             submitPressed();
+            console.log(foods)
           }}
         >
           Continue
