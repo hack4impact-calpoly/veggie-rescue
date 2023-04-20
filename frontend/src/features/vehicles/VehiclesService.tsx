@@ -124,7 +124,7 @@ const logout = async (VehicleLogout: VehicleLogout, token: string) => {
 };
 
 interface Vehicle {
-  _id: string;
+  _id: String;
   driver: string;
   name: string;
   isLoggedIn: boolean;
@@ -177,7 +177,7 @@ interface VehicleLogout {
   currentDropoffs: dropoffObject[];
 }
 interface PickupLog {
-  _id: string;
+  _id: String;
   currentPickups: pickupObject[];
   totalWeight: number;
 }

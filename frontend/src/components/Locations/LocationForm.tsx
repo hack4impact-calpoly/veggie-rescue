@@ -13,18 +13,18 @@ interface Locale {
 }
 
 interface PickupDeliveryObjectSchema {
-  pickupOrDelivery: number;
-  id: string;
-  date: string;
-  driver: string;
-  vehicle: string;
-  name: string;
-  EntityType: string;
-  LocationType: string;
-  Demographic: string;
-  FoodType: string;
-  Area: string;
-  lbsDroppedOff: number;
+  pickupOrDelivery: Number;
+  id: String;
+  date: String;
+  driver: String;
+  vehicle: String;
+  name: String;
+  EntityType: String;
+  LocationType: String;
+  Demographic: String;
+  FoodAllocation: Map<string, number>
+  Area: String;
+  lbsDroppedOff: Number;
 }
 
 interface Props {
@@ -81,10 +81,6 @@ function LocationForm({
   };
 
 
-
-  
-
-
   const removeFood = (name: string) => {
     setFoods((prevDict) => {
       const newDict = { ...prevDict };
@@ -125,7 +121,7 @@ function LocationForm({
           EntityType: current.EntityType,
           LocationType: current.LocationType,
           Demographic: current.DemographicName,
-          FoodType: foodTypes,
+          FoodAllocation: foods,
           Area: current.CombinedAreaName
         });
         setForceNext(true);
@@ -137,7 +133,7 @@ function LocationForm({
           EntityType: donorEntityType,
           LocationType: donorLocationType,
           Demographic: demographic,
-          FoodType: foodTypes,
+          FoodAllocation: foods,
           Area: area
         });
         setForceNext(true);

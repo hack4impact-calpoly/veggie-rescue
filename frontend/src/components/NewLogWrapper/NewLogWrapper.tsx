@@ -157,7 +157,7 @@ if(vehicleIsLoading){
     EntityType: String,
     LocationType: String,
     Demographic: String,
-    FoodType: String,
+    FoodAllocation: Map<String, Number>,
     Area: String,
     lbsDroppedOff: number
 }
@@ -169,7 +169,7 @@ interface PickupSchema {
     vehicle: String,
     name: String,
     donorEntityType: String,
-    foodType: String,
+    foodAllocation: Map<String, Number>,
     area: String,
     lbsPickedUp: number,
     },
