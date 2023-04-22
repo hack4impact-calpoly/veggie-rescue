@@ -38,11 +38,16 @@ const getFieldByName = asyncHandler(async (req, res) => {
 // @route POST /api/fields
 // @access Private -> Admin only
 const createField = asyncHandler(async (req, res) => {
+  // check admin access
   const admin = await Admin.findById(req.admin.id);
   if (!admin) {
     res.status(401);
     throw new Error("Admin not found");
   }
+
+  // check if the field exists
+
+  // update array
 
   const {
     name, 
@@ -73,16 +78,22 @@ const editField = asyncHandler(async (req, res) => {
     throw new Error("Admin not found");
   }
 
-  const field = await Field.findOne({ name: req.params.name });
+  if (!Object.prototype.hasOwnProperty.call(Field.schema.paths, req.params.name)) {
+    res.status(400);
+    throw new Error(`Invalid field name ${req.params.name}`);
+  }
+
+  const field = await Field.findOne();
   if (!field) {
     res.status(404);
     throw new Error("No field found");
   }
   
-  const body = req.body;
+  const { fieldName, oldValue, newValue } = req.body; // get all the params at once like this
 
-  if (body.name) field.name = body.name;
-  if (body.item) field.item = body.item;
+  field[fieldName] = field[fieldName].map((value) =>
+    value === oldValue ? newValue : value
+  );
 
   await field.save();
   return res.status(201).json(field);
@@ -92,23 +103,24 @@ const editField = asyncHandler(async (req, res) => {
 // @route DELETE /api/fields/:name
 // @access Private -> Admin only
 const deleteField = asyncHandler(async (req, res) => {
-    const admin = await Admin.findById(req.admin.id);
-    if (!admin) {
-      res.status(401);
-      throw new Error("Admin not found");
-    }
+  const admin = await Admin.findById(req.admin.id);
+  if (!admin) {
+    res.status(401);
+    throw new Error("Admin not found");
+  }
 
-    const field = await Field.findById(req.params.id);
+  if (!Object.prototype.hasOwnProperty.call(Field.schema.paths, req.params.name)) {
+    res.status(400);
+    throw new Error(`Invalid field name ${req.params.name}`);
+  }
 
-    if (!field) {
-      res.status(404);
-      throw new Error("Field not found");
-    }
-    
-    await field.remove();
+  const field = await Field.findOne();
+  if (!field) {
+    res.status(404);
+    throw new Error("No field found");
+  }
 
-    res.status(200).json({success: true})
+  await field.remove();
+
+  res.status(200).json({ success: true });
 });
-
-
-  
