@@ -7,3 +7,6 @@ const {
   editField,
   deleteField,
 } = require("../controllers/fieldController");
+const { protectAdmin } = require("../middleware/authMiddleware");
+
+
