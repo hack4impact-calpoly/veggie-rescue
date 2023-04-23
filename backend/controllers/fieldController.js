@@ -54,7 +54,6 @@ const createField = asyncHandler(async (req, res) => {
   const field = await Field.findOne({ name: req.params.name });
 
   // update array
-  // update array
   const filter = { name: req.params.name };
   const update = { $addToSet: { myArrayField: req.body.value } }; // add a new value to myArrayField using the $addToSet operator
   const options = { returnOriginal: false };
