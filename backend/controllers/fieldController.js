@@ -46,22 +46,23 @@ const createField = asyncHandler(async (req, res) => {
   }
 
   // check if the field exists
+  if (!Object.prototype.hasOwnProperty.call(Field.schema.paths, req.params.name)) {
+    res.status(400);
+    throw new Error(`Invalid field name ${req.params.name}`);
+  }
+
+  const field = await Field.findOne({ name: req.params.name });
 
   // update array
+  // update array
+  const filter = { name: req.params.name };
+  const update = { $addToSet: { myArrayField: req.body.value } }; // add a new value to myArrayField using the $addToSet operator
+  const options = { returnOriginal: false };
 
-  const {
-    name, 
-    item,
-  } = req.body;
-
-  let field = new Field({
-    name: name,
-    item: item,
-  });
+  const updatedField = await Field.findOneAndUpdate(filter, update, options);
 
   try {
-    field = await field.save();
-    res.json(field);
+    res.json(updatedField);
   } catch (err) {
     res.status(500).send(err.message);
     console.log(`error is ${err.message}`);
