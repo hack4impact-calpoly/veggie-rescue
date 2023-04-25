@@ -1,4 +1,5 @@
 const express = require("express");
+
 const router = express.Router();
 const {
   getFields,
@@ -10,16 +11,16 @@ const {
 const { protectAdmin } = require("../middleware/authMiddleware");
 
 // get all fields
-router.get("/", protectAdmin, getFields); 
+router.get("/", protectAdmin, getFields);
 
 // get field by name
-router.get("/:name", protectAdmin, getFieldByName); 
+router.get("/:name", protectAdmin, getFieldByName);
 
-// create field
-router.post("/", protectAdmin, createField);
+// add item to field
+router.put("/add/:name", protectAdmin, createField);
 
 // edit field item
-router.put("/:name", protectAdmin, editField);
+router.put("/edit/:name", protectAdmin, editField);
 
 // delete field
 router.delete("/:name", protectAdmin, deleteField);
