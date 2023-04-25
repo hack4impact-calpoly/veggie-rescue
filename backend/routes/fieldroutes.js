@@ -17,10 +17,10 @@ router.get("/", protectAdmin, getFields);
 router.get("/:name", protectAdmin, getFieldByName);
 
 // add item to field
-router.put("/add/:name", protectAdmin, createField);
+router.put("/add", protectAdmin, createField);
 
 // edit field item
-router.put("/edit/:name", protectAdmin, editField);
+router.put("/edit", protectAdmin, editField);
 
 // delete field
 router.delete("/:name", protectAdmin, deleteField);
