@@ -7,12 +7,12 @@ const Admin = require("../models/adminSchema");
 // @route GET /api/fields
 // @access Private -> Admin only
 const getFields = asyncHandler(async (req, res) => {
+  const admin = await Admin.findById(req.admin.id);
+  if (!admin) {
+    res.status(401);
+    throw new Error("Admin not found");
+  }
   try {
-    const admin = await Admin.findById(req.admin.id);
-    if (!admin) {
-      res.status(401);
-      throw new Error("Admin not found");
-    }
     res.send(await Fields.findOne({}));
   } catch (err) {
     res
@@ -25,18 +25,19 @@ const getFields = asyncHandler(async (req, res) => {
 // @route GET /api/fields/:name
 // @access Private -> Admin only
 const getFieldByName = asyncHandler(async (req, res) => {
+  const admin = await Admin.findById(req.admin.id);
+  if (!admin) {
+    res.status(401);
+    throw new Error("Admin not found");
+  }
   try {
-    const admin = await Admin.findById(req.admin.id);
-    if (!admin) {
-      res.status(401);
-      throw new Error("Admin not found");
-    }
-
     const { fieldName } = req.body;
     // check if the field exists
     if (!Object.prototype.hasOwnProperty.call(Fields.schema.paths, fieldName)) {
-      res.status(400);
-      throw new Error(`Field doesn't exist ${fieldName}`);
+      throw new Error({
+        status: 400,
+        messsage: `Field doesn't exist ${fieldName}`,
+      });
     }
     const field = await Fields.findOne({ [fieldName]: { $exists: true } });
     res.json({ [fieldName]: field[fieldName] });
@@ -51,18 +52,19 @@ const getFieldByName = asyncHandler(async (req, res) => {
 // @route PUT /api/fields/add
 // @access Private -> Admin only
 const createField = asyncHandler(async (req, res) => {
+  const admin = await Admin.findById(req.admin.id);
+  if (!admin) {
+    res.status(401);
+    throw new Error("Admin not found");
+  }
   try {
-    const admin = await Admin.findById(req.admin.id);
-    if (!admin) {
-      res.status(401);
-      throw new Error("Admin not found");
-    }
-
     const { fieldName, value } = req.body;
     // check if the field exists
     if (!Object.prototype.hasOwnProperty.call(Fields.schema.paths, fieldName)) {
-      res.status(400);
-      throw new Error(`Field doesn't exist ${fieldName}`);
+      throw new Error({
+        status: 400,
+        message: `Field doesn't exist ${fieldName}`,
+      });
     }
 
     // add new item to array if it exists
@@ -81,18 +83,19 @@ const createField = asyncHandler(async (req, res) => {
 // @route PUT /api/fields/edit
 // @access Private -> Admin only
 const editField = asyncHandler(async (req, res) => {
+  const admin = await Admin.findById(req.admin.id);
+  if (!admin) {
+    res.status(401);
+    throw new Error("Admin not found");
+  }
   try {
-    const admin = await Admin.findById(req.admin.id);
-    if (!admin) {
-      res.status(401);
-      throw new Error("Admin not found");
-    }
-
     const { fieldName, oldValue, newValue } = req.body;
     // check if the field exists
     if (!Object.prototype.hasOwnProperty.call(Fields.schema.paths, fieldName)) {
-      res.status(400);
-      throw new Error(`Field doesn't exist ${fieldName}`);
+      throw new Error({
+        status: 400,
+        message: `Field doesn't exist ${fieldName}`,
+      });
     }
 
     const filter = {};
@@ -112,17 +115,18 @@ const editField = asyncHandler(async (req, res) => {
 // @route PUT /api/fields/delete
 // @access Private -> Admin only
 const deleteField = asyncHandler(async (req, res) => {
+  const admin = await Admin.findById(req.admin.id);
+  if (!admin) {
+    res.status(401);
+    throw new Error("Admin not found");
+  }
   try {
-    const admin = await Admin.findById(req.admin.id);
-    if (!admin) {
-      res.status(401);
-      throw new Error("Admin not found");
-    }
-
     const { fieldName, value } = req.body;
     if (!Object.prototype.hasOwnProperty.call(Fields.schema.paths, fieldName)) {
-      res.status(400);
-      throw new Error(`Field doesn't exist ${fieldName}`);
+      throw new Error({
+        status: 400,
+        message: `Field doesn't exist ${fieldName}`,
+      });
     }
 
     const filter = { [fieldName]: value };
