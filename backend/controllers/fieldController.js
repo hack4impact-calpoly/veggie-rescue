@@ -15,12 +15,9 @@ const getFields = asyncHandler(async (req, res) => {
     }
     res.send(await Fields.findOne({}));
   } catch (err) {
-    if (err.statusCode) {
-      res.status(err.statusCode);
-    } else {
-      res.status(500);
-    }
-    res.send(`Unable to fetch fields ${err.message}`);
+    res
+      .status(err.statusCode ? err.statusCode : 500)
+      .send(`Unable to fetch fields ${err.message}`);
   }
 });
 
@@ -44,12 +41,9 @@ const getFieldByName = asyncHandler(async (req, res) => {
     const field = await Fields.findOne({ [fieldName]: { $exists: true } });
     res.json({ [fieldName]: field[fieldName] });
   } catch (err) {
-    if (err.statusCode) {
-      res.status(err.statusCode);
-    } else {
-      res.status(500);
-    }
-    res.send(`Unable to fetch field ${err.message}`);
+    res
+      .status(err.statusCode ? err.statusCode : 500)
+      .send(`Unable to fetch field ${err.message}`);
   }
 });
 
@@ -77,12 +71,9 @@ const createField = asyncHandler(async (req, res) => {
     const updatedField = await Fields.updateOne(filter, update);
     res.json(updatedField);
   } catch (err) {
-    if (err.statusCode) {
-      res.status(err.statusCode);
-    } else {
-      res.status(500);
-    }
-    res.send(`Unable to add field ${err.message}`);
+    res
+      .status(err.statusCode ? err.statusCode : 500)
+      .send(`Unable to add field ${err.message}`);
   }
 });
 
@@ -111,12 +102,9 @@ const editField = asyncHandler(async (req, res) => {
     const updatedField = await Fields.updateOne(filter, update, options);
     res.json(updatedField);
   } catch (err) {
-    if (err.statusCode) {
-      res.status(err.statusCode);
-    } else {
-      res.status(500);
-    }
-    res.send(`Unable to edit field ${err.message}`);
+    res
+      .status(err.statusCode ? err.statusCode : 500)
+      .send(`Unable to edit field ${err.message}`);
   }
 });
 
@@ -144,11 +132,8 @@ const deleteField = asyncHandler(async (req, res) => {
     const updatedField = await Fields.findOneAndUpdate(filter, update, options);
     res.json(updatedField);
   } catch (err) {
-    if (err.statusCode) {
-      res.status(err.statusCode);
-    } else {
-      res.status(500);
-    }
-    res.send(`Unable to delete field ${err.message}`);
+    res
+      .status(err.statusCode ? err.statusCode : 500)
+      .send(`Unable to delete field ${err.message}`);
   }
 });
