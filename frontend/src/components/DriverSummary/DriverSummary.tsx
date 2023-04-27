@@ -3,14 +3,23 @@ import NavBarButton_DARK from '../../imgs/button_dark_left.svg';
 
 function DriverSummary() {
   return (
-    <div className="all-page">
-      <button type="button" id="icon">
-        <img className="backButton" src={NavBarButton_DARK} alt="Back Button" />
-      </button>
+    <div className="container p-2">
+      <div className="flex flex-row mx-3 mt-16 mb-7 md:text-5xl  text-3xl font-semibold text-lime-900 md:w-3/5 w-5/6">
+        <button
+          className="items-center justify-center "
+          id="icon"
+          type="button"
+          // onClick={backFunc}
+        >
+          <img className="h-16" src={NavBarButton_DARK} alt="leftButton" />
+        </button>
+        <div className="flex">
+          {/* <span className="capitalize">{name}</span> */}
+          <span>Bye Diana!</span>
+        </div>
+      </div>
 
-      <p className="punchOutHeader"> Punch Out </p>
-
-      <h1 className="goodbyeMessage"> Bye Diana! </h1>
+      {/* <h1 className="goodbyeMessage"> Bye Diana! </h1> */}
       <h2 className="summary"> Today&apos;s Summary </h2>
 
       {/* Get Clock in/Clock Out */}
