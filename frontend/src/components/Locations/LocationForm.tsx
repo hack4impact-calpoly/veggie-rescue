@@ -85,23 +85,34 @@ function LocationForm({
     event.preventDefault();
     // remove 'other' as a value from the list
     const newItems: Items = Object.entries(items).reduce((acc, [key, val]) => {
-      if (key === 'Other') {
-        acc[val.value] = {
-          isChecked: val.isChecked,
+      // if OtherAmount is specified, it holds the weight of 'Other' -- create an entry for 'Other' with its food type
+      if (key === 'OtherAmount') {
+        acc[items.Other.value] = {
+          isChecked: items.Other.isChecked,
           value: items.OtherAmount.value
         };
-      } else if (key !== 'OtherAmount') {
+        // means no weight was specified for 'Other' -- force failure
+      } else if (key === 'Other' && !items.OtherAmount) {
+        acc[items.Other.value] = {
+          isChecked: val.isChecked,
+          value: -10
+        };
+        // add all other items
+      } else if (key !== 'OtherAmount' && key !== 'Other' && key !== '') {
         acc[key] = val;
       }
       return acc;
     }, {});
-
     const areAllFilled =
       Object.entries(newItems).filter(([itemName, item]) => {
         if (item.isChecked && item.value === undefined) {
           return true;
         }
-        if (item.isChecked && parseInt(item.value, 10) <= 0) {
+        if (
+          item.isChecked &&
+          (parseInt(item.value, 10) <= 0 ||
+            Number.isNaN(parseInt(item.value, 10)))
+        ) {
           return true;
         }
         if (
@@ -115,7 +126,10 @@ function LocationForm({
       }).length === 0;
     if (areAllFilled) {
       const foodWeights = Object.keys(newItems).reduce((acc, curr) => {
-        acc[curr] = newItems[curr].value;
+        // only add items that are checked
+        if (newItems[curr].isChecked) {
+          acc[curr] = newItems[curr].value;
+        }
         return acc;
       }, {}); // make 'items' same type as foodType: Map<String, number>
       console.log('Form submitted with', foodWeights);
@@ -129,6 +143,14 @@ function LocationForm({
         FoodAllocation: foodWeights,
         Area: current.CombinedAreaName
       });
+      const foodStrings = Object.entries(foodWeights).map(
+        ([key, value]) => `${key}: ${value}lbs`
+      );
+
+      const foodsString = foodStrings.join(', ');
+
+      // Use the itemsString in a template literal to print the desired message
+      toast.success(`Form submitted with: ${foodsString}`);
       setForceNext(true);
     } else {
       toast.error('Please fill in all required fields.');
@@ -304,7 +326,7 @@ function LocationForm({
                 </label>
                 {items[foodType]?.isChecked && foodType !== 'Other' && (
                   <input
-                    className="bg-white ml-2 text-2xl w-20 h-10 italic py-4 px-4 mt-2 rounded-lg shadow text-left"
+                    className="bg-white ml-2 text-2xl w-20 h-10 italic py-4 px-4 rounded-lg shadow text-left"
                     type="number"
                     name={foodType}
                     value={items[foodType]?.value || ''}
@@ -315,14 +337,6 @@ function LocationForm({
                 {items[foodType]?.isChecked && foodType === 'Other' && (
                   <div>
                     <input
-                      className="bg-white ml-2 text-4xl w-full italic py-4 px-4 mt-2 rounded-lg shadow w-full text-left"
-                      type="text"
-                      placeholder="Food Type"
-                      name={foodType}
-                      value={items[foodType]?.value || ''}
-                      onChange={handleTextChange}
-                    />
-                    <input
                       className="bg-white ml-2 text-2xl w-20 h-10 italic py-4 px-4 mt-2 rounded-lg shadow text-left"
                       placeholder="lbs"
                       type="number"
@@ -330,6 +344,16 @@ function LocationForm({
                       value={items[`${foodType}Amount`]?.value || ''}
                       onChange={handleTextChange}
                     />
+                    <div className="flex items-center justify-center mt-2">
+                      <input
+                        className="bg-white ml-2 text-4xl w-full italic py-4 px-4 rounded-lg shadow w-full text-left"
+                        type="text"
+                        placeholder="Food Type"
+                        name={foodType}
+                        value={items[foodType]?.value || ''}
+                        onChange={handleTextChange}
+                      />
+                    </div>
                   </div>
                 )}
               </div>
