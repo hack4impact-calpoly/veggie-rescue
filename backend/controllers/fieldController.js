@@ -25,10 +25,10 @@ const getFieldByName = asyncHandler(async (req, res) => {
     throw new Error("Admin not found");
   }
 
-  const fieldName = req.params.name;
-  const field = await Field.findOne({ [fieldName]: { $exists: true } });
-  if (!field) {
-    return res.status(404).json({ message: "No field found" });
+  // check if the field exists
+  if (!Object.prototype.hasOwnProperty.call(Field.schema.paths, req.params.name)) {
+    res.status(400);
+    throw new Error(`Invalid field name ${req.params.name}`);
   }
 
   res.json({ [fieldName]: field[fieldName] });
