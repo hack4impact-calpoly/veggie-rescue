@@ -54,7 +54,7 @@ const getFieldByName = asyncHandler(async (req, res) => {
 });
 
 // @desc Add item to field
-// @route PUT /api/fields
+// @route PUT /api/fields/add
 // @access Private -> Admin only
 const createField = asyncHandler(async (req, res) => {
   try {
@@ -87,7 +87,7 @@ const createField = asyncHandler(async (req, res) => {
 });
 
 // @desc Edit field item
-// @route PUT /api/fields/:name
+// @route PUT /api/fields/edit
 // @access Private -> Admin only
 const editField = asyncHandler(async (req, res) => {
   try {
@@ -121,7 +121,7 @@ const editField = asyncHandler(async (req, res) => {
 });
 
 // @desc Delete field item
-// @route DELETE /api/fields/:name
+// @route PUT /api/fields/delete
 // @access Private -> Admin only
 const deleteField = asyncHandler(async (req, res) => {
   try {
