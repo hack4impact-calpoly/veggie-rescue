@@ -74,25 +74,23 @@ const editField = asyncHandler(async (req, res) => {
     throw new Error("Admin not found");
   }
 
+  // check if the field exists
   if (!Object.prototype.hasOwnProperty.call(Field.schema.paths, req.params.name)) {
     res.status(400);
     throw new Error(`Invalid field name ${req.params.name}`);
   }
-
-  const field = await Field.findOne();
-  if (!field) {
-    res.status(404);
-    throw new Error("No field found");
-  }
   
-  const { fieldName, oldValue, newValue } = req.body; // get all the params at once like this
+  // update array
+  const filter = { };
+  const update = { $addToSet: { [`${req.params.name}`]: req.body.value } }; 
+  const updatedField = await Field.updateOne(filter, update);
 
-  field[fieldName] = field[fieldName].map((value) =>
-    value === oldValue ? newValue : value
-  );
-
-  await field.save();
-  return res.status(201).json(field);
+  try {
+    res.json(updatedField);
+  } catch (err) {
+    res.status(500).send(err.message);
+    console.log(`error is ${err.message}`);
+  }
 });
 
 // @desc Delete field item
