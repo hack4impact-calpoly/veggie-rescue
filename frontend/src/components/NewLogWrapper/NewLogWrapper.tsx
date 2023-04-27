@@ -31,7 +31,7 @@ export default function NewLogWrapper() {
             EntityType: '',
             LocationType: '',
             Demographic: '',
-            FoodType: '',
+            FoodAllocation: new Map<String, Number>(),
             Area: '',
             lbsDroppedOff: 0
           }
@@ -69,7 +69,7 @@ export default function NewLogWrapper() {
             vehicle: vehicle.name,
             name: pickupDeliveryObject.name,
             donorEntityType : pickupDeliveryObject.EntityType,
-            foodType: pickupDeliveryObject.FoodType,
+            foodAllocation: pickupDeliveryObject.FoodAllocation,
             area: pickupDeliveryObject.Area,
             lbsPickedUp: pickupDeliveryObject.lbsDroppedOff }
         
@@ -93,7 +93,7 @@ export default function NewLogWrapper() {
             name: pickupDeliveryObject.name,
             recipientEntityType : pickupDeliveryObject.EntityType,
             demographic : pickupDeliveryObject.Demographic,
-            foodType: pickupDeliveryObject.FoodType,
+            foodAllocation: pickupDeliveryObject.FoodAllocation,
             area: pickupDeliveryObject.Area,
             lbsDroppedOff: pickupDeliveryObject.lbsDroppedOff}
 
@@ -185,7 +185,7 @@ interface DropoffSchema {
     vehicle: String,
     name: String,
     recipientEntityType: String,
-    foodType: String,
+    foodAllocation: Map<String, Number>,
     demographic: String,
     area: String,
     lbsDroppedOff: number,
@@ -199,7 +199,7 @@ interface Dropoff {
     vehicle: String,
     name: String,
     recipientEntityType: String,
-    foodType: String,
+    foodAllocation: Map<String, Number>,
     demographic: String,
     area: String,
     lbsDroppedOff: number,
@@ -211,7 +211,7 @@ interface Pickup {
     vehicle: String,
     name: String,
     donorEntityType: String,
-    foodType: String,
+    foodAllocation: Map<String, Number>,
     area: String,
     lbsPickedUp: number,
 }

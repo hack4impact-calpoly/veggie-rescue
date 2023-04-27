@@ -22,7 +22,7 @@ interface PickupDeliveryObjectSchema {
   EntityType: String;
   LocationType: String;
   Demographic: String;
-  FoodAllocation: Map<string, number>
+  FoodAllocation: Map<String, Number>
   Area: String;
   lbsDroppedOff: Number;
 }
@@ -58,6 +58,10 @@ function LocationForm({
   const [firstProduce, setFirstProduce] = useState(true);
   const [firstOther, setFirstOther] = useState(true);
 
+
+  const[produceWeight, setProduceWeight] = useState(-1);
+  const[otherWeight, setOtherWeight] = useState(-1)
+
   const [isWeightValid, setIsWeightValid] = useState(true);
 
   const [checked, setChecked] = useState<string[]>([]);
@@ -70,7 +74,9 @@ function LocationForm({
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [food, setFoodType] = useState('');
 
-  const [weight, setWeight] = useState(0);
+  const [weight, setWeight] = useState(-1);
+
+
 
 
 
@@ -379,13 +385,25 @@ function LocationForm({
                     onBlur={(e) => {
                       if (isNaN(weight))
                       {
+
+                        
                         setIsWeightValid(false)
                         toast.error("Please enter a valid number for weight")
                       }
                       else
                       {
-                        setIsWeightValid(true)
-                        addFood("Produce", weight)
+                        if (weight >=0)
+                        {
+                          setProduceWeight(weight)
+                          setIsWeightValid(true)
+                          addFood("Produce", weight)
+                        }
+                        else
+                        {
+                          setIsWeightValid(false)
+                          toast.error("Please enter a valid number for weight")
+                        }
+                          
                       }
                       
                       
@@ -439,11 +457,25 @@ function LocationForm({
                         setIsWeightValid(false)
                         toast.error("Please enter a valid number for weight")
                       }
+                      
                       else
-                      {
-                        setIsWeightValid(true)
-                        addFood(input, weight)
-                      }
+                        {
+                          if (weight>=0)
+                          {
+                            setOtherWeight(weight)
+                            setIsWeightValid(true)
+                            addFood(input, weight)
+                          }
+                          else
+                          {
+                            setIsWeightValid(false)
+                            toast.error("Please enter a valid number for weight")
+                          }
+                          
+                        }
+                       
+                        
+                      
                   }}
                   placeholder="Please Specify"
                 />{' '}
@@ -457,7 +489,7 @@ function LocationForm({
         <button
           type="submit"
           disabled={
-            (checked.length === 0 && !isOtherClicked) || !isWeightValid
+            (checked.length === 0 && !isOtherClicked) || (!isWeightValid) || (isProduceClicked && produceWeight<0) || (isOtherClicked && otherWeight <0)
           } /* disable if nothing is clicked */
           className="bg-amber-500 rounded-full w-full mt-5 p-3 text-3xl text-white font-semibold shadow"
           onClick={() => {
