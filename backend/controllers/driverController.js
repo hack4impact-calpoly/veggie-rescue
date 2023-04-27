@@ -1,9 +1,14 @@
 const asyncHandler = require("express-async-handler");
-const bcrypt = require("bcryptjs");
-const Driver = require("../models/driverModel");
-const Admin = require("../models/adminModel")
-const Vehicle = require("../models/vehiclesSchema");
 const jwt = require("jsonwebtoken");
+const Driver = require("../models/driverSchema");
+const Admin = require("../models/adminSchema");
+const Vehicle = require("../models/vehiclesSchema");
+
+// Generate token
+const generateToken = (id) =>
+  jwt.sign({ id }, process.env.JWT_SECRET, {
+    expiresIn: "30d",
+  });
 
 // @desc Get all drivers
 // @route /api/drivers
@@ -16,10 +21,10 @@ const getDrivers = asyncHandler(async (req, res) => {
     res.status(401);
     throw new Error("Admin not found");
   }
- 
+
   const driver = await Driver.find();
   res.status(200).json(driver);
-})
+});
 
 // @desc Register a new driver; make sure password is <= 4 in length.
 // @route /api/drivers
@@ -33,9 +38,9 @@ const registerDriver = asyncHandler(async (req, res) => {
   }
 
   // We have to see if the password already exists
-  const foundDrivers = await Driver.find({ pin: pin });
+  const foundDrivers = await Driver.find({ pin });
 
-  //Check if pin matched
+  // Check if pin matched
   if (foundDrivers === []) {
     res.status(401);
     throw new Error("Pin already exists");
@@ -63,7 +68,7 @@ const registerDriver = asyncHandler(async (req, res) => {
     img: "no image",
     currentPickups: [],
     currentDropoffs: [],
-    totalWeight: 0,
+    totalFoodAllocation: new Map(),
   });
 
   if (driver) {
@@ -81,7 +86,7 @@ const registerDriver = asyncHandler(async (req, res) => {
 // @desc    Edit driver
 // @route   PUT /api/drivers/:id
 // @access  Private
-const editDriver = asyncHandler (async (req,res) => {
+const editDriver = asyncHandler(async (req, res) => {
   // Get user using the id in the JWT
   const admin = await Admin.findById(req.admin.id);
 
@@ -89,7 +94,7 @@ const editDriver = asyncHandler (async (req,res) => {
     res.status(401);
     throw new Error("Admin not found");
   }
-  const { name, pin} = req.body;
+  const { name, pin } = req.body;
 
   // Build driver object
   const driverFields = {};
@@ -105,30 +110,30 @@ const editDriver = asyncHandler (async (req,res) => {
   }
   if (pin) {
     // We have to see if the password already exists
-    const foundDrivers = await Driver.find({ pin: pin });
-    //Check if pin matched
+    const foundDrivers = await Driver.find({ pin });
+    // Check if pin matched
     if (foundDrivers.length !== 0) {
       res.status(401);
       throw new Error("Pin already exists");
     }
     driverFields.pin = pin;
   }
- 
+
   try {
     let driver = await Driver.findById(req.params.id);
 
     if (!driver) return res.status(404).json({ msg: "Driver not found" });
 
-    driver = await Driver.findByIdAndUpdate(
-      req.params.id,
-      { $set: driverFields });
+    driver = await Driver.findByIdAndUpdate(req.params.id, {
+      $set: driverFields,
+    });
 
-    res.json({ updated: driver, new: driverFields });
+    return res.json({ updated: driver, new: driverFields });
   } catch (err) {
     console.error(err.message);
-    res.status(500).send("Server Error");
+    return res.status(500).send("Server Error");
   }
-})
+});
 
 // @desc    Delete driver
 // @route   DELETE /api/drivers/:id
@@ -136,11 +141,11 @@ const editDriver = asyncHandler (async (req,res) => {
 const deleteDriver = asyncHandler(async (req, res) => {
   // Get admin using the id in the JWT
   // Takes token from local storage key and verifies authenticity
-      const admin = await Admin.findById(req.admin.id);
-      if (!admin) {
-        res.status(401);
-        throw new Error("Admin not found");
-      }
+  const admin = await Admin.findById(req.admin.id);
+  if (!admin) {
+    res.status(401);
+    throw new Error("Admin not found");
+  }
 
   // Get the personal vehicle which is connected to driver; make sure it is not logged in.
   const vehicle = await Vehicle.find({ driver: req.params.id });
@@ -156,20 +161,21 @@ const deleteDriver = asyncHandler(async (req, res) => {
     throw new Error("Personal Vehicle is currently logged in");
   }
 
-  const driver = await Driver.findById(req.params.id)
-  
+  const driver = await Driver.findById(req.params.id);
+
   if (!driver) {
-    res.status(404)
-    throw new Error('Driver not found')
+    res.status(404);
+    throw new Error("Driver not found");
   }
 
   await Vehicle.findByIdAndRemove(updateVehicle[0]._id);
   await driver.remove();
 
-  res.status(200).json({ 
+  res.status(200).json({
     success: true,
-  msg: 'Successfully removed driver and personal vehicle'})
-})
+    msg: "Successfully removed driver and personal vehicle",
+  });
+});
 
 // @desc Login a driver
 // @route /api/drivers
@@ -181,27 +187,24 @@ const loginDriver = asyncHandler(async (req, res) => {
     throw new Error("Invalid Pin length");
   }
   //  Check if pin matches any driver
-  const hasPin = await Driver.findOne({pin});
+  const hasPin = await Driver.findOne({ pin });
   if (!hasPin) {
     res.status(404);
     throw new Error("Invalid pin!");
   }
   // Set logged in to true and set date to log in time.
   const body = {
-      isLoggedIn: true,
-      clock_in: Date.now(),
-    }
-  await Driver.findByIdAndUpdate(hasPin._id, body );
+    isLoggedIn: true,
+    clock_in: Date.now(),
+  };
+  await Driver.findByIdAndUpdate(hasPin._id, body);
 
-    res.status(200).json({
-      id: hasPin._id,
-      name: hasPin.name,
-      token: generateToken(hasPin._id),
-    });
- 
+  res.status(200).json({
+    id: hasPin._id,
+    name: hasPin.name,
+    token: generateToken(hasPin._id),
+  });
 });
-
-
 
 // @desc    Get current driver
 // @route   /api/drivers/get
@@ -218,16 +221,6 @@ const getDriver = asyncHandler(async (req, res) => {
   res.status(200).json(driver);
 });
 
-// Generate token
-const generateToken = (id) => {
-  return jwt.sign({ id }, process.env.JWT_SECRET, {
-    expiresIn: "30d",
-  });
-};
-
-
-
-
 module.exports = {
   getDrivers,
   registerDriver,
@@ -235,5 +228,4 @@ module.exports = {
   deleteDriver,
   loginDriver,
   getDriver,
-
 };

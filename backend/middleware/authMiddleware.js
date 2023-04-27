@@ -1,7 +1,7 @@
 const jwt = require("jsonwebtoken");
 const asyncHandler = require("express-async-handler");
-const Driver = require("../models/driverModel");
-const Admin = require("../models/adminModel");
+const Driver = require("../models/driverSchema");
+const Admin = require("../models/adminSchema");
 
 // Insert this into routes where you want only users who are logged in as drivers accessing routes
 const protectDriver = asyncHandler(async (req, res, next) => {
@@ -45,7 +45,7 @@ const protectAdmin = asyncHandler(async (req, res, next) => {
   ) {
     try {
       // Get token from header
-      token = req.headers.authorization.split(" ")[1];
+      [, token] = req.headers.authorization.split(" ")[1];
       // Verify token
       const decoded = jwt.verify(token, process.env.JWT_SECRET);
 

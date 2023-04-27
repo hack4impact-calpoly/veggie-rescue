@@ -2,22 +2,15 @@ import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import dropoffsService from './dropoffsService';
 import type { RootState } from '../../app/store';
 
-// Interface for dropoff items (This is what will be kept in store and what you will have access)
-interface Dropoff {
-  _id: string;
-  name: string;
-  token: string;
-}
-interface dropoffObject {
-  //date: String;
+interface DropoffObject {
+  // date: String;
   driver: String;
   vehicle: String;
   name: String;
   recipientEntityType: String;
   demographic: String;
-  foodType: String;
   area: String;
-  lbsDroppedOff: Number;
+  foodAllocation: Map<String, Number>;
 }
 
 // // Define a type for the slice state
@@ -26,7 +19,7 @@ interface DropoffState {
   isError: boolean;
   isSuccess: boolean;
   isLoading: boolean;
-    isChecked: boolean;
+  isChecked: boolean;
   message: any | null;
 }
 
@@ -45,7 +38,7 @@ export const getDropoffs = createAsyncThunk(
   async (_, thunkAPI) => {
     try {
       const state = thunkAPI.getState() as RootState;
-      let token = state.driverAuth.driver.token;
+      let { token } = state.driverAuth.driver;
       if (!token) {
         token = state.adminAuth.admin.token;
       }
@@ -66,7 +59,7 @@ export const getDropoffs = createAsyncThunk(
 
 export const createDropoff = createAsyncThunk(
   'api/createDropoff',
-  async (dropoff: dropoffObject, thunkAPI) => {
+  async (dropoff: DropoffObject, thunkAPI) => {
     try {
       return await dropoffsService.createDropoff(dropoff);
     } catch (error: any) {
@@ -84,12 +77,11 @@ export const createDropoff = createAsyncThunk(
 
 export const createBatchDropoff = createAsyncThunk(
   'api/createBatchDropoff/batch',
-  async (dropoff: dropoffObject[], thunkAPI) => {
+  async (dropoff: DropoffObject[], thunkAPI) => {
     try {
-
-       // Set up token for authenticating route
+      // Set up token for authenticating route
       const state = thunkAPI.getState() as RootState;
-      const token = state.driverAuth.driver.token;
+      const { token } = state.driverAuth.driver;
       return await dropoffsService.createBatchDropoff(dropoff, token);
     } catch (error: any) {
       const message =
@@ -107,56 +99,67 @@ export const dropoffsSlice = createSlice({
   name: 'dropoff',
   initialState,
   reducers: {
-    reset: (state) => {
-      state.isLoading = false;
-      state.isError = false;
-      state.isSuccess = false;
-      state.message = '';
-    },
-    setSuccess: (state) => {
-      state.isSuccess = !state.isSuccess;
-    }
+    reset: (state) => ({
+      ...state,
+      isLoading: false,
+      isError: false,
+      isSuccess: false,
+      message: ''
+    }),
+    setSuccess: (state) => ({
+      ...state,
+      isSuccess: !state.isSuccess
+    })
   },
   extraReducers: (builder) => {
     builder
-      .addCase(getDropoffs.pending, (state) => {
-        state.isLoading = true;
-      })
-      .addCase(getDropoffs.fulfilled, (state, action) => {
-        state.isLoading = false;
-        state.isSuccess = true;
-        state.dropoffs = action.payload;
-      })
-      .addCase(getDropoffs.rejected, (state, action) => {
-        state.isLoading = false;
-        state.isError = true;
-        state.message = action.payload;
-      })
-            .addCase(createDropoff.pending, (state) => {
-        state.isLoading = true;
-      })
-      .addCase(createDropoff.fulfilled, (state, action) => {
-        state.isLoading = false;
-        state.isSuccess = true;
-        state.dropoffs = action.payload;
-      })
-      .addCase(createDropoff.rejected, (state, action) => {
-        state.isLoading = false;
-        state.isError = true;
-        state.message = action.payload;
-      })
-      .addCase(createBatchDropoff.pending, (state) => {
-        state.isLoading = true;
-      })
-      .addCase(createBatchDropoff.fulfilled, (state) => {
-        state.isLoading = false;
-        state.isSuccess = true;
-      })
-      .addCase(createBatchDropoff.rejected, (state, action) => {
-        state.isLoading = false;
-        state.isError = true;
-        state.message = action.payload;
-      });
+      .addCase(getDropoffs.pending, (state) => ({
+        ...state,
+        isLoading: true
+      }))
+      .addCase(getDropoffs.fulfilled, (state, action) => ({
+        ...state,
+        isLoading: false,
+        isSuccess: true,
+        dropoffs: action.payload
+      }))
+      .addCase(getDropoffs.rejected, (state, action) => ({
+        ...state,
+        isLoading: false,
+        isError: true,
+        message: action.payload
+      }))
+      .addCase(createDropoff.pending, (state) => ({
+        ...state,
+        isLoading: true
+      }))
+      .addCase(createDropoff.fulfilled, (state, action) => ({
+        ...state,
+        isLoading: false,
+        isSuccess: true,
+        dropoffs: action.payload
+      }))
+      .addCase(createDropoff.rejected, (state, action) => ({
+        ...state,
+        isLoading: false,
+        isError: true,
+        message: action.payload
+      }))
+      .addCase(createBatchDropoff.pending, (state) => ({
+        ...state,
+        isLoading: true
+      }))
+      .addCase(createBatchDropoff.fulfilled, (state) => ({
+        ...state,
+        isLoading: false,
+        isSuccess: true
+      }))
+      .addCase(createBatchDropoff.rejected, (state, action) => ({
+        ...state,
+        isLoading: false,
+        isError: true,
+        message: action.payload
+      }));
   }
 });
 

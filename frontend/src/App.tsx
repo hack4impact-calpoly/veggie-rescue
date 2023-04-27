@@ -16,13 +16,13 @@ import Weight from './components/Weight/Weight';
 import NewLogWrapper from './components/NewLogWrapper/NewLogWrapper';
 import AdminLogs from './components/ViewLogsPage/ViewLogsPage';
 import ViewLogsPage from './components/ViewLogsPage/ViewLogsPage';
+import DriverSummary from './components/DriverSummary/DriverSummary';
 
 const App: React.FC = () => {
   return (
     <>
       <Router>
         <Routes>
-
           {/* (Unprotected routes) depending on the redirectTo Variable value it redirects to the corresponding page if user is not logged in */}
           <Route path="/Login" element={<LoginScreen />} />
           <Route path="/" element={<LoginScreen />} />
@@ -71,7 +71,13 @@ const App: React.FC = () => {
           >
             <Route path="/NewLog" element={<NewLogWrapper />} />
           </Route>
-
+          <Route
+            path="/Summary"
+            element={<ProtectedRoute redirectTo="/Login" />}
+          >
+            <Route path="/Summary" element={<DriverSummary />} />
+          </Route>
+          
           <Route
             path="/Admin"
             element={<ProtectedRoute redirectTo="/AdminLogin" />}

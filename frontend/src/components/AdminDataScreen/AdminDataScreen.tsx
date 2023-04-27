@@ -1,22 +1,21 @@
+/* eslint-disable react/jsx-no-bind */
 import React, { useState, useLayoutEffect, useEffect } from 'react';
 import './AdminDataScreen.css';
-import DonorsCard from '../../components/DonorsCard/DonorsCard';
-import RecipientsCard from '../../components/RecipientsCard/RecipientsCard';
-import VehiclesCard from '../../components/VehiclesCard/VehiclesCard';
-import VolunteersCard from '../../components/VolunteersCard/VolunteersCard';
-import NewVolunteersCard from '../../components/VolunteersCard/NewVolunteersCard';
-import NewDonorsCard from '../../components/DonorsCard/NewDonorsCard';
+import { AiOutlineSearch } from 'react-icons/ai';
+import DonorsCard from '../DonorsCard/DonorsCard';
+import RecipientsCard from '../RecipientsCard/RecipientsCard';
+import VehiclesCard from '../VehiclesCard/VehiclesCard';
+import VolunteersCard from '../VolunteersCard/VolunteersCard';
+import NewVolunteersCard from '../VolunteersCard/NewVolunteersCard';
+import NewDonorsCard from '../DonorsCard/NewDonorsCard';
 import ShortEntityForm from './ShortEntityForm';
 // import { deliverySchema, pickupSchema, dnoo } from '../../data/dbMock';
-import { AiOutlineSearch } from 'react-icons/ai';
 import { useAppSelector, useAppDispatch } from '../../app/hooks';
 import {
-  getDrivers,
+  getDrivers
   // deleteDriver
 } from '../../features/driverAuth/driverAuthSlice';
-import {
-  getVehicles,
-} from '../../features/vehicles/VehiclesSlice';
+import { getVehicles } from '../../features/vehicles/VehiclesSlice';
 import { getDonors } from '../../features/donors/donorSlice';
 import { getRecipients } from '../../features/recipients/recipientsSlice';
 import AdminHeader from '../AdminHeader/AdminHeader';
@@ -28,6 +27,7 @@ import RecipientsForm from '../RecipientsCard/RecipientsForm';
 // import VolunteerEditForm from './EditComponents/VolunteerEditForm';
 // import DonorEditForm from './EditComponents/DonorEditForm';
 // import RecipientEditForm from './EditComponents/RecipientEditForm';
+
 
 const AdminDataScreen = () => {
 
@@ -42,24 +42,14 @@ const AdminDataScreen = () => {
   const [searchParam, setSearchParam] = useState(['name']);
   const [isUpdate, setUpdate] = useState(false);
   const dispatch = useAppDispatch();
-  const { isLoading, drivers, isError, isSuccess, message } = useAppSelector(
-    (state) => state.driverAuth
+  const { drivers } = useAppSelector((state) => state.driverAuth);
+  const { vehicles } = useAppSelector((state) => state.vehicle);
+
+  const { donors: pickupSchema } = useAppSelector((state) => state.donors);
+
+  const { recipients: deliverySchema } = useAppSelector(
+    (state) => state.recipients
   );
-  const {
-    vehicles,
-    isSuccess: vehicleSuccess,
-    isUpdate: vehicleIsUpdate,
-  } = useAppSelector((state) => state.vehicle);
-
-  const {
-    donors: pickupSchema,
-    isSuccess: donorSuccess,
-  } = useAppSelector((state) => state.donors);
-
-  const {
-    recipients: deliverySchema,
-    isSuccess: recipientsSuccess,
-  } = useAppSelector((state) => state.recipients);
 
   // const [edit, setEdit] = useState(false);
   // const [dataToEdit, setDataToEdit] = useState({});
@@ -71,12 +61,11 @@ const AdminDataScreen = () => {
   const [showDonorButtons, toggleDonorButtons] = useState(false);
   const [showRecipientButtons, toggleRecipientButtons] = useState(false);
 
-  
   useEffect(() => {
-     dispatch(getDrivers());
-     dispatch(getVehicles());
-     dispatch(getDonors());
-     dispatch(getRecipients());
+    dispatch(getDrivers());
+    dispatch(getVehicles());
+    dispatch(getDonors());
+    dispatch(getRecipients());
   }, [dispatch]);
 
   // const removeDriver = (id: string) => {
@@ -93,7 +82,6 @@ const AdminDataScreen = () => {
     setRecipients(false);
     toggleDonorButtons(false);
     toggleRecipientButtons(false);
-
   }
 
   function handleVehicles() {
@@ -104,22 +92,21 @@ const AdminDataScreen = () => {
     setRecipients(false);
     toggleDonorButtons(false);
     toggleRecipientButtons(false);
-
   }
 
   function vehicleData(vehicle: any) {
     setCurrentVehicle(vehicle);
     setUpdate(true);
   }
-  function volunteerData(volunteer: any){
+  function volunteerData(volunteer: any) {
     setCurrentVolunteer(volunteer);
     setUpdate(true);
   }
-  function donorData(donor: any){
+  function donorData(donor: any) {
     setCurrentDonor(donor);
     setUpdate(true);
   }
-  function recipientData(recipient: any){
+  function recipientData(recipient: any) {
     setCurrentRecipient(recipient);
     setUpdate(true);
   }
@@ -137,7 +124,6 @@ const AdminDataScreen = () => {
     setRecipients(false);
     toggleDonorButtons((prev) => !prev);
     toggleRecipientButtons(false);
-
   }
 
   function handleRecipients() {
@@ -154,7 +140,6 @@ const AdminDataScreen = () => {
     ]);
     toggleDonorButtons(false);
     toggleRecipientButtons((prev) => !prev);
-
   }
 
   function handleShowModal() {
@@ -167,47 +152,42 @@ const AdminDataScreen = () => {
   }, [volunteers, vehiclesCard, donors, recipients]);
 
   /* this function adds cards to query based on search */
-  
   function search(items: any) {
     if (volunteers) {
-      return drivers.filter((item: any) => {
-        return searchParam.some((newItem: any) => {
-          return (
+      return drivers.filter((item: any) =>
+        searchParam.some(
+          (newItem: any) =>
             item[newItem].toString().toLowerCase().indexOf(q.toLowerCase()) > -1
-          );
-        });
-      });
-    } else if (vehiclesCard) {
-      return vehicles.filter((item: any) => {
-        return (
+        )
+      );
+    }
+    if (vehiclesCard) {
+      return vehicles.filter(
+        (item: any) =>
           item.name !== 'personal vehicle' &&
-          searchParam.some((newItem: any) => {
-            return (
+          searchParam.some(
+            (newItem: any) =>
               item[newItem].toString().toLowerCase().indexOf(q.toLowerCase()) >
               -1
-            );
-          })
-        );
-      });
-    } else if (donors) {
-      console.log(pickupSchema)
-      return pickupSchema.filter((item: any) => {
-        return searchParam.some((newItem: any) => {
-          return (
-            item[newItem].toString().toLowerCase().indexOf(q.toLowerCase()) > -1
-          );
-        });
-      });
-    } else {
-      console.log(deliverySchema)
-      return deliverySchema.filter((item: any) => {
-        return searchParam.some((newItem: any) => {
-          return (
-            item[newItem].toString().toLowerCase().indexOf(q.toLowerCase()) > -1
-          );
-        });
-      });
+          )
+      );
     }
+    if (donors) {
+      console.log(pickupSchema);
+      return pickupSchema.filter((item: any) =>
+        searchParam.some(
+          (newItem: any) =>
+            item[newItem].toString().toLowerCase().indexOf(q.toLowerCase()) > -1
+        )
+      );
+    }
+    console.log(deliverySchema);
+    return deliverySchema.filter((item: any) =>
+      searchParam.some(
+        (newItem: any) =>
+          item[newItem].toString().toLowerCase().indexOf(q.toLowerCase()) > -1
+      )
+    );
   }
 
   if (loading) {
@@ -222,6 +202,7 @@ const AdminDataScreen = () => {
           <div className="titles">
             <div>
               <button
+                type="button"
                 className="title"
                 onClick={handleVolunteers}
                 style={{ border: volunteers ? '2px solid #FF9C55' : '' }}
@@ -231,6 +212,7 @@ const AdminDataScreen = () => {
             </div>
             <div>
               <button
+                type="button"
                 className="title"
                 onClick={handleVehicles}
                 style={{ border: vehiclesCard ? '2px solid #FF9C55' : '' }}
@@ -240,6 +222,7 @@ const AdminDataScreen = () => {
             </div>
             <div>
               <button
+                type="button"
                 className="title"
                 onClick={handleDonors}
                 style={{ border: donors ? '2px solid #FF9C55' : '' }}
@@ -249,6 +232,7 @@ const AdminDataScreen = () => {
             </div>
             <div>
               <button
+                type="button"
                 className="title"
                 onClick={handleRecipients}
                 style={{ border: recipients ? '2px solid #FF9C55' : '' }}
@@ -292,7 +276,7 @@ const AdminDataScreen = () => {
               </button>
             </div>
           </div>
-
+          
           {/*donor buttons*/}
           <div className={showDonorButtons ? "titles" : "hidden titles"}>  
           <div>
@@ -320,7 +304,6 @@ const AdminDataScreen = () => {
               </button>
             </div>
           </div>
-          
           <div className="search">
             <input
               type="text"
@@ -336,118 +319,136 @@ const AdminDataScreen = () => {
 
           {volunteers && (
             <div className="logs">
-              <button onClick={()=>{handleShowModal(); setUpdate(false);}}>
+              <button
+                type="button"
+                onClick={() => {
+                  handleShowModal();
+                  setUpdate(false);
+                }}
+              >
                 <NewVolunteersCard />
               </button>
               {showModal && (
                 <ShortEntityForm
                   handleShow={handleShowModal}
                   whichEntity={false}
-                  isUpdate={isUpdate} 
+                  isUpdate={isUpdate}
                   volunteer={currentVolunteer}
                 />
               )}
-              {search(q).map((item: any, index: any) => {
-                return (
-                    <VolunteersCard
-                      index={index}
-                      handleShow={handleShowModal}
-                      volunteer = {item}
-                      // removeDriver={removeDriver}
-                      volunteerHandler={volunteerData}
-                    />
-                );
-              })}
+              {search(q).map((item: any, index: any) => (
+                <VolunteersCard
+                  index={index}
+                  handleShow={handleShowModal}
+                  volunteer={item}
+                  // removeDriver={removeDriver}
+                  volunteerHandler={volunteerData}
+                />
+              ))}
             </div>
           )}
           {/* need to be able to pass that the vehicle card is up */}
           {vehiclesCard && (
             <div className="logs">
-              <button onClick={()=>{handleShowModal(); setUpdate(false)}  } >
-                <NewVolunteersCard  isUpdate={isUpdate} />
+              <button
+                type="button"
+                onClick={() => {
+                  handleShowModal();
+                  setUpdate(false);
+                }}
+              >
+                <NewVolunteersCard isUpdate={isUpdate} />
               </button>
               {showModal && (
                 <ShortEntityForm
                   handleShow={handleShowModal}
-                  whichEntity={true}
-                  isUpdate={isUpdate} 
+                  whichEntity
+                  isUpdate={isUpdate}
                   vehicle={currentVehicle}
                 />
               )}
-              {search(q).map((item: any, index: any) => {
-                return (
-                  <VehiclesCard
-                    index={index}
-                    vehicle={item}
-                    handleShow={handleShowModal}
-                    vehicleHandler={vehicleData}
-                  />
-                );
-              })}
+              {search(q).map((item: any, index: any) => (
+                <VehiclesCard
+                  index={index}
+                  vehicle={item}
+                  handleShow={handleShowModal}
+                  vehicleHandler={vehicleData}
+                />
+              ))}
             </div>
           )}
 
           {donors && (
             <div className="logs long-log">
               {/* <button onClick={handleShowModal}> */}
-              <button onClick={()=>{handleShowModal(); setUpdate(false);}}>
+              <button
+                type="button"
+                onClick={() => {
+                  handleShowModal();
+                  setUpdate(false);
+                }}
+              >
                 <NewDonorsCard />
               </button>
-              {showModal && 
-                <DonorsForm 
-                  handleShow={handleShowModal} 
-                  whichEntity={true}
-                  isUpdate={isUpdate} 
+              {showModal && (
+                <DonorsForm
+                  handleShow={handleShowModal}
+                  whichEntity
+                  isUpdate={isUpdate}
                   donor={currentDonor}
-                  />}
-              {search(q).map((item: any, index: any) => {
-                return (
-                  <DonorsCard
-                    index={index}
-                    donor={item}
-                    handleShow={handleShowModal}
-                    donorHandler={donorData}
-                  />
-                );
-              })}
+                />
+              )}
+              {search(q).map((item: any, index: any) => (
+                <DonorsCard
+                  index={index}
+                  donor={item}
+                  handleShow={handleShowModal}
+                  donorHandler={donorData}
+                />
+              ))}
             </div>
           )}
 
           {recipients && (
             <div className="logs long-log">
               {/* <button onClick={handleShowModal}> */}
-              <button onClick={()=>{handleShowModal(); setUpdate(false);}}>
+              <button
+                type="button"
+                onClick={() => {
+                  handleShowModal();
+                  setUpdate(false);
+                }}
+              >
                 <NewDonorsCard />
               </button>
-              {showModal && 
-                <RecipientsForm 
-                  handleShow={handleShowModal} 
+              {showModal && (
+                <RecipientsForm
+                  handleShow={handleShowModal}
                   whichEntity={false}
-                  isUpdate={isUpdate} 
+                  isUpdate={isUpdate}
                   recipient={currentRecipient}
-                  />}
-              {search(q).map((item: any, index: any) => {
-                return (
-                  <RecipientsCard
-                    // index={item.id}
-                    // donor={item.name}
-                    // entityType={item.recipientEntityType}
-                    // demographicName={item.demographic}
-                    // foodType={item.foodType}
-                    // areaName={item.area}
-                    index={index}
-                    recipient={item}
-                    handleShow={handleShowModal}
-                    recipientHandler={recipientData}
-                  />
-                );
-              })}
+                />
+              )}
+              {search(q).map((item: any, index: any) => (
+                <RecipientsCard
+                  // index={item.id}
+                  // donor={item.name}
+                  // entityType={item.recipientEntityType}
+                  // demographicName={item.demographic}
+                  // foodType={item.foodType}
+                  // areaName={item.area}
+                  index={index}
+                  recipient={item}
+                  handleShow={handleShowModal}
+                  recipientHandler={recipientData}
+                />
+              ))}
             </div>
           )}
         </div>
       </div>
     </div>
   );
-};
+}
 
 export default AdminDataScreen;

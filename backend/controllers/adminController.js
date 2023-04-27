@@ -1,7 +1,13 @@
 const asyncHandler = require("express-async-handler");
 const bcrypt = require("bcryptjs");
-const Admin = require("../models/adminModel");
 const jwt = require("jsonwebtoken");
+const Admin = require("../models/adminSchema");
+
+// Generate Token
+const generateToken = (id) =>
+  jwt.sign({ id }, process.env.JWT_SECRET, {
+    expiresIn: "30d",
+  });
 
 // @desc Get all admins
 // @route /api/admin
@@ -76,7 +82,7 @@ const editAdmin = asyncHandler(async (req, res) => {
 
   // Build admin object
   const adminFields = {};
-  if (name) adminFields.name;
+  if (name) adminFields.name = name;
   if (email) {
     // Find if driver does not already exist
     const adminExists = await Admin.findOne({ email });
@@ -98,10 +104,10 @@ const editAdmin = asyncHandler(async (req, res) => {
       $set: adminFields,
     });
 
-    res.json(adminToUpdate);
+    return res.json(adminToUpdate);
   } catch (err) {
     console.error(err.message);
-    res.status(500).send("Server Error");
+    return res.status(500).send("Server Error");
   }
 });
 
@@ -141,7 +147,7 @@ const deleteAdmin = asyncHandler(async (req, res) => {
 const loginAdmin = asyncHandler(async (req, res) => {
   const { email, password } = req.body;
 
-  //get email
+  // get email
   const foundAdmin = await Admin.findOne({ email });
 
   if (foundAdmin && (await bcrypt.compare(password, foundAdmin.password))) {
@@ -170,13 +176,6 @@ const getAdmin = asyncHandler(async (req, res) => {
   };
   res.status(200).json(admin);
 });
-
-// Generate Token
-const generateToken = (id) => {
-  return jwt.sign({ id }, process.env.JWT_SECRET, {
-    expiresIn: "30d",
-  });
-};
 
 module.exports = {
   getAdmins,

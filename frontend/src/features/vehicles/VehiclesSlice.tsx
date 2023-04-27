@@ -16,43 +16,33 @@ const initialState: VehicleState = {
 };
 interface PickupLog {
   _id: string;
-  currentPickups: pickupObject[];
-  totalWeight: number;
+  currentPickups: PickupObject[];
+  totalFoodAllocation: Map<String, Number>;
 }
 interface DropoffLog {
   _id: string;
-  currentDropoffs: dropoffObject[];
-  totalWeight: number;
+  currentDropoffs: DropoffObject[];
+  totalFoodAllocation: Map<String, Number>;
 }
-interface pickupObject {
-  //date: String;
+interface PickupObject {
+  // date: String;
   driver: String;
   vehicle: String;
   name: String;
   donorEntityType: String;
-  foodType: String;
   area: String;
-  lbsPickedUp: Number;
+  foodAllocation: Map<String, Number>;
 }
 
-interface dropoffObject {
-  //date: String;
+interface DropoffObject {
+  // date: String;
   driver: String;
   vehicle: String;
   name: String;
   recipientEntityType: String;
   demographic: String;
-  foodType: String;
   area: String;
-  lbsDroppedOff: Number;
-}
-interface locale {
-  name: string;
-  donorLocationType: string;
-  donorEntityType: string;
-  foodType: string[];
-  area: string;
-  id: string;
+  foodAllocation: Map<String, Number>;
 }
 // Interface for vehicles object
 interface Vehicle {
@@ -61,9 +51,9 @@ interface Vehicle {
   name: string;
   isLoggedIn: boolean;
   img: string;
-  currentPickups: pickupObject[];
-  currentDropoffs: dropoffObject[];
-  totalWeight: number;
+  currentPickups: PickupObject[];
+  currentDropoffs: DropoffObject[];
+  totalFoodAllocation: Map<String, Number>;
 }
 
 // Define a type for the slice state
@@ -89,11 +79,11 @@ interface VehicleItem {
   img: String;
   currentPickups: [];
   currentDropoffs: [];
-  totalWeight: Number;
+  totalFoodAllocation: Map<String, Number>;
 }
 interface NewVehicle {
   name: String;
-  img: String
+  img: String;
 }
 interface UpdateVehicle {
   _id: string;
@@ -107,44 +97,42 @@ interface VehicleChoice {
 }
 interface VehicleWeightTransfer {
   _id: string;
-  totalWeight: number;
+  totalFoodAllocation: Map<String, Number>;
 }
 // Define a type for a vehicle object
 interface VehicleLogout {
   _id: String;
   driver: String;
   isLoggedIn: string;
-  currentPickups: pickupObject[];
-  currentDropoffs: dropoffObject[];
+  currentPickups: PickupObject[];
+  currentDropoffs: DropoffObject[];
 }
 interface PickupSchema {
   _id: String;
   currentPickups: {
-    //date: String,
+    // date: String,
     driver: String;
     vehicle: String;
     name: String;
     donorEntityType: String;
-    foodType: String;
     area: String;
-    lbsPickedUp: number;
+    foodAllocation: Map<String, Number>;
   };
-  totalWeight: number;
+  totalFoodAllocation: Map<String, Number>;
 }
 interface DropoffSchema {
   _id: String;
   currentDropoffs: {
-    //date: String,
+    // date: String,
     driver: String;
     vehicle: String;
     name: String;
     recipientEntityType: String;
-    foodType: String;
     demographic: String;
     area: String;
-    lbsDroppedOff: number;
+    foodAllocation: Map<String, Number>;
   };
-  totalWeight: number;
+  totalFoodAllocation: Map<String, Number>;
 }
 
 // Get all vehicles
@@ -153,7 +141,7 @@ export const getVehicles = createAsyncThunk(
   async (_, thunkAPI) => {
     try {
       const state = thunkAPI.getState() as RootState;
-      let token = state.driverAuth.driver.token;
+      let { token } = state.driverAuth.driver;
       if (!token) {
         token = state.adminAuth.admin.token;
       }
@@ -175,10 +163,10 @@ export const getVehicles = createAsyncThunk(
 // Create new vehicle (admin only)
 export const createVehicle = createAsyncThunk(
   'api/createVehicles',
-  async (vehicleData: VehicleItem | NewVehicle , thunkAPI) => {
+  async (vehicleData: VehicleItem | NewVehicle, thunkAPI) => {
     try {
       const state = thunkAPI.getState() as RootState;
-      const token = state.adminAuth.admin.token;
+      const { token } = state.adminAuth.admin;
 
       return await vehicleService.createVehicle(vehicleData, token);
     } catch (error: any) {
@@ -199,7 +187,7 @@ export const getVehicle = createAsyncThunk(
   async (_, thunkAPI) => {
     try {
       const state = thunkAPI.getState() as RootState;
-      const token = state.driverAuth.driver.token;
+      const { token } = state.driverAuth.driver;
       return await vehicleService.getVehicle(token);
     } catch (error: any) {
       const message =
@@ -232,7 +220,7 @@ export const updateVehicle = createAsyncThunk(
     try {
       // Set up token for authenticating route
       const state = thunkAPI.getState() as RootState;
-      let token = state.driverAuth.driver.token;
+      let { token } = state.driverAuth.driver;
       if (!token) {
         token = state.adminAuth.admin.token;
       }
@@ -253,15 +241,11 @@ export const updateVehicle = createAsyncThunk(
 // update a vehicle given its id as a parameter, this is special case for updating multiple vehicles... can be admin or driver
 export const updateTwo = createAsyncThunk(
   'vehicles/update:id2',
-  async (
-    vehicleData:
-      | VehicleWeightTransfer,
-    thunkAPI
-  ) => {
+  async (vehicleData: VehicleWeightTransfer, thunkAPI) => {
     try {
       // Set up token for authenticating route
       const state = thunkAPI.getState() as RootState;
-      let token = state.driverAuth.driver.token;
+      let { token } = state.driverAuth.driver;
       if (!token) {
         token = state.adminAuth.admin.token;
       }
@@ -286,7 +270,7 @@ export const deleteVehicle = createAsyncThunk(
     try {
       // Set up token for authenticating route
       const state = thunkAPI.getState() as RootState;
-      let token = state.adminAuth.admin.token;
+      const { token } = state.adminAuth.admin;
 
       return await vehicleService.deleteVehicle(vehicleID, token);
     } catch (error: any) {
@@ -302,14 +286,14 @@ export const deleteVehicle = createAsyncThunk(
   }
 );
 
-//it will also clear the vehicle logs and update the weight
+// it will also clear the vehicle logs and update the weight
 export const logoutVehicle = createAsyncThunk(
   'vehicles/logout',
   async (vehicleData: VehicleLogout, thunkAPI) => {
     try {
       // Set up token for authenticating route
       const state = thunkAPI.getState() as RootState;
-      let token = state.driverAuth.driver.token;
+      let { token } = state.driverAuth.driver;
       if (!token) {
         token = state.adminAuth.admin.token;
       }
@@ -331,133 +315,158 @@ export const vehicleSlice = createSlice({
   name: 'vehicle',
   initialState,
   reducers: {
-    reset: (state) => {
-      state.isLoading = false;
-      state.isError = false;
-      state.isSuccess = false;
-      state.isLoggedOut = false;
-      state.isUpdate = false;
-      state.isUpdateCount = 0;
-      state.message = '';
-    },
-    clear: (state) => {
-      state.vehicle = {} as Vehicle;
-      state.isError = false;
-      state.isSuccess = false;
-      state.isLoading = false;
-      state.isUpdate = false;
-      state.isLoggedOut = false;
-      state.isLoggingOut = false;
-      state.message = '';
-    },
-    setIsLoggingOut: (state) => {
-      state.isLoggingOut = !state.isLoggingOut;
-    },
-    setIsUpdate: (state) => {
-      state.isUpdate = !state.isUpdate;
-    }
+    reset: (state) => ({
+      ...state,
+      isLoading: false,
+      isError: false,
+      isSuccess: false,
+      isLoggedOut: false,
+      isUpdate: false,
+      isUpdateCount: 0,
+      message: ''
+    }),
+    clear: (state) => ({
+      ...state,
+      vehicle: {} as Vehicle,
+      isError: false,
+      isSuccess: false,
+      isLoading: false,
+      isUpdate: false,
+      isLoggedOut: false,
+      isLoggingOut: false,
+      message: ''
+    }),
+    setIsLoggingOut: (state) => ({
+      ...state,
+      isLoggingOut: !state.isLoggingOut
+    }),
+    setIsUpdate: (state) => ({
+      ...state,
+      isUpdate: !state.isUpdate
+    })
   },
   extraReducers: (builder) => {
     builder
-      .addCase(getVehicles.pending, (state) => {
-        state.isLoading = true;
-      })
-      .addCase(getVehicles.fulfilled, (state, action) => {
-        state.isLoading = false;
-        state.isSuccess = true;
-        state.vehicles = action.payload;
-      })
-      .addCase(getVehicles.rejected, (state, action) => {
-        state.isLoading = false;
-        state.isError = true;
-        state.message = action.payload;
-        state.vehicles = [];
-      })
-      .addCase(createVehicle.pending, (state) => {
-        state.isLoading = true;
-      })
-      .addCase(createVehicle.fulfilled, (state, action) => {
-        state.isLoading = false;
-        state.isUpdate = true;
-        state.isSuccess = true;
-      })
-      .addCase(createVehicle.rejected, (state, action) => {
-        state.isLoading = false;
-        state.isError = true;
-        state.message = action.payload;
-      })
-      .addCase(getVehicle.pending, (state) => {
-        state.isLoading = true;
-      })
-      .addCase(getVehicle.fulfilled, (state, action) => {
-        state.isLoading = false;
-        state.isSuccess = true;
-        state.vehicle = action.payload;
-      })
-      .addCase(getVehicle.rejected, (state, action) => {
-        state.isLoading = false;
-        state.isError = true;
-        state.message = action.payload;
-        state.vehicle = {} as Vehicle;
-      })
-      .addCase(updateVehicle.pending, (state) => {
-        state.isLoading = true;
-      })
-      .addCase(updateVehicle.fulfilled, (state, action) => {
-        state.isLoading = false;
-        state.isSuccess = true;
-        state.isUpdate = true;
-        state.vehicle = action.payload;
-      })
-      .addCase(updateVehicle.rejected, (state, action) => {
-        state.isLoading = false;
-        state.isError = true;
-        state.message = action.payload;
-        state.vehicles = [];
-      })
-      .addCase(updateTwo.pending, (state) => {
-        state.isLoading = true;
-      })
-      .addCase(updateTwo.fulfilled, (state, action) => {
-        state.isLoading = false;
-        state.isSuccess = true;
-        state.isUpdate = true;
-        state.isUpdateCount = state.isUpdateCount+1;
-      })
-      .addCase(updateTwo.rejected, (state, action) => {
-        state.isLoading = false;
-        state.isError = true;
-        state.message = action.payload;
-        state.vehicles = [];
-      })
-      .addCase(deleteVehicle.pending, (state) => {
-        state.isLoading = true;
-      })
-      .addCase(deleteVehicle.fulfilled, (state, action) => {
-        state.isLoading = false;
-        state.isSuccess = true;
-        state.isUpdate = true;
-        state.vehicle = action.payload;
-      })
-      .addCase(deleteVehicle.rejected, (state, action) => {
-        state.isLoading = false;
-        state.isError = true;
-        state.message = action.payload;
-        state.vehicles = [];
-      })
-      .addCase(logoutVehicle.pending, (state) => {
-        state.isLoading = true;
-      })
-      .addCase(logoutVehicle.fulfilled, (state) => {
-        state.vehicles = [];
-        state.vehicle = {} as Vehicle;
-        state.isError = false;
-        state.isSuccess = false;
-        state.isLoading = false;
-        state.isLoggedOut = true;
-      });
+      .addCase(getVehicles.pending, (state) => ({
+        ...state,
+        isLoading: true
+      }))
+      .addCase(getVehicles.fulfilled, (state, action) => ({
+        ...state,
+        isLoading: false,
+        isSuccess: true,
+        vehicles: action.payload
+      }))
+      .addCase(getVehicles.rejected, (state, action) => ({
+        ...state,
+        isLoading: false,
+        isError: true,
+        message: action.payload,
+        vehicles: []
+      }))
+      .addCase(createVehicle.pending, (state) => ({
+        ...state,
+        isLoading: true
+      }))
+      .addCase(createVehicle.fulfilled, (state) => ({
+        ...state,
+        isLoading: false,
+        isUpdate: true,
+        isSuccess: true
+      }))
+      .addCase(createVehicle.rejected, (state, action) => ({
+        ...state,
+        isLoading: false,
+        isError: true,
+        message: action.payload
+      }))
+      .addCase(getVehicle.pending, (state) => ({
+        ...state,
+        isLoading: true
+      }))
+      .addCase(getVehicle.fulfilled, (state, action) => ({
+        ...state,
+        isLoading: false,
+        isSuccess: true,
+        vehicle: action.payload
+      }))
+      .addCase(getVehicle.rejected, (state, action) => ({
+        ...state,
+        isLoading: false,
+        isError: true,
+        message: action.payload,
+        vehicle: {} as Vehicle
+      }))
+      .addCase(updateVehicle.pending, (state) => ({
+        ...state,
+        isLoading: true
+      }))
+      .addCase(updateVehicle.fulfilled, (state, action) => ({
+        ...state,
+        isLoading: false,
+        isSuccess: true,
+        isUpdate: true,
+        vehicle: action.payload
+      }))
+      .addCase(updateVehicle.rejected, (state, action) => ({
+        ...state,
+        isLoading: false,
+        isError: true,
+        message: action.payload,
+        vehicles: []
+      }))
+      .addCase(updateTwo.pending, (state) => ({
+        ...state,
+        isLoading: true
+      }))
+      .addCase(updateTwo.fulfilled, (state) => ({
+        ...state,
+        isLoading: false,
+        isSuccess: true,
+        isUpdate: true,
+        isUpdateCount: state.isUpdateCount + 1
+      }))
+      .addCase(updateTwo.rejected, (state, action) => ({
+        ...state,
+        isLoading: false,
+        isError: true,
+        message: action.payload,
+        vehicles: []
+      }))
+      .addCase(deleteVehicle.pending, (state) => ({
+        ...state,
+        isLoading: true
+      }))
+      .addCase(deleteVehicle.fulfilled, (state, action) => ({
+        ...state,
+        isLoading: false,
+        isSuccess: true,
+        isUpdate: true,
+        vehicle: action.payload
+      }))
+      .addCase(deleteVehicle.rejected, (state, action) => ({
+        ...state,
+        isLoading: false,
+        isError: true,
+        message: action.payload,
+        vehicles: []
+      }))
+      .addCase(logoutVehicle.pending, (state) => ({
+        ...state,
+        isLoading: true
+      }))
+      .addCase(logoutVehicle.fulfilled, (state) => ({
+        ...state,
+        vehicles: [],
+        vehicle: {} as Vehicle,
+        isError: false,
+        isSuccess: false,
+        isLoading: false,
+        isLoggedOut: true
+      }));
   }
 });
 
-export const { reset, clear, setIsLoggingOut, setIsUpdate } = vehicleSlice.actions;
+export const { reset, clear, setIsLoggingOut, setIsUpdate } =
+  vehicleSlice.actions;
 export default vehicleSlice.reducer;
