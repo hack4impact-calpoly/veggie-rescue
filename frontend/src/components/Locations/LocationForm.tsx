@@ -22,7 +22,7 @@ interface PickupDeliveryObjectSchema {
   EntityType: String;
   LocationType: String;
   Demographic: String;
-  FoodAllocation: Map<String, Number>
+  FoodAllocation: Map<String, Number>;
   Area: String;
   lbsDroppedOff: Number;
 }
@@ -36,11 +36,7 @@ interface Props {
   setForceNext: Function;
 }
 
-
-
-
-
-interface Foods {
+interface FoodWeights {
   [key: string]: number;
 }
 
@@ -55,12 +51,9 @@ function LocationForm({
 }: Props) {
   const [isOtherClicked, setOtherClicked] = useState(false);
   const [isProduceClicked, setProduceClicked] = useState(false);
-  const [firstProduce, setFirstProduce] = useState(true);
-  const [firstOther, setFirstOther] = useState(true);
 
-
-  const[produceWeight, setProduceWeight] = useState(-1);
-  const[otherWeight, setOtherWeight] = useState(-1)
+  const [produceWeight, setProduceWeight] = useState(-1);
+  const [otherWeight, setOtherWeight] = useState(-1);
 
   const [isWeightValid, setIsWeightValid] = useState(true);
 
@@ -76,26 +69,20 @@ function LocationForm({
 
   const [weight, setWeight] = useState(-1);
 
+  const [foodWeights, setFoodWeights] = useState<FoodWeights>({});
 
-
-
-
-  const [foods, setFoods] = useState<Foods>({});
-
-  const addFood = (name: string, weight: number) => {
-    setFoods((prevDict) => ({ ...prevDict, [name]: weight }));
+  const addFood = (name: string, foodWeight: number) => {
+    setFoodWeights((prevDict) => ({ ...prevDict, [name]: foodWeight }));
   };
 
-
   const removeFood = (name: string) => {
-    setFoods((prevDict) => {
+    setFoodWeights((prevDict) => {
       const newDict = { ...prevDict };
       delete newDict[name];
       return newDict;
     });
   };
 
-  
   const [demographic, setDemographic] = useState('');
   const [area, setArea] = useState('');
   const [input, setInput] = useState('');
@@ -127,7 +114,7 @@ function LocationForm({
           EntityType: current.EntityType,
           LocationType: current.LocationType,
           Demographic: current.DemographicName,
-          FoodAllocation: foods,
+          FoodAllocation: foodWeights,
           Area: current.CombinedAreaName
         });
         setForceNext(true);
@@ -139,7 +126,7 @@ function LocationForm({
           EntityType: donorEntityType,
           LocationType: donorLocationType,
           Demographic: demographic,
-          FoodAllocation: foods,
+          FoodAllocation: foodWeights,
           Area: area
         });
         setForceNext(true);
@@ -149,81 +136,58 @@ function LocationForm({
     }
   };
 
-
   const handleTextBox = () => {
-    if (!isOtherClicked)
-    {
-      const inputVal = document.getElementById("other_lbsTextBox");
-        if (inputVal !== null)
-        {
-          inputVal.style.display = 'block'
-        }
-      
-    }
-    if(isOtherClicked)
-    {
-      const inputVal = document.getElementById("other_lbsTextBox");
-        if (inputVal !== null)
-        {
-          inputVal.style.display = 'none'
-        }
-        // unchecked
-        if (input in foods)
-          {
-             removeFood(input)
-          }
-    }
-
-    }
-
-    const handleTextBox2 = () => {
-      if (!isProduceClicked)
-      {
-        const inputVal = document.getElementById("produce_lbsTextBox");
-          if (inputVal !== null)
-          {
-            inputVal.style.display = 'block'
-          }
-          
+    if (!isOtherClicked) {
+      const inputVal = document.getElementById('other_lbsTextBox');
+      if (inputVal !== null) {
+        inputVal.style.display = 'block';
       }
-      if(isProduceClicked)
-      {
-        const inputVal = document.getElementById("produce_lbsTextBox");
-          if (inputVal !== null)
-          {
-            inputVal.style.display = 'none'
-          }
-          // unchecked
-          if ("Produce" in foods)
-          {
-             removeFood("Produce")
-          }
+    }
+    if (isOtherClicked) {
+      const inputVal = document.getElementById('other_lbsTextBox');
+      if (inputVal !== null) {
+        inputVal.style.display = 'none';
+      }
+      // unchecked
+      if (input in foodWeights) {
+        removeFood(input);
+      }
+    }
+  };
 
+  const handleTextBox2 = () => {
+    if (!isProduceClicked) {
+      const inputVal = document.getElementById('produce_lbsTextBox');
+      if (inputVal !== null) {
+        inputVal.style.display = 'block';
       }
-  
+    }
+    if (isProduceClicked) {
+      const inputVal = document.getElementById('produce_lbsTextBox');
+      if (inputVal !== null) {
+        inputVal.style.display = 'none';
       }
+      // unchecked
+      if ('Produce' in foodWeights) {
+        removeFood('Produce');
+      }
+    }
+  };
 
   const handleClick = () => {
     let updatedList = [...checked];
 
+    console.log('checked array', checked);
 
-    console.log('checked array', checked)
-
-    if (updatedList.indexOf(current.FoodType) !== -1) 
-    {
+    if (updatedList.indexOf(current.FoodType) !== -1) {
       // if currentFoodtype is in the checked array, remove it
       // remove text box as well
       updatedList.splice(updatedList.indexOf(current.FoodType), 1);
-    } 
-    else 
-    {
+    } else {
       updatedList = [...checked, current.FoodType];
     }
     setChecked(updatedList);
   };
-
-
-  
 
   return (
     <div className="Form-main m-5 mb-10 flex justify-center flex-col">
@@ -360,7 +324,6 @@ function LocationForm({
                     setProduceClicked(!isProduceClicked);
                     handleClick();
                   }}
-                  
                 />
                 <label
                   htmlFor="checkbox"
@@ -369,48 +332,31 @@ function LocationForm({
                   {current.FoodType}
                 </label>
 
-
                 <input
-                    className="bg-white ml-2 text-2xl w-20 h-10 italic py-4 px-4 mt-2 rounded-lg shadow text-left"
-                    id = "produce_lbsTextBox"
-                    type="text"
-                    style={{ display: 'none' }}
-                    placeholder="lbs" 
-                    onChange={(e) => {
-                      
-                        setWeight(parseInt(e.target.value));
-                      
-                    
-                    }}
-                    onBlur={(e) => {
-                      if (isNaN(weight))
-                      {
-
-                        
-                        setIsWeightValid(false)
-                        toast.error("Please enter a valid number for weight")
-                      }
-                      else
-                      {
-                        if (weight >=0)
-                        {
-                          setProduceWeight(weight)
-                          setIsWeightValid(true)
-                          addFood("Produce", weight)
-                        }
-                        else
-                        {
-                          setIsWeightValid(false)
-                          toast.error("Please enter a valid number for weight")
-                        }
-                          
-                      }
-                      
-                      
-                    }}
-                    
-
-                    />
+                  className="bg-white ml-2 text-2xl w-20 h-10 italic py-4 px-4 mt-2 rounded-lg shadow text-left"
+                  id="produce_lbsTextBox"
+                  type="text"
+                  style={{ display: 'none' }}
+                  placeholder="lbs"
+                  onChange={(e) => {
+                    console.log('weight change');
+                    setWeight(parseInt(e.target.value));
+                  }}
+                  onBlur={(e) => {
+                    console.log('blur event');
+                    if (isNaN(weight)) {
+                      setIsWeightValid(false);
+                      toast.error('Please enter a valid number for weight');
+                    } else if (weight >= 0) {
+                      setProduceWeight(weight);
+                      setIsWeightValid(true);
+                      addFood('Produce', weight);
+                    } else {
+                      setIsWeightValid(false);
+                      toast.error('Please enter a valid number for weight');
+                    }
+                  }}
+                />
               </div>
             )}
             {current && (
@@ -424,58 +370,41 @@ function LocationForm({
                   onClick={() => {
                     handleTextBox();
                     setOtherClicked(!isOtherClicked);
-                    
                     handleClick();
                   }}
                 />
                 <label htmlFor="checkbox2" className="cursor-pointer text-3xl">
                   {'Other'}{' '}
-
                   <input
                     className="bg-white ml-2 text-2xl w-20 h-10 italic py-4 px-4 mt-2 rounded-lg shadow text-left"
-                    id = "other_lbsTextBox"
+                    id="other_lbsTextBox"
                     type="text"
                     style={{ display: 'none' }}
                     onChange={(e) => {
-                        
-                        setWeight(parseInt(e.target.value));
+                      setWeight(parseInt(e.target.value));
                     }}
-                    placeholder="lbs" />
+                    onBlur={(e) => {
+                      if (isNaN(weight)) {
+                        setIsWeightValid(false);
+                        toast.error('Please enter a valid number for weight');
+                      } else if (weight >= 0) {
+                        setOtherWeight(weight);
+                        setIsWeightValid(true);
+                        addFood(input, weight);
+                      } else {
+                        setIsWeightValid(false);
+                        toast.error('Please enter a valid number for weight');
+                      }
+                    }}
+                    placeholder="lbs"
+                  />
                 </label>
-
-                
                 <input
                   className="bg-white ml-2 text-4xl w-full italic py-4 px-4 mt-2 rounded-lg shadow w-full text-left"
                   type="text"
                   disabled={!isOtherClicked}
                   onChange={(e) => {
                     setInput(e.target.value);
-                  }}
-                  onBlur={(e) => {
-                    if (isNaN(weight))
-                      {
-                        setIsWeightValid(false)
-                        toast.error("Please enter a valid number for weight")
-                      }
-                      
-                      else
-                        {
-                          if (weight>=0)
-                          {
-                            setOtherWeight(weight)
-                            setIsWeightValid(true)
-                            addFood(input, weight)
-                          }
-                          else
-                          {
-                            setIsWeightValid(false)
-                            toast.error("Please enter a valid number for weight")
-                          }
-                          
-                        }
-                       
-                        
-                      
                   }}
                   placeholder="Please Specify"
                 />{' '}
@@ -489,12 +418,15 @@ function LocationForm({
         <button
           type="submit"
           disabled={
-            (checked.length === 0 && !isOtherClicked) || (!isWeightValid) || (isProduceClicked && produceWeight<0) || (isOtherClicked && otherWeight <0)
+            (checked.length === 0 && !isOtherClicked) ||
+            !isWeightValid ||
+            (isProduceClicked && produceWeight < 0) ||
+            (isOtherClicked && otherWeight < 0)
           } /* disable if nothing is clicked */
           className="bg-amber-500 rounded-full w-full mt-5 p-3 text-3xl text-white font-semibold shadow"
           onClick={() => {
             submitPressed();
-            console.log(foods)
+            console.log(foodWeights);
           }}
         >
           Continue
