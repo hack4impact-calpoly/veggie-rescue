@@ -28,8 +28,11 @@ import RecipientsForm from '../RecipientsCard/RecipientsForm';
 // import DonorEditForm from './EditComponents/DonorEditForm';
 // import RecipientEditForm from './EditComponents/RecipientEditForm';
 
-function AdminDataScreen() {
-  const [loading] = useState(false);
+
+const AdminDataScreen = () => {
+
+
+  const [loading, setLoading] = useState(false);
   const [vehiclesCard, setVehiclesCard] = useState(false);
   const [volunteers, setVolunteers] = useState(false);
   const [donors, setDonors] = useState(false);
@@ -149,8 +152,6 @@ function AdminDataScreen() {
   }, [volunteers, vehiclesCard, donors, recipients]);
 
   /* this function adds cards to query based on search */
-
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   function search(items: any) {
     if (volunteers) {
       return drivers.filter((item: any) =>
@@ -240,60 +241,69 @@ function AdminDataScreen() {
               </button>
             </div>
           </div>
-
-          {/* recipient buttons */}
-          <div className={showRecipientButtons ? 'titles' : 'hidden titles'}>
-            <div>
-              <button type="button" className="title">
-                Organizational Structure
+          
+          {/*recipient buttons*/}
+          <div className={showRecipientButtons ? "titles" : "hidden titles"}>  
+          <div>
+              <button
+              className="title"
+              >
+              Organizational Structure
               </button>
             </div>
             <div>
-              <button type="button" className="title">
+              <button
+              className="title">
                 Food Distribution Model
               </button>
             </div>
             <div>
-              <button type="button" className="title">
+              <button
+              className="title">
                 Food Type
               </button>
             </div>
             <div>
-              <button type="button" className="title">
+              <button
+              className="title">
                 Demographic Served
               </button>
             </div>
             <div>
-              <button type="button" className="title">
+              <button
+              className="title">
                 Combined Area Name
               </button>
             </div>
           </div>
-
-          {/* donor buttons */}
-          <div className={showDonorButtons ? 'titles' : 'hidden titles'}>
-            <div>
-              <button type="button" className="title">
+          
+          {/*donor buttons*/}
+          <div className={showDonorButtons ? "titles" : "hidden titles"}>  
+          <div>
+              <button
+              className="title">
                 Entity Type
               </button>
             </div>
             <div>
-              <button type="button" className="title">
+              <button
+              className="title">
                 Food Type
               </button>
             </div>
             <div>
-              <button type="button" className="title">
+              <button
+              className="title">
                 Location Type
               </button>
             </div>
             <div>
-              <button type="button" className="title">
+              <button
+              className="title">
                 Combined Area Name
               </button>
             </div>
           </div>
-
           <div className="search">
             <input
               type="text"
@@ -305,6 +315,7 @@ function AdminDataScreen() {
             />
             <AiOutlineSearch id="search-icon" style={{ color: 'grey' }} />
           </div>
+          
 
           {volunteers && (
             <div className="logs">
