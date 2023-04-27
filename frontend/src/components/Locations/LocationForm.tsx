@@ -332,86 +332,8 @@ function LocationForm({
                     />
                   </div>
                 )}
-                {/* <input
-                  className="bg-white ml-2 text-2xl w-20 h-10 italic py-4 px-4 mt-2 rounded-lg shadow text-left"
-                  id={`${foodType}-textbox`}
-                  type="text"
-                  name={foodType}
-                  value=""
-                  style={{ display: 'none' }}
-                  placeholder="lbs"
-                  onChange={(e) => {
-                    console.log('weight change');
-                    setWeight(parseInt(e.target.value, 10));
-                  }}
-                  onBlur={() => {
-                    console.log('blur event');
-                    if (Number.isNaN(weight)) {
-                      setIsWeightValid(false);
-                      toast.error('Please enter a valid number for weight');
-                    } else if (weight >= 0) {
-                      setProduceWeight(weight);
-                      setIsWeightValid(true);
-                      addFood('Produce', weight);
-                    } else {
-                      setIsWeightValid(false);
-                      toast.error('Please enter a valid number for weight');
-                    }
-                  }}
-                /> */}
               </div>
             ))}
-          {/* {current && (
-            <div>
-              <input
-                className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600  w-8 h-8 inline-block mr-2 bg-white border border-grey flex-no-shrink"
-                id="checkbox2"
-                type="checkbox"
-                name="foodType"
-                value="Other"
-                onClick={() => {
-                  handleTextBox();
-                  setOtherClicked(!isOtherClicked);
-                  handleClick();
-                }}
-              />
-              <label htmlFor="checkbox2" className="cursor-pointer text-3xl">
-                {'Other'}{' '}
-                <input
-                  className="bg-white ml-2 text-2xl w-20 h-10 italic py-4 px-4 mt-2 rounded-lg shadow text-left"
-                  id="other_lbsTextBox"
-                  type="text"
-                  style={{ display: 'none' }}
-                  onChange={(e) => {
-                    setWeight(parseInt(e.target.value, 10));
-                  }}
-                  onBlur={() => {
-                    if (Number.isNaN(weight)) {
-                      setIsWeightValid(false);
-                      toast.error('Please enter a valid number for weight');
-                    } else if (weight >= 0) {
-                      setOtherWeight(weight);
-                      setIsWeightValid(true);
-                      addFood(input, weight);
-                    } else {
-                      setIsWeightValid(false);
-                      toast.error('Please enter a valid number for weight');
-                    }
-                  }}
-                  placeholder="lbs"
-                />
-              </label>
-              <input
-                className="bg-white ml-2 text-4xl w-full italic py-4 px-4 mt-2 rounded-lg shadow w-full text-left"
-                type="text"
-                disabled={!isOtherClicked}
-                onChange={(e) => {
-                  setInput(e.target.value);
-                }}
-                placeholder="Please Specify"
-              />{' '}
-            </div>
-          )} */}
         </div>
       </div>
       {/* )} */}
@@ -419,17 +341,7 @@ function LocationForm({
       <div>
         <button
           type="submit"
-          // disabled={
-          //   (checked.length === 0 && !isOtherClicked) ||
-          //   !isWeightValid ||
-          //   (isProduceClicked && produceWeight < 0) ||
-          //   (isOtherClicked && otherWeight < 0)
-          // }
           className="bg-amber-500 rounded-full w-full mt-5 p-3 text-3xl text-white font-semibold shadow"
-          // onClick={() => {
-          //   submitPressed();
-          //   console.log(foodWeights);
-          // }}
         >
           Continue
         </button>
