@@ -1,66 +1,88 @@
-const Field = require('../models/FieldSchema');
-const { validationResult } = require('express-validator');
-const asyncHandler = require('express-async-handler');
+/* eslint-disable @typescript-eslint/no-unused-vars */
+const asyncHandler = require("express-async-handler");
+const Fields = require("../models/fieldSchema");
 const Admin = require("../models/adminSchema");
 
 // @desc Get all fields
 // @route GET /api/fields
 // @access Private -> Admin only
 const getFields = asyncHandler(async (req, res) => {
-  const admin = await Admin.findById(req.admin.id);
-  if (!admin) {
-    res.status(401);
-    throw new Error("Admin not found");
+  try {
+    const admin = await Admin.findById(req.admin.id);
+    if (!admin) {
+      res.status(401);
+      throw new Error("Admin not found");
+    }
+    res.send(await Fields.findOne({}));
+  } catch (err) {
+    if (err.statusCode) {
+      res.status(err.statusCode);
+    } else {
+      res.status(500);
+    }
+    res.send(`Unable to fetch fields ${err.message}`);
   }
-  res.send(await Field.findOne({}));
 });
 
 // @desc Get field by name
 // @route GET /api/fields/:name
 // @access Private -> Admin only
 const getFieldByName = asyncHandler(async (req, res) => {
-  const admin = await Admin.findById(req.admin.id);
-  if (!admin) {
-    res.status(401);
-    throw new Error("Admin not found");
-  }
+  try {
+    const admin = await Admin.findById(req.admin.id);
+    if (!admin) {
+      res.status(401);
+      throw new Error("Admin not found");
+    }
 
-  // check if the field exists
-  if (!Object.prototype.hasOwnProperty.call(Field.schema.paths, req.params.name)) {
-    res.status(400);
-    throw new Error(`Invalid field name ${req.params.name}`);
+    const { fieldName } = req.body;
+    // check if the field exists
+    if (!Object.prototype.hasOwnProperty.call(Fields.schema.paths, fieldName)) {
+      res.status(400);
+      throw new Error(`Field doesn't exist ${fieldName}`);
+    }
+    const field = await Fields.findOne({ [fieldName]: { $exists: true } });
+    res.json({ [fieldName]: field[fieldName] });
+  } catch (err) {
+    if (err.statusCode) {
+      res.status(err.statusCode);
+    } else {
+      res.status(500);
+    }
+    res.send(`Unable to fetch field ${err.message}`);
   }
-
-  res.json({ [fieldName]: field[fieldName] });
 });
 
 // @desc Add item to field
 // @route PUT /api/fields
 // @access Private -> Admin only
 const createField = asyncHandler(async (req, res) => {
-  // check admin access
-  const admin = await Admin.findById(req.admin.id);
-  if (!admin) {
-    res.status(401);
-    throw new Error("Admin not found");
-  }
-
-  // check if the field exists
-  if (!Object.prototype.hasOwnProperty.call(Field.schema.paths, req.params.name)) {
-    res.status(400);
-    throw new Error(`Invalid field name ${req.params.name}`);
-  }
-
-  // update array
-  const filter = { };
-  const update = { $addToSet: { [`${req.params.name}`]: req.body.value } }; 
-  const updatedField = await Field.updateOne(filter, update);
-
   try {
+    const admin = await Admin.findById(req.admin.id);
+    if (!admin) {
+      res.status(401);
+      throw new Error("Admin not found");
+    }
+
+    const { fieldName, value } = req.body;
+    // check if the field exists
+    if (!Object.prototype.hasOwnProperty.call(Fields.schema.paths, fieldName)) {
+      res.status(400);
+      throw new Error(`Field doesn't exist ${fieldName}`);
+    }
+
+    // add new item to array if it exists
+    const filter = {};
+    const update = { $addToSet: { [`${fieldName}`]: value } };
+    const updatedField = await Fields.updateOne(filter, update);
     res.json(updatedField);
   } catch (err) {
-    res.status(500).send(err.message);
-    console.log(`error is ${err.message}`);
+    if (err.statusCode) {
+      res.status(err.statusCode);
+    } else {
+      res.status(500);
+    }
+    res.send(`Unable to add field ${err.message}`);
   }
 });
 
@@ -68,28 +90,33 @@ const createField = asyncHandler(async (req, res) => {
 // @route PUT /api/fields/:name
 // @access Private -> Admin only
 const editField = asyncHandler(async (req, res) => {
-  const admin = await Admin.findById(req.admin.id);
-  if (!admin) {
-    res.status(401);
-    throw new Error("Admin not found");
-  }
-
-  // check if the field exists
-  if (!Object.prototype.hasOwnProperty.call(Field.schema.paths, req.params.name)) {
-    res.status(400);
-    throw new Error(`Invalid field name ${req.params.name}`);
-  }
-  
-  // update array
-  const filter = { };
-  const update = { $addToSet: { [`${req.params.name}`]: req.body.value } }; 
-  const updatedField = await Field.updateOne(filter, update);
-
   try {
+    const admin = await Admin.findById(req.admin.id);
+    if (!admin) {
+      res.status(401);
+      throw new Error("Admin not found");
+    }
+
+    const { fieldName, oldValue, newValue } = req.body;
+    // check if the field exists
+    if (!Object.prototype.hasOwnProperty.call(Fields.schema.paths, fieldName)) {
+      res.status(400);
+      throw new Error(`Field doesn't exist ${fieldName}`);
+    }
+
+    const filter = {};
+    // set value of the element in the array associated with the specified field using the $ positional operator
+    const update = { $set: { [`${fieldName}.$[elem]`]: newValue } };
+    const options = { arrayFilters: [{ elem: oldValue }] }; // use arrayFilters to match the element with the old value
+    const updatedField = await Fields.updateOne(filter, update, options);
     res.json(updatedField);
   } catch (err) {
-    res.status(500).send(err.message);
-    console.log(`error is ${err.message}`);
+    if (err.statusCode) {
+      res.status(err.statusCode);
+    } else {
+      res.status(500);
+    }
+    res.send(`Unable to edit field ${err.message}`);
   }
 });
 
@@ -97,24 +124,31 @@ const editField = asyncHandler(async (req, res) => {
 // @route DELETE /api/fields/:name
 // @access Private -> Admin only
 const deleteField = asyncHandler(async (req, res) => {
-  const admin = await Admin.findById(req.admin.id);
-  if (!admin) {
-    res.status(401);
-    throw new Error("Admin not found");
+  try {
+    const admin = await Admin.findById(req.admin.id);
+    if (!admin) {
+      res.status(401);
+      throw new Error("Admin not found");
+    }
+
+    const { fieldName, value } = req.body;
+    if (!Object.prototype.hasOwnProperty.call(Fields.schema.paths, fieldName)) {
+      res.status(400);
+      throw new Error(`Field doesn't exist ${fieldName}`);
+    }
+
+    const filter = { [fieldName]: value };
+    const update = { $pull: { [fieldName]: value } };
+    const options = { returnOriginal: false };
+
+    const updatedField = await Fields.findOneAndUpdate(filter, update, options);
+    res.json(updatedField);
+  } catch (err) {
+    if (err.statusCode) {
+      res.status(err.statusCode);
+    } else {
+      res.status(500);
+    }
+    res.send(`Unable to delete field ${err.message}`);
   }
-
-  if (!Object.prototype.hasOwnProperty.call(Field.schema.paths, req.params.name)) {
-    res.status(400);
-    throw new Error(`Invalid field name ${req.params.name}`);
-  }
-
-  const field = await Field.findOne();
-  if (!field) {
-    res.status(404);
-    throw new Error("No field found");
-  }
-
-  await field.remove();
-
-  res.status(200).json({ success: true });
 });
