@@ -1,7 +1,7 @@
 const PickupLog = require("../models/pickupLogSchema");
 const DropoffLog = require("../models/dropoffLogSchema");
-const Admin = require("../models/adminModel.js");
-const Driver = require('../models/driverModel.js')
+const Admin = require("../models/adminSchema");
+const Driver = require("../models/driverSchema");
 
 // @desc Get all pickup logs
 // @route GET : /api/pickup
