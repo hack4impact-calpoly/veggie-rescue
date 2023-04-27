@@ -31,7 +31,7 @@ export default function NewLogWrapper() {
             EntityType: '',
             LocationType: '',
             Demographic: '',
-            FoodAllocation: new Map<String, Number>(),
+            FoodType: '',
             Area: '',
             lbsDroppedOff: 0
           }
@@ -69,7 +69,7 @@ export default function NewLogWrapper() {
             vehicle: vehicle.name,
             name: pickupDeliveryObject.name,
             donorEntityType : pickupDeliveryObject.EntityType,
-            foodAllocation: pickupDeliveryObject.FoodAllocation,
+            foodType: pickupDeliveryObject.FoodType,
             area: pickupDeliveryObject.Area,
             lbsPickedUp: pickupDeliveryObject.lbsDroppedOff }
         
@@ -93,7 +93,7 @@ export default function NewLogWrapper() {
             name: pickupDeliveryObject.name,
             recipientEntityType : pickupDeliveryObject.EntityType,
             demographic : pickupDeliveryObject.Demographic,
-            foodAllocation: pickupDeliveryObject.FoodAllocation,
+            foodType: pickupDeliveryObject.FoodType,
             area: pickupDeliveryObject.Area,
             lbsDroppedOff: pickupDeliveryObject.lbsDroppedOff}
 
@@ -157,7 +157,7 @@ if(vehicleIsLoading){
     EntityType: String,
     LocationType: String,
     Demographic: String,
-    FoodAllocation: Map<String, Number>,
+    FoodType: String,
     Area: String,
     lbsDroppedOff: number
 }
@@ -169,7 +169,7 @@ interface PickupSchema {
     vehicle: String,
     name: String,
     donorEntityType: String,
-    foodAllocation: Map<String, Number>,
+    foodType: String,
     area: String,
     lbsPickedUp: number,
     },
@@ -185,7 +185,7 @@ interface DropoffSchema {
     vehicle: String,
     name: String,
     recipientEntityType: String,
-    foodAllocation: Map<String, Number>,
+    foodType: String,
     demographic: String,
     area: String,
     lbsDroppedOff: number,
@@ -199,7 +199,7 @@ interface Dropoff {
     vehicle: String,
     name: String,
     recipientEntityType: String,
-    foodAllocation: Map<String, Number>,
+    foodType: String,
     demographic: String,
     area: String,
     lbsDroppedOff: number,
@@ -211,7 +211,7 @@ interface Pickup {
     vehicle: String,
     name: String,
     donorEntityType: String,
-    foodAllocation: Map<String, Number>,
+    foodType: String,
     area: String,
     lbsPickedUp: number,
 }

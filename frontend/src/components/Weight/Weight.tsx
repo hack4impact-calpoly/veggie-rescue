@@ -14,7 +14,7 @@ import './Weight.css';
     EntityType: String,
     LocationType: String,
     Demographic: String,
-    FoodAllocation: Map<String, Number>,
+    FoodType: String,
     Area: String,
     lbsDroppedOff: number
 }

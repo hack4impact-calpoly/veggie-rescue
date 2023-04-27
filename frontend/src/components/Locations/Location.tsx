@@ -37,7 +37,7 @@ interface Donor {
   }
 
 interface pickupDeliveryObjectSchema {
-    pickupOrDelivery: Number,
+    pickupOrDelivery: number,
     id: String,
     date: String,
     driver: String,
@@ -46,9 +46,9 @@ interface pickupDeliveryObjectSchema {
     EntityType: String,
     LocationType: String,
     Demographic: String,
-    FoodAllocation: Map<String, Number>,
+    FoodType: String,
     Area: String,
-    lbsDroppedOff: Number
+    lbsDroppedOff: number
 }
 
 interface Props {
