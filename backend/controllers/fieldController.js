@@ -12,7 +12,7 @@ const getFields = asyncHandler(async (req, res) => {
     res.status(401);
     throw new Error("Admin not found");
   }
-  res.send(await Field.find({}));
+  res.send(await Field.findOne({}));
 });
 
 // @desc Get field by name
@@ -25,7 +25,7 @@ const getFieldByName = asyncHandler(async (req, res) => {
     throw new Error("Admin not found");
   }
 
-  constfieldName = req.params.name;
+  const fieldName = req.params.name;
   const field = await Field.findOne({ [fieldName]: { $exists: true } });
   if (!field) {
     return res.status(404).json({ message: "No field found" });
@@ -35,7 +35,7 @@ const getFieldByName = asyncHandler(async (req, res) => {
 });
 
 // @desc Add item to field
-// @route POST /api/fields
+// @route PUT /api/fields
 // @access Private -> Admin only
 const createField = asyncHandler(async (req, res) => {
   // check admin access
@@ -51,14 +51,10 @@ const createField = asyncHandler(async (req, res) => {
     throw new Error(`Invalid field name ${req.params.name}`);
   }
 
-  const field = await Field.findOne({ name: req.params.name });
-
   // update array
-  const filter = { name: req.params.name };
-  const update = { $addToSet: { myArrayField: req.body.value } }; // add a new value to myArrayField using the $addToSet operator
-  const options = { returnOriginal: false };
-
-  const updatedField = await Field.findOneAndUpdate(filter, update, options);
+  const filter = { };
+  const update = { $addToSet: { [`${req.params.name}`]: req.body.value } }; 
+  const updatedField = await Field.updateOne(filter, update);
 
   try {
     res.json(updatedField);
