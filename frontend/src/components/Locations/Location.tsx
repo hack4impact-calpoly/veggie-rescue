@@ -1,12 +1,12 @@
 import { useState, useEffect } from 'react';
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-import { toast } from 'react-toastify';
+// unused
+// import { toast } from 'react-toastify';
 import { useAppSelector, useAppDispatch } from '../../app/hooks';
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-import { pickupSchema } from './dbMock'; // import data from dbMock
+// unused
+// import { pickupSchema } from './dbMock'; // import data from dbMock
 import LocationFilter from './LocationFilter';
-// import LocationForm from './LocationForm'; // removed as of issue 152
+import LocationForm from './LocationForm';
 import Locations from './Locations';
 
 import Spinner from '../Spinner/Spinner';
@@ -15,7 +15,8 @@ import './Location.css';
 import { getDonors } from '../../features/donors/donorSlice';
 import { getRecipients } from '../../features/recipients/recipientsSlice';
 
-interface Locale {
+// eslint-disable-next-line @typescript-eslint/naming-convention
+interface locale {
   name: string;
   LocationType: string;
   EntityType: string;
@@ -26,7 +27,18 @@ interface Locale {
   _id: string;
 }
 
-interface PickupDeliveryObjectSchema {
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+interface Donor {
+  name: string;
+  LocationType: string;
+  EntityType: string;
+  FoodType: string;
+  CombinedAreaName: string;
+  _id: string;
+}
+
+// eslint-disable-next-line @typescript-eslint/naming-convention
+interface pickupDeliveryObjectSchema {
   pickupOrDelivery: number;
   id: String;
   date: String;
@@ -43,22 +55,19 @@ interface PickupDeliveryObjectSchema {
 
 interface Props {
   setPickupDeliveryObject: Function;
-  PickupDeliveryObject: PickupDeliveryObjectSchema;
+  PickupDeliveryObject: pickupDeliveryObjectSchema;
   setForceNext: Function;
 }
 
 function Location({
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   setPickupDeliveryObject,
   PickupDeliveryObject,
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   setForceNext
 }: Props) {
   // Elements we will keep in local state and pass back and forth to components
   const [locations, setLocations] = useState([]);
-  const [current, setCurrent] = useState<undefined | Locale>();
-  const [filtered, setFiltered] = useState<undefined | Locale[]>();
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const [current, setCurrent] = useState<undefined | locale>();
+  const [filtered, setFiltered] = useState<undefined | locale[]>();
   const [createNew, setCreateNew] = useState(false);
   const dispatch = useAppDispatch();
 
@@ -103,7 +112,7 @@ function Location({
   ]);
   // This will create a temp copy of current location which will eventually be the item stored in vehicle database
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const [savedLocation, setLocation] = useState<undefined | Locale>();
+  const [savedLocation, setLocation] = useState<undefined | locale>();
 
   // Empties the filtered array called in:
   const clearFilter = () => {
@@ -117,12 +126,11 @@ function Location({
 
   // Uses array of locations and filters based on input into LocationFilter text area.
   const filterLocations = (element: string) => {
-    // eslint-disable-next-line @typescript-eslint/no-shadow
-    const filtered: Locale[] = locations.filter((loc: Locale) => {
+    const filteredList: locale[] = locations.filter((loc: locale) => {
       const regex = new RegExp(`${element}`, 'gi');
       return loc.name.match(regex);
     });
-    setFiltered(filtered);
+    setFiltered(filteredList);
   };
   if (donorLoading || recipientLoading) {
     return <Spinner />;
@@ -148,7 +156,6 @@ function Location({
         clearFilter={clearFilter}
         setCreateNew={setCreateNew}
       />
-      {/* removed as of issue 152
       {current && (
         <LocationForm
           current={current}
@@ -158,7 +165,7 @@ function Location({
           PickupDeliveryObject={PickupDeliveryObject}
           setPickupDeliveryObject={setPickupDeliveryObject}
         />
-      )} */}
+      )}
     </div>
   );
 }
