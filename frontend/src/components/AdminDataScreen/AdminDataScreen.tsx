@@ -506,9 +506,6 @@ function AdminDataScreen() {
       );
     }
     if (entityTypeCard) {
-      console.log(searchParam);
-      console.log(q);
-
       return donorsEntityTypes.filter((item: any) =>
         searchParam.some(
           () => item.toString().toLowerCase().indexOf(q.toLowerCase()) > -1
@@ -592,7 +589,6 @@ function AdminDataScreen() {
       );
     }
     if (donors) {
-      console.log(pickupSchema);
       return pickupSchema.filter((item: any) =>
         searchParam.some(
           (newItem: any) =>
@@ -600,7 +596,6 @@ function AdminDataScreen() {
         )
       );
     }
-    console.log(deliverySchema);
     return deliverySchema.filter((item: any) =>
       searchParam.some(
         (newItem: any) =>
@@ -952,7 +947,7 @@ function AdminDataScreen() {
                   handleShow={handleShowModal}
                   whichField="Donors Food Type"
                   isUpdate={isUpdate}
-                  vehicle={currentDonorsFoodType}
+                  fieldName={currentDonorsFoodType}
                 />
               )}
               {search(q).map((item: any, index: any) => (
@@ -982,7 +977,7 @@ function AdminDataScreen() {
                   handleShow={handleShowModal}
                   whichField="Location Type"
                   isUpdate={isUpdate}
-                  vehicle={currentLocType}
+                  fieldName={currentLocType}
                 />
               )}
               {search(q).map((item: any, index: any) => (
@@ -1012,7 +1007,7 @@ function AdminDataScreen() {
                   handleShow={handleShowModal}
                   whichField="Donors Combined Area Name"
                   isUpdate={isUpdate}
-                  vehicle={currentDonorsAreaName}
+                  fieldName={currentDonorsAreaName}
                 />
               )}
 
@@ -1043,7 +1038,7 @@ function AdminDataScreen() {
                   handleShow={handleShowModal}
                   whichField="Organizational Structure"
                   isUpdate={isUpdate}
-                  vehicle={currentOrgStruc}
+                  fieldName={currentOrgStruc}
                 />
               )}
               {search(q).map((item: any, index: any) => (
@@ -1073,7 +1068,7 @@ function AdminDataScreen() {
                   handleShow={handleShowModal}
                   whichField="Food Distribution Model"
                   isUpdate={isUpdate}
-                  vehicle={currentFoodDistr}
+                  fieldName={currentFoodDistr}
                 />
               )}
               {search(q).map((item: any, index: any) => (
@@ -1103,7 +1098,7 @@ function AdminDataScreen() {
                   handleShow={handleShowModal}
                   whichField="Recipients Food Type"
                   isUpdate={isUpdate}
-                  vehicle={currentRecipFoodType}
+                  fieldName={currentRecipFoodType}
                 />
               )}
               {search(q).map((item: any, index: any) => (
@@ -1133,7 +1128,7 @@ function AdminDataScreen() {
                   handleShow={handleShowModal}
                   whichField="Demographics Served"
                   isUpdate={isUpdate}
-                  vehicle={currentDemographic}
+                  fieldName={currentDemographic}
                 />
               )}
               {search(q).map((item: any, index: any) => (
@@ -1163,7 +1158,7 @@ function AdminDataScreen() {
                   handleShow={handleShowModal}
                   whichField="Recipients Combined Area Name"
                   isUpdate={isUpdate}
-                  vehicle={currentRecipAreaName}
+                  fieldName={currentRecipAreaName}
                 />
               )}
               {search(q).map((item: any, index: any) => (
