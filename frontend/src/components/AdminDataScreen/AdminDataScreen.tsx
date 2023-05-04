@@ -963,7 +963,7 @@ function AdminDataScreen() {
             </div>
           )}
           {/* TODO change the props of subsequent FieldForms to match above */}
-          {foodTypeCard && (
+          {/* {foodTypeCard && (
             <div className="logs">
               <button
                 type="button"
@@ -991,7 +991,7 @@ function AdminDataScreen() {
                 />
               ))}
             </div>
-          )}
+          )} */}
 
           {locationTypeCard && (
             <div className="logs">
