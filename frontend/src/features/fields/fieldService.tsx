@@ -14,23 +14,53 @@ interface fieldServiceObject {
 }
 
 const getFields = async (token: string) => {
-
+    const config = {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      };
+      const response = await axios.get(API_URL, config);
+      return response.data;
 };
 
-const getFieldByName = async (token: string) => {
-
+const getFieldByName = async (fieldName: string, token: string) => {
+    const config = {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      };
+    const response = await axios.get(`${API_URL}?name=${fieldName}`, config);
+    return response.data;
 };
 
-const createField = async (token: string) => {
-
+const createField = async (fieldData: fieldServiceObject, token: string) => {
+    const config = {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      };
+      const response = await axios.post(API_URL, fieldData, config);
+      return response.data;
 };
 
-const editField = async (token: string) => {
-
+const editField = async (fieldData: fieldServiceObject, token: string) => {
+    const config = {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      };
+      const response = await axios.post(API_URL, fieldData, config);
+      return response.data;
 };
 
-const deleteField = async (token: string) => {
-
+const deleteField = async (fieldId: string, token: string) => {
+    const config = {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      };
+    const response = await axios.delete(`${API_URL}${fieldId}/`, config);
+    return response.data;
 };
 
 const fieldService = {
