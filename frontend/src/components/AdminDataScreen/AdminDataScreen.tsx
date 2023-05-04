@@ -39,13 +39,15 @@ function AdminDataScreen() {
   const [recipients, setRecipients] = useState(false);
 
   const [entityTypeCard, setEntityTypeCard] = useState(false);
-  const [donorsFoodTypeCard, setDonorsFoodTypeCard] = useState(false);
+  // const [donorsFoodTypeCard, setDonorsFoodTypeCard] = useState(false);
   const [locationTypeCard, setLocationTypeCard] = useState(false);
   const [donorsAreaNameCard, setDonorsAreaNameCard] = useState(false);
 
+  const [foodTypeCard, setFoodTypeCard] = useState(false);
+
   const [orgStrucCard, setOrgStrucCard] = useState(false);
   const [foodDistrModelCard, setFoodDistrModelCard] = useState(false);
-  const [recipFoodTypeCard, setRecipFoodTypeCard] = useState(false);
+  // const [recipFoodTypeCard, setRecipFoodTypeCard] = useState(false);
   const [demographicCard, setDemographicCard] = useState(false);
   const [recipAreaNameCard, setRecipAreaNameCard] = useState(false);
 
@@ -130,13 +132,13 @@ function AdminDataScreen() {
   const [currentRecipient, setCurrentRecipient] = useState(null);
 
   const [currentEntityType, setCurrentEntityType] = useState(null);
-  const [currentDonorsFoodType, setCurrentDonorsFoodType] = useState(null);
   const [currentLocType, setCurrentLocType] = useState(null);
   const [currentDonorsAreaName, setCurrentDonorsAreaName] = useState(null);
 
+  const [currentFoodType, setCurrentFoodType] = useState(null);
+
   const [currentOrgStruc, setCurrentOrgStruc] = useState(null);
   const [currentFoodDistr, setCurrentFoodDistr] = useState(null);
-  const [currentRecipFoodType, setCurrentRecipFoodType] = useState(null);
   const [currentDemographic, setCurrentDemographic] = useState(null);
   const [currentRecipAreaName, setCurrentRecipAreaName] = useState(null);
 
@@ -165,12 +167,13 @@ function AdminDataScreen() {
     toggleDonorButtons(false);
     toggleRecipientButtons(false);
     setEntityTypeCard(false);
-    setDonorsFoodTypeCard(false);
+    // setDonorsFoodTypeCard(false);
+    setFoodTypeCard(false);
     setLocationTypeCard(false);
     setDonorsAreaNameCard(false);
     setOrgStrucCard(false);
     setFoodDistrModelCard(false);
-    setRecipFoodTypeCard(false);
+    // setRecipFoodTypeCard(false);
     setDemographicCard(false);
     setRecipAreaNameCard(false);
   }
@@ -184,12 +187,13 @@ function AdminDataScreen() {
     toggleDonorButtons(false);
     toggleRecipientButtons(false);
     setEntityTypeCard(false);
-    setDonorsFoodTypeCard(false);
+    // setDonorsFoodTypeCard(false);
+    setFoodTypeCard(false);
     setLocationTypeCard(false);
     setDonorsAreaNameCard(false);
     setOrgStrucCard(false);
     setFoodDistrModelCard(false);
-    setRecipFoodTypeCard(false);
+    // setRecipFoodTypeCard(false);
     setDemographicCard(false);
     setRecipAreaNameCard(false);
   }
@@ -205,8 +209,8 @@ function AdminDataScreen() {
     setUpdate(true);
   }
 
-  function recipFoodTypeData(recipFoodType: any) {
-    setCurrentRecipFoodType(recipFoodType);
+  function foodTypeData(foodType: any) {
+    setCurrentFoodType(foodType);
     setUpdate(true);
   }
 
@@ -227,11 +231,6 @@ function AdminDataScreen() {
 
   function foodDistrModelData(foodDistrModelType: any) {
     setCurrentFoodDistr(foodDistrModelType);
-    setUpdate(true);
-  }
-
-  function donorsFoodTypeData(donorsFoodType: any) {
-    setCurrentDonorsFoodType(donorsFoodType);
     setUpdate(true);
   }
 
@@ -272,12 +271,13 @@ function AdminDataScreen() {
     toggleDonorButtons(true);
     toggleRecipientButtons(false);
     setEntityTypeCard(false);
-    setDonorsFoodTypeCard(false);
+    // setDonorsFoodTypeCard(false);
+    setFoodTypeCard(false);
     setLocationTypeCard(false);
     setDonorsAreaNameCard(false);
     setOrgStrucCard(false);
     setFoodDistrModelCard(false);
-    setRecipFoodTypeCard(false);
+    // setRecipFoodTypeCard(false);
     setDemographicCard(false);
     setRecipAreaNameCard(false);
   }
@@ -291,12 +291,13 @@ function AdminDataScreen() {
     toggleDonorButtons(true);
     toggleRecipientButtons(false);
     setEntityTypeCard(true);
-    setDonorsFoodTypeCard(false);
+    // setDonorsFoodTypeCard(false);
+    setFoodTypeCard(false);
     setLocationTypeCard(false);
     setDonorsAreaNameCard(false);
     setOrgStrucCard(false);
     setFoodDistrModelCard(false);
-    setRecipFoodTypeCard(false);
+    // setRecipFoodTypeCard(false);
     setDemographicCard(false);
     setRecipAreaNameCard(false);
   }
@@ -310,15 +311,36 @@ function AdminDataScreen() {
     toggleDonorButtons(true);
     toggleRecipientButtons(false);
     setEntityTypeCard(false);
-    setDonorsFoodTypeCard(true);
+    // setDonorsFoodTypeCard(true);
+    setFoodTypeCard(true);
     setLocationTypeCard(false);
     setDonorsAreaNameCard(false);
     setOrgStrucCard(false);
     setFoodDistrModelCard(false);
-    setRecipFoodTypeCard(false);
+    // setRecipFoodTypeCard(false);
     setDemographicCard(false);
     setRecipAreaNameCard(false);
   }
+
+  // function handleFoodType() {
+  //   setVolunteers(false);
+  //   setVehiclesCard(false);
+  //   setDonors(false);
+  //   setSearchParam(['name']);
+  //   setRecipients(false);
+  //   toggleDonorButtons(true);
+  //   toggleRecipientButtons(false);
+  //   setEntityTypeCard(false);
+  //   // setDonorsFoodTypeCard(true);
+  //   setFoodTypeCard(true);
+  //   setLocationTypeCard(false);
+  //   setDonorsAreaNameCard(false);
+  //   setOrgStrucCard(false);
+  //   setFoodDistrModelCard(false);
+  //   // setRecipFoodTypeCard(false);
+  //   setDemographicCard(false);
+  //   setRecipAreaNameCard(false);
+  // }
 
   function handleLocationType() {
     setVolunteers(false);
@@ -329,12 +351,13 @@ function AdminDataScreen() {
     toggleDonorButtons(true);
     toggleRecipientButtons(false);
     setEntityTypeCard(false);
-    setDonorsFoodTypeCard(false);
+    // setDonorsFoodTypeCard(false);
+    setFoodTypeCard(false);
     setLocationTypeCard(true);
     setDonorsAreaNameCard(false);
     setOrgStrucCard(false);
     setFoodDistrModelCard(false);
-    setRecipFoodTypeCard(false);
+    // setRecipFoodTypeCard(false);
     setDemographicCard(false);
     setRecipAreaNameCard(false);
   }
@@ -348,12 +371,13 @@ function AdminDataScreen() {
     toggleDonorButtons(true);
     toggleRecipientButtons(false);
     setEntityTypeCard(false);
-    setDonorsFoodTypeCard(false);
+    // setDonorsFoodTypeCard(false);
+    setFoodTypeCard(false);
     setLocationTypeCard(false);
     setDonorsAreaNameCard(true);
     setOrgStrucCard(false);
     setFoodDistrModelCard(false);
-    setRecipFoodTypeCard(false);
+    // setRecipFoodTypeCard(false);
     setDemographicCard(false);
     setRecipAreaNameCard(false);
   }
@@ -373,12 +397,13 @@ function AdminDataScreen() {
     toggleDonorButtons(false);
     toggleRecipientButtons(true);
     setEntityTypeCard(false);
-    setDonorsFoodTypeCard(false);
+    // setDonorsFoodTypeCard(false);
+    setFoodTypeCard(false);
     setLocationTypeCard(false);
     setDonorsAreaNameCard(false);
     setOrgStrucCard(false);
     setFoodDistrModelCard(false);
-    setRecipFoodTypeCard(false);
+    // setRecipFoodTypeCard(false);
     setDemographicCard(false);
     setRecipAreaNameCard(false);
   }
@@ -392,12 +417,13 @@ function AdminDataScreen() {
     toggleDonorButtons(false);
     toggleRecipientButtons(true);
     setEntityTypeCard(false);
-    setDonorsFoodTypeCard(false);
+    // setDonorsFoodTypeCard(false);
+    setFoodTypeCard(false);
     setLocationTypeCard(false);
     setDonorsAreaNameCard(false);
     setOrgStrucCard(true);
     setFoodDistrModelCard(false);
-    setRecipFoodTypeCard(false);
+    // setRecipFoodTypeCard(false);
     setDemographicCard(false);
     setRecipAreaNameCard(false);
   }
@@ -411,12 +437,13 @@ function AdminDataScreen() {
     toggleDonorButtons(false);
     toggleRecipientButtons(true);
     setEntityTypeCard(false);
-    setDonorsFoodTypeCard(false);
+    // setDonorsFoodTypeCard(false);
+    setFoodTypeCard(false);
     setLocationTypeCard(false);
     setDonorsAreaNameCard(false);
     setOrgStrucCard(false);
     setFoodDistrModelCard(true);
-    setRecipFoodTypeCard(false);
+    // setRecipFoodTypeCard(false);
     setDemographicCard(false);
     setRecipAreaNameCard(false);
   }
@@ -430,12 +457,13 @@ function AdminDataScreen() {
     toggleDonorButtons(false);
     toggleRecipientButtons(true);
     setEntityTypeCard(false);
-    setDonorsFoodTypeCard(false);
+    // setDonorsFoodTypeCard(false);
+    setFoodTypeCard(true);
     setLocationTypeCard(false);
     setDonorsAreaNameCard(false);
     setOrgStrucCard(false);
     setFoodDistrModelCard(false);
-    setRecipFoodTypeCard(true);
+    // setRecipFoodTypeCard(true);
     setDemographicCard(false);
     setRecipAreaNameCard(false);
   }
@@ -449,12 +477,13 @@ function AdminDataScreen() {
     toggleDonorButtons(false);
     toggleRecipientButtons(true);
     setEntityTypeCard(false);
-    setDonorsFoodTypeCard(false);
+    // setDonorsFoodTypeCard(false);
+    setFoodTypeCard(false);
     setLocationTypeCard(false);
     setDonorsAreaNameCard(false);
     setOrgStrucCard(false);
     setFoodDistrModelCard(false);
-    setRecipFoodTypeCard(false);
+    // setRecipFoodTypeCard(false);
     setDemographicCard(true);
     setRecipAreaNameCard(false);
   }
@@ -468,12 +497,13 @@ function AdminDataScreen() {
     toggleDonorButtons(false);
     toggleRecipientButtons(true);
     setEntityTypeCard(false);
-    setDonorsFoodTypeCard(false);
+    // setDonorsFoodTypeCard(false);
+    setFoodTypeCard(false);
     setLocationTypeCard(false);
     setDonorsAreaNameCard(false);
     setOrgStrucCard(false);
     setFoodDistrModelCard(false);
-    setRecipFoodTypeCard(false);
+    // setRecipFoodTypeCard(false);
     setDemographicCard(false);
     setRecipAreaNameCard(true);
   }
@@ -507,7 +537,15 @@ function AdminDataScreen() {
       );
     }
 
-    if (donorsFoodTypeCard) {
+    // if (donorsFoodTypeCard) {
+    //   return foodTypes.filter((item: any) =>
+    //     searchParam.some(
+    //       () => item.toString().toLowerCase().indexOf(q.toLowerCase()) > -1
+    //     )
+    //   );
+    // }
+
+    if (foodTypeCard) {
       return foodTypes.filter((item: any) =>
         searchParam.some(
           () => item.toString().toLowerCase().indexOf(q.toLowerCase()) > -1
@@ -547,13 +585,13 @@ function AdminDataScreen() {
       );
     }
 
-    if (recipFoodTypeCard) {
-      return foodTypes.filter((item: any) =>
-        searchParam.some(
-          () => item.toString().toLowerCase().indexOf(q.toLowerCase()) > -1
-        )
-      );
-    }
+    // if (recipFoodTypeCard) {
+    //   return foodTypes.filter((item: any) =>
+    //     searchParam.some(
+    //       () => item.toString().toLowerCase().indexOf(q.toLowerCase()) > -1
+    //     )
+    //   );
+    // }
 
     if (demographicCard) {
       return demographicsServed.filter((item: any) =>
@@ -679,7 +717,7 @@ function AdminDataScreen() {
                 type="button"
                 className="title"
                 onClick={handleRecipFoodType}
-                style={{ border: recipFoodTypeCard ? '2px solid #FF9C55' : '' }}
+                style={{ border: foodTypeCard ? '2px solid #FF9C55' : '' }}
               >
                 Food Type
               </button>
@@ -724,7 +762,7 @@ function AdminDataScreen() {
                 className="title"
                 onClick={handleDonorsFoodType}
                 style={{
-                  border: donorsFoodTypeCard ? '2px solid #FF9C55' : ''
+                  border: foodTypeCard ? '2px solid #FF9C55' : ''
                 }}
               >
                 Food Type
@@ -925,7 +963,7 @@ function AdminDataScreen() {
             </div>
           )}
           {/* TODO change the props of subsequent FieldForms to match above */}
-          {donorsFoodTypeCard && (
+          {foodTypeCard && (
             <div className="logs">
               <button
                 type="button"
@@ -941,7 +979,7 @@ function AdminDataScreen() {
                   handleShow={handleShowModal}
                   whichField="Donors Food Type"
                   isUpdate={isUpdate}
-                  fieldName={currentDonorsFoodType}
+                  fieldName={currentFoodType}
                 />
               )}
               {search(q).map((item: any, index: any) => (
@@ -949,7 +987,7 @@ function AdminDataScreen() {
                   index={index}
                   field={item}
                   handleShow={handleShowModal}
-                  fieldHandler={donorsFoodTypeData}
+                  fieldHandler={foodTypeData}
                 />
               ))}
             </div>
@@ -1076,7 +1114,7 @@ function AdminDataScreen() {
             </div>
           )}
 
-          {recipFoodTypeCard && (
+          {foodTypeCard && (
             <div className="logs">
               <button
                 type="button"
@@ -1092,7 +1130,7 @@ function AdminDataScreen() {
                   handleShow={handleShowModal}
                   whichField="Recipients Food Type"
                   isUpdate={isUpdate}
-                  fieldName={currentRecipFoodType}
+                  fieldName={currentFoodType}
                 />
               )}
               {search(q).map((item: any, index: any) => (
@@ -1100,7 +1138,7 @@ function AdminDataScreen() {
                   index={index}
                   field={item}
                   handleShow={handleShowModal}
-                  fieldHandler={recipFoodTypeData}
+                  fieldHandler={foodTypeData}
                 />
               ))}
             </div>
