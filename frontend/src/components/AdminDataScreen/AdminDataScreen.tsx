@@ -130,20 +130,14 @@ function AdminDataScreen() {
   const [currentRecipient, setCurrentRecipient] = useState(null);
 
   const [currentEntityType, setCurrentEntityType] = useState(null);
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [currentDonorsFoodType, setCurrentDonorsFoodType] = useState(null);
   const [currentLocType, setCurrentLocType] = useState(null);
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [currentDonorsAreaName, setCurrentDonorsAreaName] = useState(null);
 
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [currentOrgStruc, setCurrentOrgStruc] = useState(null);
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [currentFoodDistr, setCurrentFoodDistr] = useState(null);
   const [currentRecipFoodType, setCurrentRecipFoodType] = useState(null);
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [currentDemographic, setCurrentDemographic] = useState(null);
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [currentRecipAreaName, setCurrentRecipAreaName] = useState(null);
 
   const [showDonorButtons, toggleDonorButtons] = useState(false);
@@ -222,32 +216,32 @@ function AdminDataScreen() {
   }
 
   function donorsAreaNameData(donorsAreaNameType: any) {
-    setCurrentLocType(donorsAreaNameType);
+    setCurrentDonorsAreaName(donorsAreaNameType);
     setUpdate(true);
   }
 
   function orgStrucData(orgStrucType: any) {
-    setCurrentLocType(orgStrucType);
+    setCurrentOrgStruc(orgStrucType);
     setUpdate(true);
   }
 
   function foodDistrModelData(foodDistrModelType: any) {
-    setCurrentLocType(foodDistrModelType);
+    setCurrentFoodDistr(foodDistrModelType);
     setUpdate(true);
   }
 
   function donorsFoodTypeData(donorsFoodType: any) {
-    setCurrentLocType(donorsFoodType);
+    setCurrentDonorsFoodType(donorsFoodType);
     setUpdate(true);
   }
 
   function demoServedData(demoServedType: any) {
-    setCurrentLocType(demoServedType);
+    setCurrentDemographic(demoServedType);
     setUpdate(true);
   }
 
   function recipAreaNameData(recipAreaNameType: any) {
-    setCurrentLocType(recipAreaNameType);
+    setCurrentRecipAreaName(recipAreaNameType);
     setUpdate(true);
   }
 
