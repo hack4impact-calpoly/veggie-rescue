@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import './EntityForm.css';
+import { toast } from 'react-toastify';
 import { useAppSelector, useAppDispatch } from '../../app/hooks';
 
 // import assets
@@ -17,18 +18,27 @@ import {
   deleteDriver,
   createDriver
 } from '../../features/driverAuth/driverAuthSlice';
-import { toast } from 'react-toastify';
 
 /* Form to add driver or vehicle */
+// eslint-disable-next-line react/function-component-definition
 const ShortEntityForm = (props: any) => {
   /* Driver and vehicle state data here */
   // const [volunteerName, setName] = useState('');
-  const [volunteerName, setName] = useState(props.isUpdate ? props.whichEntity ? props.vehicle.name : props.volunteer.name : '');
+  const [volunteerName, setName] = useState(
+    props.isUpdate
+      ? props.whichEntity
+        ? props.vehicle.name
+        : props.volunteer.name
+      : ''
+  );
   // const [volunteerPin, setPin] = useState('');
-  const [volunteerPin, setPin] = useState(props.isUpdate ? props.whichEntity ? '' : props.volunteer.pin : '');
+  const [volunteerPin, setPin] = useState(
+    props.isUpdate ? (props.whichEntity ? '' : props.volunteer.pin) : ''
+  );
   const [volunteer, setVolunteer] = useState(true);
   const [vehicle, setVehicle] = useState(false);
   const [isVehicle, setIsVehicle] = useState(props.whichEntity);
+  const [entityType, setEntityType] = useState(props.entityType);
   const dispatch = useAppDispatch();
 
   // global state
@@ -68,7 +78,7 @@ const ShortEntityForm = (props: any) => {
 
   // this function is called if we submit a new driver or vehicle
   const dispatchCreateNew = async () => {
-    console.log("CREATE")
+    console.log('CREATE');
     if (isVehicle) {
       await dispatch(
         createVehicle({
@@ -98,7 +108,7 @@ const ShortEntityForm = (props: any) => {
   };
 
   const dispatchUpdate = async () => {
-    console.log("UPDAATE")    
+    console.log('UPDAATE');
     if (isVehicle) {
       await dispatch(
         updateVehicle({
@@ -109,7 +119,7 @@ const ShortEntityForm = (props: any) => {
       toast.success('Successfully updated vehicle.');
       dispatchGetVehicles();
     } else {
-      console.log('update of a volunteer: ' + volunteerName + ", " + volunteerPin);
+      console.log(`update of a volunteer: ${volunteerName}, ${volunteerPin}`);
       // here we can put the call to update a volunteer
       await dispatch(
         updateDriver({
@@ -124,7 +134,7 @@ const ShortEntityForm = (props: any) => {
     props.handleShow();
   };
   const dispatchDelete = async (e: any) => {
-    console.log("DELETE")
+    console.log('DELETE');
     e.preventDefault();
     if (isVehicle) {
       await dispatch(deleteVehicle(props.vehicle._id));
@@ -152,38 +162,25 @@ const ShortEntityForm = (props: any) => {
 
   function handleSubmit(e: any) {
     e.preventDefault();
-    if (isVehicle && props.isUpdate){
-      if (volunteerName === '')
-        toast.error('Missing Name')
-      else
-        dispatchUpdate();
-    }
-    else if (isVehicle && !props.isUpdate){
-      if (volunteerName === '')
-        toast.error('Missing Name')
-      else
-        dispatchCreateNew();
-    }
-    else if (!isVehicle && props.isUpdate){
+    if (isVehicle && props.isUpdate) {
+      if (volunteerName === '') toast.error('Missing Name');
+      else dispatchUpdate();
+    } else if (isVehicle && !props.isUpdate) {
+      if (volunteerName === '') toast.error('Missing Name');
+      else dispatchCreateNew();
+    } else if (!isVehicle && props.isUpdate) {
       // console.log("here")
-      if (volunteerName === '')
-        toast.error('Missing Name')
-      else if (volunteerPin === '')
-        toast.error('Missing Pin')
+      if (volunteerName === '') toast.error('Missing Name');
+      else if (volunteerPin === '') toast.error('Missing Pin');
       else if (volunteerPin.length !== 4)
-        toast.error('Pin must be 4 characters')
-      else
-        dispatchUpdate();
-    }
-    else if (!isVehicle && !props.isUpdate){
-      if (volunteerName === '')
-        toast.error('Missing Name')
-      else if (volunteerPin === '')
-        toast.error('Missing Pin')
+        toast.error('Pin must be 4 characters');
+      else dispatchUpdate();
+    } else if (!isVehicle && !props.isUpdate) {
+      if (volunteerName === '') toast.error('Missing Name');
+      else if (volunteerPin === '') toast.error('Missing Pin');
       else if (volunteerPin.length !== 4)
-        toast.error('Pin must be 4 characters')
-      else
-        dispatchCreateNew();
+        toast.error('Pin must be 4 characters');
+      else dispatchCreateNew();
     }
   }
   if (vehicleIsLoading || driverIsLoading) {
@@ -202,41 +199,40 @@ const ShortEntityForm = (props: any) => {
             </button>
           </div>
         </div>
-        
+
         <div className="entity-type">
-        {!isVehicle ?
-          <button
-            className="type-button"
-            type="button"
-            onClick={handleVolunteer}
-            style={{ border: volunteer ? '2px solid #FF9C55' : '' }}
-          >
-            Volunteer
-          </button>
-        :
-          <button
-            className="type-button"
-            type="button"
-            onClick={handleVehicle}
-            style={{ border: vehicle ? '2px solid #FF9C55' : '' }}
-          >
-            Vehicle
-          </button>
-        }
+          {!isVehicle ? (
+            <button
+              className="type-button"
+              type="button"
+              onClick={handleVolunteer}
+              style={{ border: volunteer ? '2px solid #FF9C55' : '' }}
+            >
+              Volunteer
+            </button>
+          ) : (
+            <button
+              className="type-button"
+              type="button"
+              onClick={handleVehicle}
+              style={{ border: vehicle ? '2px solid #FF9C55' : '' }}
+            >
+              Vehicle
+            </button>
+          )}
         </div>
+
         <h2>Name</h2>
         <input
           className="input"
           defaultValue={
-            (props.isUpdate)
-              ? (isVehicle)
-                  ? props.vehicle.name 
-                  : props.volunteer.name
-              : ""
-              }
-            placeholder={
-              (!props.isUpdate) ? 'Name' : ''
-            }
+            props.isUpdate
+              ? isVehicle
+                ? props.vehicle.name
+                : props.volunteer.name
+              : ''
+          }
+          placeholder={!props.isUpdate ? 'Name' : ''}
           onChange={(e: any) => setName(e.target.value)}
         />
         {!isVehicle && (
@@ -244,12 +240,8 @@ const ShortEntityForm = (props: any) => {
             <h2>Pin</h2>
             <input
               className="input"
-              placeholder={
-                !props.isUpdate ? 'Pin' : ''
-              }
-              defaultValue={
-                props.isUpdate ? props.volunteer.pin : ''
-              }
+              placeholder={!props.isUpdate ? 'Pin' : ''}
+              defaultValue={props.isUpdate ? props.volunteer.pin : ''}
               onChange={(e: any) => setPin(e.target.value)}
             />
           </div>
