@@ -32,7 +32,7 @@ import FieldForm from './FieldForm';
 // import RecipientEditForm from './EditComponents/RecipientEditForm';
 
 function AdminDataScreen() {
-  const [loading] = useState(false);
+  const [loading, setLoading] = useState(false);
   const [vehiclesCard, setVehiclesCard] = useState(false);
   const [volunteers, setVolunteers] = useState(false);
   const [donors, setDonors] = useState(false);
@@ -471,8 +471,6 @@ function AdminDataScreen() {
   }, [volunteers, vehiclesCard, donors, recipients]);
 
   /* this function adds cards to query based on search */
-
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   function search(items: any) {
     if (volunteers) {
       return drivers.filter((item: any) =>
@@ -728,7 +726,6 @@ function AdminDataScreen() {
               </button>
             </div>
           </div>
-
           <div className="search">
             <input
               type="text"
