@@ -31,7 +31,7 @@ const getFieldByName = asyncHandler(async (req, res) => {
     throw new Error("Admin not found");
   }
   try {
-    const { fieldName } = req.body;
+    const { fieldName } = req.params;
     // check if the field exists
     if (!Object.prototype.hasOwnProperty.call(Fields.schema.paths, fieldName)) {
       throw new Error({
