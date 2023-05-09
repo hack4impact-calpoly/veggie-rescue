@@ -53,7 +53,7 @@ interface Vehicle {
   img: string;
   currentPickups: PickupObject[];
   currentDropoffs: DropoffObject[];
-  totalFoodAllocation: Map<String, Number>;
+  totalFoodAllocation: Map<String, number>;
 }
 
 // Define a type for the slice state
