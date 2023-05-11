@@ -152,7 +152,7 @@ export default function NewLogWrapper() {
             recipientEntityType: pickupDeliveryObject.EntityType,
             demographic: pickupDeliveryObject.Demographic,
             area: pickupDeliveryObject.Area,
-            foodAllocation: pickupDeliveryObject.foodAllocation
+            foodAllocation: dropoffFoodItems
           };
           const addDropOffToVehicle: DropoffSchema = {
             _id: vehicle._id,
