@@ -1,15 +1,11 @@
-import "./Spinner.css";
+import './Spinner.css';
 
-import React from 'react'
-
-type Props = {}
-
-function Spinner({}: Props) {
+function Spinner() {
   return (
     <div className="loadingSpinnerContainer">
-      <div className="loadingSpinner"></div>
+      <div className="loadingSpinner" />
     </div>
-  )
+  );
 }
 
-export default Spinner
+export default Spinner;

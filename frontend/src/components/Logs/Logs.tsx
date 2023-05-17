@@ -52,22 +52,24 @@ function Logs() {
       {vehicle.currentDropoffs.length !== 0 ||
       vehicle.currentPickups.length !== 0 ? (
         <div className="mt-8 ">
-          {vehicle.currentPickups.map((v: { name: any; lbsPickedUp: any }) => (
-            <TripLog
-              key={vehicle._id}
-              trip="Pickup"
-              name={v.name}
-              foodAllocation={v.foodAllocation}
-              _id={vehicle._id}
-            />
-          ))}
+          {vehicle.currentPickups.map(
+            (v: { name: any; foodAllocation: Map<String, number> }) => (
+              <TripLog
+                key={vehicle._id}
+                trip="Pickup"
+                name={v.name}
+                foodAllocation={v.foodAllocation}
+                _id={vehicle._id}
+              />
+            )
+          )}
           {vehicle.currentDropoffs.map(
-            (v: { name: any; lbsDroppedOff: any }) => (
+            (v: { name: any; foodAllocation: Map<String, number> }) => (
               <TripLog
                 key={vehicle._id}
                 trip="Dropoff"
                 name={v.name}
-                foodAllocation={+v.foodAllocation}
+                foodAllocation={v.foodAllocation}
                 _id={vehicle._id}
               />
             )

@@ -196,7 +196,7 @@ function AdminDataScreen() {
                 onClick={handleVolunteers}
                 style={{ border: volunteers ? '2px solid #FF9C55' : '' }}
               >
-                Volunteers
+                Drivers
               </button>
             </div>
             <div>
@@ -316,7 +316,7 @@ function AdminDataScreen() {
                   vehicle={currentVehicle}
                 />
               )}
-              {search(q).map((item: any, index: any) => (
+              {search().map((item: any, index: any) => (
                 <VolunteersCard
                   index={index}
                   handleShow={handleShowModal}
@@ -336,7 +336,7 @@ function AdminDataScreen() {
                   setUpdate(false);
                 }}
               >
-                <NewVolunteersCard isUpdate={isUpdate} />
+                <NewVolunteersCard />
               </button>
               {showModal && (
                 <ShortEntityForm
@@ -346,7 +346,7 @@ function AdminDataScreen() {
                   vehicle={currentVehicle}
                 />
               )}
-              {search(q).map((item: any, index: any) => (
+              {search().map((item: any, index: any) => (
                 <VehiclesCard
                   index={index}
                   vehicle={item}
@@ -375,7 +375,7 @@ function AdminDataScreen() {
                   donor={currentDonor}
                 />
               )}
-              {search(q).map((item: any) => (
+              {search().map((item: any) => (
                 <DonorsCard
                   donor={item}
                   handleShow={handleShowModal}
@@ -403,7 +403,7 @@ function AdminDataScreen() {
                   recipient={currentRecipient}
                 />
               )}
-              {search(q).map((item: any) => (
+              {search().map((item: any) => (
                 <RecipientsCard
                   recipient={item}
                   handleShow={handleShowModal}

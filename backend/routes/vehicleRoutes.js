@@ -30,7 +30,7 @@ router.get("/match", protectDriver, matchVehicle);
 // DESCRIPTION: Given a vehicle id, get that vehicle (protectAdminOrDriver), delete that vehicle (Admin only), or edit that vehicle (protectAdminOrDriver)
 router
   .route("/:id")
-  //.get(protectAdminOrDriver, getVehicle)
+  // .get(protectAdminOrDriver, getVehicle)
   .delete(protectAdmin, deleteVehicle)
   .put(protectAdminOrDriver, editVehicle);
 

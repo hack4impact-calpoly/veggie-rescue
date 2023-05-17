@@ -103,7 +103,7 @@ function Dashboard() {
 
       // This means we were successful in posting both logs... now lets see if there is a total weight left unresolved.
       // if the weight is zero, and not in the middle of a call we set the dropoff and pickup to success and logout/clear the vehicle
-      if (totalWeight(vehicle.foodAllocation) === 0 && !vehicleIsLoading) {
+      if (totalWeight(vehicle.totalFoodAllocation) === 0 && !vehicleIsLoading) {
         dispatch(setDropoffSuccess());
         dispatch(setPickupSuccess());
         dispatch(logoutVehicle(resetVehicle));
@@ -188,7 +188,7 @@ function Dashboard() {
           <h3>Current Weight:</h3>
         </div>
         <div className="lbs">
-          <h2>{totalWeight(vehicle.foodAllocation)} lbs</h2>
+          <h2>{totalWeight(vehicle.totalFoodAllocation)} lbs</h2>
         </div>
       </div>
 
@@ -224,7 +224,7 @@ interface PickupObject {
   vehicle: String;
   name: String;
   donorEntityType: String;
-  foodAllocation: Map<String, Number>;
+  foodAllocation: Map<String, number>;
   area: String;
 }
 interface DropoffObject {
@@ -235,7 +235,7 @@ interface DropoffObject {
   recipientEntityType: String;
   demographic: String;
   area: String;
-  foodAllocation: Map<String, Number>;
+  foodAllocation: Map<String, number>;
 }
 
 export default Dashboard;

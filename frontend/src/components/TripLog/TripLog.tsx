@@ -196,12 +196,12 @@ function TripLog(props: any) {
   interface PickupLog {
     _id: string;
     currentPickups: PickupObject[];
-    totalFoodAllocation: Map<String, Number>;
+    totalFoodAllocation: Map<String, number>;
   }
   interface DropoffLog {
     _id: string;
     currentDropoffs: DropoffObject[];
-    totalFoodAllocation: Map<String, Number>;
+    totalFoodAllocation: Map<String, number>;
   }
   interface PickupObject {
     // date: String;
@@ -228,12 +228,12 @@ function TripLog(props: any) {
   interface PickupLog {
     _id: string;
     currentPickups: PickupObject[];
-    totalFoodAllocation: Map<String, Number>;
+    totalFoodAllocation: Map<String, number>;
   }
   interface DropoffLog {
     _id: string;
     currentDropoffs: DropoffObject[];
-    totalFoodAllocation: Map<String, Number>;
+    totalFoodAllocation: Map<String, number>;
   }
 }
 

@@ -40,7 +40,9 @@ export default function Transferring() {
   const { driver } = useAppSelector((state) => state.driverAuth);
 
   // local state
-  const [currentWeight, setCurrentWeight] = useState(0); // tracks current weight of vehicle
+  const [currentFoodAlloc, setCurrentFoodAlloc] = useState(
+    new Map<String, number>()
+  ); // tracks current food allocation of vehicle
   const [weightArray, setWeightArray] = useState<number[]>([]); // tracks all inputs
   const [vehicleArray, setVehicleArray] = useState<any>([]); // tracks vehicles
   const [sum, setSum] = useState<number>(0); // tracks sum of all inputs
@@ -48,7 +50,7 @@ export default function Transferring() {
   const [dispatchCount, setDispatchCount] = useState<number>(0);
   // utility functions
   const setState = async () => {
-    setCurrentWeight(vehicle.totalWeight);
+    setCurrentFoodAlloc(vehicle.totalFoodAllocation);
     const vehArray = vehicles.filter(
       (veh) => veh.name !== 'personal vehicle' && veh._id !== vehicle._id
     );
@@ -108,7 +110,7 @@ export default function Transferring() {
       }
 
       if (sum) {
-        setCurrentWeight((p) => p - sum);
+        setCurrentFoodAlloc((p) => p - sum);
       }
     }
     if (isLoggedOut && isLoggingOut) {
@@ -125,7 +127,7 @@ export default function Transferring() {
     vehicle,
     weightArray,
     sum,
-    currentWeight,
+    currentFoodAlloc,
     vehicleIsSuccess,
     isLoggedOut,
     isLoggingOut,
@@ -143,12 +145,12 @@ export default function Transferring() {
     setLoading(true);
     // here is where we will verify that total weight is not less than 0.  If it is then we alert user
     // if not then we can dispatch the calls.
-    if (currentWeight >= 0) {
+    if (currentFoodAlloc >= 0) {
       // update the driver vehicle to note subtraction of weight
       const currentVehicle = await dispatch(
         updateTwo({
           _id: vehicle._id,
-          totalWeight: currentWeight
+          totalWeight: currentFoodAlloc
         })
       );
       // once that call is finished we will dispatch the array of dispersed weights
@@ -210,7 +212,7 @@ export default function Transferring() {
         <p className="text-slate-800 text-3xl font-semibold my-5">
           Weight to transfer:{' '}
           <span className="text-amber-600 text-4xl">
-            {currentWeight || 0} lbs{' '}
+            {currentFoodAlloc || 0} lbs{' '}
           </span>
         </p>
       </div>
@@ -245,7 +247,7 @@ export default function Transferring() {
     name: String;
     donorEntityType: String;
     area: String;
-    foodAllocation: Map<String, Number>;
+    foodAllocation: Map<String, number>;
   }
   interface DropoffObject {
     date: String;
@@ -255,6 +257,6 @@ export default function Transferring() {
     recipientEntityType: String;
     demographic: String;
     area: String;
-    foodAllocation: Map<String, Number>;
+    foodAllocation: Map<String, number>;
   }
 }

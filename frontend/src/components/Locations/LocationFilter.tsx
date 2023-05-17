@@ -6,7 +6,6 @@ interface Locale {
   EntityType: string;
   FoodType: string;
   DemographicName: string;
-
   CombinedAreaName: string;
   _id: string;
 }

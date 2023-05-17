@@ -12,11 +12,13 @@ const protectDriver = asyncHandler(async (req, res, next) => {
   ) {
     try {
       // Get token from header
-      token = req.headers.authorization.split(" ")[1];
+      [, token] = req.headers.authorization.split(" ");
       // Verify token
       const decoded = jwt.verify(token, process.env.JWT_SECRET);
       // Get driver from token
       req.driver = await Driver.findById(decoded.id).select("-pin");
+      // console.log("driver");
+      // console.log(req.driver);
       if (!req.driver) {
         res.status(401);
         throw new Error("Invalid token (probabably for admin)");
@@ -45,7 +47,7 @@ const protectAdmin = asyncHandler(async (req, res, next) => {
   ) {
     try {
       // Get token from header
-      [, token] = req.headers.authorization.split(" ")[1];
+      [, token] = req.headers.authorization.split(" ");
       // Verify token
       const decoded = jwt.verify(token, process.env.JWT_SECRET);
 

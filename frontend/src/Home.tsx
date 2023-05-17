@@ -1,10 +1,12 @@
 import React from 'react';
 
 function Home() {
-  return <div>
+  return (
+    <div>
       <h1>Home Page</h1>
       <p>User is Logged in </p>
-    </div>;
+    </div>
+  );
 }
 
 export default Home;

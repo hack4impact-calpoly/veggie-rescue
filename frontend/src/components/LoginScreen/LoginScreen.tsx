@@ -1,7 +1,7 @@
-import { useState, useEffect } from 'react';
-import { useAppSelector, useAppDispatch } from '../../app/hooks';
+import { useState, useEffect, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
+import { useAppSelector, useAppDispatch } from '../../app/hooks';
 
 // components and assets
 import Spinner from '../Spinner/Spinner';
@@ -14,28 +14,30 @@ import { login, reset } from '../../features/driverAuth/driverAuthSlice';
 import {
   getVehicle,
   reset as resetVehicle
-} from '../../features/vehicles/VehiclesSlice'
+} from '../../features/vehicles/VehiclesSlice';
 
-type Props = {};
+interface FoodAllocationObj {
+  [key: string]: number;
+}
 
-const LoginScreen: React.FC<Props> = () => {
+function LoginScreen() {
   // local state
   const [asterix, setAsterix] = useState<string[]>([]);
   const [pin, setPin] = useState('');
   const [loading, setLoading] = useState(false);
 
-// setup navigation and services
+  // setup navigation and services
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
 
-// External state
+  // External state
   const {
     driver,
     isError: driverError,
     isSuccess: driverSuccess,
     message: driverMessage
   } = useAppSelector((state) => state.driverAuth);
- 
+
   const {
     vehicle,
     isError: vehicleError,
@@ -43,24 +45,33 @@ const LoginScreen: React.FC<Props> = () => {
     message: vehicleMessage
   } = useAppSelector((state) => state.vehicle);
 
+  // Returns the total weight in a vehicle
+  const totalWeight = useCallback((vehicleWeights: FoodAllocationObj) => {
+    let sum = 0;
+    Object.entries(vehicleWeights).forEach(([, value]) => {
+      sum += value;
+    });
+    return sum;
+  }, []);
+
   // On component load
   useEffect(() => {
     // If we have a driver in local storage (initial state) or dispatching login puts one there:
-    if ((driverSuccess || Object.keys(driver).length !== 0)) {
+    if (driverSuccess || Object.keys(driver).length !== 0) {
       // Dispatch to get vehicle associated with this current driver
       dispatch(getVehicle());
       setLoading(true);
     }
 
     // We must check if vehicleSuccess returns true (means API call found vehicle associated with driver)
-    if ((Object.keys(vehicle).length !== 0) && vehicleSuccess) {
+    if (Object.keys(vehicle).length !== 0 && vehicleSuccess) {
       setLoading(false);
-      dispatch(resetVehicle())
+      dispatch(resetVehicle());
       toast.success(`Welcome ${driver.name}`);
       toast.success(`You are current driving : ${vehicle.name}`);
 
       // NOW depending on if there is currently weight in the vehicle or not we either go to Dashboard or Transfer page
-      if (vehicle.totalWeight !== 0) {
+      if (totalWeight(vehicle.totalFoodAllocation) !== 0) {
         navigate('/Transfer');
       } else {
         navigate('/Dashboard');
@@ -71,7 +82,7 @@ const LoginScreen: React.FC<Props> = () => {
     if (vehicleError) {
       setLoading(false);
       toast.success(`Welcome ${driver.name}`);
-      dispatch(resetVehicle())
+      dispatch(resetVehicle());
       navigate('/Vehicles');
     }
 
@@ -79,6 +90,7 @@ const LoginScreen: React.FC<Props> = () => {
     if (pin.length === 4) {
       setLoading(true);
       dispatch(login(pin));
+      // eslint-disable-next-line @typescript-eslint/no-use-before-define
       clearHandler();
     }
 
@@ -86,10 +98,24 @@ const LoginScreen: React.FC<Props> = () => {
     if (driverError) {
       toast.error(driverMessage);
       setLoading(false);
-      //reset state in case we had an error and none of the if statements were reached
-      dispatch(reset());     
+      // reset state in case we had an error and none of the if statements were reached
+      dispatch(reset());
     }
-  }, [vehicleSuccess, vehicleError, driver, driverError, driverSuccess, driverMessage, navigate, pin, dispatch, vehicle.name, vehicle.totalWeight, vehicleMessage, vehicle]);
+  }, [
+    vehicleSuccess,
+    vehicleError,
+    driver,
+    driverError,
+    driverSuccess,
+    driverMessage,
+    navigate,
+    pin,
+    dispatch,
+    vehicle.name,
+    vehicle.totalFoodAllocation,
+    vehicleMessage,
+    vehicle
+  ]);
 
   // Takes care of asterix in pin display
   const buttonHandler = (btnId: string) => {
@@ -130,6 +156,6 @@ const LoginScreen: React.FC<Props> = () => {
       />
     </div>
   );
-};
+}
 
 export default LoginScreen;

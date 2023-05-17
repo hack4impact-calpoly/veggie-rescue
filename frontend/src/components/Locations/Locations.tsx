@@ -61,7 +61,7 @@ function Locations({
               {filtered.length > 0 ? (
                 filtered
                   .slice(0, 3)
-                  .map((location: locale) => (
+                  .map((location: Locale) => (
                     <LocationItem
                       location={location}
                       key={location._id}
@@ -84,7 +84,7 @@ function Locations({
           ) : (
             locations
               .slice(0, 6)
-              .map((location: locale) => (
+              .map((location: Locale) => (
                 <LocationItem
                   location={location}
                   key={location._id}

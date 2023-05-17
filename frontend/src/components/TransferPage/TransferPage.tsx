@@ -24,7 +24,8 @@ export default function TransferPage() {
   const { vehicle, isLoggingOut, isLoggedOut } = useAppSelector(
     (state) => state.vehicle
   );
-  const { name, totalWeight } = vehicle;
+  const { name, totalFoodAllocation } = vehicle;
+  console.log(vehicle);
   const { driver } = useAppSelector((state) => state.driverAuth);
   // on component mount
   useEffect(() => {
@@ -89,7 +90,9 @@ export default function TransferPage() {
         </div>
       </div>
       <div className="md:my-4 my-10 text-5xl font-bold text-amber-600">
-        {totalWeight} lbs
+        {Object.values(totalFoodAllocation).map((value) => (
+          <li key={value}>{value}</li>
+        ))}
       </div>
       <button
         type="button"
@@ -121,7 +124,7 @@ export default function TransferPage() {
     name: String;
     donorEntityType: String;
     area: String;
-    foodAllocation: Map<String, Number>;
+    foodAllocation: Map<String, number>;
   }
   interface DropoffObject {
     date: String;
@@ -131,6 +134,6 @@ export default function TransferPage() {
     recipientEntityType: String;
     demographic: String;
     area: String;
-    foodAllocation: Map<String, Number>;
+    foodAllocation: Map<String, number>;
   }
 }

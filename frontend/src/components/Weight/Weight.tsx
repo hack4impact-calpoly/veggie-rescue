@@ -15,7 +15,7 @@ interface PickupDeliveryObjectSchema {
   LocationType: String;
   Demographic: String;
   Area: String;
-  foodAllocation: Map<String, Number>;
+  foodAllocation: Map<String, number>;
 }
 
 interface Props {

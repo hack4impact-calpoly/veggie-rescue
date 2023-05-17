@@ -7,7 +7,7 @@ function useAuthStatus() {
   const [checkingStatus, setCheckingStatus] = useState(true);
   // Grab driver object from store
   const { driver, isLoading } = useAppSelector((state) => state.driverAuth);
-  //Grab admin object from store
+  // Grab admin object from store
   const admin = useAppSelector((state) => state.adminAuth);
 
   useEffect(() => {
