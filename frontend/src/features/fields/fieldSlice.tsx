@@ -123,6 +123,26 @@ export const updateField = createAsyncThunk(
     }
 );
 
+export const deleteField = createAsyncThunk(
+    'api/location/deleteField',
+    async (fieldID: string, thunkAPI) => {
+        try {
+            const state = thunkAPI.getState() as RootState;
+            const { token } = state.adminAuth.admin;
+
+            return await fieldService.deleteField(fieldID, token);
+        } catch (error: any) {
+            const message =
+                (error.response &&
+                    error.response.data &&
+                    error.response.data.message) ||
+                error.message ||
+                error.toString();
+
+            return thunkAPI.rejectWithValue(message);
+        }
+    }
+);
 
 export const fieldSlice = createSlice({
     name: 'fields',
@@ -198,6 +218,22 @@ export const fieldSlice = createSlice({
                 fields: action.payload
             }))
             .addCase(getFieldByName.rejected, (state, action) => ({
+                ...state,
+                isLoading: false,
+                isError: true,
+                message: action.payload
+            }))
+            .addCase(deleteField.pending, (state) => ({
+                ...state,
+                isLoading: true
+            }))
+            .addCase(deleteField.fulfilled, (state, action) => ({
+                ...state,
+                isLoading: false,
+                isSuccess: true,
+                message: action.payload
+            }))
+            .addCase(deleteField.rejected, (state, action) => ({
                 ...state,
                 isLoading: false,
                 isError: true,
