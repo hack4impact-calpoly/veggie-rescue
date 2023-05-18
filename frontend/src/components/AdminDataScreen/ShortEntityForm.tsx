@@ -203,6 +203,7 @@ function ShortEntityForm(props: any) {
             </button>
           )}
         </div>
+
         <h2>Name</h2>
         <input
           className="input"

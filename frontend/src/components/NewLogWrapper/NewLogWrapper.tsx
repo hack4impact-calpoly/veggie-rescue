@@ -34,7 +34,7 @@ export default function NewLogWrapper() {
       LocationType: '',
       Demographic: '',
       Area: '',
-      foodAllocation: new Map<string, number>()
+      foodAllocation: new Map<String, number>()
     });
 
   // setup navigation and services
@@ -60,58 +60,106 @@ export default function NewLogWrapper() {
       setDoneFlag(false);
       // Check and see if it is pickup or delivery
       if (pickupDeliveryObject.pickupOrDelivery === 1) {
-        // this is a pickup
-        const newPickup: Pickup = {
-          date: Date.now().toString(),
-          driver: driver.name,
-          vehicle: vehicle.name,
-          name: pickupDeliveryObject.name,
-          donorEntityType: pickupDeliveryObject.EntityType,
-          area: pickupDeliveryObject.Area,
-          foodAllocation: pickupDeliveryObject.foodAllocation
-        };
+        // PICKUP
+        // pickupFoodItems contains all of the valid food types/weights from the pickup -- filter out zero weights
+        const pickupFoodItems = new Map<String, number>();
+        pickupDeliveryObject.foodAllocation.forEach(
+          (value: number, key: String) => {
+            if (value <= 0) {
+              toast.error(`Food type ${key} must have a nonzero weight`);
+            } else {
+              pickupFoodItems.set(key, value);
+            }
+          }
+        );
 
-        const weightCalc =
-          vehicle.totalFoodAllocation + pickupDeliveryObject.foodAllocation;
-        if (pickupDeliveryObject.foodAllocation === 0) {
-          toast.error('Log must have weight');
+        pickupFoodItems.forEach((weight: number, foodType: String) => {
+          // vehicle already has food type -- add to existing weight
+          if (vehicle.totalFoodAllocation.has(foodType)) {
+            const existingWeight = vehicle.totalFoodAllocation.get(foodType)!;
+            const newWeight = existingWeight + weight;
+            vehicle.totalFoodAllocation.set(foodType, newWeight);
+            // food type not already in vehicle
+          } else {
+            vehicle.totalFoodAllocation.set(foodType, weight);
+          }
+        });
+
+        // this means the log was empty -- should never get here
+        if (pickupFoodItems.size === 0) {
+          toast.error('Pickup must contain at least one item');
         } else {
+          const newPickup: Pickup = {
+            date: Date.now().toString(),
+            driver: driver.name,
+            vehicle: vehicle.name,
+            name: pickupDeliveryObject.name,
+            donorEntityType: pickupDeliveryObject.EntityType,
+            area: pickupDeliveryObject.Area,
+            foodAllocation: pickupFoodItems
+          };
           const addPickupToVehicle: PickupSchema = {
             _id: vehicle._id,
             currentPickups: newPickup,
-            totalFoodAllocation: weightCalc
+            totalFoodAllocation: vehicle.totalFoodAllocation
           };
 
-          // here we can dispatch the object
           dispatch(updateVehicle(addPickupToVehicle));
         }
       } else if (pickupDeliveryObject.pickupOrDelivery === 2) {
-        const newDropoff: Dropoff = {
-          date: Date.now().toString(),
-          driver: driver.name,
-          vehicle: vehicle.name,
-          name: pickupDeliveryObject.name,
-          recipientEntityType: pickupDeliveryObject.EntityType,
-          demographic: pickupDeliveryObject.Demographic,
-          area: pickupDeliveryObject.Area,
-          foodAllocation: pickupDeliveryObject.foodAllocation
-        };
+        // DELIVERY
+        // dropoffFoodItems contains all of the valid food types/weights to dropoff -- filter out zero weights
+        const dropoffFoodItems = new Map<String, number>();
+        pickupDeliveryObject.foodAllocation.forEach(
+          (value: number, key: String) => {
+            if (value <= 0) {
+              toast.error(`Food type ${key} must have a nonzero weight`);
+            } else {
+              dropoffFoodItems.set(key, value);
+            }
+          }
+        );
 
-        // error checking for dropoff log
-        const weightCalc =
-          vehicle.totalFoodAllocation - pickupDeliveryObject.foodAllocation;
-        if (weightCalc < 0) {
-          toast.error('Not enough produce in vehicle.');
-        } else if (pickupDeliveryObject.foodAllocation === 0) {
-          toast.error('Must enter some weight.!!');
+        dropoffFoodItems.forEach((weight: number, foodType: String) => {
+          // vehicle has food type -- try to subtract from existing weight
+          if (vehicle.totalFoodAllocation.has(foodType)) {
+            const existingWeight = vehicle.totalFoodAllocation.get(foodType)!;
+            const newWeight = existingWeight - weight;
+            // vehicle does not have enough of food type to subtract from
+            if (newWeight < 0) {
+              toast.error(
+                `Cannot dropoff ${weight} of food type ${foodType}. Only ${existingWeight} is in the vehicle.`
+              );
+              // set new weight in vehicle
+            } else {
+              vehicle.totalFoodAllocation.set(foodType, newWeight);
+            }
+            // food type does not exist in vehicle
+          } else {
+            toast.error(`Food type ${foodType} is not in the vehicle.`);
+          }
+        });
+
+        // this means the log was empty -- should never get here
+        if (dropoffFoodItems.size === 0) {
+          toast.error('Dropoff must contain at least one item');
         } else {
+          const newDropoff: Dropoff = {
+            date: Date.now().toString(),
+            driver: driver.name,
+            vehicle: vehicle.name,
+            name: pickupDeliveryObject.name,
+            recipientEntityType: pickupDeliveryObject.EntityType,
+            demographic: pickupDeliveryObject.Demographic,
+            area: pickupDeliveryObject.Area,
+            foodAllocation: dropoffFoodItems
+          };
           const addDropOffToVehicle: DropoffSchema = {
             _id: vehicle._id,
             currentDropoffs: newDropoff,
-            totalFoodAllocation: weightCalc
+            totalFoodAllocation: vehicle.totalFoodAllocation
           };
 
-          // here we can dispatch the object
           dispatch(updateVehicle(addDropOffToVehicle));
         }
       }
@@ -131,7 +179,7 @@ export default function NewLogWrapper() {
     navigate,
     driver.name,
     vehicle.name,
-    vehicle.totalWeight,
+    vehicle.totalFoodAllocation,
     vehicleIsSuccess,
     vehicle._id,
     dispatch,
@@ -186,9 +234,8 @@ export default function NewLogWrapper() {
     LocationType: String;
     Demographic: String;
     Area: String;
-    foodAllocation: Map<string, number>;
+    foodAllocation: Map<String, number>;
   }
-
   interface PickupSchema {
     _id: String;
     currentPickups: {
@@ -198,9 +245,9 @@ export default function NewLogWrapper() {
       name: String;
       donorEntityType: String;
       area: String;
-      foodAllocation: Map<string, number>;
+      foodAllocation: Map<String, number>;
     };
-    totalFoodAllocation: Map<string, number>;
+    totalFoodAllocation: Map<String, number>;
   }
 
   interface DropoffSchema {
@@ -213,9 +260,9 @@ export default function NewLogWrapper() {
       recipientEntityType: String;
       demographic: String;
       area: String;
-      foodAllocation: Map<string, number>;
+      foodAllocation: Map<String, number>;
     };
-    totalFoodAllocation: Map<string, number>;
+    totalFoodAllocation: Map<String, number>;
   }
   interface Dropoff {
     date: String;
@@ -225,7 +272,7 @@ export default function NewLogWrapper() {
     recipientEntityType: String;
     demographic: String;
     area: String;
-    foodAllocation: Map<string, number>;
+    foodAllocation: Map<String, number>;
   }
   interface Pickup {
     date: String;
@@ -234,6 +281,6 @@ export default function NewLogWrapper() {
     name: String;
     donorEntityType: String;
     area: String;
-    foodAllocation: Map<string, number>;
+    foodAllocation: Map<String, number>;
   }
 }

@@ -14,6 +14,7 @@ import Logs from './components/Logs/Logs';
 import Transfering from './components/Transfering/Transfering';
 import NewLogWrapper from './components/NewLogWrapper/NewLogWrapper';
 import ViewLogsPage from './components/ViewLogsPage/ViewLogsPage';
+import DriverSummary from './components/DriverSummary/DriverSummary';
 
 function App() {
   return (
@@ -68,7 +69,13 @@ function App() {
           >
             <Route path="/NewLog" element={<NewLogWrapper />} />
           </Route>
-
+          <Route
+            path="/Summary"
+            element={<ProtectedRoute redirectTo="/Login" />}
+          >
+            <Route path="/Summary" element={<DriverSummary />} />
+          </Route>
+          
           <Route
             path="/Admin"
             element={<ProtectedRoute redirectTo="/AdminLogin" />}

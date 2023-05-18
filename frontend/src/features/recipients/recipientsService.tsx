@@ -17,10 +17,10 @@ const API_URL = `${SERVER_URL}/api/location/recipient/`;
 interface RecipientObj {
   id: String;
   name: String;
-  EntityType: String;
-  DemographicName: String;
-  FoodType: String;
+  OrgStructure: String;
+  DemographicsServed: String;
   CombinedAreaName: String;
+  FoodDistModel: String;
 }
 
 //  Get  log of ALL recipients

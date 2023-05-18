@@ -6,7 +6,7 @@ const FieldSchema = new mongoose.Schema(
     LocationType: [String],
     CombinedAreaName: [String],
     OrgStructure: [String],
-    DemogsServed: [String],
+    DemographicsServed: [String],
     FoodDistModel: [String],
     FoodTypes: [String],
   },

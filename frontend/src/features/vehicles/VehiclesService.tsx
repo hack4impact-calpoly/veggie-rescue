@@ -149,7 +149,7 @@ interface VehicleChoice {
 }
 interface VehicleWeightTransfer {
   _id: string;
-  totalWeight: number;
+  totalFoodAllocation: Map<String, Number>;
 }
 interface UpdateVehicle {
   _id: string;
@@ -165,12 +165,12 @@ interface VehicleLogout {
 interface PickupLog {
   _id: string;
   currentPickups: PickupObject[];
-  totalWeight: number;
+  totalFoodAllocation: Map<String, number>;
 }
 interface DropoffLog {
   _id: string;
   currentDropoffs: DropoffObject[];
-  totalWeight: number;
+  totalFoodAllocation: Map<String, number>;
 }
 interface PickupObject {
   // date: String;

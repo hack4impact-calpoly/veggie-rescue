@@ -29,11 +29,10 @@ const initialState: RecipientState = {
 interface RecipientObj {
   id: String;
   name: String;
-  EntityType: String;
-  DemographicName: String;
-  FoodType: String;
+  OrgStructure: String;
+  DemographicsServed: String;
   CombinedAreaName: String;
-  FoodDistrModel: String;
+  FoodDistModel: String;
 }
 
 // Get list of all recipients in DB

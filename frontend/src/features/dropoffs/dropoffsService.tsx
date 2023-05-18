@@ -3,11 +3,7 @@ import axios from 'axios';
 const SERVER_URL = process.env.REACT_APP_SERVER_URL || '';
 const API_URL = `${SERVER_URL}/api/dropoffs/`;
 
-/// //////////////////////////////////////
-//                                     //
-//        MASTER DROPOFF LOG           //
-//                                     //
-/// //////////////////////////////////////
+// MASTER DROPOFF LOG
 
 // THIS IS WHERE YOU CAN DO YOUR API CALLS
 // THE CONFIG IS WHERE IT AUTHORIZES USER TOKEN WITH BACKEND

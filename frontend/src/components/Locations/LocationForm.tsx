@@ -1,5 +1,5 @@
 /* eslint-disable no-nested-ternary */
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { toast } from 'react-toastify';
 
 interface Locale {
@@ -35,6 +35,18 @@ interface Props {
   setForceNext: Function;
 }
 
+interface CheckedItem {
+  isChecked: boolean;
+  value: string;
+}
+
+interface Items {
+  [key: string]: CheckedItem;
+}
+
+/* will come from API call later */
+const foodTypes = ['Produce', 'Baked Goods', 'Prepared', 'Other'];
+
 function LocationForm({
   current,
   createNew,
@@ -44,21 +56,82 @@ function LocationForm({
   setPickupDeliveryObject,
   setForceNext
 }: Props) {
-  const [active, setActive] = useState(''); // State for radio buttons
-  const [isClicked, setIsClicked] = useState(true); // State for radio buttons
-
   // State for if user is adding a new location
-  const [donorName, setName] = useState('');
-  const [donorLocationType, setDonorLocationType] = useState('');
-  const [donorEntityType, setDonorEntityType] = useState('');
-  const [food, setFoodType] = useState('');
-  const [demographic, setDemographic] = useState('');
-  const [area, setArea] = useState('');
+  // const [donorName, setName] = useState('');
+  // const [donorLocationType, setDonorLocationType] = useState('');
+  // const [donorEntityType, setDonorEntityType] = useState('');
+  // const [food, setFoodType] = useState('');
 
-  const { name } = current;
+  const [items, setItems] = useState<Items>({});
 
-  const submitPressed = () => {
-    if (createNew === false && active !== '') {
+  const handleCheckboxChange = (event: React.FormEvent<HTMLInputElement>) => {
+    const { name, checked } = event.currentTarget;
+    setItems((prevState) => ({
+      ...prevState,
+      [name]: { isChecked: checked, value: prevState[name]?.value || '' }
+    }));
+  };
+
+  const handleTextChange = (event: React.FormEvent<HTMLInputElement>) => {
+    const { name, value } = event.currentTarget;
+    setItems((prevState) => ({
+      ...prevState,
+      [name]: { ...prevState[name], value }
+    }));
+  };
+
+  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    // remove 'other' as a value from the list
+    const newItems: Items = Object.entries(items).reduce((acc, [key, val]) => {
+      // if OtherAmount is specified, it holds the weight of 'Other' -- create an entry for 'Other' with its food type
+      if (key === 'OtherAmount') {
+        acc[items.Other.value] = {
+          isChecked: items.Other.isChecked,
+          value: items.OtherAmount.value
+        };
+        // means no weight was specified for 'Other' -- force failure
+      } else if (key === 'Other' && !items.OtherAmount) {
+        acc[items.Other.value] = {
+          isChecked: val.isChecked,
+          value: -10
+        };
+        // add all other items
+      } else if (key !== 'OtherAmount' && key !== 'Other' && key !== '') {
+        acc[key] = val;
+      }
+      return acc;
+    }, {});
+    const areAllFilled =
+      Object.entries(newItems).filter(([itemName, item]) => {
+        if (item.isChecked && item.value === undefined) {
+          return true;
+        }
+        if (
+          item.isChecked &&
+          (parseInt(item.value, 10) <= 0 ||
+            Number.isNaN(parseInt(item.value, 10)))
+        ) {
+          return true;
+        }
+        if (
+          item.isChecked &&
+          item.value.trim().length === 0 &&
+          itemName === 'Other'
+        ) {
+          return true;
+        }
+        return false;
+      }).length === 0;
+    if (areAllFilled) {
+      const foodWeights = Object.keys(newItems).reduce((acc, curr) => {
+        // only add items that are checked
+        if (newItems[curr].isChecked) {
+          acc[curr] = newItems[curr].value;
+        }
+        return acc;
+      }, {}); // make 'items' same type as foodType: Map<String, number>
+      console.log('Form submitted with', foodWeights);
       setPickupDeliveryObject({
         ...PickupDeliveryObject,
         id: current._id,
@@ -66,29 +139,54 @@ function LocationForm({
         EntityType: current.EntityType,
         LocationType: current.LocationType,
         Demographic: current.DemographicName,
-        FoodType: active.toLowerCase(),
+        FoodAllocation: foodWeights,
         Area: current.CombinedAreaName
       });
-      setForceNext(true);
-    } else if (createNew === true) {
-      setPickupDeliveryObject({
-        ...PickupDeliveryObject,
-        // id : ID?,
-        name: donorName,
-        EntityType: donorEntityType,
-        LocationType: donorLocationType,
-        Demographic: demographic,
-        FoodType: food,
-        Area: area
-      });
+      const foodStrings = Object.entries(foodWeights).map(
+        ([key, value]) => `${key}: ${value}lbs`
+      );
+
+      const foodsString = foodStrings.join(', ');
+
+      // Use the itemsString in a template literal to print the desired message
+      toast.success(`Form submitted with: ${foodsString}`);
       setForceNext(true);
     } else {
-      toast.error('Please enter a food type.');
+      toast.error('Please fill in all required fields.');
     }
   };
 
+  const { name } = current;
+
+  //     if (createNew === false) {
+  //       setPickupDeliveryObject({
+  //         ...PickupDeliveryObject,
+  //         id: current._id,
+  //         name: current.name,
+  //         EntityType: current.EntityType,
+  //         LocationType: current.LocationType,
+  //         Demographic: current.DemographicName,
+  //         FoodAllocation: foodWeights,
+  //         Area: current.CombinedAreaName
+  //       });
+  //       setForceNext(true);
+  //     } else if (createNew === true) {
+  //       setPickupDeliveryObject({
+  //         ...PickupDeliveryObject,
+  //         // id : ID?,
+  //         name: donorName,
+  //         EntityType: donorEntityType,
+  //         LocationType: donorLocationType,
+  //         Demographic: demographic,
+  //         FoodAllocation: foodWeights,
+  //         Area: area
+  //       });
+
   return (
-    <div className="Form-main m-5 mb-10 flex justify-center flex-col">
+    <form
+      onSubmit={handleSubmit}
+      className="Form-main m-5 mb-10 flex justify-center flex-col"
+    >
       <h2 className="text-4xl font-semibold mt-10 flex flex-start">
         {createNew
           ? 'Enter New Location:'
@@ -96,7 +194,7 @@ function LocationForm({
           ? 'Pickup Location:'
           : 'Dropoff Location:'}
       </h2>
-      {createNew ? (
+      {/* {createNew ? (
         PickupDeliveryObject.pickupOrDelivery === 1 ? (
           <div className="text-4xl flex justify-center items-center grid grid-col gap-5">
             <input
@@ -104,14 +202,18 @@ function LocationForm({
               type="text"
               placeholder="Donor name"
               name="name"
-              onChange={(e) => setName(e.target.value)}
+              onChange={(e: { target: { value: any } }) =>
+                setName(e.target.value)
+              }
             />
             <input
               className="italic py-3 px-4 mt-3 rounded-lg shadow w-full text-left"
               type="text"
               placeholder="Donor Location Type"
               name="location"
-              onChange={(e) => setDonorLocationType(e.target.value)}
+              onChange={(e: { target: { value: any } }) =>
+                setDonorLocationType(e.target.value)
+              }
             />
 
             <input
@@ -119,21 +221,27 @@ function LocationForm({
               type="text"
               placeholder="Entity Type"
               name="location"
-              onChange={(e) => setDonorEntityType(e.target.value)}
+              onChange={(e: { target: { value: any } }) =>
+                setDonorEntityType(e.target.value)
+              }
             />
             <input
               className="italic py-3 px-4 mt-3 rounded-lg shadow w-full text-left"
               type="text"
-              placeholder="Food Type"
+              placeholder="Food Types"
               name="type"
-              onChange={(e) => setFoodType(e.target.value)}
+              onChange={(e: { target: { value: any } }) =>
+                setFoodType(e.target.value)
+              }
             />
             <input
               className="italic py-3 px-4 mt-3 rounded-lg shadow w-full text-left"
               type="text"
               placeholder="Area"
               name="type"
-              onChange={(e) => setArea(e.target.value)}
+              onChange={(e: { target: { value: any } }) =>
+                setArea(e.target.value)
+              }
             />
           </div>
         ) : (
@@ -143,7 +251,9 @@ function LocationForm({
               type="text"
               placeholder="Recipient name"
               name="name"
-              onChange={(e) => setName(e.target.value)}
+              onChange={(e: { target: { value: any } }) =>
+                setName(e.target.value)
+              }
             />
 
             <input
@@ -151,109 +261,115 @@ function LocationForm({
               type="text"
               placeholder="Entity Type"
               name="location"
-              onChange={(e) => setDonorEntityType(e.target.value)}
+              onChange={(e: { target: { value: any } }) =>
+                setDonorEntityType(e.target.value)
+              }
             />
             <input
               className="italic py-3 px-4 mt-3 rounded-lg shadow w-full text-left"
               type="text"
-              placeholder="Food Type"
+              placeholder="Food Types"
               name="type"
-              onChange={(e) => setFoodType(e.target.value)}
+              onChange={(e: { target: { value: any } }) =>
+                setFoodType(e.target.value)
+              }
             />
             <input
               className="italic py-3 px-4 mt-3 rounded-lg shadow w-full text-left"
               type="text"
               placeholder="Demographic"
               name="location"
-              onChange={(e) => setDemographic(e.target.value)}
+              onChange={(e: { target: { value: any } }) =>
+                setDemographic(e.target.value)
+              }
             />
             <input
               className="italic py-3 px-4 mt-3 rounded-lg shadow w-full text-left"
               type="text"
               placeholder="Area"
               name="type"
-              onChange={(e) => setArea(e.target.value)}
+              onChange={(e: { target: { value: any } }) =>
+                setArea(e.target.value)
+              }
             />
           </div>
         )
-      ) : (
-        <div className="existingLocation">
-          <input
-            className="bg-white text-4xl w-full italic py-4 px-4 mt-3 rounded-lg shadow w-full text-left"
-            type="text"
-            placeholder={name}
-            name="name"
-            disabled
-          />
-          <div className="text-4xl font-semibold text-left pt-10">
-            Food type:
-          </div>
-          <div className="text-3xl text-left ml-20 m-4 py-4">
-            {current && (
-              <div className="flex items-center mr-4 mb-4">
-                <input
-                  className="mx-3 my-5 hidden"
-                  id="radio1"
-                  type="radio"
-                  name="foodType"
-                  value={current.FoodType}
-                  onClick={() => {
-                    setActive(current.FoodType);
-                    setIsClicked(true);
-                  }}
-                  checked
-                />
+      ) : ( */}
+      <div className="existingLocation">
+        <input
+          className="bg-white text-4xl w-full italic py-4 px-4 mt-3 rounded-lg shadow w-full text-left"
+          type="text"
+          placeholder={name}
+          name="name"
+          disabled
+        />
+        <div className="text-4xl font-semibold text-left pt-10">Food type:</div>
+        <div className="text-3xl text-left ml-20 m-4 py-4">
+          {current &&
+            foodTypes.map((foodType) => (
+              <div className="flex items-center mb-4" key={foodType}>
                 <label
-                  htmlFor="radio1"
+                  htmlFor={`${foodType}-checkbox`}
                   className="flex items-center cursor-pointer text-3xl"
                 >
-                  <span className="w-8 h-8 inline-block mr-2 bg-white rounded-full border border-grey flex-no-shrink" />
-                  {current.FoodType}
+                  <input
+                    className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600 w-8 h-8 inline-block mr-2 bg-white border border-grey flex-no-shrink"
+                    id={`${foodType}-checkbox`}
+                    type="checkbox"
+                    name={foodType}
+                    value={foodType}
+                    checked={items[foodType]?.isChecked || false}
+                    onChange={handleCheckboxChange}
+                  />
+                  {foodType}
                 </label>
+                {items[foodType]?.isChecked && foodType !== 'Other' && (
+                  <input
+                    className="bg-white ml-2 text-2xl w-20 h-10 italic py-4 px-4 rounded-lg shadow text-left"
+                    type="number"
+                    name={foodType}
+                    value={items[foodType]?.value || ''}
+                    onChange={handleTextChange}
+                    placeholder="lbs"
+                  />
+                )}
+                {items[foodType]?.isChecked && foodType === 'Other' && (
+                  <div>
+                    <input
+                      className="bg-white ml-2 text-2xl w-20 h-10 italic py-4 px-4 mt-2 rounded-lg shadow text-left"
+                      placeholder="lbs"
+                      type="number"
+                      name={`${foodType}Amount`}
+                      value={items[`${foodType}Amount`]?.value || ''}
+                      onChange={handleTextChange}
+                    />
+                    <div className="flex items-center justify-center mt-2">
+                      <input
+                        className="bg-white ml-2 text-4xl w-full italic py-4 px-4 rounded-lg shadow w-full text-left"
+                        type="text"
+                        placeholder="Food Type"
+                        name={foodType}
+                        value={items[foodType]?.value || ''}
+                        onChange={handleTextChange}
+                      />
+                    </div>
+                  </div>
+                )}
               </div>
-            )}
-            {current && (
-              <div>
-                <input
-                  className="mx-3 my-5 hidden"
-                  id="radio2"
-                  type="radio"
-                  name="foodType"
-                  onClick={() => setIsClicked(false)}
-                  checked
-                />
-                {/* eslint-disable-next-line jsx-a11y/label-has-associated-control */}
-                <label
-                  htmlFor="radio2"
-                  className="flex items-center cursor-pointer text-3xl"
-                >
-                  <span className="w-8 h-8 inline-block mr-2 bg-white rounded-full border border-grey flex-no-shrink" />
-                  Other
-                </label>
-                <input
-                  className="bg-white ml-2 text-4xl w-full italic py-4 px-4 mt-2 rounded-lg shadow w-full text-left"
-                  type="text"
-                  disabled={isClicked}
-                  onChange={(e) => setActive(e.target.value)}
-                  placeholder="Please Specify"
-                />{' '}
-              </div>
-            )}
-          </div>
+            ))}
         </div>
-      )}
+      </div>
+      {/* )} */}
 
       <div>
         <button
           type="submit"
           className="bg-amber-500 rounded-full w-full mt-5 p-3 text-3xl text-white font-semibold shadow"
-          onClick={() => submitPressed()}
         >
           Continue
         </button>
       </div>
-      {/* </form> */}
-    </div>
+    </form>
   );
 }
 

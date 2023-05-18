@@ -113,7 +113,6 @@ export const createDriver = createAsyncThunk(
     try {
       const state = thunkAPI.getState() as RootState;
       const { token } = state.adminAuth.admin;
-      console.log(token);
 
       return await driverAuthService.createDriver(driverData, token);
     } catch (error: any) {
@@ -264,7 +263,6 @@ export const authSlice = createSlice({
         isLoading: false,
         isSuccess: false
       }))
-
       .addCase(getDrivers.pending, (state) => ({
         ...state,
         isLoading: true

@@ -119,16 +119,13 @@ export const donorsSlice = createSlice({
   name: 'donors',
   initialState,
   reducers: {
-    reset: (state) => {
-      const newState = {
-        ...state,
-        isLoading: false,
-        isError: false,
-        isSuccess: false,
-        message: ''
-      };
-      return newState;
-    },
+    reset: (state) => ({
+      ...state,
+      isLoading: false,
+      isError: false,
+      isSuccess: false,
+      message: ''
+    }),
     clear: () => initialState
   },
   extraReducers: (builder) => {

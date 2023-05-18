@@ -1,7 +1,7 @@
 {
   "name": "backend",
   "version": "1.0.0",
-  "description": "",
+  "description": "The backend for this project was implemented using Express. There are a couple things that you need to do to get started.",
   "main": "server.js",
   "scripts": {
     "test": "jest",
@@ -45,5 +45,6 @@
     "ts-jest": "^27.1.3",
     "ts-node": "^10.5.0",
     "typescript": "^4.9.4"
-  }
+  },
+  "keywords": []
 }
