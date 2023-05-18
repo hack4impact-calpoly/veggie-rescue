@@ -70,6 +70,50 @@ export const getFields = createAsyncThunk(
     }
 );
 
+
+export const createField = createAsyncThunk(
+    'api/location/addFields',
+    async (fieldData: FieldObject, thunkAPI) => {
+        try {
+            const state = thunkAPI.getState() as RootState;
+            const { token } = state.adminAuth.admin;
+            return await fieldService.createField(fieldData, token);
+        } catch (error: any) {
+            const message =
+                (error.response &&
+                    error.response.data &&
+                    error.response.data.message) ||
+                error.message ||
+                error.toString();
+                
+            return thunkAPI.rejectWithValue(message);
+        }
+    }
+);
+
+
+export const updateField = createAsyncThunk(
+    'api/location/updateField',
+    async (fieldData: FieldObject, thunkAPI) => {
+        try {
+            const state = thunkAPI.getState() as RootState;
+            const { token } = state.adminAuth.admin;
+
+            return await fieldService.updateField(fieldData, token);
+        } catch (error: any) {
+            const message =
+                (error.response &&
+                    error.response.data &&
+                    error.response.data.message) ||
+                error.message ||
+                error.toString();
+
+            return thunkAPI.rejectWithValue(message);
+        }
+    }
+);
+
+
 export const fieldSlice = createSlice({
     name: 'fields',
     initialState,
