@@ -145,13 +145,40 @@ export const fieldSlice = createSlice({
                 isError: true,
                 message: action.payload
             }))
+            .addCase(createField.pending, (state) => ({
+                ...state,
+                isLoading: true
+            }))
+            .addCase(createField.fulfilled, (state, action) => ({
+                ...state,
+                isLoading: false,
+                isSuccess: true,
+                message: action.payload
+            }))
+            .addCase(createField.rejected, (state, action) => ({
+                ...state,
+                isLoading: false,
+                isError: true,
+                message: action.payload
+            }))
+            .addCase(updateField.pending, (state) => ({
+                ...state,
+                isLoading: true
+            }))
+            .addCase(updateField.fulfilled, (state, action) => ({
+                ...state,
+                isLoading: false,
+                isSuccess: true,
+                message: action.payload
+            }))
+            .addCase(updateField.rejected, (state, action) => ({
+                ...state,
+                isLoading: false,
+                isError: true,
+                message: action.payload
+            }));
     }
 });
-
-
-  
-
-
 
 
 
