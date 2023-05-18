@@ -2,22 +2,6 @@ import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import fieldService from './fieldService';
 import type { RootState } from '../../app/store';
 
-// add the following reducer: resetState
-
-const FieldSchema = new mongoose.Schema(
-    {
-      EntityType: [String],
-      LocationType: [String],
-      CombinedAreaName: [String],
-      OrgStructure: [String],
-      DemographicsServed: [String],
-      FoodDistModel: [String],
-      FoodTypes: [String],
-    },
-    { collection: "Field" }
-  );
-
-
 // Field Object
 interface FieldObject {
     EntityType: [String],
@@ -46,6 +30,7 @@ const initialState: FieldState = {
     message: ''
 };
 
+
 export const getFields = createAsyncThunk(
     'api/location/getFields',
     async (_, thunkAPI) => {
@@ -69,6 +54,31 @@ export const getFields = createAsyncThunk(
         }
     }
 );
+
+
+export const getFieldByName = createAsyncThunk(
+    'api/location/getFieldByName',
+    async (fieldName: string, thunkAPI) => {
+      try {
+        const state = thunkAPI.getState() as RootState;
+        let { token } = state.driverAuth.driver;
+        if (!token) {
+          token = state.adminAuth.admin.token;
+        }
+  
+        return await fieldService.getFieldByName(fieldName, token);
+      } catch (error: any) {
+        const message =
+          (error.response &&
+            error.response.data &&
+            error.response.data.message) ||
+          error.message ||
+          error.toString();
+  
+        return thunkAPI.rejectWithValue(message);
+      }
+    }
+); 
 
 
 export const createField = createAsyncThunk(
@@ -176,10 +186,25 @@ export const fieldSlice = createSlice({
                 isLoading: false,
                 isError: true,
                 message: action.payload
+            }))
+            .addCase(getFieldByName.pending, (state) => ({
+                ...state,
+                isLoading: true
+            }))
+            .addCase(getFieldByName.fulfilled, (state, action) => ({
+                ...state,
+                isLoading: false,
+                isSuccess: true,
+                fields: action.payload
+            }))
+            .addCase(getFieldByName.rejected, (state, action) => ({
+                ...state,
+                isLoading: false,
+                isError: true,
+                message: action.payload
             }));
     }
 });
-
 
 
 export const { reset, clear } = fieldSlice.actions;
