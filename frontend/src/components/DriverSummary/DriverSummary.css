@@ -1,67 +1,61 @@
-.all-page{
+.full-page {
     display: flex;
     flex-direction: column;
     align-items: center;
-    width: 100%;
+    width: 50%;
     margin: auto;
     text-align: center;
 }
 
-.punchOutHeader{
-    width: 166px;
-    height: 48px;
-    position: absolute;
-    margin-top: 50px;
-    justify-content: center;
-
-    font: 'Poppins';
-    font-weight: 400;
-    font-size: 32px;
-    line-height: 48px;
-    white-space: nowrap;
-
-    color: #9BA3AC;
-}
-
-.backButton{    
-    position: relative;
-    margin-top: 50px;
+.header{
+    width: 100%;
+    height: 100px;
+    margin-top: 20px;
+    display: flex;
+    justify-content: space-between;
     align-items: center;
-    justify-content: center;
-
 }
 
-.goodbyeMessage {
+.back-button{
+    width: 50%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+h1 {
     font: 'Poppins';
-    font-weight: 700;
-    font-size: 64px;
-    line-height: 96px;
+    font-weight: 500;
+    font-size: 36px;
     color: #176C3E;
 
-    width: 357px;
-    height: 96px;
-    left: 435px;
-    top: 154px;
-    position: absolute;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
 }
 
-.summary{
-    position: absolute;
-    width: 600px;
-    height: 78px;
-    left: 503px;
-    top: 200px;
-
+.summary-title {
     font: 'Poppins';
     font-weight: 700;
     font-size: 52px;
-    line-height: 78px;
+    line-height: 90px;
+    color: #176C3E;
 
     display: flex;
     align-items: center;
+    margin-top: 5px;
+}
 
+.summaries {
+    width: 100%;
+    display: block;
+    margin-left: 30%;
+}
 
-    color: #176C3E;
+.summary {
+    display: flex;
+    align-items: center;
+    margin-top: 30px;
 }
 
 .weight-container{
@@ -69,13 +63,9 @@
     flex-direction: row;
     justify-content: center;
     align-items: center;
-    flex: none;
 
-    position: absolute;
     width: 200px;
     height: 100px;
-    left: 503px;
-    top: 330px;
 
     background: #FFFFFF;
     box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.25);
@@ -109,87 +99,38 @@
     color: #000000;
 }
 
-.droppedOff{
-    position: absolute;
-    width: 239px;
-    height: 54px;
-    left: 743px;
-    top: 353px;
-
+h3 {
     font: 'Open Sans';
     font-weight: 700;
     font-size: 40px;
     line-height: 54px;
     white-space: nowrap;
 
+    margin-left: 40px;
+
     color: #000000;
 }
 
-.discrepancy{
-    position: absolute;
-    width: 227px;
-    height: 48px;
-    left: 435px;
-    top: 497px;
-
-    font-family: 'Poppins';
-    font-style: normal;
-    font-weight: 400;
-    font-size: 32px;
-    line-height: 48px;
-
-    color: #555555;
-
-}
-
-.discrepancy-container{
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    padding: 20px;
-
-    position: absolute;
-    width: 620px;
-    height: 218px;
-    top: 565px;
-    left: 435px;
-
-
-    background: #FFFFFF;
-    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.25);
-    border-radius: 10px;
-
-    font: 'Roboto';
-    font-weight: 400;
-    font-size: 32px;
-    line-height: 40px;
-
-    color: #555555;
-}
-
-
-.signOutButton {
+.confirm-button {
     font:'Open Sans';
     font-style: normal;
     color: #FFFFFF;
     font-weight: 700;
     font-size: 40px;
-    line-height: 54px;
+    line-height: 70px;
     white-space: nowrap;
 
-    background: #FF9C55;
+    background: rgba(255, 156, 85, 1);
     cursor: pointer;
+
+    width: 450px;
     display: flex;
     flex-direction: row;
     justify-content: center;
     align-items: center;
+    margin-top: 70px;
+    margin-bottom: 80px;
 
-    position: absolute;
-    width: 290px;
-    height: 84px;
-    /* left: 272px; */
-    top: 850px;
-
-    border-radius: 30px;
+    border-radius: 20px;
     box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.25);
 }
