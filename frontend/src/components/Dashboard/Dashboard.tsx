@@ -3,7 +3,7 @@ import './Dashboard.css';
 import { useAppSelector, useAppDispatch } from '../../app/hooks';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
-import { FaPencilAlt, FaClipboardList, FaHandPaper } from 'react-icons/fa';
+import { FaPencilAlt, FaClipboardList, FaHandPaper, FaBuilding } from 'react-icons/fa';
 
 // Components and assets
 import Spinner from '../Spinner/Spinner';
@@ -32,6 +32,8 @@ import {
 import {
   clear as clearRecipients ,
 } from '../../features/recipients/recipientsSlice';
+import { BiBuilding } from 'react-icons/bi';
+import { RiBuilding2Fill, RiBuildingFill } from 'react-icons/ri';
 const Dashboard = () => {
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
@@ -185,7 +187,7 @@ if(loading){
         </button>
         <button onClick={() => handleClick(2)}>
           <div className="action-item">
-            <FaClipboardList className="text-amber-600" />
+            <FaBuilding className="text-amber-600" />
             <div>View Recipient Profiles</div>
           </div>
         </button>
