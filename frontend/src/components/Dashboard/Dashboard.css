@@ -1,6 +1,6 @@
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap');
 
-.fa-icon{
+.dashboard .fa-icon{
   color: #ff9c55;
 }
 
@@ -28,8 +28,8 @@
   font-weight: 600;
 }
 
-.weight{
-  /*background-color: #FF9C55;*/
+.dashboard .weight{
+  background-color: #FF9C55;
   position: relative;
   display: flex;
   width: 63%;
