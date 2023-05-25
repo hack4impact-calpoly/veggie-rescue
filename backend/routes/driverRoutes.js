@@ -23,5 +23,8 @@ router
 
 router.get("/get", protectAdmin, getDriver);
 
+// driver route for punch out
+router.post("/logout", protectDriver, logoutDriver);
+
 
 module.exports = router;
