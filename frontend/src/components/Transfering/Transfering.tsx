@@ -20,7 +20,7 @@ import { clear as clearDrivers } from '../../features/driverAuth/driverAuthSlice
 
 interface VehicleWeightTransfer {
   _id: string;
-  totalWeight: number;
+  totalFoodAllocation: Map<string, number>;
 }
 
 export default function Transferring() {
@@ -125,7 +125,7 @@ export default function Transferring() {
     getVehicle,
     getVehicles,
     vehicle,
-    weightArray,
+    foodAllocation,
     sum,
     currentFoodAlloc,
     vehicleIsSuccess,
@@ -136,9 +136,9 @@ export default function Transferring() {
   ]);
 
   const handleUpdate = (index: any, updatedWeight: number) => {
-    const newWeights = [...weightArray];
+    const newWeights = [...foodAllocation];
     newWeights[index] = updatedWeight;
-    setWeightArray(newWeights);
+    setFoodAllocation(newWeights);
   };
 
   const submitWeight = async () => {
