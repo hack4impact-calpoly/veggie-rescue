@@ -182,21 +182,28 @@ const deleteDriver = asyncHandler(async (req, res) => {
 // @access Public
 const loginDriver = asyncHandler(async (req, res) => {
   const { pin } = req.body;
+
   if (pin.length !== 4) {
     res.status(401);
     throw new Error("Invalid Pin length");
   }
+
   //  Check if pin matches any driver
   const hasPin = await Driver.findOne({ pin });
+
   if (!hasPin) {
     res.status(404);
     throw new Error("Invalid pin!");
   }
-  // Set logged in to true and set date to log in time.
-  const body = {
-    isLoggedIn: true,
-    clock_in: Date.now(),
-  };
+
+  // Add a new punch-in time to the driver
+  hasPin.punchInTimes.push(Date.now());
+
+  // Save the driver with the added punch in time
+  await hasPin.save();
+
+  // Set logged in to true
+  hasPin.isLoggedIn = true;
   await Driver.findByIdAndUpdate(hasPin._id, body);
 
   res.status(200).json({
