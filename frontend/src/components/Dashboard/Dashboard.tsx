@@ -156,7 +156,7 @@ if(loading){
   return <Spinner />
 }
   return (
-    <div className="container bgimg">
+    <div className="container bgimg dashboard">
       <div className="greeting-box">
         <div className="greeting">
           <h2>Hi {driver.name}!</h2>
