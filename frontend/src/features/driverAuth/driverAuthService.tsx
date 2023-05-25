@@ -32,8 +32,11 @@ const login = async (pin: string) => {
   return response.data;
 };
 
-// Logout driver
 const logout = () => localStorage.removeItem('driver');
+
+
+
+
 
 //  Gets ALL drivers ( Can be driver or admin to use this )
 const getDrivers = async (token: string) => {
