@@ -12,12 +12,12 @@ const driverModel = mongoose.Schema(
       default: false,
     },
     clock_in: {
-      type: Date,
-      default: null,
+      type: [Date],
+      default: [],
     },
     clock_out: {
-      type: Date,
-      default: null,
+      type: [Date],
+      default: [],
     },
     pin: {
       type: String,
