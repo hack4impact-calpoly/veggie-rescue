@@ -76,25 +76,17 @@ export const login = createAsyncThunk(
   }
 );
 
+export const logout = createAsyncThunk('driverAuth/logout', async () => {
+  try {
+    return driverAuthService.logout();
+  } catch (error: any) {
+    const message =
+      (error.response && error.response.data && error.response.data.message) ||
+      error.message ||
+      error.toString();
 
-export const logout = createAsyncThunk(
-  'driverAuth/logout',
-  async () => {
-    try {
-      return driverAuthService.logout();
-    } catch (error: any) {
-      const message =
-        (error.response &&
-          error.response.data &&
-          error.response.data.message) ||
-        error.message ||
-        error.toString();
-    }
+    throw new Error(message);
   }
-);
-
-export const clearAuth = createAsyncThunk('driverAuth/logout', async () => {
-  await driverAuthService.logout();
 });
 
 // Get all drivers
@@ -212,9 +204,6 @@ export const deleteDriver = createAsyncThunk(
   }
 );
 
-login.rejected
-logout.fulfilled
-
 export const authSlice = createSlice({
   name: 'driverAuth',
   initialState,
@@ -286,17 +275,6 @@ export const authSlice = createSlice({
         ...state,
         isLoading: false,
         isSuccess: true
-      }))      
-      .addCase(clearAuth.pending, (state) => ({
-        ...state,
-        isLoading: true,
-        isSuccess: false
-      }))
-      .addCase(clearAuth.fulfilled, (state) => ({
-        ...state,
-        driver: emptyDriver,
-        isLoading: false,
-        isSuccess: false
       }))
       .addCase(getDrivers.pending, (state) => ({
         ...state,
