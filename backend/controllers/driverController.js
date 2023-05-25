@@ -226,6 +226,44 @@ const getDriver = asyncHandler(async (req, res) => {
   res.status(200).json(driver);
 });
 
+
+// @desc    Punch out driver
+// @route    /api/drivers
+// @access  Private
+const punchOutDriver = asyncHandler(async (req, res) => {
+  const driver = await Driver.findById(req.driver.id);
+
+  if (!driver) {
+    res.status(404);
+    throw new Error("Driver not found");
+  }
+
+  // If clock_in and clock_out do not the same length, 
+  // add missing clock out time (11:59pm on same day as last clock in)
+  if (driver.clock_in.length !== driver.clock_out.length) {
+    const lastClockIn = driver.clock_in[driver.clock_in.length - 1];
+    const lastClockOut = new Date(lastClockIn);
+    lastClockOut.setHours(23, 59, 0, 0);
+    driver.clock_out.push(lastClockOut);
+  }
+
+  // Add a new punch-out time to the driver
+  const body = {
+    isLoggedIn: false,
+    $push: { clock_out: new Date() }, // Use $push to add the new clock-out time
+  };
+
+  await Driver.findByIdAndUpdate(driver._id, body);
+
+  res.status(200).json({
+    id: driver._id,
+    name: driver.name,
+    token: generateToken(driver._id),
+  });
+});
+
+
+
 module.exports = {
   getDrivers,
   registerDriver,
@@ -233,4 +271,5 @@ module.exports = {
   deleteDriver,
   loginDriver,
   getDriver,
+  punchOutDriver,
 };
