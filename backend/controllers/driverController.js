@@ -197,15 +197,13 @@ const loginDriver = asyncHandler(async (req, res) => {
   }
 
   // Add a new punch-in time to the driver
-  hasPin.punchInTimes.push(Date.now());
+  const body = {
+    isLoggedIn: true,
+    $push: { clock_in: new Date() }, // Use $push to add the new clock-in time
+  };
 
-  // Save the driver with the added punch in time
-  await hasPin.save();
-
-  // Set logged in to true
-  hasPin.isLoggedIn = true;
   await Driver.findByIdAndUpdate(hasPin._id, body);
-
+  
   res.status(200).json({
     id: hasPin._id,
     name: hasPin.name,
@@ -228,65 +226,6 @@ const getDriver = asyncHandler(async (req, res) => {
   res.status(200).json(driver);
 });
 
-
-// @desc Clock out a driver
-// @route  /api/drivers
-// @access Public
-const clockOutDriver = asyncHandler(async (req, res) => {
-  const { pin } = req.body;
-
-  if (pin.length !== 4) {
-    res.status(401);
-    throw new Error("Invalid Pin length");
-  }
-
-  //  Check if pin matches any driver
-  const hasPin = await Driver.findOne({ pin });
-
-  if (!hasPin) {
-    res.status(404);
-    throw new Error("Invalid pin!");
-  }
-
-  // Check if the driver is already clocked out
-  if (!driver.isLoggedIn) {
-    res.status(400);
-    throw new Error("Driver is already clocked out");
-  }
-
-  // Get the current date and time
-  const currentDate = new Date();
-
-  // Check if the driver has any punch-in times
-  if (driver.punchInTimes.length === 0) {
-    res.status(400);
-    throw new Error("No punch-in time found for the driver");
-  }
-
-  // Get the latest punch-in time
-  const lastPunchInTime = driver.punchInTimes[driver.punchInTimes.length - 1];
-
-  // Check if the punch-in and punch-out times are already matched
-  if (driver.punchInTimes.length === driver.punchOutTimes.length) {
-    // Add a replacement punch-in time at 12:00AM on the same day
-    const replacementPunchInTime = new Date(lastPunchInTime);
-    replacementPunchInTime.setHours(0, 0, 0, 0);
-    driver.punchInTimes.push(replacementPunchInTime);
-  }
-
-  // Add the current punch-out time
-  const punchOutTime = currentDate.getTime();
-  driver.punchOutTimes.push(punchOutTime);
-
-  // Save the updated driver with the new punch-out time
-  await driver.save();
-
-  res.status(200).json({
-    success: true,
-    msg: "Driver clocked out successfully",
-  });
-});
-
 module.exports = {
   getDrivers,
   registerDriver,
@@ -294,5 +233,4 @@ module.exports = {
   deleteDriver,
   loginDriver,
   getDriver,
-  clockOutDriver,
 };
