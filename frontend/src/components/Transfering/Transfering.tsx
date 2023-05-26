@@ -20,7 +20,7 @@ import { clear as clearDrivers } from '../../features/driverAuth/driverAuthSlice
 
 interface VehicleWeightTransfer {
   _id: string;
-  totalFoodAllocation: Map<string, number>;
+  totalFoodAllocation: Map<String, number>;
 }
 
 export default function Transferring() {

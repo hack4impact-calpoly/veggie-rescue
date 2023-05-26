@@ -8,7 +8,6 @@ import Spinner from '../Spinner/Spinner';
 import NavBar from '../NavBar/NavBar';
 import PickupDelivery from '../PickupDelivery/PickupDelivery';
 import Location from '../Locations/Location';
-import Weight from '../Weight/Weight';
 
 // import vehicle for API call
 import {
@@ -53,37 +52,51 @@ export default function NewLogWrapper() {
   const { driver } = useAppSelector((state) => state.driverAuth);
   const { isError: isPickupError } = useAppSelector((state) => state.pickups);
   const { isError: isDropoffError } = useAppSelector((state) => state.dropoffs);
-
+  console.log(driver);
+  console.log(vehicle);
   useEffect(() => {
     // catches when a new log has been set
     if (doneFlag && !vehicleIsLoading) {
       setDoneFlag(false);
+      // mongoDB converts ts maps into objets, so need to convert back to map
+      const pickupDeliveryFoodMap = new Map(
+        Object.entries(pickupDeliveryObject.foodAllocation)
+      );
+      const vehicleFoodMap = new Map<String, number>(
+        Object.entries(vehicle.totalFoodAllocation).map(([key, value]) => [
+          String(key),
+          value
+        ])
+      );
+      console.log(vehicleFoodMap);
       // Check and see if it is pickup or delivery
       if (pickupDeliveryObject.pickupOrDelivery === 1) {
         // PICKUP
         // pickupFoodItems contains all of the valid food types/weights from the pickup -- filter out zero weights
         const pickupFoodItems = new Map<String, number>();
-        pickupDeliveryObject.foodAllocation.forEach(
-          (value: number, key: String) => {
-            if (value <= 0) {
-              toast.error(`Food type ${key} must have a nonzero weight`);
-            } else {
-              pickupFoodItems.set(key, value);
-            }
+
+        pickupDeliveryFoodMap.forEach((weight: number, food: String) => {
+          if (weight <= 0) {
+            toast.error(`Food type ${food} must have a nonzero weight`);
+          } else {
+            pickupFoodItems.set(food, weight);
           }
-        );
+        });
+
+        console.log(pickupFoodItems);
 
         pickupFoodItems.forEach((weight: number, foodType: String) => {
           // vehicle already has food type -- add to existing weight
-          if (vehicle.totalFoodAllocation.has(foodType)) {
-            const existingWeight = vehicle.totalFoodAllocation.get(foodType)!;
+          if (vehicleFoodMap.has(foodType)) {
+            const existingWeight = vehicleFoodMap.get(foodType);
             const newWeight = existingWeight + weight;
-            vehicle.totalFoodAllocation.set(foodType, newWeight);
+            vehicleFoodMap.set(foodType, newWeight);
             // food type not already in vehicle
           } else {
-            vehicle.totalFoodAllocation.set(foodType, weight);
+            vehicleFoodMap.set(foodType, weight);
           }
         });
+        console.log(vehicleFoodMap);
 
         // this means the log was empty -- should never get here
         if (pickupFoodItems.size === 0) {
@@ -96,34 +109,34 @@ export default function NewLogWrapper() {
             name: pickupDeliveryObject.name,
             donorEntityType: pickupDeliveryObject.EntityType,
             area: pickupDeliveryObject.Area,
-            foodAllocation: pickupFoodItems
+            foodAllocation: Object.fromEntries(pickupFoodItems)
           };
+          console.log(newPickup);
           const addPickupToVehicle: PickupSchema = {
             _id: vehicle._id,
             currentPickups: newPickup,
-            totalFoodAllocation: vehicle.totalFoodAllocation
+            totalFoodAllocation: Object.fromEntries(vehicleFoodMap)
           };
-
+          console.log(addPickupToVehicle);
           dispatch(updateVehicle(addPickupToVehicle));
         }
       } else if (pickupDeliveryObject.pickupOrDelivery === 2) {
         // DELIVERY
         // dropoffFoodItems contains all of the valid food types/weights to dropoff -- filter out zero weights
         const dropoffFoodItems = new Map<String, number>();
-        pickupDeliveryObject.foodAllocation.forEach(
-          (value: number, key: String) => {
-            if (value <= 0) {
-              toast.error(`Food type ${key} must have a nonzero weight`);
-            } else {
-              dropoffFoodItems.set(key, value);
-            }
+
+        pickupDeliveryFoodMap.forEach((weight: number, food: String) => {
+          if (weight <= 0) {
+            toast.error(`Food type ${food} must have a nonzero weight`);
+          } else {
+            dropoffFoodItems.set(food, weight);
           }
-        );
+        });
 
         dropoffFoodItems.forEach((weight: number, foodType: String) => {
           // vehicle has food type -- try to subtract from existing weight
-          if (vehicle.totalFoodAllocation.has(foodType)) {
-            const existingWeight = vehicle.totalFoodAllocation.get(foodType)!;
+          if (vehicleFoodMap.has(foodType)) {
+            const existingWeight = vehicleFoodMap.get(foodType)!;
             const newWeight = existingWeight - weight;
             // vehicle does not have enough of food type to subtract from
             if (newWeight < 0) {
@@ -132,7 +145,7 @@ export default function NewLogWrapper() {
               );
               // set new weight in vehicle
             } else {
-              vehicle.totalFoodAllocation.set(foodType, newWeight);
+              vehicleFoodMap.set(foodType, newWeight);
             }
             // food type does not exist in vehicle
           } else {
@@ -152,13 +165,15 @@ export default function NewLogWrapper() {
             recipientEntityType: pickupDeliveryObject.EntityType,
             demographic: pickupDeliveryObject.Demographic,
             area: pickupDeliveryObject.Area,
-            foodAllocation: dropoffFoodItems
+            foodAllocation: Object.fromEntries(dropoffFoodItems)
           };
+          console.log(newDropoff);
           const addDropOffToVehicle: DropoffSchema = {
             _id: vehicle._id,
             currentDropoffs: newDropoff,
-            totalFoodAllocation: vehicle.totalFoodAllocation
+            totalFoodAllocation: Object.fromEntries(vehicleFoodMap)
           };
+          console.log(addDropOffToVehicle);
 
           dispatch(updateVehicle(addDropOffToVehicle));
         }
@@ -208,13 +223,6 @@ export default function NewLogWrapper() {
       )}
       {wrapperCurrentPosition === 1 && (
         <Location
-          setPickupDeliveryObject={setPickupDeliveryObject}
-          PickupDeliveryObject={pickupDeliveryObject}
-          setForceNext={setForceNext}
-        />
-      )}
-      {wrapperCurrentPosition === 2 && (
-        <Weight
           setPickupDeliveryObject={setPickupDeliveryObject}
           PickupDeliveryObject={pickupDeliveryObject}
           setDoneFlag={setDoneFlag}

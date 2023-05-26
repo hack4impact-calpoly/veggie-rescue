@@ -35,20 +35,21 @@ interface PickupDeliveryObjectSchema {
 interface Props {
   setPickupDeliveryObject: Function;
   PickupDeliveryObject: PickupDeliveryObjectSchema;
-  setForceNext: Function;
+  setDoneFlag: Function;
 }
 
 function Location({
   setPickupDeliveryObject,
   PickupDeliveryObject,
-  setForceNext
+  setDoneFlag
 }: Props) {
   // Elements we will keep in local state and pass back and forth to components
   const [locations, setLocations] = useState([]);
   const [current, setCurrent] = useState<undefined | Locale>();
   const [filtered, setFiltered] = useState<undefined | Locale[]>();
-  const [createNew, setCreateNew] = useState(false);
   const dispatch = useAppDispatch();
+
+  console.log(PickupDeliveryObject);
 
   // Get the donors object from the store
   const {
@@ -100,7 +101,6 @@ function Location({
   // Clears the current object called in:
   const clearCurrent = () => {
     setCurrent(undefined);
-    setCreateNew(false);
   };
 
   // Uses array of locations and filters based on input into LocationFilter text area.
@@ -133,14 +133,11 @@ function Location({
         setCurrent={setCurrent}
         current={current}
         clearFilter={clearFilter}
-        setCreateNew={setCreateNew}
       />
       {current && (
         <LocationForm
           current={current}
-          createNew={createNew}
-          setLocation={setLocation}
-          setForceNext={setForceNext}
+          setDoneFlag={setDoneFlag}
           PickupDeliveryObject={PickupDeliveryObject}
           setPickupDeliveryObject={setPickupDeliveryObject}
         />

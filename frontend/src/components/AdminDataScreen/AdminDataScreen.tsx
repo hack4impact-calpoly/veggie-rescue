@@ -855,7 +855,7 @@ function AdminDataScreen() {
                   setUpdate(false);
                 }}
               >
-                <NewVolunteersCard isUpdate={isUpdate} />
+                <NewVolunteersCard />
               </button>
               {showModal && (
                 <FieldForm

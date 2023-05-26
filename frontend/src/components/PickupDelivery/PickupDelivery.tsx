@@ -23,7 +23,7 @@ interface PickupDeliveryObjectSchema {
   LocationType: String;
   Demographic: String;
   Area: String;
-  foodAllocation: Map<string, number>;
+  foodAllocation: Map<String, number>;
 }
 
 export default function PickupDelivery({

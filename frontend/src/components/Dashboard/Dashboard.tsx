@@ -47,7 +47,6 @@ function Dashboard() {
 
   // Get the driver object from the store
   const { driver } = useAppSelector((state) => state.driverAuth);
-
   // get batch push success calls for after logging out
   const { isSuccess: batchPickupSuccess, isError: isPickupError } =
     useAppSelector((state) => state.pickups);
@@ -57,8 +56,8 @@ function Dashboard() {
   // Returns the total weight in a vehicle
   const totalWeight = useCallback((vehicleWeights: Map<String, number>) => {
     let sum = 0;
-    vehicleWeights.forEach((value: number) => {
-      sum += value;
+    Object.entries(vehicleWeights).forEach(([, weight]) => {
+      sum += weight;
     });
     return sum;
   }, []);

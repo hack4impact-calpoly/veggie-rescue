@@ -17,8 +17,10 @@ function Logs() {
     (state) => state.vehicle
   );
 
+  console.log(vehicle.currentDropoffs);
+
   useEffect(() => {
-    if (Object.keys(vehicle).length === 0) {
+    if (Object.keys(vehicle)?.length === 0) {
       dispatch(getVehicle());
     }
   }, [dispatch, vehicle]);
@@ -53,7 +55,7 @@ function Logs() {
       vehicle.currentPickups.length !== 0 ? (
         <div className="mt-8 ">
           {vehicle.currentPickups.map(
-            (v: { name: any; foodAllocation: Map<String, number> }) => (
+            (v: { name: any; foodAllocation: any }) => (
               <TripLog
                 key={vehicle._id}
                 trip="Pickup"
@@ -64,7 +66,7 @@ function Logs() {
             )
           )}
           {vehicle.currentDropoffs.map(
-            (v: { name: any; foodAllocation: Map<String, number> }) => (
+            (v: { name: any; foodAllocation: any }) => (
               <TripLog
                 key={vehicle._id}
                 trip="Dropoff"

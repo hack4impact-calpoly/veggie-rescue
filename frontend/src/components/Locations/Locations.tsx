@@ -20,8 +20,6 @@ interface Props {
   filtered?: Locale[];
   setCurrent: Function;
   clearFilter: Function;
-  // eslint-disable-next-line react/no-unused-prop-types
-  setCreateNew: Function;
 }
 
 function Locations({
@@ -29,25 +27,13 @@ function Locations({
   current,
   filtered,
   setCurrent,
-  clearFilter,
-  setCreateNew
+  clearFilter
 }: Props) {
   // If locations array is empty... we have nothing in our database
   if (locations !== null && locations.length === 0) {
     return <h4>Please add a location</h4>;
   }
 
-  // this is emptyLocation object which is passed into LocationItem if user wants to add a new location
-
-  // const emptyLocation = {
-  //   _id: '',
-  //   name: 'Add New Location',
-  //   LocationType: '',
-  //   EntityType: '',
-  //   FoodType: '',
-  //   Demographic: '',
-  //   CombinedAreaName: ''
-  // };
   // 1. First we check if current object is null... if so then we will be displaying elements in either filtered or locations array.
   // if not, it means that we have already selected a location as current location and it is being displayed.
   // 2. If filtered isn't null, that means we have a filtered array and will display that, otherwise we will display a few elements from the locations array

@@ -28,11 +28,9 @@ interface PickupDeliveryObjectSchema {
 
 interface Props {
   current: Locale;
-  createNew: boolean;
-  setLocation: Function;
   PickupDeliveryObject: PickupDeliveryObjectSchema;
   setPickupDeliveryObject: Function;
-  setForceNext: Function;
+  setDoneFlag: Function;
 }
 
 interface CheckedItem {
@@ -49,20 +47,13 @@ const foodTypes = ['Produce', 'Baked Goods', 'Prepared', 'Other'];
 
 function LocationForm({
   current,
-  createNew,
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  setLocation,
   PickupDeliveryObject,
   setPickupDeliveryObject,
-  setForceNext
+  setDoneFlag
 }: Props) {
-  // State for if user is adding a new location
-  // const [donorName, setName] = useState('');
-  // const [donorLocationType, setDonorLocationType] = useState('');
-  // const [donorEntityType, setDonorEntityType] = useState('');
-  // const [food, setFoodType] = useState('');
-
   const [items, setItems] = useState<Items>({});
+
+  console.log(PickupDeliveryObject);
 
   const handleCheckboxChange = (event: React.FormEvent<HTMLInputElement>) => {
     const { name, checked } = event.currentTarget;
@@ -139,7 +130,7 @@ function LocationForm({
         EntityType: current.EntityType,
         LocationType: current.LocationType,
         Demographic: current.DemographicName,
-        FoodAllocation: foodWeights,
+        foodAllocation: foodWeights,
         Area: current.CombinedAreaName
       });
       const foodStrings = Object.entries(foodWeights).map(
@@ -150,7 +141,7 @@ function LocationForm({
 
       // Use the itemsString in a template literal to print the desired message
       toast.success(`Form submitted with: ${foodsString}`);
-      setForceNext(true);
+      setDoneFlag(true);
     } else {
       toast.error('Please fill in all required fields.');
     }
@@ -158,143 +149,16 @@ function LocationForm({
 
   const { name } = current;
 
-  //     if (createNew === false) {
-  //       setPickupDeliveryObject({
-  //         ...PickupDeliveryObject,
-  //         id: current._id,
-  //         name: current.name,
-  //         EntityType: current.EntityType,
-  //         LocationType: current.LocationType,
-  //         Demographic: current.DemographicName,
-  //         FoodAllocation: foodWeights,
-  //         Area: current.CombinedAreaName
-  //       });
-  //       setForceNext(true);
-  //     } else if (createNew === true) {
-  //       setPickupDeliveryObject({
-  //         ...PickupDeliveryObject,
-  //         // id : ID?,
-  //         name: donorName,
-  //         EntityType: donorEntityType,
-  //         LocationType: donorLocationType,
-  //         Demographic: demographic,
-  //         FoodAllocation: foodWeights,
-  //         Area: area
-  //       });
-
   return (
     <form
       onSubmit={handleSubmit}
       className="Form-main m-5 mb-10 flex justify-center flex-col"
     >
       <h2 className="text-4xl font-semibold mt-10 flex flex-start">
-        {createNew
-          ? 'Enter New Location:'
-          : PickupDeliveryObject.pickupOrDelivery === 1
+        {PickupDeliveryObject.pickupOrDelivery === 1
           ? 'Pickup Location:'
           : 'Dropoff Location:'}
       </h2>
-      {/* {createNew ? (
-        PickupDeliveryObject.pickupOrDelivery === 1 ? (
-          <div className="text-4xl flex justify-center items-center grid grid-col gap-5">
-            <input
-              className="italic py-3 px-4 mt-3 rounded-lg shadow w-full text-left"
-              type="text"
-              placeholder="Donor name"
-              name="name"
-              onChange={(e: { target: { value: any } }) =>
-                setName(e.target.value)
-              }
-            />
-            <input
-              className="italic py-3 px-4 mt-3 rounded-lg shadow w-full text-left"
-              type="text"
-              placeholder="Donor Location Type"
-              name="location"
-              onChange={(e: { target: { value: any } }) =>
-                setDonorLocationType(e.target.value)
-              }
-            />
-
-            <input
-              className="italic py-3 px-4 mt-3 rounded-lg shadow w-full text-left"
-              type="text"
-              placeholder="Entity Type"
-              name="location"
-              onChange={(e: { target: { value: any } }) =>
-                setDonorEntityType(e.target.value)
-              }
-            />
-            <input
-              className="italic py-3 px-4 mt-3 rounded-lg shadow w-full text-left"
-              type="text"
-              placeholder="Food Types"
-              name="type"
-              onChange={(e: { target: { value: any } }) =>
-                setFoodType(e.target.value)
-              }
-            />
-            <input
-              className="italic py-3 px-4 mt-3 rounded-lg shadow w-full text-left"
-              type="text"
-              placeholder="Area"
-              name="type"
-              onChange={(e: { target: { value: any } }) =>
-                setArea(e.target.value)
-              }
-            />
-          </div>
-        ) : (
-          <div className="newLocation">
-            <input
-              className="italic py-3 px-4 mt-3 rounded-lg shadow w-full text-left"
-              type="text"
-              placeholder="Recipient name"
-              name="name"
-              onChange={(e: { target: { value: any } }) =>
-                setName(e.target.value)
-              }
-            />
-
-            <input
-              className="italic py-3 px-4 mt-3 rounded-lg shadow w-full text-left"
-              type="text"
-              placeholder="Entity Type"
-              name="location"
-              onChange={(e: { target: { value: any } }) =>
-                setDonorEntityType(e.target.value)
-              }
-            />
-            <input
-              className="italic py-3 px-4 mt-3 rounded-lg shadow w-full text-left"
-              type="text"
-              placeholder="Food Types"
-              name="type"
-              onChange={(e: { target: { value: any } }) =>
-                setFoodType(e.target.value)
-              }
-            />
-            <input
-              className="italic py-3 px-4 mt-3 rounded-lg shadow w-full text-left"
-              type="text"
-              placeholder="Demographic"
-              name="location"
-              onChange={(e: { target: { value: any } }) =>
-                setDemographic(e.target.value)
-              }
-            />
-            <input
-              className="italic py-3 px-4 mt-3 rounded-lg shadow w-full text-left"
-              type="text"
-              placeholder="Area"
-              name="type"
-              onChange={(e: { target: { value: any } }) =>
-                setArea(e.target.value)
-              }
-            />
-          </div>
-        )
-      ) : ( */}
       <div className="existingLocation">
         <input
           className="bg-white text-4xl w-full italic py-4 px-4 mt-3 rounded-lg shadow w-full text-left"
@@ -366,7 +230,7 @@ function LocationForm({
           type="submit"
           className="bg-amber-500 rounded-full w-full mt-5 p-3 text-3xl text-white font-semibold shadow"
         >
-          Continue
+          Submit
         </button>
       </div>
     </form>

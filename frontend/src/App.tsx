@@ -75,7 +75,7 @@ function App() {
           >
             <Route path="/Summary" element={<DriverSummary />} />
           </Route>
-          
+
           <Route
             path="/Admin"
             element={<ProtectedRoute redirectTo="/AdminLogin" />}

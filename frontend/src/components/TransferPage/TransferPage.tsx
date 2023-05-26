@@ -24,8 +24,8 @@ export default function TransferPage() {
   const { vehicle, isLoggingOut, isLoggedOut } = useAppSelector(
     (state) => state.vehicle
   );
+
   const { name, totalFoodAllocation } = vehicle;
-  console.log(vehicle);
   const { driver } = useAppSelector((state) => state.driverAuth);
   // on component mount
   useEffect(() => {
@@ -90,9 +90,17 @@ export default function TransferPage() {
         </div>
       </div>
       <div className="md:my-4 my-10 text-5xl font-bold text-amber-600">
-        {Object.values(totalFoodAllocation).map((value) => (
-          <li key={value}>{value}</li>
-        ))}
+        {Object.keys(totalFoodAllocation).length === 0 ? (
+          <span>0lbs food</span>
+        ) : (
+          <>
+            {Object.entries(totalFoodAllocation).map(([key, value]) => (
+              <li key={key}>
+                {value} lbs {key}
+              </li>
+            ))}
+          </>
+        )}
       </div>
       <button
         type="button"
