@@ -76,9 +76,17 @@ export const login = createAsyncThunk(
   }
 );
 
-// Logout driver
-export const clearAuth = createAsyncThunk('driverAuth/logout', async () => {
-  await driverAuthService.logout();
+export const logout = createAsyncThunk('driverAuth/logout', async () => {
+  try {
+    return driverAuthService.logout();
+  } catch (error: any) {
+    const message =
+      (error.response && error.response.data && error.response.data.message) ||
+      error.message ||
+      error.toString();
+
+    throw new Error(message);
+  }
 });
 
 // Get all drivers
@@ -252,16 +260,21 @@ export const authSlice = createSlice({
         message: action.payload,
         driver: emptyDriver
       }))
-      .addCase(clearAuth.pending, (state) => ({
+      .addCase(logout.pending, (state) => ({
         ...state,
-        isLoading: true,
-        isSuccess: false
+        isLoading: true
       }))
-      .addCase(clearAuth.fulfilled, (state) => ({
+      .addCase(logout.rejected, (state, action) => ({
         ...state,
-        driver: emptyDriver,
         isLoading: false,
-        isSuccess: false
+        isError: true,
+        message: action.payload,
+        driver: emptyDriver
+      }))
+      .addCase(logout.fulfilled, (state) => ({
+        ...state,
+        isLoading: false,
+        isSuccess: true
       }))
       .addCase(getDrivers.pending, (state) => ({
         ...state,
