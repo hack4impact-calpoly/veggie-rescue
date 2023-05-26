@@ -182,27 +182,41 @@ const deleteDriver = asyncHandler(async (req, res) => {
 // @access Public
 const loginDriver = asyncHandler(async (req, res) => {
   const { pin } = req.body;
+
   if (pin.length !== 4) {
     res.status(401);
     throw new Error("Invalid Pin length");
   }
+
   //  Check if pin matches any driver
-  const hasPin = await Driver.findOne({ pin });
-  if (!hasPin) {
+  const driver = await Driver.findOne({ pin });
+
+  if (!driver) {
     res.status(404);
     throw new Error("Invalid pin!");
   }
-  // Set logged in to true and set date to log in time.
+
+  // if there are more clock ins than clock outs
+  // add missing clock out time at 11:59 on the same day as the last clock in.
+  if (driver.clock_in.length > driver.clock_out.length) {
+    const lastClockIn = driver.clock_in[driver.clock_in.length - 1];
+    const lastClockOut = new Date(lastClockIn);
+    lastClockOut.setHours(23, 59, 59, 999);
+    driver.clock_out.push(lastClockOut);
+  }
+
+  // Add a new punch-in time to the driver
   const body = {
     isLoggedIn: true,
-    clock_in: Date.now(),
+    $push: { clock_in: new Date() }, // Use $push to add the new clock-in time
   };
-  await Driver.findByIdAndUpdate(hasPin._id, body);
+
+  await Driver.findByIdAndUpdate(driver._id, body);
 
   res.status(200).json({
-    id: hasPin._id,
-    name: hasPin.name,
-    token: generateToken(hasPin._id),
+    id: driver._id,
+    name: driver.name,
+    token: generateToken(driver._id),
   });
 });
 
@@ -221,6 +235,40 @@ const getDriver = asyncHandler(async (req, res) => {
   res.status(200).json(driver);
 });
 
+// @desc    Punch out driver
+// @route    /api/drivers
+// @access  Private
+const punchOutDriver = asyncHandler(async (req, res) => {
+  const driver = await Driver.findById(req.driver.id);
+
+  if (!driver) {
+    res.status(404);
+    throw new Error("Driver not found");
+  }
+
+  // If clock_in and clock_out have the same length,
+  // add missing clock in time (12:00am on this same day)
+  if (driver.clock_in.length === driver.clock_out.length) {
+    const newClockIn = new Date();
+    newClockIn.setHours(0, 0, 0, 0);
+    driver.clock_in.push(newClockIn);
+  }
+
+  // Add a new punch-out time to the driver
+  const body = {
+    isLoggedIn: false,
+    $push: { clock_out: new Date() }, // Use $push to add the new clock-out time
+  };
+
+  await Driver.findByIdAndUpdate(driver._id, body);
+
+  res.status(200).json({
+    id: driver._id,
+    name: driver.name,
+    token: generateToken(driver._id),
+  });
+});
+
 module.exports = {
   getDrivers,
   registerDriver,
@@ -228,4 +276,5 @@ module.exports = {
   deleteDriver,
   loginDriver,
   getDriver,
+  punchOutDriver,
 };
