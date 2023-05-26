@@ -1,4 +1,5 @@
 const express = require("express");
+
 const router = express.Router();
 const {
   getDrivers,
@@ -6,9 +7,10 @@ const {
   editDriver,
   deleteDriver,
   loginDriver,
+  punchOutDriver,
   getDriver,
 } = require("../controllers/driverController");
-const { protectAdmin } = require("../middleware/authMiddleware");
+const { protectAdmin, protectDriver } = require("../middleware/authMiddleware");
 
 router
   .get("/", protectAdmin, getDrivers)
@@ -24,7 +26,6 @@ router
 router.get("/get", protectAdmin, getDriver);
 
 // driver route for punch out
-router.post("/logout", protectDriver, logoutDriver);
-
+router.post("/logout", protectDriver, punchOutDriver);
 
 module.exports = router;

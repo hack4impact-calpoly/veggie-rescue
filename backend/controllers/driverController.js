@@ -189,36 +189,34 @@ const loginDriver = asyncHandler(async (req, res) => {
   }
 
   //  Check if pin matches any driver
-  const hasPin = await Driver.findOne({ pin });
+  const driver = await Driver.findOne({ pin });
 
-  if (!hasPin) {
+  if (!driver) {
     res.status(404);
     throw new Error("Invalid pin!");
   }
 
-  const driver = await Driver.findById(req.driver.id);
-
-  // if clock_in and clock_out do not have the same length.
+  // if there are more clock ins than clock outs
   // add missing clock out time at 11:59 on the same day as the last clock in.
-  if (driver.clock_in.length == driver.clock_out.length) {
+  if (driver.clock_in.length > driver.clock_out.length) {
     const lastClockIn = driver.clock_in[driver.clock_in.length - 1];
     const lastClockOut = new Date(lastClockIn);
-    lastClockOut.setHours(23, 59, 0, 0);
+    lastClockOut.setHours(23, 59, 59, 999);
     driver.clock_out.push(lastClockOut);
   }
-    
+
   // Add a new punch-in time to the driver
   const body = {
     isLoggedIn: true,
     $push: { clock_in: new Date() }, // Use $push to add the new clock-in time
   };
 
-  await Driver.findByIdAndUpdate(hasPin._id, body);
-  
+  await Driver.findByIdAndUpdate(driver._id, body);
+
   res.status(200).json({
-    id: hasPin._id,
-    name: hasPin.name,
-    token: generateToken(hasPin._id),
+    id: driver._id,
+    name: driver.name,
+    token: generateToken(driver._id),
   });
 });
 
@@ -237,7 +235,6 @@ const getDriver = asyncHandler(async (req, res) => {
   res.status(200).json(driver);
 });
 
-
 // @desc    Punch out driver
 // @route    /api/drivers
 // @access  Private
@@ -249,9 +246,9 @@ const punchOutDriver = asyncHandler(async (req, res) => {
     throw new Error("Driver not found");
   }
 
-  // If clock_in and clock_out have the same length, 
+  // If clock_in and clock_out have the same length,
   // add missing clock in time (12:00am on this same day)
-  if (driver.clock_in.length == driver.clock_out.length) {
+  if (driver.clock_in.length === driver.clock_out.length) {
     const newClockIn = new Date();
     newClockIn.setHours(0, 0, 0, 0);
     driver.clock_in.push(newClockIn);
@@ -271,8 +268,6 @@ const punchOutDriver = asyncHandler(async (req, res) => {
     token: generateToken(driver._id),
   });
 });
-
-
 
 module.exports = {
   getDrivers,
