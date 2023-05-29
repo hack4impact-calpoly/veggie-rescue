@@ -86,7 +86,7 @@ export default function NewLogWrapper() {
           // vehicle already has food type -- add to existing weight
           if (vehicleFoodMap.has(foodType)) {
             const existingWeight = vehicleFoodMap.get(foodType);
-            const newWeight = existingWeight + weight;
+            const newWeight = existingWeight! + weight;
             vehicleFoodMap.set(foodType, newWeight);
             // food type not already in vehicle
           } else {

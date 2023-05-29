@@ -72,11 +72,10 @@ function RecipientsForm(props: any) {
       updateRecipient({
         id: recipient._id,
         name: recipientName,
-        EntityType: orgStruc,
-        FoodType: selectedFoods.toString(), // this is weird
-        DemographicName: demographicType,
+        OrgStructure: orgStruc,
+        DemographicsServed: demographicType,
         CombinedAreaName: areaName,
-        FoodDistrModel: foodDistrModel
+        FoodDistModel: foodDistrModel
       })
     );
     toast.success('Successfully updated recipient.');

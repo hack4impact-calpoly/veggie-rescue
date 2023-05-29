@@ -75,12 +75,12 @@ function TripLog(props: any) {
         value
       ])
     );
-    if (Object.keys(vehicle).length !== 0) {
+    if (Object.keys(vehicle).length !== 0 && editedFoodWeights?.size !== 0) {
       if (trip === 'Pickup') {
-        editedFoodWeights.forEach((weight: number, food: String) => {
+        editedFoodWeights!.forEach((weight: number, food: String) => {
           if (updatedFoodWeights.has(food)) {
             // update food in vehicle
-            const newWeight = updatedFoodWeights.get(food) + weight;
+            const newWeight = updatedFoodWeights.get(food)! + weight;
             updatedFoodWeights.set(food, newWeight);
           }
         });
@@ -108,9 +108,9 @@ function TripLog(props: any) {
         dispatch(getVehicle());
       } else {
         let valid = true;
-        editedFoodWeights.forEach((weight: number, food: String) => {
+        editedFoodWeights!.forEach((weight: number, food: String) => {
           if (updatedFoodWeights.has(food)) {
-            const newWeight = updatedFoodWeights.get(food) - weight;
+            const newWeight = updatedFoodWeights.get(food)! - weight;
             if (newWeight < 0) {
               toast.error(
                 'Cannot drop off more weight than vehicle currently has.'
@@ -160,9 +160,9 @@ function TripLog(props: any) {
         );
         const updatedVehicleWeights = vehicle.totalFoodAllocation;
 
-        editedFoodWeights.forEach((weight: number, food: String) => {
+        editedFoodWeights!.forEach((weight: number, food: String) => {
           if (updatedVehicleWeights.has(food)) {
-            const newWeight = updatedVehicleWeights.get(food) - weight;
+            const newWeight = updatedVehicleWeights.get(food)! - weight;
             if (newWeight <= 0) {
               updatedVehicleWeights.delete(food);
             } else {
@@ -188,9 +188,9 @@ function TripLog(props: any) {
         );
         const updatedVehicleWeights = vehicle.totalFoodAllocation;
 
-        editedFoodWeights.forEach((weight: number, food: String) => {
+        editedFoodWeights!.forEach((weight: number, food: String) => {
           if (updatedVehicleWeights.has(food)) {
-            const newWeight = updatedVehicleWeights.get(food) + weight;
+            const newWeight = updatedVehicleWeights.get(food)! + weight;
             updatedVehicleWeights.set(food, newWeight);
           } else {
             updatedVehicleWeights.set(food, weight);

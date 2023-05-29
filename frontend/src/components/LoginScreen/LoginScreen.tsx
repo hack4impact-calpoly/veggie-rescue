@@ -71,6 +71,7 @@ function LoginScreen() {
       toast.success(`You are current driving : ${vehicle.name}`);
 
       // NOW depending on if there is currently weight in the vehicle or not we either go to Dashboard or Transfer page
+      // totalFoodAllocation gets converted to object by mongo so type error is ignorable -- it really is of type FoodAllocationObj
       if (totalWeight(vehicle.totalFoodAllocation) !== 0) {
         navigate('/Transfer');
       } else {
