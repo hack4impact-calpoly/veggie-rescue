@@ -90,15 +90,17 @@ export default function TransferPage() {
         </div>
       </div>
       <div className="md:my-4 my-10 text-5xl font-bold text-amber-600">
-        {Object.keys(totalFoodAllocation).length === 0 ? (
+        {!totalFoodAllocation ? (
           <span>0lbs food</span>
         ) : (
           <>
-            {Object.entries(totalFoodAllocation).map(([key, value]) => (
-              <li key={key}>
-                {value} lbs {key}
-              </li>
-            ))}
+            {Object.entries(totalFoodAllocation)
+              .filter(([, value]) => value > 0)
+              .map(([key, value]) => (
+                <li key={key}>
+                  {value} lbs {key}
+                </li>
+              ))}
           </>
         )}
       </div>

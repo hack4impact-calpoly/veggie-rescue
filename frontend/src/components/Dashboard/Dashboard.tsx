@@ -187,7 +187,19 @@ function Dashboard() {
           <h3>Current Weight:</h3>
         </div>
         <div className="lbs">
-          <h2>{totalWeight(vehicle.totalFoodAllocation)} lbs</h2>
+          {!vehicle?.totalFoodAllocation ? (
+            <span>0lbs food</span>
+          ) : (
+            <>
+              {Object.entries(vehicle?.totalFoodAllocation)
+                .filter(([, value]) => value > 0)
+                .map(([key, value]) => (
+                  <li key={key}>
+                    {value} lbs {key}
+                  </li>
+                ))}
+            </>
+          )}
         </div>
       </div>
 

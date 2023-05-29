@@ -94,14 +94,9 @@ function LocationForm({
       },
       {}
     );
-    console.log(newItems);
-    const areAllFilled =
+
+    const allAreValid =
       Object.entries(newItems).filter(([itemName, item]) => {
-        console.log(itemName);
-        console.log(item);
-        if (item.isChecked && item.value === undefined) {
-          return true;
-        }
         if (
           item.isChecked &&
           (parseInt(item.value, 10) <= 0 ||
@@ -111,17 +106,10 @@ function LocationForm({
         ) {
           return true;
         }
-        // if (
-        //   item.isChecked &&
-        //   item.value.trim().length === 0 &&
-        //   itemName === 'Other'
-        // ) {
-        //   return true;
-        // }
         return false;
       }).length === 0;
-    console.log(areAllFilled);
-    if (areAllFilled) {
+
+    if (allAreValid) {
       const foodWeights = Object.keys(newItems).reduce(
         (acc: { [key: string]: number }, curr) => {
           // only add items that are checked
@@ -142,14 +130,7 @@ function LocationForm({
         foodAllocation: foodWeights,
         Area: current.CombinedAreaName
       });
-      const foodStrings = Object.entries(foodWeights).map(
-        ([key, value]) => `${key}: ${value}lbs`
-      );
 
-      const foodsString = foodStrings.join(', ');
-
-      // Use the itemsString in a template literal to print the desired message
-      toast.success(`Form submitted with: ${foodsString}`);
       setDoneFlag(true);
     } else {
       toast.error('Please fill in all required fields.');

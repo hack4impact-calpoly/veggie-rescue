@@ -57,6 +57,7 @@ export default function NewLogWrapper() {
     // catches when a new log has been set
     if (doneFlag && !vehicleIsLoading) {
       setDoneFlag(false);
+      const errors: string[] = []; // list of popups to display if form is invalid
       // mongoDB converts ts maps into objets, so need to convert back to map
       const pickupDeliveryFoodMap = new Map(
         Object.entries(pickupDeliveryObject.foodAllocation)
@@ -74,30 +75,44 @@ export default function NewLogWrapper() {
         // pickupFoodItems contains all of the valid food types/weights from the pickup -- filter out zero weights
         const pickupFoodItems = new Map<String, number>();
 
-        pickupDeliveryFoodMap.forEach((weight: number, food: String) => {
-          if (weight <= 0) {
-            toast.error(`Food type ${food} must have a nonzero weight`);
-          } else {
-            pickupFoodItems.set(food, weight);
-          }
-        });
+        // Contains at least on item and all weights are positive numbers
+        let allAreValid =
+          Array.from(pickupDeliveryFoodMap.entries()).filter(
+            ([food, weight]: [string, number]) => {
+              if (weight <= 0) {
+                errors.push(
+                  `Food ${food} must have a positive nonzero weight.`
+                );
+                return true;
+              }
+              pickupFoodItems.set(food, weight);
+              return false;
+            }
+          ).length === 0;
 
-        pickupFoodItems.forEach((weight: number, foodType: String) => {
-          // vehicle already has food type -- add to existing weight
-          if (vehicleFoodMap.has(foodType)) {
-            const existingWeight = vehicleFoodMap.get(foodType);
-            const newWeight = existingWeight! + weight;
-            vehicleFoodMap.set(foodType, newWeight);
-            // food type not already in vehicle
-          } else {
-            vehicleFoodMap.set(foodType, weight);
-          }
-        });
+        if (pickupFoodItems?.size === 0) {
+          allAreValid = false;
+          errors.push('Pickup must contain at least one item');
+        }
 
-        // this means the log was empty -- should never get here
-        if (pickupFoodItems.size === 0) {
-          toast.error('Pickup must contain at least one item');
+        // Log was invalid (should never get here)
+        if (!allAreValid) {
+          errors.forEach((error) => {
+            toast.error(error);
+          });
         } else {
+          pickupFoodItems.forEach((weight: number, foodType: String) => {
+            // vehicle already has food type -- add to existing weight
+            if (vehicleFoodMap.has(foodType)) {
+              const existingWeight = vehicleFoodMap.get(foodType);
+              const newWeight = existingWeight! + weight;
+              vehicleFoodMap.set(foodType, newWeight);
+              // food type not already in vehicle
+            } else {
+              vehicleFoodMap.set(foodType, weight);
+            }
+          });
+
           const newPickup: Pickup = {
             date: Date.now().toString(),
             driver: driver.name,
@@ -120,36 +135,53 @@ export default function NewLogWrapper() {
         const dropoffFoodItems = new Map<String, number>();
 
         pickupDeliveryFoodMap.forEach((weight: number, food: String) => {
-          if (weight <= 0) {
-            toast.error(`Food type ${food} must have a nonzero weight`);
-          } else {
-            dropoffFoodItems.set(food, weight);
-          }
+          dropoffFoodItems.set(food, weight);
         });
 
-        dropoffFoodItems.forEach((weight: number, foodType: String) => {
-          // vehicle has food type -- try to subtract from existing weight
-          if (vehicleFoodMap.has(foodType)) {
-            const existingWeight = vehicleFoodMap.get(foodType)!;
-            const newWeight = existingWeight - weight;
-            // vehicle does not have enough of food type to subtract from
-            if (newWeight < 0) {
-              toast.error(
-                `Cannot dropoff ${weight} of food type ${foodType}. Only ${existingWeight} is in the vehicle.`
-              );
-              // set new weight in vehicle
-            } else {
-              vehicleFoodMap.set(foodType, newWeight);
+        let allAreValid =
+          Array.from(dropoffFoodItems.entries()).filter(
+            ([foodType, weight]: [String, number]) => {
+              if (weight <= 0) {
+                errors.push(
+                  `Food ${foodType} must have a positive nonzero weight.`
+                );
+                return true;
+              }
+              // vehicle has food type -- try to subtract from existing weight
+              if (vehicleFoodMap.has(foodType)) {
+                const existingWeight = vehicleFoodMap.get(foodType)!;
+                const newWeight = existingWeight - weight;
+                // ERROR vehicle does not have enough of food type to subtract from
+                if (newWeight < 0) {
+                  errors.push(
+                    `Cannot drop off ${weight}lbs of ${foodType}. Only ${existingWeight}lbs is in the vehicle.`
+                  );
+                  return true;
+                  // set new weight in vehicle
+                }
+                if (newWeight === 0) {
+                  vehicleFoodMap.delete(foodType);
+                  return false;
+                }
+                vehicleFoodMap.set(foodType, newWeight);
+                return false;
+
+                // ERROR food type does not exist in vehicle
+              }
+              errors.push(`Food type ${foodType} is not in the vehicle.`);
+              return true;
             }
-            // food type does not exist in vehicle
-          } else {
-            toast.error(`Food type ${foodType} is not in the vehicle.`);
-          }
-        });
+          ).length === 0;
+
+        if (dropoffFoodItems?.size === 0) {
+          allAreValid = false;
+        }
 
         // this means the log was empty -- should never get here
-        if (dropoffFoodItems.size === 0) {
-          toast.error('Dropoff must contain at least one item');
+        if (!allAreValid) {
+          errors.forEach((error) => {
+            toast.error(error);
+          });
         } else {
           const newDropoff: Dropoff = {
             date: Date.now().toString(),
