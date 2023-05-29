@@ -225,7 +225,6 @@ export const updateVehicle = createAsyncThunk(
       if (!token) {
         token = state.adminAuth.admin.token;
       }
-      console.log(vehicleData);
       return await vehicleService.update(vehicleData, token);
     } catch (error: any) {
       const message =

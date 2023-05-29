@@ -53,8 +53,6 @@ function LocationForm({
 }: Props) {
   const [items, setItems] = useState<Items>({});
 
-  console.log(PickupDeliveryObject);
-
   const handleCheckboxChange = (event: React.FormEvent<HTMLInputElement>) => {
     const { name, checked } = event.currentTarget;
     setItems((prevState) => ({
@@ -74,55 +72,66 @@ function LocationForm({
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     // remove 'other' as a value from the list
-    const newItems: Items = Object.entries(items).reduce((acc, [key, val]) => {
-      // if OtherAmount is specified, it holds the weight of 'Other' -- create an entry for 'Other' with its food type
-      if (key === 'OtherAmount') {
-        acc[items.Other.value] = {
-          isChecked: items.Other.isChecked,
-          value: items.OtherAmount.value
-        };
-        // means no weight was specified for 'Other' -- force failure
-      } else if (key === 'Other' && !items.OtherAmount) {
-        acc[items.Other.value] = {
-          isChecked: val.isChecked,
-          value: -10
-        };
-        // add all other items
-      } else if (key !== 'OtherAmount' && key !== 'Other' && key !== '') {
-        acc[key] = val;
-      }
-      return acc;
-    }, {});
+    const newItems: Items = Object.entries(items).reduce(
+      (acc: Items, [key, val]) => {
+        // if OtherAmount is specified, it holds the weight of 'Other' -- create an entry for 'Other' with its food type
+        if (key === 'OtherAmount') {
+          acc[items.Other.value] = {
+            isChecked: items.Other.isChecked,
+            value: items.OtherAmount.value
+          };
+          // means no weight was specified for 'Other' -- force failure
+        } else if (key === 'Other' && !items.OtherAmount) {
+          acc[items.Other.value] = {
+            isChecked: val.isChecked,
+            value: '-10'
+          };
+          // add all other items
+        } else if (key !== 'OtherAmount' && key !== 'Other' && key !== '') {
+          acc[key] = val;
+        }
+        return acc;
+      },
+      {}
+    );
+    console.log(newItems);
     const areAllFilled =
       Object.entries(newItems).filter(([itemName, item]) => {
+        console.log(itemName);
+        console.log(item);
         if (item.isChecked && item.value === undefined) {
           return true;
         }
         if (
           item.isChecked &&
           (parseInt(item.value, 10) <= 0 ||
-            Number.isNaN(parseInt(item.value, 10)))
+            Number.isNaN(parseInt(item.value, 10)) ||
+            item.value === undefined ||
+            itemName.trim().length === 0)
         ) {
           return true;
         }
-        if (
-          item.isChecked &&
-          item.value.trim().length === 0 &&
-          itemName === 'Other'
-        ) {
-          return true;
-        }
+        // if (
+        //   item.isChecked &&
+        //   item.value.trim().length === 0 &&
+        //   itemName === 'Other'
+        // ) {
+        //   return true;
+        // }
         return false;
       }).length === 0;
+    console.log(areAllFilled);
     if (areAllFilled) {
-      const foodWeights = Object.keys(newItems).reduce((acc, curr) => {
-        // only add items that are checked
-        if (newItems[curr].isChecked) {
-          acc[curr] = newItems[curr].value;
-        }
-        return acc;
-      }, {}); // make 'items' same type as foodType: Map<String, number>
-      console.log('Form submitted with', foodWeights);
+      const foodWeights = Object.keys(newItems).reduce(
+        (acc: { [key: string]: number }, curr) => {
+          // only add items that are checked
+          if (newItems[curr].isChecked) {
+            acc[curr] = parseInt(newItems[curr].value, 10);
+          }
+          return acc;
+        },
+        {}
+      ); // make 'items' same type as foodType: Map<String, number>
       setPickupDeliveryObject({
         ...PickupDeliveryObject,
         id: current._id,

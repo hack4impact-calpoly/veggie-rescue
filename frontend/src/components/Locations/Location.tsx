@@ -49,8 +49,6 @@ function Location({
   const [filtered, setFiltered] = useState<undefined | Locale[]>();
   const dispatch = useAppDispatch();
 
-  console.log(PickupDeliveryObject);
-
   // Get the donors object from the store
   const {
     donors,

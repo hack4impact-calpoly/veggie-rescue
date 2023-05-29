@@ -52,8 +52,7 @@ export default function NewLogWrapper() {
   const { driver } = useAppSelector((state) => state.driverAuth);
   const { isError: isPickupError } = useAppSelector((state) => state.pickups);
   const { isError: isDropoffError } = useAppSelector((state) => state.dropoffs);
-  console.log(driver);
-  console.log(vehicle);
+
   useEffect(() => {
     // catches when a new log has been set
     if (doneFlag && !vehicleIsLoading) {
@@ -68,7 +67,7 @@ export default function NewLogWrapper() {
           value
         ])
       );
-      console.log(vehicleFoodMap);
+
       // Check and see if it is pickup or delivery
       if (pickupDeliveryObject.pickupOrDelivery === 1) {
         // PICKUP
@@ -83,8 +82,6 @@ export default function NewLogWrapper() {
           }
         });
 
-        console.log(pickupFoodItems);
-
         pickupFoodItems.forEach((weight: number, foodType: String) => {
           // vehicle already has food type -- add to existing weight
           if (vehicleFoodMap.has(foodType)) {
@@ -96,7 +93,6 @@ export default function NewLogWrapper() {
             vehicleFoodMap.set(foodType, weight);
           }
         });
-        console.log(vehicleFoodMap);
 
         // this means the log was empty -- should never get here
         if (pickupFoodItems.size === 0) {
@@ -111,13 +107,11 @@ export default function NewLogWrapper() {
             area: pickupDeliveryObject.Area,
             foodAllocation: Object.fromEntries(pickupFoodItems)
           };
-          console.log(newPickup);
           const addPickupToVehicle: PickupSchema = {
             _id: vehicle._id,
             currentPickups: newPickup,
             totalFoodAllocation: Object.fromEntries(vehicleFoodMap)
           };
-          console.log(addPickupToVehicle);
           dispatch(updateVehicle(addPickupToVehicle));
         }
       } else if (pickupDeliveryObject.pickupOrDelivery === 2) {
@@ -167,13 +161,11 @@ export default function NewLogWrapper() {
             area: pickupDeliveryObject.Area,
             foodAllocation: Object.fromEntries(dropoffFoodItems)
           };
-          console.log(newDropoff);
           const addDropOffToVehicle: DropoffSchema = {
             _id: vehicle._id,
             currentDropoffs: newDropoff,
             totalFoodAllocation: Object.fromEntries(vehicleFoodMap)
           };
-          console.log(addDropOffToVehicle);
 
           dispatch(updateVehicle(addDropOffToVehicle));
         }

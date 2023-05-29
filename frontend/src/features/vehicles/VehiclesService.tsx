@@ -62,8 +62,7 @@ const update = async (
   // using rest operator to take just the id out.
   // eslint-disable-next-line @typescript-eslint/naming-convention
   const { _id, ...rest } = vehicleData;
-  console.log(vehicleData);
-  console.log(JSON.stringify(vehicleData));
+
   const response = await axios.put(
     API_URL + _id,
     {
@@ -71,7 +70,6 @@ const update = async (
     },
     config
   );
-  console.log(response);
   return response.data;
 };
 
