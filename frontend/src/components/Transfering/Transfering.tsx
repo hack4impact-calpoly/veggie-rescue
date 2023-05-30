@@ -20,7 +20,7 @@ import { clear as clearDrivers } from '../../features/driverAuth/driverAuthSlice
 
 interface VehicleWeightTransfer {
   _id: string;
-  totalWeight: number;
+  totalFoodAllocation: Map<String, number>;
 }
 
 export default function Transferring() {
@@ -109,8 +109,8 @@ export default function Transferring() {
         setLoading(false);
       }
 
-      if (sum) {
-        setCurrentFoodAlloc((p) => p - sum);
+      if (sum < 0) {
+        toast.error('Total weight cannot be less than 0');
       }
     }
     if (isLoggedOut && isLoggingOut) {
@@ -136,21 +136,24 @@ export default function Transferring() {
   ]);
 
   const handleUpdate = (index: any, updatedWeight: number) => {
-    const newWeights = [...weightArray];
-    newWeights[index] = updatedWeight;
-    setWeightArray(newWeights);
+    const foodType = Array.from(currentFoodAlloc.keys())[index];
+    setCurrentFoodAlloc((prevAlloc) => {
+      const newAlloc = new Map(prevAlloc);
+      newAlloc.set(foodType, updatedWeight);
+      return newAlloc;
+    });
   };
 
   const submitWeight = async () => {
     setLoading(true);
     // here is where we will verify that total weight is not less than 0.  If it is then we alert user
     // if not then we can dispatch the calls.
-    if (currentFoodAlloc >= 0) {
+    if (currentFoodAlloc.size > 0) {
       // update the driver vehicle to note subtraction of weight
       const currentVehicle = await dispatch(
         updateTwo({
           _id: vehicle._id,
-          totalWeight: currentFoodAlloc
+          totalFoodAllocation: currentFoodAlloc
         })
       );
       // once that call is finished we will dispatch the array of dispersed weights
@@ -159,12 +162,13 @@ export default function Transferring() {
         const updatedArray = await vehicleArray.map((e: any, index: number) => {
           if (weightArray[index]) {
             count++;
+            const updatedFoodAllocation = new Map(e.foodAllocation);
             return (
               weightArray[index] &&
               dispatch(
                 updateTwo({
                   _id: e._id,
-                  totalWeight: e.totalWeight + +weightArray[index]
+                  totalFoodAllocation: updatedFoodAllocation
                 } as VehicleWeightTransfer)
               )
             );
