@@ -1,8 +1,13 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import './EntityForm.css';
 import { toast } from 'react-toastify';
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-import { useAppSelector, useAppDispatch } from '../../app/hooks';
+import { useAppDispatch } from '../../app/hooks';
+import {
+  getFields,
+  createField,
+  editField,
+  deleteField
+} from '../../features/fields/fieldSlice';
 
 // import assets
 // import Spinner from '../Spinner/Spinner';
@@ -12,119 +17,93 @@ import { useAppSelector, useAppDispatch } from '../../app/hooks';
 const FieldForm = (props: any) => {
   /* Driver and vehicle state data here */
   const { handleShow, whichField, isUpdate, fieldName } = props;
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const [fieldType, setFieldType] = useState(whichField); // one of Entity Type, Food Type, etc
-  const [field, setField] = useState(fieldName);
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+
+  const [newField, setNewField] = useState(fieldName);
   const dispatch = useAppDispatch();
+  // const { fields } = useAppSelector((state) => state.fields);
 
-  // global state
-  // const { isLoading: vehicleIsLoading } = useAppSelector(
-  //   (state) => state.vehicle
-  // );
-  // const { isLoading: driverIsLoading } = useAppSelector(
-  //   (state) => state.driverAuth
-  // );
+  useEffect(() => {
+    dispatch(getFields());
+  }, [dispatch]);
 
-  /* TODO write dispatch functions in this form for all fields (leave commented out) */
-  // const dispatchGetEntityTypes = () => {
-  //   dispatch(getEntityTypes());
-  // }
-
-  // this function is called if we submit a new field type
-  // @TODO add actual dispatch logic
   const dispatchCreateNew = async () => {
     console.log('CREATE');
-    switch (fieldType) {
+    switch (whichField) {
       case 'Entity Type':
-        // await dispatch(
-        //   createEntityType({
-        //     /* entity params */
-        //   })
-        // );
+        await dispatch(
+          createField({
+            fieldName: 'EntityType',
+            value: newField
+          })
+        );
         toast.success('Successfully created new entity type.');
-        // dispatchGetEntityTypes();
+        dispatch(getFields());
         break;
 
-      case 'Donors Food Type':
-        // await dispatch(
-        //   createDonorsFoodType({
-        //     /* donorsfoodtype params */
-        //   })
-        // );
+      case 'Food Type':
+        await dispatch(
+          createField({
+            fieldName: 'FoodType',
+            value: newField
+          })
+        );
         toast.success('Successfully created new food type.');
-        // dispatchGetDonorsFoodTypes();
+        dispatch(getFields());
         break;
 
       case 'Location Type':
-        // await dispatch(
-        //   createLocType({
-        //     /* location params */
-        //   })
-        // );
+        await dispatch(
+          createField({
+            fieldName: 'LocationType',
+            value: newField
+          })
+        );
         toast.success('Successfully created new location type.');
-        // dispatchGetDonorsFoodTypes();
+        dispatch(getFields());
         break;
 
-      case 'Donors Combined Area Name':
-        // await dispatch(
-        //   createDonorsCombinedAreaName({
-        //     /* combined area name params */
-        //   })
-        // );
+      case 'Combined Area Name':
+        await dispatch(
+          createField({
+            fieldName: 'CombinedAreaName',
+            value: newField
+          })
+        );
         toast.success('Successfully created new combined area name.');
-        // dispatchGetDonorsCombinedAreaName();
+        dispatch(getFields());
         break;
 
-      // recipients
       case 'Organizational Structure':
-        // await dispatch(
-        //   createOrgstruc({
-        //     /* org struc params */
-        //   })
-        // );
+        await dispatch(
+          createField({
+            fieldName: 'OrgStructure',
+            value: newField
+          })
+        );
         toast.success('Successfully created new organizational structure.');
-        // dispatchGetOrgStruc();
+        dispatch(getFields());
         break;
 
       case 'Food Distribution Model':
-        // await dispatch(
-        //   creatFoodDistrModel({
-        //     /* food distr model params */
-        //   })
-        // );
+        await dispatch(
+          createField({
+            fieldName: 'FoodDistModel',
+            value: newField
+          })
+        );
         toast.success('Successfully created new food distribution model.');
-        // dispatchGetFoodDistrModel();
-        break;
-
-      case 'Recipients Food Type':
-        // await dispatch(
-        //   createRecipFoodType({
-        //     /* food type params */
-        //   })
-        // );
-        toast.success('Successfully created new food type.');
-        // dispatchGetRecipFoodType();
+        dispatch(getFields());
         break;
 
       case 'Demographics Served':
-        // await dispatch(
-        //   createDemographicServed({
-        //     /* demographic served params */
-        //   })
-        // );
+        await dispatch(
+          createField({
+            fieldName: 'DemographicsServed',
+            value: newField
+          })
+        );
         toast.success('Successfully created new demographic served.');
-        // dispatchGetDemographicServed();
-        break;
-
-      case 'Recipients Combined Area Name':
-        // await dispatch(
-        //   createRecipeAreaName({
-        //     /* recipient area name params */
-        //   })
-        // );
-        toast.success('Successfully created new combined area name.');
-        // dispatchGetRecipAreaName();
+        dispatch(getFields());
         break;
 
       default:
@@ -135,95 +114,88 @@ const FieldForm = (props: any) => {
 
   const dispatchUpdate = async () => {
     console.log('UPDAATE');
-    switch (fieldType) {
+    switch (whichField) {
       case 'Entity Type':
-        // await dispatch(
-        //   updateEntityType({
-        //     /* entity params */
-        //   })
-        // );
+        await dispatch(
+          editField({
+            fieldName: 'EntityType',
+            oldValue: fieldName,
+            newValue: newField
+          })
+        );
         toast.success('Successfully updated entity type.');
-        // dispatchGetEntityTypes();
+        dispatch(getFields());
         break;
-      case 'Donors Food Type':
-        // await dispatch(
-        //   updateDonorsFoodType({
-        //     /* donorsfoodtype params */
-        //   })
-        // );
+      case 'Food Type':
+        await dispatch(
+          editField({
+            fieldName: 'FoodType',
+            oldValue: fieldName,
+            newValue: newField
+          })
+        );
         toast.success('Successfully updated food type.');
-        // dispatchGetDonorsFoodTypes();
+        dispatch(getFields());
         break;
 
       case 'Location Type':
-        // await dispatch(
-        //   updateLocType({
-        //     /* location params */
-        //   })
-        // );
+        await dispatch(
+          editField({
+            fieldName: 'LocationType',
+            oldValue: fieldName,
+            newValue: newField
+          })
+        );
         toast.success('Successfully updated location type.');
-        // dispatchGetDonorsFoodTypes();
+        dispatch(getFields());
         break;
 
-      case 'Donors Combined Area Name':
-        // await dispatch(
-        //   updateDonorsCombinedAreaName({
-        //     /* combined area name params */
-        //   })
-        // );
+      case 'Combined Area Name':
+        await dispatch(
+          editField({
+            fieldName: 'CombinedAreaName',
+            oldValue: fieldName,
+            newValue: newField
+          })
+        );
         toast.success('Successfully updated combined area name.');
-        // dispatchGetDonorsCombinedAreaName();
+        dispatch(getFields());
         break;
 
-      // recipients
       case 'Organizational Structure':
-        // await dispatch(
-        //   updateOrgstruc({
-        //     /* org struc params */
-        //   })
-        // );
+        await dispatch(
+          editField({
+            fieldName: 'OrgStructure',
+            oldValue: fieldName,
+            newValue: newField
+          })
+        );
         toast.success('Successfully updated organizational structure.');
-        // dispatchGetOrgStruc();
+        dispatch(getFields());
         break;
 
       case 'Food Distribution Model':
-        // await dispatch(
-        //   updateFoodDistrModel({
-        //     /* food distr model params */
-        //   })
-        // );
+        await dispatch(
+          editField({
+            fieldName: 'FoodDistModel',
+            oldValue: fieldName,
+            newValue: newField
+          })
+        );
         toast.success('Successfully updated food distribution model.');
-        // dispatchGetFoodDistrModel();
-        break;
-
-      case 'Recipients Food Type':
-        // await dispatch(
-        //   updateRecipFoodType({
-        //     /* food type params */
-        //   })
-        // );
-        toast.success('Successfully updated food type.');
-        // dispatchGetRecipFoodType();
+        dispatch(getFields());
         break;
 
       case 'Demographics Served':
-        // await dispatch(
-        //   updateDemographicServed({
-        //     /* demographic served params */
-        //   })
-        // );
+        await dispatch(
+          editField({
+            fieldName: 'DemographicsServed',
+            oldValue: fieldName,
+            newValue: newField
+          })
+        );
         toast.success('Successfully updated demographic served.');
-        // dispatchGetDemographicServed();
-        break;
-
-      case 'Recipients Combined Area Name':
-        // await dispatch(
-        //   updateRecipeAreaName({
-        //     /* recipient area name params */
-        //   })
-        // );
-        toast.success('Successfully updated combined area name.');
-        // dispatchGetRecipAreaName();
+        dispatch(getFields());
         break;
 
       default:
@@ -234,59 +206,61 @@ const FieldForm = (props: any) => {
   const dispatchDelete = async (e: any) => {
     console.log('DELETE');
     e.preventDefault();
-    switch (fieldType) {
+    switch (whichField) {
       case 'Entity Type':
-        // await dispatch(deleteEntityType(/*field name or id*/));
+        await dispatch(
+          deleteField({ fieldName: 'EntityType', value: fieldName })
+        );
         toast.success('Successfully deleted entity type.');
-        // dispatchGetEntityTypes();
+        dispatch(getFields());
         break;
-      case 'Donors Food Type':
-        // await dispatch(deleteDonorsfoodType(/*field name or id*/));
+      case 'Food Type':
+        await dispatch(
+          deleteField({ fieldName: 'FoodType', value: fieldName })
+        );
         toast.success('Successfully deleted food type.');
-        // dispatchGetDonorsFoodTypes();
+        dispatch(getFields());
         break;
 
       case 'Location Type':
-        // await dispatch(deleteLocType(/*field name or id*/));
+        await dispatch(
+          deleteField({ fieldName: 'LocationType', value: fieldName })
+        );
         toast.success('Successfully deleted location type.');
-        // dispatchGetLocationTypes();
+        dispatch(getFields());
         break;
 
-      case 'Donors Combined Area Name':
-        // await dispatch(deleteDonorsAreaName(/*field name or id*/));
+      case 'Combined Area Name':
+        await dispatch(
+          deleteField({ fieldName: 'CombinedAreaName', value: fieldName })
+        );
         toast.success('Successfully deleted area name.');
-        // dispatchGetDonorsCombinedAreaName();
+        dispatch(getFields());
         break;
 
       // recipients
       case 'Organizational Structure':
-        // await dispatch(deleteOrgStruc(/*field name or id*/));
+        await dispatch(
+          deleteField({ fieldName: 'OrgStructure', value: fieldName })
+        );
         toast.success('Successfully deleted organizational structure.');
-        // dispatchGetOrgStruc();
+        dispatch(getFields());
         break;
 
       case 'Food Distribution Model':
-        // await dispatch(deleteFoodDistrModel(/*field name or id*/));
+        await dispatch(
+          deleteField({ fieldName: 'FoodDistModel', value: fieldName })
+        );
         toast.success('Successfully deleted food distrubtion model.');
-        // dispatchGetFoodDistrModel();
-        break;
-
-      case 'Recipients Food Type':
-        // await dispatch(deleteRecipFoodType(/*field name or id*/));
-        toast.success('Successfully deleted food type.');
-        // dispatchGetRecipFoodType();
+        dispatch(getFields());
         break;
 
       case 'Demographics Served':
-        // await dispatch(deleteDemographicServed(/*field name or id*/));
+        await dispatch(
+          deleteField({ fieldName: 'DemographicsServed', value: fieldName })
+        );
         toast.success('Successfully deleted demographic served.');
-        // dispatchGetDemographicServed();
-        break;
-
-      case 'Recipients Combined Area Name':
-        // await dispatch(deleteRecipAreaName(/*field name or id*/));
-        toast.success('Successfully deleted area name.');
-        // dispatchGetRecipAreaName();
+        dispatch(getFields());
         break;
 
       default:
@@ -298,9 +272,9 @@ const FieldForm = (props: any) => {
   function handleSubmit(e: any) {
     e.preventDefault();
     if (isUpdate) {
-      if (field.trim().length === 0) toast.error('Missing Field Name');
+      if (newField.trim().length === 0) toast.error('Missing Field Name');
       else dispatchUpdate();
-    } else if (field.trim().length === 0) toast.error('Missing Field Name');
+    } else if (newField.trim().length === 0) toast.error('Missing Field Name');
     else dispatchCreateNew();
   }
 
@@ -313,7 +287,7 @@ const FieldForm = (props: any) => {
       <div className="entity-card short-entity" id="modal">
         <div id="entity-title">
           <div className="title-content">
-            {isUpdate ? `Update ${fieldType}` : `New ${fieldType}`}
+            {isUpdate ? `Update ${whichField}` : `New ${whichField}`}
           </div>
           <div className="title-content">
             <button type="button" id="X-form" onClick={handleShow}>
@@ -325,9 +299,9 @@ const FieldForm = (props: any) => {
         <h2>Name</h2>
         <input
           className="input"
-          defaultValue={isUpdate ? field : ''}
+          defaultValue={isUpdate ? newField : ''}
           placeholder={!isUpdate ? 'Name' : ''}
-          onChange={(e: any) => setField(e.target.value)}
+          onChange={(e: any) => setNewField(e.target.value)}
         />
 
         <div className="flex flex-row w-full">

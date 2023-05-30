@@ -1,5 +1,5 @@
 /* eslint-disable no-nested-ternary */
-import { useCallback, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { toast } from 'react-toastify';
 import { useAppSelector, useAppDispatch } from '../../app/hooks';
 import { getFields } from '../../features/fields/fieldSlice';

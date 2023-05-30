@@ -63,14 +63,12 @@ function Dashboard() {
   }, []);
 
   useEffect(() => {
-    console.log('useeffect');
     //  This will get our vehicle object if we have refreshed page and it is not in state.
     if (
       Object.keys(vehicle).length === 0 &&
       !isLoggedOut &&
       !vehicleIsLoading
     ) {
-      console.log('here');
       setLoading(true);
       dispatch(getVehicle());
     }

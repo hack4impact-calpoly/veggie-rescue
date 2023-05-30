@@ -108,7 +108,6 @@ const editField = asyncHandler(async (req, res) => {
         message: `Field doesn't exist ${fieldName}`,
       });
     }
-
     const filter = {};
     // set value of the element in the array associated with the specified field using the $ positional operator
     const update = { $set: { [`${fieldName}.$[elem]`]: newValue } };

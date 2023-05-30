@@ -3,7 +3,7 @@ import type { RootState } from '../../app/store';
 import fieldService from './fieldService';
 
 // Field Object
-interface FieldDataObject {
+interface Field {
   EntityType: string[];
   LocationType: string[];
   CombinedAreaName: string[];
@@ -15,7 +15,7 @@ interface FieldDataObject {
 
 // // Define a type for the slice state
 interface FieldState {
-  fields: FieldDataObject;
+  fields: Field;
   isError: boolean;
   isSuccess: boolean;
   isLoading: boolean;
@@ -44,7 +44,7 @@ interface EditFieldDataObject {
   newValue: string;
 }
 
-interface CreateFieldDataObject {
+interface FieldDataObject {
   fieldName: string;
   value: string;
 }
@@ -94,7 +94,7 @@ export const getFieldByName = createAsyncThunk(
 
 export const createField = createAsyncThunk(
   'api/addField',
-  async (fieldData: CreateFieldDataObject, thunkAPI) => {
+  async (fieldData: FieldDataObject, thunkAPI) => {
     try {
       const state = thunkAPI.getState() as RootState;
       const { token } = state.adminAuth.admin;
@@ -135,12 +135,12 @@ export const editField = createAsyncThunk(
 
 export const deleteField = createAsyncThunk(
   'api/deleteField',
-  async (fieldId: FieldDataObject, thunkAPI) => {
+  async (fieldData: FieldDataObject, thunkAPI) => {
     try {
       const state = thunkAPI.getState() as RootState;
       const { token } = state.adminAuth.admin;
 
-      return await fieldService.deleteField(fieldId, token);
+      return await fieldService.deleteField(fieldData, token);
     } catch (error: any) {
       const message =
         (error.response &&

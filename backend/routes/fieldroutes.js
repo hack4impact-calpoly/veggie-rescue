@@ -26,6 +26,6 @@ router.put("/add", protectAdmin, createField);
 router.put("/edit", protectAdmin, editField);
 
 // delete field
-router.delete("/:name", protectAdmin, deleteField);
+router.put("/delete", protectAdmin, deleteField);
 
 module.exports = router;

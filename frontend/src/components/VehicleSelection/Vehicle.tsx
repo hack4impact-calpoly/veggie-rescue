@@ -47,7 +47,7 @@ function Vehicles() {
       dispatch(reset());
 
       // NOW depending on if there is currently weight in the vehicle or not we either go to Dashboard or Transfer page
-      if (vehicle.totalWeight !== 0) {
+      if (vehicle?.totalFoodAllocation?.size !== 0) {
         navigate('/Transfer');
       } else {
         navigate('/Dashboard');

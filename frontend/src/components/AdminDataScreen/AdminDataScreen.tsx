@@ -13,6 +13,7 @@ import { getDrivers } from '../../features/driverAuth/driverAuthSlice';
 import { getVehicles } from '../../features/vehicles/VehiclesSlice';
 import { getDonors } from '../../features/donors/donorSlice';
 import { getRecipients } from '../../features/recipients/recipientsSlice';
+import { getFields } from '../../features/fields/fieldSlice';
 import AdminHeader from '../AdminHeader/AdminHeader';
 import Spinner from '../Spinner/Spinner';
 import DonorsForm from '../DonorsCard/DonorsForm';
@@ -29,14 +30,13 @@ function AdminDataScreen() {
 
   const [entityTypeCard, setEntityTypeCard] = useState(false);
   const [locationTypeCard, setLocationTypeCard] = useState(false);
-  const [donorsAreaNameCard, setDonorsAreaNameCard] = useState(false);
 
   const [foodTypeCard, setFoodTypeCard] = useState(false);
+  const [areaNameCard, setAreaNameCard] = useState(false);
 
   const [orgStrucCard, setOrgStrucCard] = useState(false);
   const [foodDistrModelCard, setFoodDistrModelCard] = useState(false);
   const [demographicCard, setDemographicCard] = useState(false);
-  const [recipAreaNameCard, setRecipAreaNameCard] = useState(false);
 
   const [showModal, setShowModal] = useState(false);
   const [q, setQ] = useState('');
@@ -45,71 +45,12 @@ function AdminDataScreen() {
   const dispatch = useAppDispatch();
   const { drivers } = useAppSelector((state) => state.driverAuth);
   const { vehicles } = useAppSelector((state) => state.vehicle);
-
+  const { fields } = useAppSelector((state) => state.fields);
   const { donors: pickupSchema } = useAppSelector((state) => state.donors);
 
   const { recipients: deliverySchema } = useAppSelector(
     (state) => state.recipients
   );
-
-  const foodTypes = [
-    'Produce',
-    'Baked goods',
-    'Prepared',
-    'Packaged/Processed',
-    'Retail',
-    'non-food'
-  ];
-
-  const donorsEntityTypes = [
-    'Farm',
-    'Restaurant',
-    'Food Supply Company',
-    'Nonprofit',
-    'Grocery',
-    'Community Kitchen'
-  ];
-
-  const areaNames = ['SB/Goleta', 'SYV', 'SM/Orcutt', 'Cuyama', 'Lompoc'];
-
-  const locationTypes = [
-    'Farm',
-    'Farmers market',
-    'Warehouse',
-    'Restaurant',
-    'Community Kitchen'
-  ];
-
-  const orgStrucs = [
-    'Church',
-    'Shelter',
-    'School',
-    'Senior Center',
-    'Food Pantry - Other',
-    'Temp Food Pantry - Other',
-    'Nonprofit - Other'
-  ];
-
-  const foodDistrModels = [
-    'Community Kitchen',
-    'Food Pantry',
-    'Meals-on-wheels',
-    'Senior Center Kitchen',
-    'Free Farmers Table',
-    'Shared delivery'
-  ];
-
-  const demographicsServed = [
-    'Homeless',
-    'Low Income',
-    'Senior',
-    'Youth (Schools)',
-    'Animals',
-    'First Responders',
-    'Community Kitchen',
-    'Compost',
-    'Landfill'
-  ];
 
   const [currentVehicle, setCurrentVehicle] = useState(null);
   const [currentVolunteer, setCurrentVolunteer] = useState(null);
@@ -118,14 +59,13 @@ function AdminDataScreen() {
 
   const [currentEntityType, setCurrentEntityType] = useState(null);
   const [currentLocType, setCurrentLocType] = useState(null);
-  const [currentDonorsAreaName, setCurrentDonorsAreaName] = useState(null);
+  const [currentAreaName, setCurrentAreaName] = useState(null);
 
   const [currentFoodType, setCurrentFoodType] = useState(null);
 
   const [currentOrgStruc, setCurrentOrgStruc] = useState(null);
   const [currentFoodDistr, setCurrentFoodDistr] = useState(null);
   const [currentDemographic, setCurrentDemographic] = useState(null);
-  const [currentRecipAreaName, setCurrentRecipAreaName] = useState(null);
 
   const [showDonorButtons, toggleDonorButtons] = useState(false);
   const [showRecipientButtons, toggleRecipientButtons] = useState(false);
@@ -135,6 +75,7 @@ function AdminDataScreen() {
     dispatch(getVehicles());
     dispatch(getDonors());
     dispatch(getRecipients());
+    dispatch(getFields());
   }, [dispatch]);
 
   const handleVolunteers = useCallback(() => {
@@ -148,11 +89,10 @@ function AdminDataScreen() {
     setEntityTypeCard(false);
     setFoodTypeCard(false);
     setLocationTypeCard(false);
-    setDonorsAreaNameCard(false);
+    setAreaNameCard(false);
     setOrgStrucCard(false);
     setFoodDistrModelCard(false);
     setDemographicCard(false);
-    setRecipAreaNameCard(false);
   }, []);
 
   const handleVehicles = useCallback(() => {
@@ -166,11 +106,10 @@ function AdminDataScreen() {
     setEntityTypeCard(false);
     setFoodTypeCard(false);
     setLocationTypeCard(false);
-    setDonorsAreaNameCard(false);
+    setAreaNameCard(false);
     setOrgStrucCard(false);
     setFoodDistrModelCard(false);
     setDemographicCard(false);
-    setRecipAreaNameCard(false);
   }, []);
 
   const vehicleData = useCallback((vehicle: any) => {
@@ -194,7 +133,7 @@ function AdminDataScreen() {
   }, []);
 
   const donorsAreaNameData = useCallback((donorsAreaNameType: any) => {
-    setCurrentDonorsAreaName(donorsAreaNameType);
+    setCurrentAreaName(donorsAreaNameType);
     setUpdate(true);
   }, []);
 
@@ -210,11 +149,6 @@ function AdminDataScreen() {
 
   const demoServedData = useCallback((demoServedType: any) => {
     setCurrentDemographic(demoServedType);
-    setUpdate(true);
-  }, []);
-
-  const recipAreaNameData = useCallback((recipAreaNameType: any) => {
-    setCurrentRecipAreaName(recipAreaNameType);
     setUpdate(true);
   }, []);
 
@@ -245,11 +179,10 @@ function AdminDataScreen() {
     setEntityTypeCard(false);
     setFoodTypeCard(false);
     setLocationTypeCard(false);
-    setDonorsAreaNameCard(false);
+    setAreaNameCard(false);
     setOrgStrucCard(false);
     setFoodDistrModelCard(false);
     setDemographicCard(false);
-    setRecipAreaNameCard(false);
   }
 
   function handleEntityType() {
@@ -263,11 +196,10 @@ function AdminDataScreen() {
     setEntityTypeCard(true);
     setFoodTypeCard(false);
     setLocationTypeCard(false);
-    setDonorsAreaNameCard(false);
+    setAreaNameCard(false);
     setOrgStrucCard(false);
     setFoodDistrModelCard(false);
     setDemographicCard(false);
-    setRecipAreaNameCard(false);
   }
 
   function handleDonorsFoodType() {
@@ -281,11 +213,10 @@ function AdminDataScreen() {
     setEntityTypeCard(false);
     setFoodTypeCard(true);
     setLocationTypeCard(false);
-    setDonorsAreaNameCard(false);
+    setAreaNameCard(false);
     setOrgStrucCard(false);
     setFoodDistrModelCard(false);
     setDemographicCard(false);
-    setRecipAreaNameCard(false);
   }
 
   function handleLocationType() {
@@ -299,11 +230,10 @@ function AdminDataScreen() {
     setEntityTypeCard(false);
     setFoodTypeCard(false);
     setLocationTypeCard(true);
-    setDonorsAreaNameCard(false);
+    setAreaNameCard(false);
     setOrgStrucCard(false);
     setFoodDistrModelCard(false);
     setDemographicCard(false);
-    setRecipAreaNameCard(false);
   }
 
   function handleDonorsAreaName() {
@@ -317,11 +247,10 @@ function AdminDataScreen() {
     setEntityTypeCard(false);
     setFoodTypeCard(false);
     setLocationTypeCard(false);
-    setDonorsAreaNameCard(true);
+    setAreaNameCard(true);
     setOrgStrucCard(false);
     setFoodDistrModelCard(false);
     setDemographicCard(false);
-    setRecipAreaNameCard(false);
   }
 
   function handleRecipients() {
@@ -342,11 +271,10 @@ function AdminDataScreen() {
     setEntityTypeCard(false);
     setFoodTypeCard(false);
     setLocationTypeCard(false);
-    setDonorsAreaNameCard(false);
+    setAreaNameCard(false);
     setOrgStrucCard(false);
     setFoodDistrModelCard(false);
     setDemographicCard(false);
-    setRecipAreaNameCard(false);
   }
 
   function handleOrgStruc() {
@@ -360,11 +288,10 @@ function AdminDataScreen() {
     setEntityTypeCard(false);
     setFoodTypeCard(false);
     setLocationTypeCard(false);
-    setDonorsAreaNameCard(false);
+    setAreaNameCard(false);
     setOrgStrucCard(true);
     setFoodDistrModelCard(false);
     setDemographicCard(false);
-    setRecipAreaNameCard(false);
   }
 
   function handleFoodDistrModel() {
@@ -376,14 +303,12 @@ function AdminDataScreen() {
     toggleDonorButtons(false);
     toggleRecipientButtons(true);
     setEntityTypeCard(false);
-    // setDonorsFoodTypeCard(false);
     setFoodTypeCard(false);
     setLocationTypeCard(false);
-    setDonorsAreaNameCard(false);
+    setAreaNameCard(false);
     setOrgStrucCard(false);
     setFoodDistrModelCard(true);
     setDemographicCard(false);
-    setRecipAreaNameCard(false);
   }
 
   function handleRecipFoodType() {
@@ -397,11 +322,10 @@ function AdminDataScreen() {
     setEntityTypeCard(false);
     setFoodTypeCard(true);
     setLocationTypeCard(false);
-    setDonorsAreaNameCard(false);
+    setAreaNameCard(false);
     setOrgStrucCard(false);
     setFoodDistrModelCard(false);
     setDemographicCard(false);
-    setRecipAreaNameCard(false);
   }
 
   function handleDemographics() {
@@ -415,11 +339,10 @@ function AdminDataScreen() {
     setEntityTypeCard(false);
     setFoodTypeCard(false);
     setLocationTypeCard(false);
-    setDonorsAreaNameCard(false);
+    setAreaNameCard(false);
     setOrgStrucCard(false);
     setFoodDistrModelCard(false);
     setDemographicCard(true);
-    setRecipAreaNameCard(false);
   }
 
   function handleAreaName() {
@@ -433,11 +356,10 @@ function AdminDataScreen() {
     setEntityTypeCard(false);
     setFoodTypeCard(false);
     setLocationTypeCard(false);
-    setDonorsAreaNameCard(false);
+    setAreaNameCard(true);
     setOrgStrucCard(false);
     setFoodDistrModelCard(false);
     setDemographicCard(false);
-    setRecipAreaNameCard(true);
   }
 
   const handleShowModal = useCallback(() => {
@@ -461,7 +383,7 @@ function AdminDataScreen() {
       );
     }
     if (entityTypeCard) {
-      return donorsEntityTypes.filter((item: any) =>
+      return fields.EntityType.filter((item: any) =>
         searchParam.some(
           () => item.toString().toLowerCase().indexOf(q.toLowerCase()) > -1
         )
@@ -469,7 +391,7 @@ function AdminDataScreen() {
     }
 
     if (foodTypeCard) {
-      return foodTypes.filter((item: any) =>
+      return fields.FoodType.filter((item: any) =>
         searchParam.some(
           () => item.toString().toLowerCase().indexOf(q.toLowerCase()) > -1
         )
@@ -477,15 +399,15 @@ function AdminDataScreen() {
     }
 
     if (locationTypeCard) {
-      return locationTypes.filter((item: any) =>
+      return fields.LocationType.filter((item: any) =>
         searchParam.some(
           () => item.toString().toLowerCase().indexOf(q.toLowerCase()) > -1
         )
       );
     }
 
-    if (donorsAreaNameCard) {
-      return areaNames.filter((item: any) =>
+    if (areaNameCard) {
+      return fields.CombinedAreaName.filter((item: any) =>
         searchParam.some(
           () => item.toString().toLowerCase().indexOf(q.toLowerCase()) > -1
         )
@@ -493,7 +415,7 @@ function AdminDataScreen() {
     }
 
     if (orgStrucCard) {
-      return orgStrucs.filter((item: any) =>
+      return fields.OrgStructure.filter((item: any) =>
         searchParam.some(
           () => item.toString().toLowerCase().indexOf(q.toLowerCase()) > -1
         )
@@ -501,7 +423,7 @@ function AdminDataScreen() {
     }
 
     if (foodDistrModelCard) {
-      return foodDistrModels.filter((item: any) =>
+      return fields.FoodDistModel.filter((item: any) =>
         searchParam.some(
           () => item.toString().toLowerCase().indexOf(q.toLowerCase()) > -1
         )
@@ -509,15 +431,7 @@ function AdminDataScreen() {
     }
 
     if (demographicCard) {
-      return demographicsServed.filter((item: any) =>
-        searchParam.some(
-          () => item.toString().toLowerCase().indexOf(q.toLowerCase()) > -1
-        )
-      );
-    }
-
-    if (recipAreaNameCard) {
-      return areaNames.filter((item: any) =>
+      return fields.DemographicsServed.filter((item: any) =>
         searchParam.some(
           () => item.toString().toLowerCase().indexOf(q.toLowerCase()) > -1
         )
@@ -550,6 +464,8 @@ function AdminDataScreen() {
       )
     );
   }
+
+  console.log(search(q));
 
   if (loading) {
     return <Spinner />;
@@ -652,7 +568,7 @@ function AdminDataScreen() {
                 type="button"
                 className="title"
                 onClick={handleAreaName}
-                style={{ border: recipAreaNameCard ? '2px solid #FF9C55' : '' }}
+                style={{ border: areaNameCard ? '2px solid #FF9C55' : '' }}
               >
                 Combined Area Name
               </button>
@@ -699,7 +615,7 @@ function AdminDataScreen() {
                 className="title"
                 onClick={handleDonorsAreaName}
                 style={{
-                  border: donorsAreaNameCard ? '2px solid #FF9C55' : ''
+                  border: areaNameCard ? '2px solid #FF9C55' : ''
                 }}
               >
                 Combined Area Name
@@ -740,6 +656,7 @@ function AdminDataScreen() {
               )}
               {search(q).map((item: any, index: any) => (
                 <VolunteersCard
+                  key={item._id}
                   index={index}
                   handleShow={handleShowModal}
                   volunteer={item}
@@ -770,6 +687,7 @@ function AdminDataScreen() {
               )}
               {search(q).map((item: any, index: any) => (
                 <VehiclesCard
+                  key={item._id}
                   index={index}
                   vehicle={item}
                   handleShow={handleShowModal}
@@ -801,6 +719,7 @@ function AdminDataScreen() {
               )}
               {search(q).map((item: any, index: any) => (
                 <DonorsCard
+                  key={item._id}
                   index={index}
                   donor={item}
                   handleShow={handleShowModal}
@@ -831,12 +750,7 @@ function AdminDataScreen() {
               )}
               {search(q).map((item: any, index: any) => (
                 <RecipientsCard
-                  // index={item.id}
-                  // donor={item.name}
-                  // entityType={item.recipientEntityType}
-                  // demographicName={item.demographic}
-                  // foodType={item.foodType}
-                  // areaName={item.area}
+                  key={item._id}
                   index={index}
                   recipient={item}
                   handleShow={handleShowModal}
@@ -867,6 +781,7 @@ function AdminDataScreen() {
               )}
               {search(q).map((item: any, index: any) => (
                 <FieldPage
+                  key={item._id}
                   index={index}
                   field={item}
                   handleShow={handleShowModal}
@@ -897,6 +812,7 @@ function AdminDataScreen() {
               )}
               {search(q).map((item: any, index: any) => (
                 <FieldPage
+                  key={item._id}
                   index={index}
                   field={item}
                   handleShow={handleShowModal}
@@ -906,7 +822,7 @@ function AdminDataScreen() {
             </div>
           )}
 
-          {donorsAreaNameCard && (
+          {areaNameCard && (
             <div className="logs">
               <button
                 type="button"
@@ -920,14 +836,15 @@ function AdminDataScreen() {
               {showModal && (
                 <FieldForm
                   handleShow={handleShowModal}
-                  whichField="Donors Combined Area Name"
+                  whichField="Combined Area Name"
                   isUpdate={isUpdate}
-                  fieldName={currentDonorsAreaName}
+                  fieldName={currentAreaName}
                 />
               )}
 
               {search(q).map((item: any, index: any) => (
                 <FieldPage
+                  key={item._id}
                   index={index}
                   field={item}
                   handleShow={handleShowModal}
@@ -958,6 +875,7 @@ function AdminDataScreen() {
               )}
               {search(q).map((item: any, index: any) => (
                 <FieldPage
+                  key={item._id}
                   index={index}
                   field={item}
                   handleShow={handleShowModal}
@@ -988,6 +906,7 @@ function AdminDataScreen() {
               )}
               {search(q).map((item: any, index: any) => (
                 <FieldPage
+                  key={item._id}
                   index={index}
                   field={item}
                   handleShow={handleShowModal}
@@ -1011,13 +930,14 @@ function AdminDataScreen() {
               {showModal && (
                 <FieldForm
                   handleShow={handleShowModal}
-                  whichField="Recipients Food Type"
+                  whichField="Food Type"
                   isUpdate={isUpdate}
                   fieldName={currentFoodType}
                 />
               )}
               {search(q).map((item: any, index: any) => (
                 <FieldPage
+                  key={item._id}
                   index={index}
                   field={item}
                   handleShow={handleShowModal}
@@ -1048,40 +968,11 @@ function AdminDataScreen() {
               )}
               {search(q).map((item: any, index: any) => (
                 <FieldPage
+                  key={item._id}
                   index={index}
                   field={item}
                   handleShow={handleShowModal}
                   fieldHandler={demoServedData}
-                />
-              ))}
-            </div>
-          )}
-
-          {recipAreaNameCard && (
-            <div className="logs">
-              <button
-                type="button"
-                onClick={() => {
-                  handleShowModal();
-                  setUpdate(false);
-                }}
-              >
-                <NewVolunteersCard />
-              </button>
-              {showModal && (
-                <FieldForm
-                  handleShow={handleShowModal}
-                  whichField="Recipients Combined Area Name"
-                  isUpdate={isUpdate}
-                  fieldName={currentRecipAreaName}
-                />
-              )}
-              {search(q).map((item: any, index: any) => (
-                <FieldPage
-                  index={index}
-                  field={item}
-                  handleShow={handleShowModal}
-                  fieldHandler={recipAreaNameData}
                 />
               ))}
             </div>

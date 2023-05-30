@@ -42,7 +42,7 @@ export const getRecipients = createAsyncThunk(
     try {
       const state = thunkAPI.getState() as RootState;
       let { token } = state.driverAuth.driver;
-      console.log(state.adminAuth.admin);
+
       if (!token) {
         token = state.adminAuth.admin.token;
       }
