@@ -4,19 +4,18 @@ import fieldService from './fieldService';
 
 // Field Object
 interface FieldDataObject {
-  id: string;
   EntityType: string[];
   LocationType: string[];
   CombinedAreaName: string[];
   OrgStructure: string[];
   DemographicsServed: string[];
   FoodDistModel: string[];
-  FoodTypes: string[];
+  FoodType: string[];
 }
 
 // // Define a type for the slice state
 interface FieldState {
-  fields: [];
+  fields: FieldDataObject;
   isError: boolean;
   isSuccess: boolean;
   isLoading: boolean;
@@ -24,7 +23,15 @@ interface FieldState {
 }
 
 const initialState: FieldState = {
-  fields: [],
+  fields: {
+    EntityType: [],
+    LocationType: [],
+    CombinedAreaName: [],
+    OrgStructure: [],
+    DemographicsServed: [],
+    FoodDistModel: [],
+    FoodType: []
+  },
   isError: false,
   isSuccess: false,
   isLoading: false,
@@ -37,13 +44,12 @@ interface EditFieldDataObject {
   newValue: string;
 }
 
-interface FieldDataObject {
+interface CreateFieldDataObject {
   fieldName: string;
   value: string;
 }
 
 export const getFields = createAsyncThunk('api/fields', async (_, thunkAPI) => {
-  console.log('slice');
   try {
     const state = thunkAPI.getState() as RootState;
     let { token } = state.driverAuth.driver;
@@ -88,7 +94,7 @@ export const getFieldByName = createAsyncThunk(
 
 export const createField = createAsyncThunk(
   'api/addField',
-  async (fieldData: FieldDataObject, thunkAPI) => {
+  async (fieldData: CreateFieldDataObject, thunkAPI) => {
     try {
       const state = thunkAPI.getState() as RootState;
       const { token } = state.adminAuth.admin;

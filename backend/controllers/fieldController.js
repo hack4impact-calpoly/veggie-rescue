@@ -2,16 +2,27 @@
 const asyncHandler = require("express-async-handler");
 const Fields = require("../models/fieldSchema");
 const Admin = require("../models/adminSchema");
+const Driver = require("../models/driverSchema");
 
 // @desc Get all fields
 // @route GET /api/fields
 // @access Private -> Admin only
 const getFields = asyncHandler(async (req, res) => {
-  const admin = await Admin.findById(req.admin.id);
-  if (!admin) {
-    res.status(401);
-    throw new Error("Admin not found");
+  if (req.admin) {
+    const admin = await Admin.findById(req.admin.id);
+    if (!admin) {
+      res.status(401);
+      throw new Error("Admin not found");
+    }
+  } else if (req.driver) {
+    const driver = await Driver.findById(req.driver.id);
+
+    if (!driver) {
+      res.status(401);
+      throw new Error("Driver not found");
+    }
   }
+
   try {
     res.send(await Fields.findOne({}));
   } catch (err) {

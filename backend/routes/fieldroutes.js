@@ -8,14 +8,13 @@ const {
   editField,
   deleteField,
 } = require("../controllers/fieldController");
-const { protectAdmin } = require("../middleware/authMiddleware");
+const {
+  protectAdmin,
+  protectAdminOrDriver,
+} = require("../middleware/authMiddleware");
 
 // get all fields
-router.get("/", protectAdmin, getFields);
-// router.get("/", (req, res) => {
-//   // Handle GET request for /api/field
-//   res.send("Hello, Field Routes!");
-// });
+router.get("/", protectAdminOrDriver, getFields);
 
 // get field by name
 router.get("/:name", protectAdmin, getFieldByName);

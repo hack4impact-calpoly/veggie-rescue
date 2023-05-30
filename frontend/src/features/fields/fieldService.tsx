@@ -20,6 +20,7 @@ const getFields = async (token: string) => {
       Authorization: `Bearer ${token}`
     }
   };
+
   const response = await axios.get(API_URL, config);
   return response.data;
 };

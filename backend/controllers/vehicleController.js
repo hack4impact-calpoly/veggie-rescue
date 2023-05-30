@@ -150,6 +150,7 @@ const editVehicle = asyncHandler(async (req, res) => {
   if (body.img) {
     vehicleInDB.img = body.img;
   }
+  console.log(body);
   if (body.currentPickups) {
     // First check if it is an array
     if (Array.isArray(body.currentPickups.constructor)) {
@@ -189,13 +190,16 @@ const editVehicle = asyncHandler(async (req, res) => {
     }
   }
   if (body.totalFoodAllocation === 0 || body.totalFoodAllocation) {
+    console.log("food alloc");
     vehicleInDB.totalFoodAllocation = body.totalFoodAllocation;
   }
+  console.log(vehicleInDB);
   const updatedVehicle = await Vehicle.findByIdAndUpdate(
     req.params.id,
     vehicleInDB
   );
   const update = await Vehicle.findById(updatedVehicle._id);
+  console.log("update");
   return res.status(201).json(update);
 });
 

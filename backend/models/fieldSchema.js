@@ -8,7 +8,7 @@ const FieldSchema = new mongoose.Schema(
     OrgStructure: [String],
     DemographicsServed: [String],
     FoodDistModel: [String],
-    FoodTypes: [String],
+    FoodType: [String],
   },
   { collection: "Field" }
 );

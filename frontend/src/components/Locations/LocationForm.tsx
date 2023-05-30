@@ -1,5 +1,5 @@
 /* eslint-disable no-nested-ternary */
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { toast } from 'react-toastify';
 import { useAppSelector, useAppDispatch } from '../../app/hooks';
 import { getFields } from '../../features/fields/fieldSlice';
@@ -51,23 +51,24 @@ function LocationForm({
   setDoneFlag
 }: Props) {
   const [items, setItems] = useState<Items>({});
-  const [foodTypes, setFoodTypes] = useState([]);
 
   const dispatch = useAppDispatch();
 
   const { vehicle } = useAppSelector((state) => state.vehicle);
   const { fields } = useAppSelector((state) => state.fields);
-  console.log(fields);
+
+  function getFoodTypes() {
+    // pickup, show all food types
+    if (PickupDeliveryObject.pickupOrDelivery === 1) {
+      return fields.FoodType;
+    }
+    // dropoff, only show what's in vehicle
+    return Array.from(Object.keys(vehicle.totalFoodAllocation));
+  }
 
   useEffect(() => {
     dispatch(getFields());
-    // pickup, list all food types
-    if (PickupDeliveryObject.pickupOrDelivery === 1) {
-      // setFoodTypes(fields.FoodTypes);
-    } else {
-      setFoodTypes(Array.from(vehicle.totalFoodAllocation.keys()));
-    }
-  }, [PickupDeliveryObject.pickupOrDelivery]);
+  }, [dispatch]);
 
   const handleCheckboxChange = (event: React.FormEvent<HTMLInputElement>) => {
     const { name, checked } = event.currentTarget;
@@ -176,7 +177,7 @@ function LocationForm({
         <div className="text-4xl font-semibold text-left pt-10">Food type:</div>
         <div className="text-3xl text-left ml-20 m-4 py-4">
           {current &&
-            foodTypes.map((foodType) => (
+            getFoodTypes().map((foodType) => (
               <div className="flex items-center mb-4" key={foodType}>
                 <label
                   htmlFor={`${foodType}-checkbox`}

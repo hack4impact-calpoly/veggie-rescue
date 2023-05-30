@@ -82,7 +82,6 @@ const protectAdminOrDriver = asyncHandler(async (req, res, next) => {
     try {
       // Get token from header
       [, token] = req.headers.authorization.split(" ");
-
       // Verify token
       const decoded = jwt.verify(token, process.env.JWT_SECRET);
       // Now see if response is an Admin or a Driver... otherwise it will be null
