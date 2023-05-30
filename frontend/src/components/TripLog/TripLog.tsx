@@ -70,7 +70,7 @@ function TripLog(props: any) {
   }, [fontColor]);
 
   const totalWeight = originalFoodWeights
-    ? Array.from(originalFoodWeights.values()).reduce(
+    ? Object.values(originalFoodWeights).reduce(
         (total, weight) => total + weight,
         0
       )
@@ -232,35 +232,55 @@ function TripLog(props: any) {
 
   return (
     <div className="triplog-container">
-      <div className="flex flex-col">
-        <div id="trip">{trip}</div>
-        <div className="text-sm text-black">Tue May 30 2023 14:47:12</div>
-      </div>
+      <div id="trip">{trip}</div>
       <div id="name">{name}</div>
-      <div id="foods" className="flex">
-        {Object.entries(originalFoodWeights).map(([food, weight]) => (
-          <div className="flex items-center" key={food} id={food}>
-            {editBtn ? (
-              <input
-                className="shadow-sm rounded-lg h-9 px-4 text-black"
-                type="text"
-                name="lbs"
-                onChange={(e) => handlePoundsChange(e.target.value)}
-                value={weight}
-                placeholder={weight.toString()}
-              />
-            ) : (
-              <div className="flex items-center" style={{ color: fontColor }}>
-                {trip === 'Pickup' ? (
-                  <h1 className="text-3xl">+</h1>
-                ) : (
-                  <h1 className="text-3xl">-</h1>
-                )}
-                <span className="text-base ml-1">{weight} lbs</span>
-              </div>
-            )}
+      <div id="foods">
+        {isExpanded ? (
+          <div className="expandable-content popup bg-amber-600" id="modal">
+            <div className="popup-header">
+              <button
+                className="close-button"
+                onClick={handleToggleExpand}
+                type="button"
+              >
+                <span className="close-icon">&#10006;</span>
+              </button>
+            </div>
+            <div className="popup-content">
+              <ul className="list-none p-0 m-0">
+                {Object.entries(originalFoodWeights).map(([food, weight]) => (
+                  <li key={food} className="flex items-center">
+                    <div className="rounded bg-white bg-opacity-70 p-2 mb-2">
+                      <span className="logfood text-black">{food}</span>
+                      <span className="logweight text-green-500 ml-2">
+                        {weight} lbs
+                      </span>
+                    </div>
+                  </li>
+                ))}
+              </ul>
+            </div>
           </div>
-        ))}
+        ) : (
+          <div
+            className="flex items-center"
+            style={{ color: trip === 'Pickup' ? 'green' : 'red' }}
+          >
+            {trip === 'Pickup' ? (
+              <h1 className="text-3xl">+</h1>
+            ) : (
+              <h1 className="text-3xl">-</h1>
+            )}
+            <span className="text-base ml-1">{totalWeight} lbs</span>
+          </div>
+        )}
+        <button
+          onClick={handleToggleExpand}
+          type="button"
+          className="expand-button"
+        >
+          {isExpanded ? 'Hide' : 'Expand'}
+        </button>
       </div>
     </div>
   );
