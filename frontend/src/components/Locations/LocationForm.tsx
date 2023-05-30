@@ -1,6 +1,8 @@
 /* eslint-disable no-nested-ternary */
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { toast } from 'react-toastify';
+import { useAppSelector, useAppDispatch } from '../../app/hooks';
+import { getFields } from '../../features/fields/fieldSlice';
 
 interface Locale {
   name: string;
@@ -42,9 +44,6 @@ interface Items {
   [key: string]: CheckedItem;
 }
 
-/* will come from API call later */
-const foodTypes = ['Produce', 'Baked Goods', 'Prepared', 'Other'];
-
 function LocationForm({
   current,
   PickupDeliveryObject,
@@ -52,6 +51,23 @@ function LocationForm({
   setDoneFlag
 }: Props) {
   const [items, setItems] = useState<Items>({});
+  const [foodTypes, setFoodTypes] = useState([]);
+
+  const dispatch = useAppDispatch();
+
+  const { vehicle } = useAppSelector((state) => state.vehicle);
+  const { fields } = useAppSelector((state) => state.fields);
+  console.log(fields);
+
+  useEffect(() => {
+    dispatch(getFields());
+    // pickup, list all food types
+    if (PickupDeliveryObject.pickupOrDelivery === 1) {
+      // setFoodTypes(fields.FoodTypes);
+    } else {
+      setFoodTypes(Array.from(vehicle.totalFoodAllocation.keys()));
+    }
+  }, [PickupDeliveryObject.pickupOrDelivery]);
 
   const handleCheckboxChange = (event: React.FormEvent<HTMLInputElement>) => {
     const { name, checked } = event.currentTarget;

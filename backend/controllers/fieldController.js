@@ -141,3 +141,11 @@ const deleteField = asyncHandler(async (req, res) => {
       .send(`Unable to delete field ${err.message}`);
   }
 });
+
+module.exports = {
+  getFields,
+  getFieldByName,
+  createField,
+  editField,
+  deleteField,
+};

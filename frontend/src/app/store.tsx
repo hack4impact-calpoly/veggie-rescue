@@ -6,6 +6,7 @@ import dropoffsReducer from '../features/dropoffs/dropoffsSlice';
 import donorsReducer from '../features/donors/donorSlice';
 import recipientsReducer from '../features/recipients/recipientsSlice';
 import vehiclesReducer from '../features/vehicles/VehiclesSlice';
+import fieldsReducer from '../features/fields/fieldSlice';
 
 export const store = configureStore({
   reducer: {
@@ -15,7 +16,8 @@ export const store = configureStore({
     dropoffs: dropoffsReducer,
     donors: donorsReducer,
     recipients: recipientsReducer,
-    vehicle: vehiclesReducer
+    vehicle: vehiclesReducer,
+    fields: fieldsReducer
   }
 });
 

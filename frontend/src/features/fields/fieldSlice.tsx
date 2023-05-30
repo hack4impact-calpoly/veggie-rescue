@@ -43,6 +43,7 @@ interface FieldDataObject {
 }
 
 export const getFields = createAsyncThunk('api/fields', async (_, thunkAPI) => {
+  console.log('slice');
   try {
     const state = thunkAPI.getState() as RootState;
     let { token } = state.driverAuth.driver;

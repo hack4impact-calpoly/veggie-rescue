@@ -12,6 +12,10 @@ const { protectAdmin } = require("../middleware/authMiddleware");
 
 // get all fields
 router.get("/", protectAdmin, getFields);
+// router.get("/", (req, res) => {
+//   // Handle GET request for /api/field
+//   res.send("Hello, Field Routes!");
+// });
 
 // get field by name
 router.get("/:name", protectAdmin, getFieldByName);

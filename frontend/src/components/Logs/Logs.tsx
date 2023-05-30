@@ -1,5 +1,4 @@
 import { useEffect } from 'react';
-import './Logs.css';
 import { useNavigate } from 'react-router-dom';
 import { useAppSelector, useAppDispatch } from '../../app/hooks';
 import NavBarButton_DARK from '../../imgs/button_dark_left.svg';
@@ -29,9 +28,9 @@ function Logs() {
     return <Spinner />;
   }
   return (
-    <div className="container pt-10 pl-5 pr-50">
+    <div className="container pt-10 pl-5 pr-10">
       <div className="text-container">
-        <div className="your-logs">
+        <div className="your-logs flex justify-between items-center h-20 w-90">
           <button
             type="button"
             id="icon"
@@ -42,10 +41,9 @@ function Logs() {
             <img src={NavBarButton_DARK} alt="leftButton" />
           </button>
           <h3 id="logs-text">Your Logs</h3>
-          {/* eslint-disable-next-line jsx-a11y/control-has-associated-label */}
-          <button type="button" id="icon" />
+          <button type="button" id="icon" aria-label="Toggle Logs" />
         </div>
-        <div className="subtitle">
+        <div className="subtitle flex justify-between w-1/2 min-w-550px">
           <h3>Trip</h3>
           <h3>Name</h3>
           <h3>Food Allocation</h3>
@@ -53,7 +51,7 @@ function Logs() {
       </div>
       {vehicle.currentDropoffs.length !== 0 ||
       vehicle.currentPickups.length !== 0 ? (
-        <div className="mt-8 ">
+        <div className="mt-8">
           {vehicle.currentPickups.map(
             (v: { name: any; foodAllocation: any }) => (
               <TripLog

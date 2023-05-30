@@ -1,6 +1,5 @@
 /* eslint-disable @typescript-eslint/naming-convention */
 import { useLayoutEffect, useEffect, useState } from 'react';
-import './TripLog.css';
 import { BiPencil, BiTrash } from 'react-icons/bi';
 import { toast } from 'react-toastify';
 
@@ -22,7 +21,7 @@ function TripLog(props: any) {
     name: propsName,
     foodAllocation: originalFoodWeights,
     _id
-  } = props;
+  }: Props = props;
   const dispatch = useAppDispatch();
 
   console.log(originalFoodWeights);
@@ -32,6 +31,7 @@ function TripLog(props: any) {
   const { vehicle, isSuccess: vehicleIsSuccess } = useAppSelector(
     (state) => state.vehicle
   );
+  console.log(vehicle);
 
   const [fontColor, setFontColor] = useState('');
   const [name, setName] = useState('');
@@ -219,15 +219,20 @@ function TripLog(props: any) {
 
   return (
     <div>
-      <div className="triplog-container">
-        <div id="trip"> {trip}</div>
-        <div id="name">{name}</div>
-        <div id="foods">
-          {Array.from(originalFoodWeights).map(([food, weight]) => (
-            <div className="pounds" key={food} id={food}>
+      <div className="flex justify-between items-center w-full mx-4 my-2 min-w-550px h-16 text-base font-poppins rounded-3xl shadow-md bg-white">
+        <div id="trip" className="text-gray-500 w-32">
+          {' '}
+          {trip}
+        </div>
+        <div id="name" className="w-32">
+          {name}
+        </div>
+        <div id="foods" className="flex">
+          {Object.entries(originalFoodWeights).map(([food, weight]) => (
+            <div className="flex items-center" key={food} id={food}>
               {editBtn ? (
                 <input
-                  className="input"
+                  className="shadow-sm rounded-lg h-9 px-4 text-black"
                   type="text"
                   name="lbs"
                   onChange={(e) => handlePoundsChange(e.target.value)}
@@ -235,9 +240,13 @@ function TripLog(props: any) {
                   placeholder={weight.toString()}
                 />
               ) : (
-                <div className="pounds-container" style={{ color: fontColor }}>
-                  {trip === 'Pickup' ? <h1>+</h1> : <h1>-</h1>}
-                  {weight} lbs
+                <div className="flex items-center" style={{ color: fontColor }}>
+                  {trip === 'Pickup' ? (
+                    <h1 className="text-3xl">+</h1>
+                  ) : (
+                    <h1 className="text-3xl">-</h1>
+                  )}
+                  <span className="text-base ml-1">{weight} lbs</span>
                 </div>
               )}
             </div>
@@ -245,21 +254,20 @@ function TripLog(props: any) {
         </div>
         <div id="pencil">
           <button type="button" onClick={handleClick}>
-            <BiPencil id="bipencil" />
+            <BiPencil className="text-2xl" />
           </button>
         </div>
-        <div className=" ">
+        <div>
           <button type="button" onClick={handleDelete}>
-            <BiTrash className=" text-2xl" />
+            <BiTrash className="text-2xl" />
           </button>
         </div>
       </div>
       <div>
-        {' '}
         {editBtn && (
           <button
             type="button"
-            className="bg-[#FF9C55] w-full rounded-xl p-2 mb-4"
+            className="bg-[#FF9C55] w-full rounded-xl py-2 my-4"
             onClick={handleSubmit}
           >
             SUBMIT
@@ -310,6 +318,13 @@ function TripLog(props: any) {
     _id: string;
     currentDropoffs: DropoffObject[];
     totalFoodAllocation: Map<String, number>;
+  }
+
+  interface Props {
+    trip: string;
+    name: string;
+    foodAllocation: Map<String, number>;
+    _id: string;
   }
 }
 

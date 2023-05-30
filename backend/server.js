@@ -32,6 +32,7 @@ app.use((req, res, next) => {
 });
 
 app.use("/api/drivers", require("./routes/driverRoutes"));
+app.use("/api.fields", require("./routes/fieldRoutes"));
 app.use("/api/admin", require("./routes/adminRoutes"));
 app.use("/api/location", require("./routes/locationRoutes"));
 app.use("/api/vehicles", require("./routes/vehicleRoutes"));
