@@ -181,26 +181,38 @@ function Dashboard() {
           <h2>Hi {driver.name}!</h2>
         </div>
       </div>
-
-      <div className="weight bg-amber-600">
-        <div className="current-weight mt-2 ml-3">
-          <h3>Current Weight:</h3>
-        </div>
-        <div className="lbs">
-          {!vehicle?.totalFoodAllocation ? (
-            <span>0lbs food</span>
-          ) : (
-            <>
+      <div className="md:my-4 my-10 md:w-3/5 w-5/6">
+        {!vehicle?.totalFoodAllocation ? (
+          <div className="bg-amber-600 rounded-lg py-4 px-6">
+            <div className="flex justify-between mb-4">
+              <h2 className="text-white font-bold text-2xl">Current Weight:</h2>
+            </div>
+            <span className="text-4xl font-bold">0 lbs</span>
+          </div>
+        ) : (
+          <div className="bg-amber-600 rounded-lg py-4 px-6">
+            <div className="flex justify-between mb-4">
+              <h2 className="text-white font-bold text-2xl">Current Weight:</h2>
+            </div>
+            <ul className="list-disc text-left max-h-36 overflow-y-auto">
               {Object.entries(vehicle?.totalFoodAllocation)
                 .filter(([, value]) => value > 0)
                 .map(([key, value]) => (
-                  <li key={key}>
-                    {value} lbs {key}
+                  <li
+                    key={key}
+                    className="flex items-center py-2 pl-4 rounded-md bg-white bg-opacity-40 mb-2"
+                  >
+                    <span className="text-4xl font-bold whitespace-nowrap">
+                      {value} lbs
+                    </span>
+                    <span className="text-3xl ml-2 overflow-hidden break-words flex-shrink">
+                      {key}
+                    </span>
                   </li>
                 ))}
-            </>
-          )}
-        </div>
+            </ul>
+          </div>
+        )}
       </div>
 
       <div className="action">
