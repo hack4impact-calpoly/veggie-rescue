@@ -30,8 +30,8 @@ h1 {
     color: #176C3E;
 
     display: flex;
-    justify-content: space-between;
-    align-items: center;
+    justify-content: left;
+    /* align-items: start; */
 }
 
 .summary-title {
@@ -74,12 +74,12 @@ h1 {
 
 .weight{
     width: 83px;
-    height: 0px;
+    height: -10px;
 
     font: 'Open Sans';
     font-weight: 700;
     font-size: 48px;
-    line-height: 65px;
+    line-height: 60px;
     position: relative;
 
     color: #000000;
