@@ -2,7 +2,8 @@
 import { useLayoutEffect, useEffect, useState } from 'react';
 import { BiPencil, BiTrash } from 'react-icons/bi';
 import { toast } from 'react-toastify';
-
+import './TripLog.css';
+import { FaAngleDown, FaAngleUp } from 'react-icons/fa';
 import { useAppSelector, useAppDispatch } from '../../app/hooks';
 
 // import features
@@ -40,6 +41,11 @@ function TripLog(props: any) {
   const [editedFoodWeights, setEditedFoodWeights] =
     useState<Map<String, number>>();
   const [editBtn, setEditBtn] = useState(false);
+  const [isExpanded, setIsExpanded] = useState(false);
+
+  const handleToggleExpand = () => {
+    setIsExpanded(!isExpanded);
+  };
 
   useEffect(() => {
     if (vehicleIsSuccess) {
@@ -62,6 +68,13 @@ function TripLog(props: any) {
       setFontColor('black');
     }
   }, [fontColor]);
+
+  const totalWeight = originalFoodWeights
+    ? Array.from(originalFoodWeights.values()).reduce(
+        (total, weight) => total + weight,
+        0
+      )
+    : 0;
 
   function handleClick() {
     setEditBtn((prev) => !prev);
@@ -218,61 +231,36 @@ function TripLog(props: any) {
   }
 
   return (
-    <div>
-      <div className="flex justify-between items-center w-full mx-4 my-2 min-w-550px h-16 text-base font-poppins rounded-3xl shadow-md bg-white">
-        <div id="trip" className="text-gray-500 w-32">
-          {' '}
-          {trip}
-        </div>
-        <div id="name" className="w-32">
-          {name}
-        </div>
-        <div id="foods" className="flex">
-          {Object.entries(originalFoodWeights).map(([food, weight]) => (
-            <div className="flex items-center" key={food} id={food}>
-              {editBtn ? (
-                <input
-                  className="shadow-sm rounded-lg h-9 px-4 text-black"
-                  type="text"
-                  name="lbs"
-                  onChange={(e) => handlePoundsChange(e.target.value)}
-                  value={weight}
-                  placeholder={weight.toString()}
-                />
-              ) : (
-                <div className="flex items-center" style={{ color: fontColor }}>
-                  {trip === 'Pickup' ? (
-                    <h1 className="text-3xl">+</h1>
-                  ) : (
-                    <h1 className="text-3xl">-</h1>
-                  )}
-                  <span className="text-base ml-1">{weight} lbs</span>
-                </div>
-              )}
-            </div>
-          ))}
-        </div>
-        <div id="pencil">
-          <button type="button" onClick={handleClick}>
-            <BiPencil className="text-2xl" />
-          </button>
-        </div>
-        <div>
-          <button type="button" onClick={handleDelete}>
-            <BiTrash className="text-2xl" />
-          </button>
-        </div>
+    <div className="triplog-container">
+      <div className="flex flex-col">
+        <div id="trip">{trip}</div>
+        <div className="text-sm text-black">Tue May 30 2023 14:47:12</div>
       </div>
-      <div>
-        {editBtn && (
-          <button
-            type="button"
-            className="bg-[#FF9C55] w-full rounded-xl py-2 my-4"
-            onClick={handleSubmit}
-          >
-            SUBMIT
-          </button>
-        )}
+      <div id="name">{name}</div>
+      <div id="foods" className="flex">
+        {Object.entries(originalFoodWeights).map(([food, weight]) => (
+          <div className="flex items-center" key={food} id={food}>
+            {editBtn ? (
+              <input
+                className="shadow-sm rounded-lg h-9 px-4 text-black"
+                type="text"
+                name="lbs"
+                onChange={(e) => handlePoundsChange(e.target.value)}
+                value={weight}
+                placeholder={weight.toString()}
+              />
+            ) : (
+              <div className="flex items-center" style={{ color: fontColor }}>
+                {trip === 'Pickup' ? (
+                  <h1 className="text-3xl">+</h1>
+                ) : (
+                  <h1 className="text-3xl">-</h1>
+                )}
+                <span className="text-base ml-1">{weight} lbs</span>
+              </div>
+            )}
+          </div>
+        ))}
       </div>
     </div>
   );

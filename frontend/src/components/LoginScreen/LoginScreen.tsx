@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import { useAppSelector, useAppDispatch } from '../../app/hooks';
@@ -15,10 +15,6 @@ import {
   getVehicle,
   reset as resetVehicle
 } from '../../features/vehicles/VehiclesSlice';
-
-interface FoodAllocationObj {
-  [key: string]: number;
-}
 
 function LoginScreen() {
   // local state
@@ -45,15 +41,6 @@ function LoginScreen() {
     message: vehicleMessage
   } = useAppSelector((state) => state.vehicle);
 
-  // Returns the total weight in a vehicle
-  const totalWeight = useCallback((vehicleWeights: FoodAllocationObj) => {
-    let sum = 0;
-    Object.entries(vehicleWeights).forEach(([, value]) => {
-      sum += value;
-    });
-    return sum;
-  }, []);
-
   // On component load
   useEffect(() => {
     // If we have a driver in local storage (initial state) or dispatching login puts one there:
@@ -72,7 +59,7 @@ function LoginScreen() {
 
       // NOW depending on if there is currently weight in the vehicle or not we either go to Dashboard or Transfer page
       // totalFoodAllocation gets converted to object by mongo so type error is ignorable -- it really is of type FoodAllocationObj
-      if (totalWeight(vehicle.totalFoodAllocation) !== 0) {
+      if (vehicle.totalFoodAllocation.size !== 0) {
         navigate('/Transfer');
       } else {
         navigate('/Dashboard');

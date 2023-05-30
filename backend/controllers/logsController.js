@@ -8,10 +8,19 @@ const Driver = require("../models/driverSchema");
 // @access Private -> Admin only
 const getPickups = async (req, res) => {
   // Check and verify that this this is admin accessing data
-  const admin = await Admin.findById(req.admin.id);
-  if (!admin) {
-    res.status(401);
-    throw new Error("Admin not found");
+  if (req.admin) {
+    const admin = await Admin.findById(req.admin.id);
+    if (!admin) {
+      res.status(401);
+      throw new Error("Admin not found");
+    }
+  } else if (req.driver) {
+    const driver = await Driver.findById(req.driver.id);
+
+    if (!driver) {
+      res.status(401);
+      throw new Error("Driver not found");
+    }
   }
   res.send(await PickupLog.find({}));
 };
@@ -21,10 +30,19 @@ const getPickups = async (req, res) => {
 // @access Private -> Admin only
 const getDropoffs = async (req, res) => {
   // Check and verify that this this is admin accessing data
-  const admin = await Admin.findById(req.admin.id);
-  if (!admin) {
-    res.status(401);
-    throw new Error("Admin not found");
+  if (req.admin) {
+    const admin = await Admin.findById(req.admin.id);
+    if (!admin) {
+      res.status(401);
+      throw new Error("Admin not found");
+    }
+  } else if (req.driver) {
+    const driver = await Driver.findById(req.driver.id);
+
+    if (!driver) {
+      res.status(401);
+      throw new Error("Driver not found");
+    }
   }
   res.send(await DropoffLog.find({}));
 };

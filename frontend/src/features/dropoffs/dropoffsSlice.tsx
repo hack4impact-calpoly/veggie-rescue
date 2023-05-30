@@ -44,6 +44,8 @@ export const getDropoffs = createAsyncThunk(
         token = state.adminAuth.admin.token;
       }
 
+      console.log(token);
+
       return await dropoffsService.getDropoffs(token);
     } catch (error: any) {
       const message =

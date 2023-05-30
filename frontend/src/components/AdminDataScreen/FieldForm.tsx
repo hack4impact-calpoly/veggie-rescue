@@ -9,9 +9,6 @@ import {
   deleteField
 } from '../../features/fields/fieldSlice';
 
-// import assets
-// import Spinner from '../Spinner/Spinner';
-
 /* Form to add new field type */
 // eslint-disable-next-line react/function-component-definition
 const FieldForm = (props: any) => {
@@ -20,252 +17,269 @@ const FieldForm = (props: any) => {
 
   const [newField, setNewField] = useState(fieldName);
   const dispatch = useAppDispatch();
-  // const { fields } = useAppSelector((state) => state.fields);
 
   useEffect(() => {
     dispatch(getFields());
   }, [dispatch]);
 
   const dispatchCreateNew = async () => {
-    console.log('CREATE');
+    let result;
     switch (whichField) {
-      case 'Entity Type':
-        await dispatch(
+      case 'Entity Type': {
+        ({ meta: result } = await dispatch(
           createField({
             fieldName: 'EntityType',
             value: newField
           })
-        );
-        toast.success('Successfully created new entity type.');
-        dispatch(getFields());
+        ));
         break;
-
-      case 'Food Type':
-        await dispatch(
+      }
+      case 'Food Type': {
+        ({ meta: result } = await dispatch(
           createField({
             fieldName: 'FoodType',
             value: newField
           })
-        );
-        toast.success('Successfully created new food type.');
+        ));
+        if (result.requestStatus === 'fulfilled')
+          toast.success(`Successfully added ${newField} to Food Type`);
+        else toast.error(`Unable to add ${newField} to Food Type`);
         dispatch(getFields());
         break;
-
-      case 'Location Type':
-        await dispatch(
+      }
+      case 'Location Type': {
+        ({ meta: result } = await dispatch(
           createField({
             fieldName: 'LocationType',
             value: newField
           })
-        );
-        toast.success('Successfully created new location type.');
+        ));
+        if (result.requestStatus === 'fulfilled')
+          toast.success(`Successfully added ${newField} to Location Type`);
+        else toast.error(`Unable to add ${newField} to Location Type`);
         dispatch(getFields());
         break;
-
-      case 'Combined Area Name':
-        await dispatch(
+      }
+      case 'Combined Area Name': {
+        ({ meta: result } = await dispatch(
           createField({
             fieldName: 'CombinedAreaName',
             value: newField
           })
-        );
-        toast.success('Successfully created new combined area name.');
+        ));
+        if (result.requestStatus === 'fulfilled')
+          toast.success(`Successfully added ${newField} to Combined Area Name`);
+        else toast.error(`Unable to add ${newField} to Combined Area Name`);
         dispatch(getFields());
         break;
-
-      case 'Organizational Structure':
-        await dispatch(
+      }
+      case 'Organizational Structure': {
+        ({ meta: result } = await dispatch(
           createField({
             fieldName: 'OrgStructure',
             value: newField
           })
-        );
-        toast.success('Successfully created new organizational structure.');
+        ));
+        if (result.requestStatus === 'fulfilled')
+          toast.success(
+            `Successfully added ${newField} to Organizational Structure`
+          );
         dispatch(getFields());
         break;
-
-      case 'Food Distribution Model':
-        await dispatch(
+      }
+      case 'Food Distribution Model': {
+        ({ meta: result } = await dispatch(
           createField({
             fieldName: 'FoodDistModel',
             value: newField
           })
-        );
-        toast.success('Successfully created new food distribution model.');
+        ));
+        if (result.requestStatus === 'fulfilled')
+          toast.success(
+            `Successfully added ${newField} to Food Distribution Model`
+          );
         dispatch(getFields());
         break;
-
-      case 'Demographics Served':
-        await dispatch(
+      }
+      case 'Demographics Served': {
+        ({ meta: result } = await dispatch(
           createField({
             fieldName: 'DemographicsServed',
             value: newField
           })
-        );
-        toast.success('Successfully created new demographic served.');
-        dispatch(getFields());
+        ));
+
         break;
+      }
 
       default:
         toast.error('Not a field type');
     }
+    if (result && result.requestStatus === 'fulfilled')
+      toast.success(`Successfully added ${newField} to ${whichField}`);
+    else toast.error(`Unable to add ${newField} to ${whichField}`);
+    dispatch(getFields());
     handleShow();
   };
 
   const dispatchUpdate = async () => {
-    console.log('UPDAATE');
+    let result;
     switch (whichField) {
-      case 'Entity Type':
-        await dispatch(
+      case 'Entity Type': {
+        ({ meta: result } = await dispatch(
           editField({
             fieldName: 'EntityType',
             oldValue: fieldName,
             newValue: newField
           })
-        );
-        toast.success('Successfully updated entity type.');
-        dispatch(getFields());
+        ));
+
         break;
-      case 'Food Type':
-        await dispatch(
+      }
+      case 'Food Type': {
+        ({ meta: result } = await dispatch(
           editField({
             fieldName: 'FoodType',
             oldValue: fieldName,
             newValue: newField
           })
-        );
-        toast.success('Successfully updated food type.');
-        dispatch(getFields());
-        break;
+        ));
 
-      case 'Location Type':
-        await dispatch(
+        break;
+      }
+      case 'Location Type': {
+        ({ meta: result } = await dispatch(
           editField({
             fieldName: 'LocationType',
             oldValue: fieldName,
             newValue: newField
           })
-        );
-        toast.success('Successfully updated location type.');
-        dispatch(getFields());
-        break;
+        ));
 
-      case 'Combined Area Name':
-        await dispatch(
+        break;
+      }
+
+      case 'Combined Area Name': {
+        ({ meta: result } = await dispatch(
           editField({
             fieldName: 'CombinedAreaName',
             oldValue: fieldName,
             newValue: newField
           })
-        );
-        toast.success('Successfully updated combined area name.');
-        dispatch(getFields());
-        break;
+        ));
 
-      case 'Organizational Structure':
-        await dispatch(
+        break;
+      }
+      case 'Organizational Structure': {
+        ({ meta: result } = await dispatch(
           editField({
             fieldName: 'OrgStructure',
             oldValue: fieldName,
             newValue: newField
           })
-        );
-        toast.success('Successfully updated organizational structure.');
-        dispatch(getFields());
-        break;
+        ));
 
-      case 'Food Distribution Model':
-        await dispatch(
+        break;
+      }
+
+      case 'Food Distribution Model': {
+        ({ meta: result } = await dispatch(
           editField({
             fieldName: 'FoodDistModel',
             oldValue: fieldName,
             newValue: newField
           })
-        );
-        toast.success('Successfully updated food distribution model.');
-        dispatch(getFields());
-        break;
+        ));
 
-      case 'Demographics Served':
-        await dispatch(
+        break;
+      }
+
+      case 'Demographics Served': {
+        ({ meta: result } = await dispatch(
           editField({
             fieldName: 'DemographicsServed',
             oldValue: fieldName,
             newValue: newField
           })
-        );
-        toast.success('Successfully updated demographic served.');
-        dispatch(getFields());
+        ));
         break;
+      }
 
       default:
         toast.error('Not a field type');
     }
+    if (result && result?.requestStatus === 'fulfilled')
+      toast.success(`Successfully updated ${whichField}`);
+    else toast.success(`Unable to update ${whichField}`);
+    dispatch(getFields());
     handleShow();
   };
   const dispatchDelete = async (e: any) => {
-    console.log('DELETE');
     e.preventDefault();
+    let result;
     switch (whichField) {
-      case 'Entity Type':
-        await dispatch(
+      case 'Entity Type': {
+        ({ meta: result } = await dispatch(
           deleteField({ fieldName: 'EntityType', value: fieldName })
-        );
-        toast.success('Successfully deleted entity type.');
-        dispatch(getFields());
+        ));
+
         break;
-      case 'Food Type':
-        await dispatch(
+      }
+      case 'Food Type': {
+        ({ meta: result } = await dispatch(
           deleteField({ fieldName: 'FoodType', value: fieldName })
-        );
-        toast.success('Successfully deleted food type.');
-        dispatch(getFields());
-        break;
+        ));
 
-      case 'Location Type':
-        await dispatch(
+        break;
+      }
+
+      case 'Location Type': {
+        ({ meta: result } = await dispatch(
           deleteField({ fieldName: 'LocationType', value: fieldName })
-        );
-        toast.success('Successfully deleted location type.');
-        dispatch(getFields());
-        break;
+        ));
 
-      case 'Combined Area Name':
-        await dispatch(
-          deleteField({ fieldName: 'CombinedAreaName', value: fieldName })
-        );
-        toast.success('Successfully deleted area name.');
-        dispatch(getFields());
         break;
+      }
+      case 'Combined Area Name': {
+        ({ meta: result } = await dispatch(
+          deleteField({ fieldName: 'CombinedAreaName', value: fieldName })
+        ));
+
+        break;
+      }
 
       // recipients
-      case 'Organizational Structure':
-        await dispatch(
+      case 'Organizational Structure': {
+        ({ meta: result } = await dispatch(
           deleteField({ fieldName: 'OrgStructure', value: fieldName })
-        );
-        toast.success('Successfully deleted organizational structure.');
-        dispatch(getFields());
-        break;
+        ));
 
-      case 'Food Distribution Model':
-        await dispatch(
+        break;
+      }
+
+      case 'Food Distribution Model': {
+        ({ meta: result } = await dispatch(
           deleteField({ fieldName: 'FoodDistModel', value: fieldName })
-        );
-        toast.success('Successfully deleted food distrubtion model.');
-        dispatch(getFields());
-        break;
+        ));
 
-      case 'Demographics Served':
-        await dispatch(
+        break;
+      }
+
+      case 'Demographics Served': {
+        ({ meta: result } = await dispatch(
           deleteField({ fieldName: 'DemographicsServed', value: fieldName })
-        );
-        toast.success('Successfully deleted demographic served.');
-        dispatch(getFields());
-        break;
+        ));
 
+        break;
+      }
       default:
         toast.error('Not a field type');
     }
+    if (result && result?.requestStatus === 'fulfilled') {
+      toast.success(`Successfully deleted ${fieldName} from Entity Type.`);
+      dispatch(getFields());
+    } else toast.error(`Unable to delete ${fieldName} from ${whichField}`);
+
     handleShow();
   };
 
@@ -277,10 +291,6 @@ const FieldForm = (props: any) => {
     } else if (newField.trim().length === 0) toast.error('Missing Field Name');
     else dispatchCreateNew();
   }
-
-  // if (vehicleIsLoading || driverIsLoading) {
-  //   return <Spinner />;
-  // }
 
   return (
     <form className="modal-container">

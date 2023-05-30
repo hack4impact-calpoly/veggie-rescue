@@ -60,7 +60,7 @@ function LocationForm({
   function getFoodTypes() {
     // pickup, show all food types
     if (PickupDeliveryObject.pickupOrDelivery === 1) {
-      return fields.FoodType;
+      return [...fields.FoodType, 'Other'];
     }
     // dropoff, only show what's in vehicle
     return Array.from(Object.keys(vehicle.totalFoodAllocation));

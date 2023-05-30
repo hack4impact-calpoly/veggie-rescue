@@ -2,7 +2,7 @@ import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAppSelector, useAppDispatch } from '../../app/hooks';
 import NavBarButton_DARK from '../../imgs/button_dark_left.svg';
-
+import './Logs.css';
 import TripLog from '../TripLog/TripLog';
 import { getVehicle } from '../../features/vehicles/VehiclesSlice';
 import Spinner from '../Spinner/Spinner';

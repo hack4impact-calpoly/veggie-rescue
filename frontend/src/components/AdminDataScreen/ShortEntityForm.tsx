@@ -121,7 +121,6 @@ function ShortEntityForm(props: any) {
     handleShow();
   };
   const dispatchDelete = async (e: any) => {
-    console.log('DELETE');
     e.preventDefault();
     if (isVehicle) {
       await dispatch(deleteVehicle(vehicle._id));

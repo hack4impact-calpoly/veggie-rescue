@@ -230,7 +230,8 @@ export default function DataTable() {
   const dispatch = useAppDispatch();
   const { pickups } = useAppSelector((state) => state.pickups);
   const { dropoffs } = useAppSelector((state) => state.dropoffs);
-
+  console.log(pickups);
+  console.log(dropoffs);
   useEffect(() => {
     dispatch(getPickups());
     dispatch(getDropoffs());

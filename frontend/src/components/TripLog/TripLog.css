@@ -5,7 +5,7 @@
   top: 0;
   width: 50vw;
   min-width: 550px;
-  height: 70px;
+  height: 80px;
   font-size: 20px;
   font-family: 'Poppins', sans serif;
   border-radius: 30px;
@@ -40,11 +40,11 @@
   color: black;
 }
 
-.pounds .input{
+.foods .input{
   width: 50px;
 }
 
-.pounds-container{
+.foods-container{
   display: flex;
   flex-direction: row;
 }
@@ -54,7 +54,7 @@
   margin-bottom: -5px;
 }
 
-#pounds{
+#foods{
   width: 100px;
   padding-left: 20px;
 }

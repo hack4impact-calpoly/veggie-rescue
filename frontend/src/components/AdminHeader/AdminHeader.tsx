@@ -55,7 +55,7 @@ export default function AdminHeader() {
               </a>
             </div>
           </div>
-          <div className="hidden md:flex space-x-1">
+          <div className="md:flex space-x-1">
             <button
               type="submit"
               onClick={handleLogsBtn}

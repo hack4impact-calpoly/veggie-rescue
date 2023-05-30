@@ -465,8 +465,6 @@ function AdminDataScreen() {
     );
   }
 
-  console.log(search(q));
-
   if (loading) {
     return <Spinner />;
   }
