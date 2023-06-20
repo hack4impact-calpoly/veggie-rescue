@@ -115,3 +115,7 @@
 .search{
   background-color: white;
 }
+
+.fluff:hover {
+  background-color: #F0F9F1;
+}

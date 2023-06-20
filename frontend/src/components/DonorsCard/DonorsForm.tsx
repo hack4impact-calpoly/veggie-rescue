@@ -128,91 +128,314 @@ function DonorsForm(props: any) {
           </div>
         </div>
 
-        <h2>Entity Name</h2>
+        <div className="input-container">
+          <h2 style={{ textAlign: 'left' }}>Entity Name</h2>
+          <input
+            className="input"
+            placeholder={!isUpdate ? 'Name' : ''}
+            defaultValue={isUpdate ? donor.name : ''}
+            onChange={(e: any) => setDonorName(e.target.value)}
+            style={{ width: 540 }}
+          />
+        </div>
 
-        <input
-          className="input"
-          placeholder={!isUpdate ? 'Name' : ''}
-          defaultValue={isUpdate ? donor.name : ''}
-          onChange={(e: any) => setDonorName(e.target.value)}
-        />
-
-        <h2>Entity Type</h2>
-        <Box sx={{ minWidth: 120 }}>
-          <FormControl fullWidth>
-            <InputLabel id="demo-simple-select-label">Entity Type</InputLabel>
-            <Select
-              labelId="demo-simple-select-label"
-              id="demo-simple-select"
-              value={entityType}
-              label="EntityType"
-              onChange={handleEntityChange}
+        <div className="input-container">
+          <h2 style={{ textAlign: 'left' }}>Entity Type</h2>
+          <div className="internal-div" />
+          <Box
+            sx={{
+              minWidth: 120,
+              width: '550px',
+              marginTop: '10px',
+              marginBottom: '10px',
+              paddingLeft: '10px'
+            }}
+          >
+            <FormControl
+              fullWidth
+              sx={{
+                '& .MuiOutlinedInput-root': {
+                  borderRadius: '10px'
+                }
+              }}
+              variant="outlined"
             >
-              <MenuItem value="Farm">Farm</MenuItem>
-              <MenuItem value="Restaurant">Restaurant</MenuItem>
-              <MenuItem value="Food Supply Company">
-                Food Supply Company
-              </MenuItem>
-              <MenuItem value="Nonprofit">Nonprofit</MenuItem>
-              <MenuItem value="Grocery">Grocery</MenuItem>
-              <MenuItem value="Community Kitchen">Community Kitchen</MenuItem>
-            </Select>
-          </FormControl>
-        </Box>
-
-        <div className="internal-div">
-          <h2>Location Type</h2>
-          <Box sx={{ minWidth: 120 }}>
-            <FormControl fullWidth>
-              <InputLabel id="demo-simple-select-label">
-                Location Type
+              <InputLabel
+                id="demo-simple-select-label"
+                shrink={Boolean(entityType)}
+                htmlFor="demo-simple-select"
+                sx={{
+                  '&.MuiInputLabel-shrink': {
+                    display: 'none'
+                  }
+                }}
+              >
+                Entity Type
               </InputLabel>
               <Select
                 labelId="demo-simple-select-label"
                 id="demo-simple-select"
-                value={locationType}
-                label="locationType"
-                onChange={handleLocationChange}
+                value={entityType}
+                label="EntityType"
+                onChange={handleEntityChange}
               >
-                <MenuItem value="Farm">Farm</MenuItem>
-                <MenuItem value="Farmers Market">Farmers Market</MenuItem>
-                <MenuItem value="Warehouse">Warehouse</MenuItem>
-                <MenuItem value="Restaurant">Restaurant</MenuItem>
-                <MenuItem value="Community Kitchen">Community Kitchen</MenuItem>
+                <MenuItem
+                  value="Farm"
+                  sx={{
+                    '&:hover': {
+                      backgroundColor: '#F0F9F1'
+                    }
+                  }}
+                >
+                  Farm
+                </MenuItem>
+                <MenuItem
+                  value="Restaurant"
+                  sx={{
+                    '&:hover': {
+                      backgroundColor: '#F0F9F1'
+                    }
+                  }}
+                >
+                  Restaurant
+                </MenuItem>
+                <MenuItem
+                  value="Food Supply Company"
+                  sx={{
+                    '&:hover': {
+                      backgroundColor: '#F0F9F1'
+                    }
+                  }}
+                >
+                  Food Supply Company
+                </MenuItem>
+                <MenuItem
+                  value="Nonprofit"
+                  sx={{
+                    '&:hover': {
+                      backgroundColor: '#F0F9F1'
+                    }
+                  }}
+                >
+                  Nonprofit
+                </MenuItem>
+                <MenuItem
+                  value="Grocery"
+                  sx={{
+                    '&:hover': {
+                      backgroundColor: '#F0F9F1'
+                    }
+                  }}
+                >
+                  Grocery
+                </MenuItem>
+                <MenuItem
+                  value="Community Kitchen"
+                  sx={{
+                    '&:hover': {
+                      backgroundColor: '#F0F9F1'
+                    }
+                  }}
+                >
+                  Community Kitchen
+                </MenuItem>
               </Select>
             </FormControl>
           </Box>
-        </div>
-        <h2>Combined Area Name</h2>
-        <Box sx={{ minWidth: 120 }}>
-          <FormControl fullWidth>
-            <InputLabel id="demo-simple-select-label">
-              Combined Area Name
-            </InputLabel>
-            <Select
-              labelId="demo-simple-select-label"
-              id="demo-simple-select"
-              value={areaName}
-              label="combinedAreaName"
-              onChange={handleAreaChange}
+
+          <h2 style={{ textAlign: 'left' }}>Location Type</h2>
+          <div className="internal-div">
+            <Box
+              sx={{
+                minWidth: 120,
+                marginTop: '10px',
+                marginBottom: '10px',
+                paddingLeft: '10px'
+              }}
             >
-              <MenuItem value="SB/Goleta">SB/Goleta</MenuItem>
-              <MenuItem value="SYV">SYV</MenuItem>
-              <MenuItem value="SM/Orcutt">SM/Orcutt</MenuItem>
-              <MenuItem value="Cuyama">Cuyama</MenuItem>
-              <MenuItem value="Lompoc">Lompoc</MenuItem>
-            </Select>
-          </FormControl>
-        </Box>
-        <div className="flex flex-row w-full">
-          <button type="submit" id="form-submit" onClick={handleSubmit}>
-            {isUpdate ? 'Update' : 'Done'}
-          </button>
-          {isUpdate && (
-            <button type="submit" id="form-submit" onClick={dispatchDelete}>
-              Delete
+              <FormControl
+                fullWidth
+                sx={{
+                  '& .MuiOutlinedInput-root': {
+                    borderRadius: '10px'
+                  }
+                }}
+                variant="outlined"
+              >
+                <InputLabel
+                  id="demo-simple-select-label"
+                  shrink={Boolean(locationType)}
+                  htmlFor="demo-simple-select"
+                  sx={{
+                    '&.MuiInputLabel-shrink': {
+                      display: 'none'
+                    }
+                  }}
+                >
+                  Location Type
+                </InputLabel>
+                <Select
+                  labelId="demo-simple-select-label"
+                  id="demo-simple-select"
+                  value={locationType}
+                  label="locationType"
+                  onChange={handleLocationChange}
+                >
+                  <MenuItem
+                    className="custom-menu-item"
+                    value="Farm"
+                    sx={{
+                      '&:hover': {
+                        backgroundColor: '#F0F9F1'
+                      }
+                    }}
+                  >
+                    Farm
+                  </MenuItem>
+                  <MenuItem
+                    value="Farmers Market"
+                    sx={{
+                      '&:hover': {
+                        backgroundColor: '#F0F9F1'
+                      }
+                    }}
+                  >
+                    Farmers Market
+                  </MenuItem>
+                  <MenuItem
+                    value="Warehouse"
+                    sx={{
+                      '&:hover': {
+                        backgroundColor: '#F0F9F1'
+                      }
+                    }}
+                  >
+                    Warehouse
+                  </MenuItem>
+                  <MenuItem
+                    value="Restaurant"
+                    sx={{
+                      '&:hover': {
+                        backgroundColor: '#F0F9F1'
+                      }
+                    }}
+                  >
+                    Restaurant
+                  </MenuItem>
+                  <MenuItem
+                    value="Community Kitchen"
+                    sx={{
+                      '&:hover': {
+                        backgroundColor: '#F0F9F1'
+                      }
+                    }}
+                  >
+                    Community Kitchen
+                  </MenuItem>
+                </Select>
+              </FormControl>
+            </Box>
+          </div>
+          <h2 style={{ textAlign: 'left' }}>Combined Area Name</h2>
+          <Box
+            sx={{
+              minWidth: 120,
+              marginTop: '10px',
+              marginBottom: '10px',
+              paddingLeft: '10px'
+            }}
+          >
+            <FormControl
+              fullWidth
+              sx={{
+                '& .MuiOutlinedInput-root': {
+                  borderRadius: '10px'
+                }
+              }}
+              variant="outlined"
+            >
+              <InputLabel
+                id="demo-simple-select-label"
+                shrink={Boolean(areaName)}
+                htmlFor="demo-simple-select"
+                sx={{
+                  '&.MuiInputLabel-shrink': {
+                    display: 'none'
+                  }
+                }}
+              >
+                Combined Area Name
+              </InputLabel>
+              <Select
+                labelId="demo-simple-select-label"
+                id="demo-simple-select"
+                value={areaName}
+                label="combinedAreaName"
+                onChange={handleAreaChange}
+              >
+                <MenuItem
+                  value="SB/Goleta"
+                  sx={{
+                    '&:hover': {
+                      backgroundColor: '#F0F9F1'
+                    }
+                  }}
+                >
+                  SB/Goleta
+                </MenuItem>
+                <MenuItem
+                  value="SYV"
+                  sx={{
+                    '&:hover': {
+                      backgroundColor: '#F0F9F1'
+                    }
+                  }}
+                >
+                  SYV
+                </MenuItem>
+                <MenuItem
+                  value="SM/Orcutt"
+                  sx={{
+                    '&:hover': {
+                      backgroundColor: '#F0F9F1'
+                    }
+                  }}
+                >
+                  SM/Orcutt
+                </MenuItem>
+                <MenuItem
+                  value="Cuyama"
+                  sx={{
+                    '&:hover': {
+                      backgroundColor: '#F0F9F1'
+                    }
+                  }}
+                >
+                  Cuyama
+                </MenuItem>
+                <MenuItem
+                  value="Lompoc"
+                  sx={{
+                    '&:hover': {
+                      backgroundColor: '#F0F9F1'
+                    }
+                  }}
+                >
+                  Lompoc
+                </MenuItem>
+              </Select>
+            </FormControl>
+          </Box>
+          <div className="flex flex-row w-full">
+            <button type="submit" id="form-submit" onClick={handleSubmit}>
+              {isUpdate ? 'Update' : 'Done'}
             </button>
-          )}
+            {isUpdate && (
+              <button type="submit" id="form-submit" onClick={dispatchDelete}>
+                Delete
+              </button>
+            )}
+          </div>
         </div>
       </div>
     </form>
