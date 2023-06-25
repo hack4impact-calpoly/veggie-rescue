@@ -17,6 +17,7 @@ import NewLogWrapper from './components/NewLogWrapper/NewLogWrapper';
 import AdminLogs from './components/ViewLogsPage/ViewLogsPage';
 import ViewLogsPage from './components/ViewLogsPage/ViewLogsPage';
 import DriverSummary from './components/DriverSummary/DriverSummary';
+import RecipientProfiles from './components/RecipientsCard/RecipientProfiles';
 
 const App: React.FC = () => {
   return (
@@ -52,6 +53,12 @@ const App: React.FC = () => {
             element={<ProtectedRoute redirectTo="/Login" />}
           >
             <Route path="/UserLogs" element={<Logs />} />
+          </Route>
+          <Route
+            path="/RecipientProfiles"
+            element={<ProtectedRoute redirectTo="/Login" />}
+          >
+            <Route path="/RecipientProfiles" element={<RecipientProfiles />} />
           </Route>
           <Route
             path="/Transfering"

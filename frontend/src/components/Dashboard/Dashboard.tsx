@@ -3,7 +3,7 @@ import './Dashboard.css';
 import { useAppSelector, useAppDispatch } from '../../app/hooks';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
-import { FaPencilAlt, FaClipboardList, FaHandPaper } from 'react-icons/fa';
+import { FaPencilAlt, FaClipboardList, FaHandPaper, FaBuilding } from 'react-icons/fa';
 
 // Components and assets
 import Spinner from '../Spinner/Spinner';
@@ -32,6 +32,8 @@ import {
 import {
   clear as clearRecipients ,
 } from '../../features/recipients/recipientsSlice';
+import { BiBuilding } from 'react-icons/bi';
+import { RiBuilding2Fill, RiBuildingFill } from 'react-icons/ri';
 const Dashboard = () => {
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
@@ -120,6 +122,10 @@ const Dashboard = () => {
         navigate('/UserLogs');
         break;
       case 2:
+        //view recipient profiles
+        dispatch(resetVehicles());
+        navigate('/RecipientProfiles');
+      case 3:
         // punching out
         setLoading(true);
         const pickupsArray = vehicle.currentPickups;
@@ -179,8 +185,14 @@ if(loading){
             <div>View All Logs</div>
           </div>
         </button>
+        <button onClick={() => handleClick(2)}>
+          <div className="action-item">
+            <FaBuilding className="text-amber-600" />
+            <div>View Recipient Profiles</div>
+          </div>
+        </button>
         <div id="bottom-button">
-          <button onClick={() => handleClick(2)}>
+          <button onClick={() => handleClick(3)}>
             <div className="action-item">
               <FaHandPaper className="text-amber-600" />
               <div>Punch Out</div>
