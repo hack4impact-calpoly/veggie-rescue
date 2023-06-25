@@ -143,122 +143,454 @@ function RecipientsForm(props: any) {
           </div>
         </div>
 
-        <h2>Entity Name</h2>
+        <div className="input-container">
+          <h2 style={{ textAlign: 'left' }}>Entity Name</h2>
+          <input
+            className="input"
+            placeholder={!isUpdate ? 'Name' : ''}
+            defaultValue={isUpdate ? recipient.name : ''}
+            onChange={(e: any) => setRecipientName(e.target.value)}
+            style={{ width: 540 }}
+          />
+        </div>
 
-        <input
-          className="input"
-          placeholder={!isUpdate ? 'Name' : ''}
-          defaultValue={isUpdate ? recipient.name : ''}
-          onChange={(e: any) => setRecipientName(e.target.value)}
-        />
-
-        <h2>Organizational Structure</h2>
-        <Box sx={{ minWidth: 120 }}>
-          <FormControl fullWidth>
-            <InputLabel id="demo-simple-select-label">
-              Organizational Structure
-            </InputLabel>
-            <Select
-              labelId="demo-simple-select-label"
-              id="demo-simple-select"
-              value={orgStruc}
-              label="OrganizationalStructure"
-              onChange={handleOrgStrucChange}
+        <div className="input-container">
+          <h2 style={{ textAlign: 'left' }}>Organizational Structure</h2>
+          <div className="internal-div" />
+          <Box
+            sx={{
+              minWidth: 120,
+              width: '550px',
+              marginTop: '10px',
+              marginBottom: '10px',
+              paddingLeft: '10px'
+            }}
+          >
+            <FormControl
+              fullWidth
+              sx={{
+                '& .MuiOutlinedInput-root': {
+                  borderRadius: '10px'
+                }
+              }}
+              variant="outlined"
             >
-              <MenuItem value="Church">Church</MenuItem>
-              <MenuItem value="Shelter">Shelter</MenuItem>
-              <MenuItem value="School">School</MenuItem>
-              <MenuItem value="Senior Center">Senior Center</MenuItem>
-              <MenuItem value="Food Pantry - Other">
-                Food Pantry - Other
-              </MenuItem>
-              <MenuItem value="Temp Food Pantry - Other">
-                Temp Food Pantry - Other
-              </MenuItem>
-              <MenuItem value="Nonprofit - Other">Nonprofit - Other</MenuItem>
-            </Select>
-          </FormControl>
-        </Box>
+              <InputLabel
+                id="demo-simple-select-label"
+                shrink={Boolean(orgStruc)}
+                htmlFor="demo-simple-select"
+                sx={{
+                  '&.MuiInputLabel-shrink': {
+                    display: 'none'
+                  }
+                }}
+              >
+                Organizational Structure
+              </InputLabel>
+              <Select
+                labelId="demo-simple-select-label"
+                id="demo-simple-select"
+                value={orgStruc}
+                label="OrganizationalStructure"
+                onChange={handleOrgStrucChange}
+              >
+                <MenuItem
+                  value="Church"
+                  sx={{
+                    '&:hover': {
+                      backgroundColor: '#F0F9F1'
+                    }
+                  }}
+                >
+                  Church
+                </MenuItem>
+                <MenuItem
+                  value="Shelter"
+                  sx={{
+                    '&:hover': {
+                      backgroundColor: '#F0F9F1'
+                    }
+                  }}
+                >
+                  Shelter
+                </MenuItem>
+                <MenuItem
+                  value="School"
+                  sx={{
+                    '&:hover': {
+                      backgroundColor: '#F0F9F1'
+                    }
+                  }}
+                >
+                  School
+                </MenuItem>
+                <MenuItem
+                  value="Senior Center"
+                  sx={{
+                    '&:hover': {
+                      backgroundColor: '#F0F9F1'
+                    }
+                  }}
+                >
+                  Senior Center
+                </MenuItem>
+                <MenuItem
+                  value="Food Pantry - Other"
+                  sx={{
+                    '&:hover': {
+                      backgroundColor: '#F0F9F1'
+                    }
+                  }}
+                >
+                  Food Pantry - Other
+                </MenuItem>
+                <MenuItem
+                  value="Temp Food Pantry - Other"
+                  sx={{
+                    '&:hover': {
+                      backgroundColor: '#F0F9F1'
+                    }
+                  }}
+                >
+                  Temp Food Pantry - Other
+                </MenuItem>
+                <MenuItem
+                  value="Nonprofit - Other"
+                  sx={{
+                    '&:hover': {
+                      backgroundColor: '#F0F9F1'
+                    }
+                  }}
+                >
+                  Nonprofit - Other
+                </MenuItem>
+              </Select>
+            </FormControl>
+          </Box>
 
-        <h2>Demographics Served</h2>
-        <Box sx={{ minWidth: 120 }}>
-          <FormControl fullWidth>
-            <InputLabel id="demo-simple-select-label">
-              Demographics Served
-            </InputLabel>
-            <Select
-              labelId="demo-simple-select-label"
-              id="demo-simple-select"
-              value={demographicType}
-              label="DemographicsServed"
-              onChange={handleDemographicsChange}
+          <h2 style={{ textAlign: 'left' }}>Demographics Served</h2>
+          <Box
+            sx={{
+              minWidth: 120,
+              marginTop: '10px',
+              marginBottom: '10px',
+              paddingLeft: '10px'
+            }}
+          >
+            <FormControl
+              fullWidth
+              sx={{
+                '& .MuiOutlinedInput-root': {
+                  borderRadius: '10px'
+                }
+              }}
+              variant="outlined"
             >
-              <MenuItem value="Homeless">Homeless</MenuItem>
-              <MenuItem value="Low Income">Low Income</MenuItem>
-              <MenuItem value="Senior">Senior</MenuItem>
-              <MenuItem value="Youth (Schools)">Youth(Schools)</MenuItem>
-              <MenuItem value="Animals">Animals</MenuItem>
-              <MenuItem value="First Responders">First Responders</MenuItem>
-              <MenuItem value="Community Kitchen">Community Kitchen</MenuItem>
-              <MenuItem value="Community Kitchen">Community Kitchen</MenuItem>
-            </Select>
-          </FormControl>
-        </Box>
+              <InputLabel
+                id="demo-simple-select-label"
+                shrink={Boolean(demographicType)}
+                htmlFor="demo-simple-select"
+                sx={{
+                  '&.MuiInputLabel-shrink': {
+                    display: 'none'
+                  }
+                }}
+              >
+                Demographics Served
+              </InputLabel>
+              <Select
+                labelId="demo-simple-select-label"
+                id="demo-simple-select"
+                value={demographicType}
+                label="DemographicsServed"
+                onChange={handleDemographicsChange}
+              >
+                <MenuItem
+                  value="Homeless"
+                  sx={{
+                    '&:hover': {
+                      backgroundColor: '#F0F9F1'
+                    }
+                  }}
+                >
+                  Homeless
+                </MenuItem>
+                <MenuItem
+                  value="Low Income"
+                  sx={{
+                    '&:hover': {
+                      backgroundColor: '#F0F9F1'
+                    }
+                  }}
+                >
+                  Low Income
+                </MenuItem>
+                <MenuItem
+                  value="Senior"
+                  sx={{
+                    '&:hover': {
+                      backgroundColor: '#F0F9F1'
+                    }
+                  }}
+                >
+                  Senior
+                </MenuItem>
+                <MenuItem
+                  value="Youth (Schools)"
+                  sx={{
+                    '&:hover': {
+                      backgroundColor: '#F0F9F1'
+                    }
+                  }}
+                >
+                  Youth(Schools)
+                </MenuItem>
+                <MenuItem
+                  value="Animals"
+                  sx={{
+                    '&:hover': {
+                      backgroundColor: '#F0F9F1'
+                    }
+                  }}
+                >
+                  Animals
+                </MenuItem>
+                <MenuItem
+                  value="First Responders"
+                  sx={{
+                    '&:hover': {
+                      backgroundColor: '#F0F9F1'
+                    }
+                  }}
+                >
+                  First Responders
+                </MenuItem>
+                <MenuItem
+                  value="Community Kitchen"
+                  sx={{
+                    '&:hover': {
+                      backgroundColor: '#F0F9F1'
+                    }
+                  }}
+                >
+                  Community Kitchen
+                </MenuItem>
+                <MenuItem
+                  value="Community Kitchen"
+                  sx={{
+                    '&:hover': {
+                      backgroundColor: '#F0F9F1'
+                    }
+                  }}
+                >
+                  Community Kitchen
+                </MenuItem>
+              </Select>
+            </FormControl>
+          </Box>
 
-        <h2>Combined Area Name</h2>
-        <Box sx={{ minWidth: 120 }}>
-          <FormControl fullWidth>
-            <InputLabel id="demo-simple-select-label">
-              Combined Area Name
-            </InputLabel>
-            <Select
-              labelId="demo-simple-select-label"
-              id="demo-simple-select"
-              value={areaName}
-              label="CombinedAreaName"
-              onChange={handleAreaChange}
+          <h2 style={{ textAlign: 'left' }}>Combined Area Name</h2>
+          <Box
+            sx={{
+              minWidth: 120,
+              marginTop: '10px',
+              marginBottom: '10px',
+              paddingLeft: '10px'
+            }}
+          >
+            <FormControl
+              fullWidth
+              sx={{
+                '& .MuiOutlinedInput-root': {
+                  borderRadius: '10px'
+                }
+              }}
+              variant="outlined"
             >
-              <MenuItem value="SB/Goleta">SB/Goleta</MenuItem>
-              <MenuItem value="SYV">SYV</MenuItem>
-              <MenuItem value="SM/Orcutt">SM/Orcutt</MenuItem>
-              <MenuItem value="Cuyama">Cuyama</MenuItem>
-              <MenuItem value="Lompoc">Lompoc</MenuItem>
-            </Select>
-          </FormControl>
-        </Box>
+              <InputLabel
+                id="demo-simple-select-label"
+                shrink={Boolean(areaName)}
+                htmlFor="demo-simple-select"
+                sx={{
+                  '&.MuiInputLabel-shrink': {
+                    display: 'none'
+                  }
+                }}
+              >
+                Combined Area Name
+              </InputLabel>
+              <Select
+                labelId="demo-simple-select-label"
+                id="demo-simple-select"
+                value={areaName}
+                label="CombinedAreaName"
+                onChange={handleAreaChange}
+              >
+                <MenuItem
+                  value="SB/Goleta"
+                  sx={{
+                    '&:hover': {
+                      backgroundColor: '#F0F9F1'
+                    }
+                  }}
+                >
+                  SB/Goleta
+                </MenuItem>
+                <MenuItem
+                  value="SYV"
+                  sx={{
+                    '&:hover': {
+                      backgroundColor: '#F0F9F1'
+                    }
+                  }}
+                >
+                  SYV
+                </MenuItem>
+                <MenuItem
+                  value="SM/Orcutt"
+                  sx={{
+                    '&:hover': {
+                      backgroundColor: '#F0F9F1'
+                    }
+                  }}
+                >
+                  SM/Orcutt
+                </MenuItem>
+                <MenuItem
+                  value="Cuyama"
+                  sx={{
+                    '&:hover': {
+                      backgroundColor: '#F0F9F1'
+                    }
+                  }}
+                >
+                  Cuyama
+                </MenuItem>
+                <MenuItem
+                  value="Lompoc"
+                  sx={{
+                    '&:hover': {
+                      backgroundColor: '#F0F9F1'
+                    }
+                  }}
+                >
+                  Lompoc
+                </MenuItem>
+              </Select>
+            </FormControl>
+          </Box>
 
-        <h2>Food Distribution Model</h2>
-        <Box sx={{ minWidth: 120 }}>
-          <FormControl fullWidth>
-            <InputLabel id="demo-simple-select-label">
-              Food Distribution Model
-            </InputLabel>
-            <Select
-              labelId="demo-simple-select-label"
-              id="demo-simple-select"
-              value={foodDistrModel}
-              label="FoodDistributionModel"
-              onChange={handleFoodDistrChange}
+          <h2 style={{ textAlign: 'left' }}>Food Distribution Model</h2>
+          <Box
+            sx={{
+              minWidth: 120,
+              marginTop: '10px',
+              marginBottom: '10px',
+              paddingLeft: '10px'
+            }}
+          >
+            <FormControl
+              fullWidth
+              sx={{
+                '& .MuiOutlinedInput-root': {
+                  borderRadius: '10px'
+                }
+              }}
+              variant="outlined"
             >
-              <MenuItem value="Community Kitchen">Community Kitchen</MenuItem>
-              <MenuItem value="Food Pantry">Food Pantry</MenuItem>
-              <MenuItem value="Meals-on-wheels">Meals-on-wheels</MenuItem>
-              <MenuItem value="Senior Center">Senior Center</MenuItem>
-              <MenuItem value="Free Farmers Table">Free Farmers Table</MenuItem>
-              <MenuItem value="Shared Delivery">Shared Delivery</MenuItem>
-            </Select>
-          </FormControl>
-        </Box>
+              <InputLabel
+                id="demo-simple-select-label"
+                shrink={Boolean(foodDistrModel)}
+                htmlFor="demo-simple-select"
+                sx={{
+                  '&.MuiInputLabel-shrink': {
+                    display: 'none'
+                  }
+                }}
+              >
+                Food Distribution Model
+              </InputLabel>
+              <Select
+                labelId="demo-simple-select-label"
+                id="demo-simple-select"
+                value={foodDistrModel}
+                label="FoodDistributionModel"
+                onChange={handleFoodDistrChange}
+              >
+                <MenuItem
+                  value="Community Kitchen"
+                  sx={{
+                    '&:hover': {
+                      backgroundColor: '#F0F9F1'
+                    }
+                  }}
+                >
+                  Community Kitchen
+                </MenuItem>
+                <MenuItem
+                  value="Food Pantry"
+                  sx={{
+                    '&:hover': {
+                      backgroundColor: '#F0F9F1'
+                    }
+                  }}
+                >
+                  Food Pantry
+                </MenuItem>
+                <MenuItem
+                  value="Meals-on-wheels"
+                  sx={{
+                    '&:hover': {
+                      backgroundColor: '#F0F9F1'
+                    }
+                  }}
+                >
+                  Meals-on-wheels
+                </MenuItem>
+                <MenuItem
+                  value="Senior Center"
+                  sx={{
+                    '&:hover': {
+                      backgroundColor: '#F0F9F1'
+                    }
+                  }}
+                >
+                  Senior Center
+                </MenuItem>
+                <MenuItem
+                  value="Free Farmers Table"
+                  sx={{
+                    '&:hover': {
+                      backgroundColor: '#F0F9F1'
+                    }
+                  }}
+                >
+                  Free Farmers Table
+                </MenuItem>
+                <MenuItem
+                value="Shared Delivery"
+                sx={{
+                  '&:hover': {
+                    backgroundColor: '#F0F9F1'
+                  }
+                }}
+              >
+                Shared Delivery
+                </MenuItem>
+              </Select>
+            </FormControl>
+          </Box>
 
-        <div className="flex flex-row w-full">
-          <button type="submit" id="form-submit" onClick={handleSubmit}>
-            {isUpdate ? 'Update' : 'Done'}
-          </button>
-          {isUpdate && (
-            <button type="submit" id="form-submit" onClick={dispatchDelete}>
-              Delete
+          <div className="flex flex-row w-full">
+            <button type="submit" id="form-submit" onClick={handleSubmit}>
+              {isUpdate ? 'Update' : 'Done'}
             </button>
-          )}
+            {isUpdate && (
+              <button type="submit" id="form-submit" onClick={dispatchDelete}>
+                Delete
+              </button>
+            )}
+          </div>
         </div>
       </div>
     </form>
